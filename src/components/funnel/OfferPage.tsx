@@ -17,7 +17,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 import TestimonialCarousel from "./TestimonialCarousel";
-import SheetMusicPreview from "./SheetMusicPreview";
 
 interface OfferPageProps {
   quizState: QuizState;
@@ -114,8 +113,6 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
           </div>
         </Card>
 
-        {/* Sheet Music Preview */}
-        <SheetMusicPreview />
 
         {/* Benefits grid */}
         <div className="grid grid-cols-2 gap-2">
