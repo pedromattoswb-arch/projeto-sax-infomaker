@@ -58,8 +58,11 @@ const TestimonialCarousel = () => {
               >
                 <img
                   src={src}
-                  alt={`Depoimento ${index + 1}`}
+                  alt={`Depoimento de saxofonista ${index + 1} sobre o acervo de partituras`}
                   className="w-full h-auto object-contain"
+                  loading={index < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={index === 0 ? "high" : "auto"}
                   draggable={false}
                 />
               </div>
