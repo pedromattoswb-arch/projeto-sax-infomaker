@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { QuizState } from "@/types/quiz";
+import { QuizState, getCategoryByDream } from "@/types/quiz";
 import { Check, Loader2, Music, Sparkles } from "lucide-react";
 
 interface DiagnosisScreenProps {
@@ -7,52 +7,27 @@ interface DiagnosisScreenProps {
   onComplete: () => void;
 }
 
-const loadingSteps = [
-  { text: "Analisando seu perfil musical...", duration: 1200 },
-  { text: "Buscando playbacks compatíveis com Sax {instrument}...", duration: 1500 },
-  { text: "Liberando bônus de {category}...", duration: 1500 },
-  { text: "Preparando sua experiência personalizada...", duration: 1000 },
-];
-
 const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-
-  const getCategoryText = () => {
-    switch (quizState.dream) {
-      case "igreja":
-        return "Gospel + Harpa Cristã";
-      case "festas":
-        return "Flashback e Rock";
-      case "casamentos":
-        return "MPB e Internacionais";
-      default:
-        return "repertório exclusivo";
-    }
-  };
 
   const getInstrumentText = () => {
     return quizState.instrument === "alto" ? "Alto" : "Tenor";
   };
 
-  const getLevelText = () => {
-    switch (quizState.level) {
-      case "iniciante":
-        return "Iniciante";
-      case "intermediario":
-        return "Intermediário";
-      case "profissional":
-        return "Profissional";
-      default:
-        return "";
+  const getCategoryText = () => {
+    if (quizState.dream) {
+      return getCategoryByDream(quizState.dream);
     }
+    return "repertório exclusivo";
   };
 
-  const formatStepText = (text: string) => {
-    return text
-      .replace("{instrument}", getInstrumentText())
-      .replace("{category}", getCategoryText());
-  };
+  const loadingSteps = [
+    { text: "Analisando suas preferências musicais...", duration: 1200 },
+    { text: `Separando partituras de ${getCategoryText()} para você...`, duration: 1500 },
+    { text: `Organizando playbacks para Sax ${getInstrumentText()}...`, duration: 1500 },
+    { text: "Desbloqueando acesso ao acervo completo...", duration: 1000 },
+  ];
 
   useEffect(() => {
     if (currentStepIndex < loadingSteps.length) {
@@ -66,7 +41,7 @@ const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
       // Wait a bit before transitioning to offer
       setTimeout(onComplete, 2000);
     }
-  }, [currentStepIndex, isComplete, onComplete]);
+  }, [currentStepIndex, isComplete, onComplete, loadingSteps.length]);
 
   return (
     <div className="min-h-screen gradient-purple-radial flex flex-col items-center justify-center px-4 py-8">
@@ -111,7 +86,7 @@ const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
                 ) : (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 )}
-                <span className="text-sm md:text-base">{formatStepText(step.text)}</span>
+                <span className="text-sm md:text-base">{step.text}</span>
               </div>
             ))}
           </div>
@@ -122,12 +97,10 @@ const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
           <div className="space-y-4 animate-bounce-in">
             <div className="flex items-center justify-center gap-2 text-primary">
               <Check className="w-6 h-6" />
-              <span className="text-xl font-bold">Repertório Perfeito Encontrado!</span>
+              <span className="text-xl font-bold">Pronto! Seu acervo está liberado!</span>
             </div>
             <p className="text-lg text-foreground">
-              Mais de <span className="text-primary font-bold">2.000 músicas</span> liberadas
-              para o seu perfil de{" "}
-              <span className="text-primary font-bold">Saxofonista {getLevelText()}</span>
+              Mais de <span className="text-primary font-bold">2.000 partituras e playbacks</span> esperando por você
             </p>
 
             {/* Confetti effect */}
