@@ -91,6 +91,9 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
               src={mockupAcervo} 
               alt="Acervo Premium de Partituras para Saxofone - Mais de 2000 partituras e playbacks profissionais" 
               className="w-full max-w-[320px] mx-auto rounded-lg shadow-lg"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
           </div>
           
