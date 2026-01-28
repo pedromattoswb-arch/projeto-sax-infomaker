@@ -11,6 +11,7 @@ export const useQuiz = () => {
     level: null,
     instrument: null,
     dream: null,
+    style: null,
   });
 
   const startQuiz = useCallback(() => {
@@ -21,6 +22,7 @@ export const useQuiz = () => {
       level: null,
       instrument: null,
       dream: null,
+      style: null,
     });
   }, []);
 
@@ -71,6 +73,7 @@ export const useQuiz = () => {
       level: null,
       instrument: null,
       dream: null,
+      style: null,
     });
   }, []);
 

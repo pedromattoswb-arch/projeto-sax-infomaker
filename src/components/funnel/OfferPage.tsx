@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import {
   Shield,
   Clock,
-  Music,
   Headphones,
   BookOpen,
   Star,
@@ -13,6 +12,9 @@ import {
   Check,
   Zap,
   Play,
+  Music,
+  Infinity,
+  RefreshCw,
 } from "lucide-react";
 
 interface OfferPageProps {
@@ -32,17 +34,30 @@ const categories = [
 ];
 
 const testimonials = [
-  { name: "João", location: "SP", text: "O playback lado a lado me salvou no ensaio!" },
-  { name: "Maria", location: "MG", text: "O acervo de Gospel é gigante, tem tudo!" },
-  { name: "Carlos", location: "RJ", text: "Finalmente consigo acompanhar o tempo das músicas" },
+  { 
+    name: "João", 
+    location: "SP", 
+    text: "Eu gastava horas procurando partitura boa. Agora está tudo aqui, organizado. Mudou meu estudo!" 
+  },
+  { 
+    name: "Maria", 
+    location: "MG", 
+    text: "O formato interativo é genial. Consigo acompanhar o tempo certinho!" 
+  },
+  { 
+    name: "Carlos", 
+    location: "RJ", 
+    text: "O acervo de Gospel é absurdo. Tem até a Harpa Cristã completa!" 
+  },
 ];
 
 const benefits = [
-  { icon: BookOpen, text: "+2.000 partituras organizadas" },
-  { icon: Headphones, text: "Playbacks profissionais" },
-  { icon: Zap, text: "Formato Interativo (partitura + playback juntos)" },
-  { icon: Clock, text: "Acesso vitalício" },
-  { icon: Star, text: "Novidades mensais" },
+  { icon: BookOpen, text: "+2.000 partituras organizadas por estilo (chega de bagunça!)" },
+  { icon: Headphones, text: "Playbacks profissionais para tocar junto (nada de MIDI ruim)" },
+  { icon: Zap, text: "Formato Interativo: partitura + áudio sincronizados" },
+  { icon: Music, text: "Sax Alto E Tenor inclusos" },
+  { icon: Infinity, text: "Acesso vitalício (pague uma vez, use para sempre)" },
+  { icon: RefreshCw, text: "Novidades todo mês" },
 ];
 
 const OfferPage = ({ quizState }: OfferPageProps) => {
@@ -64,7 +79,7 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
 
   const headline = quizState.dream
     ? getPersonalizedHeadline(quizState.dream)
-    : "O Acervo Definitivo para Saxofonistas";
+    : "O arsenal completo para saxofonistas";
 
   const handleCheckout = () => {
     window.open(CHECKOUT_URL, "_blank");
@@ -86,18 +101,21 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
         <div className="text-center space-y-4 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
             <Check className="w-4 h-4 text-primary" />
-            <span className="text-sm text-primary font-medium">Perfil Identificado com Sucesso!</span>
+            <span className="text-sm text-primary font-medium">Seu acervo está pronto!</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">{headline}</h1>
         </div>
 
-        {/* Transformation copy */}
-        <Card className="p-6 bg-secondary/30 border-primary/20 animate-slide-up">
-          <p className="text-center text-foreground leading-relaxed">
-            Imagine tocar <span className="text-primary font-semibold">"Careless Whisper"</span> na
-            sala de casa, impressionar a família com{" "}
-            <span className="text-primary font-semibold">"Todo Azul do Mar"</span>, ou simplesmente
-            curtir suas músicas favoritas no sax...
+        {/* Transformation copy - Human and emotional */}
+        <Card className="p-6 bg-secondary/30 border-primary/20 animate-slide-up space-y-4">
+          <p className="text-foreground leading-relaxed">
+            Sabe aquela frustração de procurar partituras na internet e só encontrar <span className="text-muted-foreground">lixo</span>? 
+            Ou de querer tocar uma música, mas não ter um playback decente para acompanhar?
+          </p>
+          <p className="text-primary font-bold text-xl text-center">Isso acabou.</p>
+          <p className="text-foreground leading-relaxed">
+            Imagine abrir seu celular e ter <span className="text-primary font-semibold">mais de 2.000 músicas organizadas</span>, 
+            com partituras em alta qualidade E playbacks profissionais lado a lado. Do Pop ao Gospel. Do Jazz ao MPB.
           </p>
         </Card>
 
@@ -108,24 +126,24 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
               <Play className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-bold text-foreground mb-2">🆕 Formato Interativo</h3>
-              <p className="text-sm text-muted-foreground">
-                <span className="text-primary font-medium">Partitura + Playback rodando JUNTOS</span> na tela.
-                Nunca mais perca o tempo ou se confunda com a partitura!
+              <h3 className="font-bold text-foreground mb-2">🆕 O Diferencial: Formato Interativo</h3>
+              <p className="text-muted-foreground">
+                Você vê a <span className="text-primary font-medium">partitura e ouve o playback rodando JUNTOS</span> na tela.
+                Nunca mais se perde no tempo. Nunca mais se confunde com a partitura!
               </p>
             </div>
           </div>
         </Card>
 
-        {/* Benefits */}
+        {/* Benefits - Desire-driven copy */}
         <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <h3 className="text-lg font-bold text-foreground text-center">O que você recebe:</h3>
+          <h3 className="text-lg font-bold text-foreground text-center">O que você vai ter acesso:</h3>
           {benefits.map((benefit, index) => (
             <div key={index} className="flex items-center gap-3 p-3 bg-card/50 rounded-lg border border-border">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                 <benefit.icon className="w-4 h-4 text-primary" />
               </div>
-              <span className="text-foreground">{benefit.text}</span>
+              <span className="text-foreground text-sm">{benefit.text}</span>
             </div>
           ))}
         </div>
@@ -146,19 +164,19 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
           </div>
         </div>
 
-        {/* Testimonials */}
+        {/* Testimonials - More specific and human */}
         <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-          <h3 className="text-lg font-bold text-foreground text-center">O que dizem os alunos:</h3>
+          <h3 className="text-lg font-bold text-foreground text-center">O que dizem os saxofonistas:</h3>
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="p-4 bg-card/50 border-border">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold flex-shrink-0">
                   {testimonial.name[0]}
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-foreground italic">"{testimonial.text}"</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    - {testimonial.name}, {testimonial.location}
+                    — {testimonial.name}, {testimonial.location}
                   </p>
                 </div>
               </div>
@@ -166,27 +184,31 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
           ))}
         </div>
 
-        {/* Price */}
-        <div className="text-center space-y-3 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+        {/* Price anchoring - Stronger */}
+        <div className="text-center space-y-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+          <p className="text-muted-foreground text-sm">
+            Se você fosse comprar cada partitura separadamente, gastaria mais de <span className="font-semibold">R$ 500,00</span> fácil...
+          </p>
           <p className="text-muted-foreground">
-            <span className="line-through">De R$ 197,00</span>
+            <span className="line-through text-lg">De R$ 197,00</span>
           </p>
           <div className="flex items-center justify-center gap-2">
-            <span className="text-4xl font-bold text-primary">R$ 37,90</span>
+            <span className="text-5xl font-bold text-primary">R$ 37,90</span>
           </div>
           <p className="text-sm text-muted-foreground">
             Acesso Vitalício • Parcele em até 6x
           </p>
         </div>
 
-        {/* Guarantee */}
-        <Card className="p-4 bg-card/50 border-primary/20 animate-slide-up" style={{ animationDelay: "0.6s" }}>
+        {/* Guarantee - Stronger */}
+        <Card className="p-5 bg-card/50 border-primary/20 animate-slide-up" style={{ animationDelay: "0.6s" }}>
           <div className="flex items-center gap-4">
-            <Shield className="w-12 h-12 text-primary flex-shrink-0" />
+            <Shield className="w-14 h-14 text-primary flex-shrink-0" />
             <div>
-              <h4 className="font-bold text-foreground">Garantia de 7 Dias</h4>
+              <h4 className="font-bold text-foreground text-lg">Garantia de 7 Dias</h4>
               <p className="text-sm text-muted-foreground">
-                Risco Zero: Se não amar, devolvemos seu dinheiro. Sem perguntas.
+                Se não amar, devolvemos <span className="text-primary font-medium">100% do seu dinheiro</span>. 
+                Sem perguntas, sem burocracia. O risco é todo nosso.
               </p>
             </div>
           </div>
@@ -199,7 +221,7 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
             size="lg"
             className="w-full py-7 text-xl font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg"
           >
-            QUERO ACESSAR O ACERVO AGORA
+            QUERO MEU ACESSO AGORA
             <ChevronRight className="w-6 h-6 ml-2" />
           </Button>
         </div>
@@ -212,7 +234,7 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
           size="lg"
           className="w-full py-7 text-xl font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg animate-pulse-gold"
         >
-          QUERO ACESSAR O ACERVO AGORA
+          QUERO MEU ACESSO AGORA
           <ChevronRight className="w-6 h-6 ml-2" />
         </Button>
       </div>
