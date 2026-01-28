@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { QuizState, getCategoryByDream } from "@/types/quiz";
-import { Check, Loader2, Music, Sparkles } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
 interface DiagnosisScreenProps {
   quizState: QuizState;
@@ -8,117 +8,113 @@ interface DiagnosisScreenProps {
 }
 
 const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
-  const getInstrumentText = () => {
-    return quizState.instrument === "alto" ? "Alto" : "Tenor";
-  };
+  const saxType = quizState.instrument === "alto" ? "Sax Alto" : "Sax Tenor";
+  const category = getCategoryByDream(quizState.dream);
 
-  const getCategoryText = () => {
-    if (quizState.dream) {
-      return getCategoryByDream(quizState.dream);
-    }
-    return "repertório exclusivo";
-  };
-
-  const loadingSteps = [
-    { text: "Analisando suas preferências musicais...", duration: 1200 },
-    { text: `Separando partituras de ${getCategoryText()} para você...`, duration: 1500 },
-    { text: `Organizando playbacks para Sax ${getInstrumentText()}...`, duration: 1500 },
-    { text: "Desbloqueando acesso ao acervo completo...", duration: 1000 },
+  const steps = [
+    "Analisando suas preferências musicais...",
+    `Separando partituras de ${category} para você...`,
+    `Organizando playbacks para ${saxType}...`,
+    "Desbloqueando acesso ao acervo completo...",
   ];
 
   useEffect(() => {
-    if (currentStepIndex < loadingSteps.length) {
-      const timer = setTimeout(() => {
-        setCurrentStepIndex((prev) => prev + 1);
-      }, loadingSteps[currentStepIndex].duration);
+    const stepDuration = 1000;
+    
+    const timer = setInterval(() => {
+      setCurrentStep((prev) => {
+        if (prev < steps.length - 1) {
+          return prev + 1;
+        } else {
+          clearInterval(timer);
+          setTimeout(() => {
+            setIsComplete(true);
+            setTimeout(onComplete, 1500);
+          }, 800);
+          return prev;
+        }
+      });
+    }, stepDuration);
 
-      return () => clearTimeout(timer);
-    } else if (!isComplete) {
-      setIsComplete(true);
-      // Wait a bit before transitioning to offer
-      setTimeout(onComplete, 2000);
-    }
-  }, [currentStepIndex, isComplete, onComplete, loadingSteps.length]);
+    return () => clearInterval(timer);
+  }, [onComplete, steps.length]);
 
   return (
-    <div className="min-h-screen gradient-purple-radial flex flex-col items-center justify-center px-4 py-8">
-      <div className="max-w-md w-full text-center space-y-8">
-        {/* Animated icon */}
-        <div className="flex justify-center mb-8">
-          <div className="relative">
+    <div className="h-[100dvh] gradient-purple-radial flex flex-col items-center justify-center px-4 py-4 relative overflow-hidden">
+      {/* Confetti effect when complete */}
+      {isComplete && (
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(20)].map((_, i) => (
             <div
-              className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-500 ${
-                isComplete
-                  ? "bg-gradient-to-br from-primary to-gold-dark shadow-gold-lg"
-                  : "bg-secondary/50 border-2 border-primary/30"
-              }`}
-            >
-              {isComplete ? (
-                <Check className="w-16 h-16 text-primary-foreground animate-bounce-in" />
-              ) : (
-                <Loader2 className="w-16 h-16 text-primary animate-spin" />
-              )}
-            </div>
-            {isComplete && (
-              <>
-                <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-primary animate-bounce" />
-                <Music className="absolute -bottom-2 -left-2 w-6 h-6 text-primary animate-bounce" style={{ animationDelay: "0.2s" }} />
-              </>
-            )}
-          </div>
+              key={i}
+              className="absolute w-2 h-2 animate-confetti"
+              style={{
+                left: `${Math.random() * 100}%`,
+                backgroundColor: i % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--gold))",
+                animationDelay: `${Math.random() * 0.5}s`,
+                borderRadius: i % 3 === 0 ? "50%" : "0",
+              }}
+            />
+          ))}
         </div>
+      )}
 
-        {/* Loading steps */}
-        {!isComplete && (
-          <div className="space-y-4">
-            {loadingSteps.slice(0, currentStepIndex + 1).map((step, index) => (
-              <div
-                key={index}
-                className={`flex items-center gap-3 justify-center animate-fade-in ${
-                  index === currentStepIndex ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {index < currentStepIndex ? (
-                  <Check className="w-5 h-5 text-primary" />
-                ) : (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                )}
-                <span className="text-sm md:text-base">{step.text}</span>
+      <div className="max-w-sm w-full text-center space-y-6">
+        {!isComplete ? (
+          <>
+            {/* Loading animation */}
+            <div className="flex justify-center mb-4">
+              <div className="relative">
+                <div className="w-20 h-20 rounded-full border-4 border-primary/20 flex items-center justify-center">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* Completion message */}
-        {isComplete && (
-          <div className="space-y-4 animate-bounce-in">
-            <div className="flex items-center justify-center gap-2 text-primary">
-              <Check className="w-6 h-6" />
-              <span className="text-xl font-bold">Pronto! Seu acervo está liberado!</span>
             </div>
-            <p className="text-lg text-foreground">
-              Mais de <span className="text-primary font-bold">2.000 partituras e playbacks</span> esperando por você
-            </p>
 
-            {/* Confetti effect */}
-            <div className="relative h-20 overflow-hidden">
-              {[...Array(12)].map((_, i) => (
+            {/* Steps */}
+            <div className="space-y-2.5">
+              {steps.map((step, index) => (
                 <div
-                  key={i}
-                  className="absolute animate-confetti"
-                  style={{
-                    left: `${10 + i * 8}%`,
-                    animationDelay: `${i * 0.1}s`,
-                    color: i % 2 === 0 ? "hsl(var(--primary))" : "hsl(var(--gold-light))",
-                  }}
+                  key={index}
+                  className={`flex items-center gap-2.5 p-2.5 rounded-lg transition-all duration-500 ${
+                    index < currentStep
+                      ? "bg-primary/10 border border-primary/30"
+                      : index === currentStep
+                      ? "bg-secondary/50 border border-border animate-pulse"
+                      : "opacity-30"
+                  }`}
                 >
-                  {i % 3 === 0 ? "🎵" : i % 3 === 1 ? "✨" : "🎷"}
+                  {index < currentStep ? (
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-primary-foreground" />
+                    </div>
+                  ) : index === currentStep ? (
+                    <Loader2 className="w-5 h-5 text-primary animate-spin flex-shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-muted-foreground/30 flex-shrink-0" />
+                  )}
+                  <span className="text-xs text-foreground text-left">{step}</span>
                 </div>
               ))}
             </div>
+          </>
+        ) : (
+          /* Success state */
+          <div className="animate-scale-in space-y-4">
+            <div className="flex justify-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-gold-dark flex items-center justify-center shadow-gold-lg animate-pulse-gold">
+                <Check className="w-10 h-10 text-primary-foreground" />
+              </div>
+            </div>
+            <h2 className="text-xl font-bold text-foreground">
+              Pronto! Seu acervo está liberado! 🎷
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Mais de <span className="text-primary font-semibold">2.000 partituras e playbacks</span> esperando por você
+            </p>
           </div>
         )}
       </div>
