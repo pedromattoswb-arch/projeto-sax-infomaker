@@ -94,9 +94,10 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
         {/* Transformation copy */}
         <Card className="p-6 bg-secondary/30 border-primary/20 animate-slide-up">
           <p className="text-center text-foreground leading-relaxed">
-            Imagine tocar <span className="text-primary font-semibold">"Careless Whisper"</span> no
-            próximo churrasco da família, ou emocionar a todos com{" "}
-            <span className="text-primary font-semibold">"Todo Azul do Mar"</span> em um casamento...
+            Imagine tocar <span className="text-primary font-semibold">"Careless Whisper"</span> na
+            sala de casa, impressionar a família com{" "}
+            <span className="text-primary font-semibold">"Todo Azul do Mar"</span>, ou simplesmente
+            curtir suas músicas favoritas no sax...
           </p>
         </Card>
 

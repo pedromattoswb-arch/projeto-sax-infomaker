@@ -1,6 +1,6 @@
 export type QuizLevel = 'iniciante' | 'intermediario' | 'profissional';
 export type InstrumentType = 'alto' | 'tenor';
-export type DreamType = 'igreja' | 'festas' | 'casamentos';
+export type DreamType = 'igreja' | 'festas' | 'casamentos' | 'prazer' | 'evolucao';
 
 export interface QuizAnswer {
   questionId: number;
@@ -50,11 +50,15 @@ export const quizQuestions: QuizQuestion[] = [
     id: 3,
     question: "O que mais te motiva a tocar saxofone?",
     options: [
+      { value: "prazer", label: "Tocar por prazer e diversão", icon: "😊" },
+      { value: "evolucao", label: "Evoluir e aprender músicas novas", icon: "🚀" },
       { value: "igreja", label: "Louvar e tocar na Igreja", icon: "⛪" },
       { value: "festas", label: "Animar festas, churrascos e reuniões", icon: "🎉" },
       { value: "casamentos", label: "Tocar em eventos e casamentos", icon: "💒" },
     ],
     feedback: {
+      prazer: "Maravilha! Temos músicas incríveis para você curtir! 🎶",
+      evolucao: "Perfeito! Nosso acervo vai acelerar sua evolução! 📈",
       igreja: "Ótimo! Temos Gospel completo + Harpa Cristã 🙏",
       festas: "Perfeito! Nosso acervo de Flashback e Rock é imenso! 🎸",
       casamentos: "Excelente! MPB e Internacionais românticas esperando por você 💕",
@@ -103,6 +107,8 @@ export const quizQuestions: QuizQuestion[] = [
 
 export const getDreamFeedback = (dream: DreamType): string => {
   const feedbacks: Record<DreamType, string> = {
+    prazer: "Maravilha! Temos músicas incríveis para você curtir! 🎶",
+    evolucao: "Perfeito! Nosso acervo vai acelerar sua evolução! 📈",
     igreja: "Ótimo! Temos Gospel completo + Harpa Cristã 🙏",
     festas: "Perfeito! Nosso acervo de Flashback e Rock é imenso! 🎸",
     casamentos: "Excelente! MPB e Internacionais românticas esperando por você 💕",
@@ -112,9 +118,11 @@ export const getDreamFeedback = (dream: DreamType): string => {
 
 export const getPersonalizedHeadline = (dream: DreamType): string => {
   const headlines: Record<DreamType, string> = {
-    igreja: "O Acervo Definitivo para o Saxofonista que quer brilhar na Igreja",
-    festas: "O Acervo Definitivo para ser a estrela de qualquer churrasco ou festa",
-    casamentos: "O Acervo Definitivo para o Saxofonista que quer tocar profissionalmente",
+    prazer: "O Acervo Perfeito para Quem Ama Tocar Saxofone",
+    evolucao: "O Acervo Definitivo para Acelerar sua Evolução no Sax",
+    igreja: "O Acervo Definitivo para o Saxofonista que quer Brilhar na Igreja",
+    festas: "O Acervo Definitivo para Ser a Estrela de Qualquer Momento",
+    casamentos: "O Acervo Definitivo para Tocar em Eventos Inesquecíveis",
   };
   return headlines[dream];
 };

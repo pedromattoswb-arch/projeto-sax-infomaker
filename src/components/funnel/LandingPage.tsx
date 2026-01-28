@@ -47,13 +47,13 @@ const LandingPage = ({ onStart }: LandingPageProps) => {
         <h1 className="text-3xl md:text-4xl font-bold leading-tight">
           <span className="text-foreground">Descubra qual repertório do </span>
           <span className="text-primary">Clube do Sax Brasil</span>
-          <span className="text-foreground"> vai transformar você na </span>
-          <span className="text-primary">estrela do próximo evento</span>
+          <span className="text-foreground"> combina perfeitamente </span>
+          <span className="text-primary">com o seu estilo</span>
         </h1>
 
         {/* Subheadline */}
         <p className="text-lg text-muted-foreground">
-          Responda algumas perguntas rápidas e encontre o repertório perfeito para o seu perfil musical
+          Seja você iniciante ou experiente, por hobby ou profissão — encontre as músicas perfeitas para você
         </p>
 
         {/* CTA Button */}
@@ -69,19 +69,19 @@ const LandingPage = ({ onStart }: LandingPageProps) => {
         {/* Micro-copy */}
         <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-          Quiz rápido de 60 segundos • +2.000 músicas esperando
+          Quiz rápido de 60 segundos • +2.000 músicas para todos os gostos
         </p>
 
         {/* Trust badges */}
         <div className="flex flex-wrap justify-center gap-4 pt-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
+            <span className="text-primary">✓</span> Todos os Níveis
+          </span>
+          <span className="flex items-center gap-1">
             <span className="text-primary">✓</span> Alto e Tenor
           </span>
           <span className="flex items-center gap-1">
             <span className="text-primary">✓</span> Playbacks Profissionais
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="text-primary">✓</span> Acesso Vitalício
           </span>
         </div>
       </div>
