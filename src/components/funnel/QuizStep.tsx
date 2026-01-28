@@ -50,18 +50,18 @@ const QuizStep = ({
   };
 
   return (
-    <div className="min-h-screen gradient-purple-radial flex flex-col px-4 py-6">
+    <div className="h-[100dvh] gradient-purple-radial flex flex-col px-4 py-4 overflow-hidden">
       {/* Progress bar */}
-      <div className="w-full max-w-md mx-auto mb-8">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-muted-foreground">
-            Pergunta {currentStep + 1} de {totalQuestions}
+      <div className="w-full max-w-sm mx-auto mb-4">
+        <div className="flex justify-between items-center mb-1.5">
+          <span className="text-xs text-muted-foreground">
+            {currentStep + 1} de {totalQuestions}
           </span>
-          <span className="text-sm text-primary font-medium">
+          <span className="text-xs text-primary font-medium">
             {Math.round(progress)}%
           </span>
         </div>
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-primary to-gold-dark transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
@@ -71,9 +71,9 @@ const QuizStep = ({
 
       {/* Feedback message (shows after dream question) */}
       {showFeedback && previousDream && (
-        <div className="w-full max-w-md mx-auto mb-6 animate-fade-in">
-          <div className="bg-secondary/50 border border-primary/30 rounded-xl p-4 text-center">
-            <p className="text-foreground font-medium">
+        <div className="w-full max-w-sm mx-auto mb-3 animate-fade-in">
+          <div className="bg-secondary/50 border border-primary/30 rounded-lg p-2.5 text-center">
+            <p className="text-foreground text-xs font-medium">
               {getDreamFeedback(previousDream)}
             </p>
           </div>
@@ -81,40 +81,40 @@ const QuizStep = ({
       )}
 
       {/* Question */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 animate-fade-in">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-sm mx-auto">
+        <h2 className="text-lg font-bold text-center mb-4 animate-fade-in leading-tight">
           {question.question}
         </h2>
 
         {/* Options */}
-        <div className="w-full space-y-3">
+        <div className="w-full space-y-2">
           {question.options.map((option, index) => (
             <button
               key={option.value}
               onClick={() => handleSelect(option.value)}
               disabled={selectedOption !== null}
               className={cn(
-                "w-full p-5 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4",
+                "w-full p-3 rounded-lg border-2 transition-all duration-300 text-left flex items-center gap-3",
                 "animate-slide-up",
                 selectedOption === option.value
                   ? "border-primary bg-primary/10 shadow-gold"
                   : "border-border bg-card hover:border-primary/50 hover:bg-secondary/30",
                 selectedOption !== null && selectedOption !== option.value && "opacity-50"
               )}
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               {/* Icon */}
-              <span className="text-3xl">{option.icon}</span>
+              <span className="text-xl flex-shrink-0">{option.icon}</span>
               
               {/* Label */}
-              <span className="flex-1 font-semibold text-lg text-foreground">
+              <span className="flex-1 font-medium text-sm text-foreground leading-tight">
                 {option.label}
               </span>
 
               {/* Check indicator */}
               {selectedOption === option.value && (
-                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-scale-in">
-                  <Check className="w-5 h-5 text-primary-foreground" />
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center animate-scale-in flex-shrink-0">
+                  <Check className="w-3 h-3 text-primary-foreground" />
                 </div>
               )}
             </button>
