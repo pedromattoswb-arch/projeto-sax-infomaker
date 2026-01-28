@@ -60,9 +60,9 @@ const LandingPage = ({ onStart }: LandingPageProps) => {
         <Button
           onClick={onStart}
           size="lg"
-          className="w-full sm:w-auto px-8 py-6 text-lg font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg hover:shadow-gold transition-all duration-300 animate-pulse-gold"
+          className="w-full sm:w-auto px-10 py-7 text-xl font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg hover:shadow-gold transition-all duration-300 animate-pulse-gold"
         >
-          <Play className="w-5 h-5 mr-2" />
+          <Play className="w-6 h-6 mr-2" />
           DESCOBRIR MEU REPERTÓRIO
         </Button>
 

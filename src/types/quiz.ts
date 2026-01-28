@@ -33,9 +33,9 @@ export const quizQuestions: QuizQuestion[] = [
     id: 1,
     question: "Qual seu nível no saxofone?",
     options: [
-      { value: "iniciante", label: "Iniciante", icon: "🌱" },
-      { value: "intermediario", label: "Intermediário", icon: "📈" },
-      { value: "profissional", label: "Profissional", icon: "🎯" },
+      { value: "iniciante", label: "Estou começando agora", icon: "🌱" },
+      { value: "intermediario", label: "Já toco algumas músicas", icon: "📈" },
+      { value: "profissional", label: "Toco há bastante tempo", icon: "🎯" },
     ],
   },
   {
@@ -48,11 +48,11 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 3,
-    question: "Qual é o seu SONHO com o saxofone?",
+    question: "O que mais te motiva a tocar saxofone?",
     options: [
-      { value: "igreja", label: "Tocar na Igreja", icon: "⛪" },
-      { value: "festas", label: "Brilhar em Festas e Churrascos", icon: "🎉" },
-      { value: "casamentos", label: "Tocar Profissionalmente em Casamentos", icon: "💒" },
+      { value: "igreja", label: "Louvar e tocar na Igreja", icon: "⛪" },
+      { value: "festas", label: "Animar festas, churrascos e reuniões", icon: "🎉" },
+      { value: "casamentos", label: "Tocar em eventos e casamentos", icon: "💒" },
     ],
     feedback: {
       igreja: "Ótimo! Temos Gospel completo + Harpa Cristã 🙏",
@@ -62,21 +62,22 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 4,
+    question: "Qual estilo musical você mais gosta de tocar?",
+    options: [
+      { value: "gospel", label: "Gospel e Hinos", icon: "🙏" },
+      { value: "mpb", label: "MPB e Brasileiras", icon: "🇧🇷" },
+      { value: "internacional", label: "Pop e Internacionais", icon: "🌎" },
+      { value: "classicos", label: "Flashback e Clássicos", icon: "🕺" },
+    ],
+  },
+  {
+    id: 5,
     question: "Qual seu maior desafio ao estudar hoje?",
     options: [
       { value: "tempo", label: "Acompanhar o tempo da música", icon: "⏱️" },
       { value: "partituras", label: "Encontrar boas partituras", icon: "📄" },
       { value: "repertorio", label: "Montar um repertório variado", icon: "📚" },
       { value: "playback", label: "Tocar sem um playback de qualidade", icon: "🔊" },
-    ],
-  },
-  {
-    id: 5,
-    question: "Quanto tempo por semana você dedica ao estudo?",
-    options: [
-      { value: "pouco", label: "Menos de 2 horas", icon: "⏰" },
-      { value: "medio", label: "2 a 5 horas", icon: "📅" },
-      { value: "muito", label: "Mais de 5 horas", icon: "🔥" },
     ],
   },
   {

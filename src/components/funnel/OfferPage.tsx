@@ -19,7 +19,7 @@ interface OfferPageProps {
   quizState: QuizState;
 }
 
-const CHECKOUT_URL = "https://pay.cakto.com.br/DwRdqxy";
+const CHECKOUT_URL = "https://pay.cakto.com.br/3djucaz_745080";
 
 const categories = [
   { icon: "🎵", name: "Pop Internacional", artists: "Michael Jackson, Beyoncé, Madonna" },
@@ -196,10 +196,10 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
           <Button
             onClick={handleCheckout}
             size="lg"
-            className="w-full py-6 text-lg font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg"
+            className="w-full py-7 text-xl font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg"
           >
             QUERO ACESSAR O ACERVO AGORA
-            <ChevronRight className="w-5 h-5 ml-2" />
+            <ChevronRight className="w-6 h-6 ml-2" />
           </Button>
         </div>
       </div>
@@ -209,10 +209,10 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
         <Button
           onClick={handleCheckout}
           size="lg"
-          className="w-full py-6 text-lg font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg animate-pulse-gold"
+          className="w-full py-7 text-xl font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg animate-pulse-gold"
         >
           QUERO ACESSAR O ACERVO AGORA
-          <ChevronRight className="w-5 h-5 ml-2" />
+          <ChevronRight className="w-6 h-6 ml-2" />
         </Button>
       </div>
     </div>

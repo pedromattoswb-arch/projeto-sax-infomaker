@@ -94,7 +94,7 @@ const QuizStep = ({
               onClick={() => handleSelect(option.value)}
               disabled={selectedOption !== null}
               className={cn(
-                "w-full p-4 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4",
+                "w-full p-5 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4",
                 "animate-slide-up",
                 selectedOption === option.value
                   ? "border-primary bg-primary/10 shadow-gold"
@@ -104,17 +104,17 @@ const QuizStep = ({
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Icon */}
-              <span className="text-2xl">{option.icon}</span>
+              <span className="text-3xl">{option.icon}</span>
               
               {/* Label */}
-              <span className="flex-1 font-medium text-foreground">
+              <span className="flex-1 font-semibold text-lg text-foreground">
                 {option.label}
               </span>
 
               {/* Check indicator */}
               {selectedOption === option.value && (
-                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center animate-scale-in">
-                  <Check className="w-4 h-4 text-primary-foreground" />
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-scale-in">
+                  <Check className="w-5 h-5 text-primary-foreground" />
                 </div>
               )}
             </button>
