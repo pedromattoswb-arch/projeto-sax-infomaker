@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { QuizState, getPersonalizedHeadline } from "@/types/quiz";
 import { Button } from "@/components/ui/button";
+import mockupAcervo from "@/assets/mockup-acervo.png";
 import { Card } from "@/components/ui/card";
 import {
   Shield,
@@ -84,6 +85,16 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
             <Check className="w-3 h-3 text-primary" />
             <span className="text-xs text-primary font-medium">Seu acervo está pronto!</span>
           </div>
+          
+          {/* Mockup do Acervo */}
+          <div className="py-2">
+            <img 
+              src={mockupAcervo} 
+              alt="Acervo Premium de Partituras para Saxofone - Mais de 2000 partituras e playbacks profissionais" 
+              className="w-full max-w-[320px] mx-auto rounded-lg shadow-lg"
+            />
+          </div>
+          
           <h1 className="text-lg font-bold text-foreground leading-tight">{headline}</h1>
         </div>
 
