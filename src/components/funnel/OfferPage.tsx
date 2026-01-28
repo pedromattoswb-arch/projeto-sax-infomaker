@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { QuizState, getPersonalizedHeadline } from "@/types/quiz";
 import { Button } from "@/components/ui/button";
 import mockupAcervo from "@/assets/mockup-acervo.png";
@@ -17,6 +17,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import TestimonialCarousel from "./TestimonialCarousel";
+import { trackOfferView, trackInitiateCheckout } from "@/hooks/useMetaPixel";
 
 interface OfferPageProps {
   quizState: QuizState;
@@ -44,6 +45,19 @@ const benefits = [
 
 const OfferPage = ({ quizState }: OfferPageProps) => {
   const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const hasTrackedView = useRef(false);
+
+  // Track offer page view on mount
+  useEffect(() => {
+    if (!hasTrackedView.current) {
+      trackOfferView({
+        instrument: quizState.instrument || undefined,
+        level: quizState.level || undefined,
+        dream: quizState.dream || undefined,
+      });
+      hasTrackedView.current = true;
+    }
+  }, [quizState.instrument, quizState.level, quizState.dream]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -63,6 +77,12 @@ const OfferPage = ({ quizState }: OfferPageProps) => {
     : "O arsenal completo para saxofonistas";
 
   const handleCheckout = () => {
+    // Track InitiateCheckout before opening checkout
+    trackInitiateCheckout({
+      instrument: quizState.instrument || undefined,
+      level: quizState.level || undefined,
+      dream: quizState.dream || undefined,
+    });
     window.open(CHECKOUT_URL, "_blank");
   };
 

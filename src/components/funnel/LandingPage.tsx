@@ -1,11 +1,22 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Music, ArrowRight, Sparkles } from "lucide-react";
+import { trackLandingView, trackQuizStart } from "@/hooks/useMetaPixel";
 
 interface LandingPageProps {
   onStart: () => void;
 }
 
 const LandingPage = ({ onStart }: LandingPageProps) => {
+  // Track landing page view on mount
+  useEffect(() => {
+    trackLandingView();
+  }, []);
+
+  const handleStart = () => {
+    trackQuizStart();
+    onStart();
+  };
   return (
     <div className="h-[100dvh] gradient-purple-radial flex flex-col items-center justify-center px-4 py-4 relative overflow-hidden">
       {/* Floating music notes background - fewer and smaller */}
@@ -58,7 +69,7 @@ const LandingPage = ({ onStart }: LandingPageProps) => {
 
         {/* CTA Button - optimized size */}
         <Button
-          onClick={onStart}
+          onClick={handleStart}
           size="lg"
           className="w-full h-12 text-sm font-bold bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-primary-foreground shadow-gold-lg hover:shadow-gold transition-all duration-300 animate-pulse-gold"
         >

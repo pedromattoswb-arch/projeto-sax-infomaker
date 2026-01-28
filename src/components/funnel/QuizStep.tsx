@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { QuizQuestion, getDreamFeedback, DreamType } from "@/types/quiz";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { trackQuizStep } from "@/hooks/useMetaPixel";
 
 interface QuizStepProps {
   question: QuizQuestion;
@@ -68,6 +69,9 @@ const QuizStep = ({
     });
     
     setSelectedOption(value);
+    
+    // Track quiz step
+    trackQuizStep(currentStep + 1, totalQuestions, value);
     
     // Delay before moving to next question for visual feedback
     setTimeout(() => {

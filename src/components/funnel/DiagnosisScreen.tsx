@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { QuizState, getCategoryByDream } from "@/types/quiz";
 import { Check } from "lucide-react";
+import { trackQuizComplete } from "@/hooks/useMetaPixel";
 
 interface DiagnosisScreenProps {
   quizState: QuizState;
@@ -23,6 +24,15 @@ const DiagnosisScreen = ({ quizState, onComplete }: DiagnosisScreenProps) => {
     { threshold: 75, text: `Organizando playbacks para ${saxType}...` },
     { threshold: 100, text: "Desbloqueando acesso ao acervo completo..." },
   ];
+
+  // Track Lead event on mount (quiz completed)
+  useEffect(() => {
+    trackQuizComplete({
+      instrument: quizState.instrument || undefined,
+      level: quizState.level || undefined,
+      dream: quizState.dream || undefined,
+    });
+  }, [quizState.instrument, quizState.level, quizState.dream]);
 
   // Smooth progress animation
   useEffect(() => {
