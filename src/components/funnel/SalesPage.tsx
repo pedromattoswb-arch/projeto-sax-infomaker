@@ -56,8 +56,8 @@ const SalesPage = () => {
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <img src={logo} alt="Clube do Sax Brasil" className="h-9 md:h-12 w-auto" loading="eager" />
           <div className="text-right">
-            <span className="text-[10px] md:text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-            <span className="text-base md:text-lg font-extrabold text-primary font-heading">R$ 9,90</span>
+            <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
+            <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
           </div>
         </div>
       </header>
@@ -74,44 +74,44 @@ const SalesPage = () => {
             height={280}
           />
 
-          <span className="inline-block bg-primary/10 text-primary px-3 md:px-4 py-1.5 rounded-full text-[11px] md:text-xs font-bold font-heading mb-4 md:mb-5">
+          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
             🎷 +847 Saxofonistas Já Garantiram
           </span>
 
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.15] mb-4 md:mb-5 px-1">
+          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
             Chega de Perder Horas Procurando{" "}
             <span className="text-primary">Partituras Ruins</span> na Internet
           </h1>
 
-          <p className="text-sm md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto px-2">
+          <p className="text-[15px] md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
             Tenha agora o maior acervo de partituras para sax do Brasil —{" "}
             <strong>organizado, profissional e pronto para tocar.</strong>{" "}
             Enquanto você busca, outros saxofonistas já estão tocando.
           </p>
 
-          <div className="flex flex-col items-center gap-2 md:gap-2.5 mb-6 md:mb-8">
+          <div className="flex flex-col items-start mx-auto w-fit gap-2.5 mb-6 md:mb-8">
             {[
               "Partituras em PDF de alta qualidade",
               "Playbacks profissionais sincronizados",
               "Acesso imediato — comece a tocar em minutos",
               "Garantia de 7 dias — risco zero pra você",
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-xs md:text-sm font-medium font-body text-foreground">{item}</span>
+              <div key={i} className="flex items-center gap-2.5">
+                <CheckCircle2 className="w-[18px] h-[18px] text-primary shrink-0" />
+                <span className="text-[13px] md:text-sm font-medium font-body text-foreground">{item}</span>
               </div>
             ))}
           </div>
 
           <button
             onClick={scrollToOffers}
-            className="gradient-cta text-primary-foreground font-bold font-heading py-3.5 md:py-4 px-8 md:px-10 rounded-xl text-sm md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+            className="gradient-cta text-primary-foreground font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
           >
             GARANTIR MEU ACESSO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
           </button>
 
-          <p className="text-[11px] md:text-xs text-muted-foreground mt-3 md:mt-4 font-body">
+          <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
             A partir de <strong className="text-primary">R$ 9,90</strong> — menos que um café ☕
           </p>
         </div>
@@ -120,10 +120,10 @@ const SalesPage = () => {
       {/* O QUE VOCÊ RECEBE */}
       <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xl md:text-3xl font-bold text-center font-heading mb-2">
+          <h2 className="text-[22px] md:text-3xl font-bold text-center font-heading mb-2">
             Tudo Que Você Precisa Para Evoluir no Sax
           </h2>
-          <p className="text-center text-foreground font-body text-sm md:text-base mb-8 md:mb-10">
+          <p className="text-center text-foreground font-body text-[15px] md:text-base mb-8 md:mb-10">
             Pare de improvisar sua evolução. Tenha as ferramentas certas.
           </p>
 
@@ -133,11 +133,11 @@ const SalesPage = () => {
                 key={i}
                 className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
               >
-                <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-3 md:mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-3 md:mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
                   <f.icon className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
-                <h3 className="font-bold font-heading text-xs md:text-base mb-0.5 md:mb-1">{f.title}</h3>
-                <p className="text-muted-foreground text-[11px] md:text-sm font-body leading-snug">{f.description}</p>
+                <h3 className="font-bold font-heading text-[13px] md:text-base mb-0.5 md:mb-1">{f.title}</h3>
+                <p className="text-muted-foreground text-xs md:text-sm font-body leading-snug">{f.description}</p>
               </div>
             ))}
           </div>
@@ -150,7 +150,7 @@ const SalesPage = () => {
               {categories.map((cat) => (
                 <span
                   key={cat.name}
-                  className="bg-card border border-border px-3 md:px-5 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold font-body shadow-sm text-foreground hover:shadow-md hover:border-primary/30 transition-all cursor-default flex items-center gap-1.5 md:gap-2"
+                  className="bg-card border border-border px-3.5 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-sm font-semibold font-body shadow-sm text-foreground hover:shadow-md hover:border-primary/30 transition-all cursor-default flex items-center gap-1.5 md:gap-2"
                 >
                   <span className="text-base md:text-lg">{cat.emoji}</span>
                   {cat.name}
@@ -165,15 +165,15 @@ const SalesPage = () => {
       <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(240,20%,10%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
-            <h2 className="text-xl md:text-3xl font-bold font-heading mb-2 text-white">
+            <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
               Veja o Que Dizem os Saxofonistas
             </h2>
             <div className="flex items-center justify-center gap-1 mb-2">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 md:w-5 md:h-5 fill-accent text-accent" />
+                <Star key={i} className="w-5 h-5 fill-accent text-accent" />
               ))}
             </div>
-            <p className="text-white/60 text-xs md:text-sm font-body">
+            <p className="text-white/60 text-sm font-body">
               Avaliação <strong className="text-white">4.9/5</strong> • +847 saxofonistas satisfeitos
             </p>
           </div>
@@ -206,15 +206,15 @@ const SalesPage = () => {
           <img
             src="/selo-garantia.png"
             alt="Selo de Garantia de 7 Dias"
-            className="w-24 h-24 md:w-36 md:h-36 mx-auto mb-4 md:mb-5 drop-shadow-lg"
+            className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 md:mb-5 drop-shadow-lg"
             loading="lazy"
             width={144}
             height={144}
           />
-          <h2 className="text-xl md:text-2xl font-bold font-heading mb-2 md:mb-3 text-white">
+          <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3 text-white">
             Garantia Incondicional de 7 Dias
           </h2>
-          <p className="text-white/90 font-body text-sm md:text-base leading-relaxed px-2">
+          <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed">
             Se por qualquer motivo você não ficar satisfeito, devolvemos{" "}
             <strong className="text-white">100% do seu dinheiro</strong>. Sem perguntas, sem
             burocracia. O risco é todo nosso — você não tem nada a perder.
@@ -230,10 +230,10 @@ const SalesPage = () => {
       {/* CTA FINAL */}
       <section className="py-12 md:py-16 px-4 md:px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-xl md:text-3xl font-bold font-heading mb-2 md:mb-3">
+          <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 md:mb-3">
             Você Está a Um Passo de Nunca Mais Perder Tempo
           </h2>
-          <p className="text-foreground font-body text-sm md:text-base mb-3 md:mb-4">
+          <p className="text-foreground font-body text-[15px] md:text-base mb-3 md:mb-4">
             +2.000 partituras profissionais com playbacks. Acesso vitalício. Garantia de 7 dias.
           </p>
           <p className="text-xs md:text-sm text-muted-foreground font-body mb-6 md:mb-8">
@@ -241,7 +241,7 @@ const SalesPage = () => {
           </p>
           <button
             onClick={scrollToOffers}
-            className="gradient-cta text-primary-foreground font-bold font-heading py-3.5 md:py-4 px-8 md:px-10 rounded-xl text-sm md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+            className="gradient-cta text-primary-foreground font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
           >
             GARANTIR MEU ACESSO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
@@ -251,8 +251,8 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-5 md:py-6 px-4 border-t border-border text-center">
-        <img src={logo} alt="Clube do Sax Brasil" className="h-7 md:h-8 w-auto mx-auto mb-2 md:mb-3" loading="lazy" />
-        <p className="text-[10px] md:text-xs text-muted-foreground font-body">
+        <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto mx-auto mb-2 md:mb-3" loading="lazy" />
+        <p className="text-xs text-muted-foreground font-body">
           © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
         </p>
       </footer>
@@ -261,7 +261,7 @@ const SalesPage = () => {
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-2.5 z-50 shadow-lg safe-bottom">
         <button
           onClick={scrollToOffers}
-          className="w-full gradient-cta text-primary-foreground font-bold font-heading py-3 rounded-xl text-[13px] shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+          className="w-full gradient-cta text-primary-foreground font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
           GARANTIR ACESSO — A partir de R$ 9,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
