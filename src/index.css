@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@500;600;700;800&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ.,!?;:—-+%$@#&()[]{}/');
 
 @tailwind base;
 @tailwind components;
@@ -199,5 +199,22 @@
 
   .animate-fade-in-up {
     animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  /* Safe area for iOS bottom bar */
+  .safe-bottom {
+    padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
+  }
+
+  /* Touch feedback */
+  @media (hover: none) {
+    .active\:scale-\[0\.98\]:active {
+      transform: scale(0.98);
+    }
+  }
+
+  /* Smooth scroll performance */
+  .overflow-x-hidden {
+    overflow-x: hidden;
   }
 }
