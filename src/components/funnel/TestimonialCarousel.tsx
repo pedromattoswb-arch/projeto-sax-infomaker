@@ -25,8 +25,9 @@ const TestimonialCarousel = () => {
                   src={src}
                   alt={`Depoimento de saxofonista ${index + 1}`}
                   className="w-full h-auto object-contain"
-                  loading={index < 1 ? "eager" : "lazy"}
+                  loading="eager"
                   decoding="async"
+                  fetchPriority={index < 2 ? "high" : "auto"}
                   draggable={false}
                 />
               </div>
