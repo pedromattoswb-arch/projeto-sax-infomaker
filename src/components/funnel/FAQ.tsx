@@ -14,7 +14,7 @@ const faqItems = [
   {
     question: "Como recebo o acesso?",
     answer:
-      "Imediatamente após a confirmação do pagamento, você recebe os dados de acesso por e-mail. O acesso é instantâneo, 24 horas por dia.",
+      "O acesso é enviado imediatamente assim que o pagamento é aprovado, por e-mail, através da plataforma Cakto. Você recebe tudo na hora, 24 horas por dia, sem precisar esperar.",
   },
   {
     question: "As partituras são de qualidade profissional?",

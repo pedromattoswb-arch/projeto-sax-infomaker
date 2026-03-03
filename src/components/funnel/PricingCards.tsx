@@ -32,56 +32,47 @@ const PricingCards = () => {
       value,
       currency: "BRL",
     });
-    window.open(
-      plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK,
-      "_blank"
-    );
+    window.open(plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK, "_blank");
   };
 
   return (
     <section className="py-16 px-4 md:px-8" id="ofertas">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-4">
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
-            Escolha Seu Plano
+            Escolha Seu Plano e Comece Agora
           </h2>
           <p className="text-foreground font-body text-base">
             Acesso vitalício. Pague uma vez, acesse para sempre.
           </p>
         </div>
 
+        <p className="text-center text-sm text-primary font-semibold font-body mb-10">
+          ⚠️ Preço promocional por tempo limitado
+        </p>
+
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start max-w-4xl mx-auto">
           {/* ESSENTIAL CARD */}
           <div className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-8 relative">
             <div className="mb-6">
               <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold font-heading mb-3">
-                Ótimo para começar
+                Para começar
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Essencial</h3>
-              <p className="text-foreground text-sm font-body">
+              <p className="text-muted-foreground text-sm font-body">
                 O acervo completo de partituras em PDF
               </p>
             </div>
 
-            {/* Price anchoring */}
             <div className="mb-6">
-              <span className="text-muted-foreground text-sm line-through font-body">
-                De R$ 197,00
-              </span>
+              <span className="text-muted-foreground text-sm line-through font-body">De R$ 197,00</span>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-4xl font-extrabold font-heading text-primary">
-                  R$ 9
-                </span>
-                <span className="text-xl font-bold font-heading text-primary">
-                  ,90
-                </span>
+                <span className="text-4xl font-extrabold font-heading text-primary">R$ 9</span>
+                <span className="text-xl font-bold font-heading text-primary">,90</span>
               </div>
-              <span className="text-xs text-primary font-semibold font-body">
-                Economia de 95% • Pagamento único
-              </span>
+              <span className="text-xs text-primary font-semibold font-body">Economia de 95% • Pagamento único</span>
             </div>
 
-            {/* Features */}
             <ul className="space-y-3 mb-8">
               {essentialFeatures.map((feature, i) => (
                 <li key={i} className="flex items-start gap-2.5 text-sm font-body">
@@ -91,7 +82,6 @@ const PricingCards = () => {
               ))}
             </ul>
 
-            {/* CTA */}
             <button
               onClick={() => handleCheckout("essential")}
               className="w-full py-3.5 rounded-xl border-2 border-primary text-primary font-bold font-heading text-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
@@ -102,7 +92,6 @@ const PricingCards = () => {
 
           {/* PREMIUM CARD */}
           <div className="bg-card rounded-2xl border-2 border-accent shadow-gold-lg p-6 md:p-8 relative md:scale-[1.02] origin-top">
-            {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
               <span className="gradient-gold text-accent-foreground px-5 py-1.5 rounded-full text-xs font-bold font-heading flex items-center gap-1.5 shadow-gold whitespace-nowrap">
                 <Crown className="w-3.5 h-3.5" />
@@ -110,7 +99,6 @@ const PricingCards = () => {
               </span>
             </div>
 
-            {/* Shimmer border effect */}
             <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
               <div className="absolute inset-0 animate-shimmer rounded-2xl" />
             </div>
@@ -121,30 +109,20 @@ const PricingCards = () => {
                 Melhor custo-benefício
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Premium</h3>
-              <p className="text-foreground text-sm font-body">
+              <p className="text-muted-foreground text-sm font-body">
                 O acervo completo + playbacks + bônus exclusivos
               </p>
             </div>
 
-            {/* Price anchoring */}
             <div className="mb-6">
-              <span className="text-muted-foreground text-sm line-through font-body">
-                De R$ 497,00
-              </span>
+              <span className="text-muted-foreground text-sm line-through font-body">De R$ 497,00</span>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-4xl font-extrabold font-heading text-gold">
-                  R$ 19
-                </span>
-                <span className="text-xl font-bold font-heading text-gold">
-                  ,90
-                </span>
+                <span className="text-4xl font-extrabold font-heading text-gold">R$ 19</span>
+                <span className="text-xl font-bold font-heading text-gold">,90</span>
               </div>
-              <span className="text-xs text-gold-dark font-semibold font-body">
-                Economia de 96% • Pagamento único
-              </span>
+              <span className="text-xs text-gold-dark font-semibold font-body">Economia de 96% • Pagamento único</span>
             </div>
 
-            {/* Features */}
             <ul className="space-y-3 mb-6">
               {premiumFeatures.map((feature, i) => {
                 const isBonus = feature.startsWith("BÔNUS");
@@ -152,9 +130,7 @@ const PricingCards = () => {
                 return (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-sm font-body ${
-                      isFirst ? "font-bold text-primary" : ""
-                    } ${isBonus ? "text-gold-dark font-semibold" : ""}`}
+                    className={`flex items-start gap-2.5 text-sm font-body ${isFirst ? "font-bold text-primary" : ""} ${isBonus ? "text-gold-dark font-semibold" : ""}`}
                   >
                     {isBonus ? (
                       <Star className="w-4 h-4 text-gold mt-0.5 shrink-0 fill-gold" />
@@ -167,15 +143,14 @@ const PricingCards = () => {
               })}
             </ul>
 
-            {/* Upgrade trigger */}
             <div className="bg-primary/5 border border-primary/15 rounded-xl p-3 mb-6">
               <p className="text-xs font-semibold font-body text-center">
-                💡 Por apenas <strong className="text-primary">R$ 10 a mais</strong>, você
-                leva playbacks profissionais, formato interativo e 3 bônus exclusivos
+                💡 Por apenas <strong className="text-primary">R$ 10 a mais</strong>, você leva
+                playbacks, formato interativo e 3 bônus. <br />
+                <span className="text-muted-foreground">Não faz sentido levar o Essencial.</span>
               </p>
             </div>
 
-            {/* CTA */}
             <button
               onClick={() => handleCheckout("premium")}
               className="w-full py-4 rounded-xl gradient-cta text-primary-foreground font-bold font-heading text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] transition-all duration-300 animate-cta-pulse flex items-center justify-center gap-2"
@@ -190,7 +165,6 @@ const PricingCards = () => {
           </div>
         </div>
 
-        {/* Social proof under cards */}
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
           ⭐ Mais de <strong>847 saxofonistas</strong> já garantiram seu acesso
         </p>
