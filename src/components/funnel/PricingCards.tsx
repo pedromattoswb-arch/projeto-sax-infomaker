@@ -45,7 +45,7 @@ const PricingCards = () => {
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             Escolha Seu Plano
           </h2>
-          <p className="text-muted-foreground font-body text-base">
+          <p className="text-foreground font-body text-base">
             Acesso vitalício. Pague uma vez, acesse para sempre.
           </p>
         </div>
@@ -58,7 +58,7 @@ const PricingCards = () => {
                 Ótimo para começar
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Essencial</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <p className="text-foreground text-sm font-body">
                 O acervo completo de partituras em PDF
               </p>
             </div>
@@ -121,7 +121,7 @@ const PricingCards = () => {
                 Melhor custo-benefício
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Premium</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <p className="text-foreground text-sm font-body">
                 O acervo completo + playbacks + bônus exclusivos
               </p>
             </div>
