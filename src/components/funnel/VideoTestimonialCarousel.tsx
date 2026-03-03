@@ -1,15 +1,53 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
 const videoTestimonials = [
-  { src: "/testimonials/julio-sampaio-sp.mp4", name: "Júlio Sampaio", city: "São Paulo" },
-  { src: "/testimonials/marcelo-cristian-rj.mp4", name: "Marcelo Cristian", city: "Rio de Janeiro" },
-  { src: "/testimonials/marcos-mattos-bsb.mp4", name: "Marcos Mattos", city: "Brasília" },
-  { src: "/testimonials/julia-costa-sp.mp4", name: "Júlia Costa", city: "São Paulo" },
-  { src: "/testimonials/barbara-oliveira-floripa.mp4", name: "Bárbara Oliveira", city: "Florianópolis" },
-  { src: "/testimonials/gabriela-santana-sp.mp4", name: "Gabriela Santana", city: "São Paulo" },
+  { src: "/testimonials/julio-sampaio-sp.mp4", name: "Júlio Sampaio", city: "São Paulo", initials: "JS" },
+  { src: "/testimonials/marcelo-cristian-rj.mp4", name: "Marcelo Cristian", city: "Rio de Janeiro", initials: "MC" },
+  { src: "/testimonials/marcos-mattos-bsb.mp4", name: "Marcos Mattos", city: "Brasília", initials: "MM" },
+  { src: "/testimonials/julia-costa-sp.mp4", name: "Júlia Costa", city: "São Paulo", initials: "JC" },
+  { src: "/testimonials/barbara-oliveira-floripa.mp4", name: "Bárbara Oliveira", city: "Florianópolis", initials: "BO" },
+  { src: "/testimonials/gabriela-santana-sp.mp4", name: "Gabriela Santana", city: "São Paulo", initials: "GS" },
 ];
+
+// Generate a poster from the video's first frame
+const generatePoster = (videoSrc: string): Promise<string> => {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.crossOrigin = "anonymous";
+    video.preload = "metadata";
+    video.muted = true;
+    video.playsInline = true;
+    video.src = videoSrc;
+
+    video.addEventListener("loadeddata", () => {
+      video.currentTime = 0.5; // Grab frame at 0.5s
+    });
+
+    video.addEventListener("seeked", () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth || 360;
+        canvas.height = video.videoHeight || 640;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", 0.7));
+        } else {
+          resolve("");
+        }
+      } catch {
+        resolve("");
+      }
+    });
+
+    video.addEventListener("error", () => resolve(""));
+
+    // Timeout fallback
+    setTimeout(() => resolve(""), 5000);
+  });
+};
 
 const VideoTestimonialCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -19,12 +57,25 @@ const VideoTestimonialCarousel = () => {
   });
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [loadedIndexes, setLoadedIndexes] = useState<Set<number>>(new Set());
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [posters, setPosters] = useState<Record<number, string>>({});
+
+  // Generate posters on mount
+  useEffect(() => {
+    videoTestimonials.forEach((t, i) => {
+      generatePoster(t.src).then((dataUrl) => {
+        if (dataUrl) {
+          setPosters((prev) => ({ ...prev, [i]: dataUrl }));
+        }
+      });
+    });
+  }, []);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   const handlePlay = (index: number) => {
+    setActiveIndex(index);
     videoRefs.current.forEach((v, i) => {
       if (v && i !== index) {
         v.pause();
@@ -33,15 +84,13 @@ const VideoTestimonialCarousel = () => {
   };
 
   const handleVideoClick = (index: number) => {
-    setLoadedIndexes((prev) => new Set(prev).add(index));
-    // Need a small delay so the src is set before playing
+    setActiveIndex(index);
     setTimeout(() => {
       const video = videoRefs.current[index];
       if (video) {
         video.play();
-        handlePlay(index);
       }
-    }, 100);
+    }, 50);
   };
 
   return (
@@ -56,25 +105,45 @@ const VideoTestimonialCarousel = () => {
               >
                 <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/30 backdrop-blur">
                   <div className="relative">
-                    <video
-                      ref={(el) => { videoRefs.current[i] = el; }}
-                      src={loadedIndexes.has(i) ? t.src : t.src}
-                      controls={loadedIndexes.has(i)}
-                      preload="metadata"
-                      playsInline
-                      onPlay={() => handlePlay(i)}
-                      className="w-full aspect-[9/16] object-cover bg-[hsl(240,20%,15%)]"
-                    />
-                    {!loadedIndexes.has(i) && (
+                    {activeIndex === i ? (
+                      <video
+                        ref={(el) => { videoRefs.current[i] = el; }}
+                        src={t.src}
+                        controls
+                        autoPlay
+                        preload="auto"
+                        playsInline
+                        onPlay={() => handlePlay(i)}
+                        poster={posters[i] || undefined}
+                        className="w-full aspect-[9/16] object-cover bg-[hsl(240,20%,12%)]"
+                      />
+                    ) : (
                       <button
                         onClick={() => handleVideoClick(i)}
-                        className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-black/20 via-transparent to-black/60 hover:from-black/10 transition-all"
+                        className="relative w-full aspect-[9/16] flex flex-col items-center justify-center cursor-pointer group"
                         aria-label={`Assistir depoimento de ${t.name}`}
                       >
-                        <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg shadow-primary/30">
-                          <Play className="w-7 h-7 text-white fill-white ml-1" />
+                        {/* Poster image or gradient placeholder */}
+                        {posters[i] ? (
+                          <img
+                            src={posters[i]}
+                            alt={`Thumbnail ${t.name}`}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,18%)] via-[hsl(240,15%,22%)] to-[hsl(240,20%,12%)] flex flex-col items-center justify-center gap-2">
+                            <span className="text-3xl font-heading font-bold text-white/20">{t.initials}</span>
+                          </div>
+                        )}
+
+                        {/* Play overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50 group-hover:from-black/5 group-hover:to-black/40 transition-all" />
+                        <div className="relative z-10 flex flex-col items-center gap-2">
+                          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
+                            <Play className="w-6 h-6 md:w-7 md:h-7 text-white fill-white ml-0.5" />
+                          </div>
+                          <span className="text-white/70 text-[11px] md:text-xs font-body font-medium">Assistir</span>
                         </div>
-                        <span className="text-white/80 text-xs font-body font-medium">Toque para assistir</span>
                       </button>
                     )}
                   </div>
