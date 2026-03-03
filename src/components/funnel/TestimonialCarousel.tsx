@@ -15,16 +15,8 @@ import depoimento9 from "@/assets/testimonials/depoimento-9.png";
 import depoimento10 from "@/assets/testimonials/depoimento-10.png";
 
 const testimonialImages = [
-  depoimento1,
-  depoimento2,
-  depoimento3,
-  depoimento4,
-  depoimento5,
-  depoimento6,
-  depoimento7,
-  depoimento8,
-  depoimento9,
-  depoimento10,
+  depoimento1, depoimento2, depoimento3, depoimento4, depoimento5,
+  depoimento6, depoimento7, depoimento8, depoimento9, depoimento10,
 ];
 
 const TestimonialCarousel = () => {
@@ -33,36 +25,21 @@ const TestimonialCarousel = () => {
     [Autoplay({ delay: 4000, stopOnInteraction: true })]
   );
 
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <div className="w-full space-y-3">
-      <h3 className="text-base font-bold text-foreground text-center">
-        💬 O que dizem os saxofonistas:
-      </h3>
-
+    <div className="w-full">
       <div className="relative">
-        {/* Embla Carousel */}
-        <div className="overflow-hidden rounded-xl border border-border bg-card/30" ref={emblaRef}>
+        <div className="overflow-hidden rounded-xl border border-border bg-card" ref={emblaRef}>
           <div className="flex">
             {testimonialImages.map((src, index) => (
-              <div
-                key={index}
-                className="flex-[0_0_100%] min-w-0"
-              >
+              <div key={index} className="flex-[0_0_100%] min-w-0">
                 <img
                   src={src}
-                  alt={`Depoimento de saxofonista ${index + 1} sobre o acervo de partituras`}
+                  alt={`Depoimento de saxofonista ${index + 1}`}
                   className="w-full h-auto object-contain"
                   loading={index < 2 ? "eager" : "lazy"}
-                  decoding="async"
-                  fetchPriority={index === 0 ? "high" : "auto"}
                   draggable={false}
                 />
               </div>
@@ -70,17 +47,16 @@ const TestimonialCarousel = () => {
           </div>
         </div>
 
-        {/* Navigation arrows */}
         <button
           onClick={scrollPrev}
-          className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-card transition-colors"
+          className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card/90 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors shadow-sm"
           aria-label="Anterior"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={scrollNext}
-          className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-card transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card/90 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors shadow-sm"
           aria-label="Próximo"
         >
           <ChevronRight className="w-4 h-4" />
