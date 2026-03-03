@@ -35,7 +35,7 @@ const BonusSection = () => {
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             3 Bônus que Vão Acelerar Sua Evolução
           </h2>
-          <p className="text-muted-foreground font-body text-base">
+          <p className="text-foreground font-body text-base">
             Guias práticos criados para saxofonistas de qualquer nível
           </p>
         </div>
@@ -55,7 +55,7 @@ const BonusSection = () => {
               <h3 className="font-bold font-heading text-base mb-2">
                 {bonus.title}
               </h3>
-              <p className="text-muted-foreground font-body text-sm leading-relaxed">
+              <p className="text-foreground font-body text-sm leading-relaxed">
                 {bonus.description}
               </p>
             </div>
