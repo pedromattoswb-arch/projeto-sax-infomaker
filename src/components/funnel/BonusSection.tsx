@@ -1,26 +1,30 @@
-import { BookOpen, Map, Music } from "lucide-react";
-
 const bonuses = [
   {
-    icon: BookOpen,
+    emoji: "📖",
     title: "Guia: Rotina de Estudo para Saxofonistas",
     description:
       "Monte uma rotina de prática eficiente com aquecimento, técnica, improvisação e repertório. Do iniciante ao avançado.",
     tag: "BÔNUS 1",
+    gradient: "from-emerald-600 to-teal-700",
+    accent: "🎯",
   },
   {
-    icon: Map,
+    emoji: "🗺️",
     title: "Guia: Mapa de Tonalidades para Sax",
     description:
       "Referência visual completa de transposição, escalas maiores, menores e modos. Ferramenta de consulta rápida indispensável.",
     tag: "BÔNUS 2",
+    gradient: "from-blue-600 to-indigo-700",
+    accent: "🎼",
   },
   {
-    icon: Music,
+    emoji: "🎵",
     title: "Guia: 100 Músicas que Todo Saxofonista Precisa Saber",
     description:
       "Lista curada com nível de dificuldade, gênero e dicas de interpretação. Do clássico ao contemporâneo, gospel ao jazz.",
     tag: "BÔNUS 3",
+    gradient: "from-amber-500 to-orange-600",
+    accent: "🏆",
   },
 ];
 
@@ -44,20 +48,25 @@ const BonusSection = () => {
           {bonuses.map((bonus, index) => (
             <div
               key={index}
-              className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-shadow"
+              className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
             >
-              <span className="inline-block text-xs font-bold font-heading gradient-cta text-primary-foreground px-3 py-1 rounded-full mb-4">
-                {bonus.tag}
-              </span>
-              <div className="w-12 h-12 rounded-xl gradient-cta flex items-center justify-center mb-4">
-                <bonus.icon className="w-6 h-6 text-primary-foreground" />
+              {/* Ebook cover mockup */}
+              <div className={`bg-gradient-to-br ${bonus.gradient} p-8 flex flex-col items-center justify-center relative`}>
+                <span className="text-5xl mb-2">{bonus.emoji}</span>
+                <span className="absolute top-3 right-3 text-2xl opacity-30">{bonus.accent}</span>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1 mt-2">
+                  <span className="text-white text-xs font-bold font-heading">{bonus.tag}</span>
+                </div>
               </div>
-              <h3 className="font-bold font-heading text-base mb-2">
-                {bonus.title}
-              </h3>
-              <p className="text-foreground font-body text-sm leading-relaxed">
-                {bonus.description}
-              </p>
+              
+              <div className="p-5">
+                <h3 className="font-bold font-heading text-sm mb-2 leading-snug">
+                  {bonus.title}
+                </h3>
+                <p className="text-muted-foreground font-body text-xs leading-relaxed">
+                  {bonus.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
