@@ -19,13 +19,12 @@ const VideoTestimonialCarousel = () => {
   });
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [loadedIndexes, setLoadedIndexes] = useState<Set<number>>(new Set());
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   const handlePlay = (index: number) => {
-    setActiveIndex(index);
     videoRefs.current.forEach((v, i) => {
       if (v && i !== index) {
         v.pause();
@@ -34,11 +33,15 @@ const VideoTestimonialCarousel = () => {
   };
 
   const handleVideoClick = (index: number) => {
-    const video = videoRefs.current[index];
-    if (video) {
-      video.play();
-      handlePlay(index);
-    }
+    setLoadedIndexes((prev) => new Set(prev).add(index));
+    // Need a small delay so the src is set before playing
+    setTimeout(() => {
+      const video = videoRefs.current[index];
+      if (video) {
+        video.play();
+        handlePlay(index);
+      }
+    }, 100);
   };
 
   return (
@@ -55,29 +58,29 @@ const VideoTestimonialCarousel = () => {
                   <div className="relative">
                     <video
                       ref={(el) => { videoRefs.current[i] = el; }}
-                      src={activeIndex === i ? t.src : undefined}
-                      data-src={t.src}
-                      controls={activeIndex === i}
-                      preload="none"
+                      src={loadedIndexes.has(i) ? t.src : t.src}
+                      controls={loadedIndexes.has(i)}
+                      preload="metadata"
                       playsInline
                       onPlay={() => handlePlay(i)}
-                      className="w-full aspect-[9/16] object-cover bg-black"
+                      className="w-full aspect-[9/16] object-cover bg-[hsl(240,20%,15%)]"
                     />
-                    {activeIndex !== i && (
+                    {!loadedIndexes.has(i) && (
                       <button
                         onClick={() => handleVideoClick(i)}
-                        className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/30 transition-colors"
+                        className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-black/20 via-transparent to-black/60 hover:from-black/10 transition-all"
                         aria-label={`Assistir depoimento de ${t.name}`}
                       >
-                        <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                          <Play className="w-6 h-6 text-white fill-white ml-1" />
+                        <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg shadow-primary/30">
+                          <Play className="w-7 h-7 text-white fill-white ml-1" />
                         </div>
+                        <span className="text-white/80 text-xs font-body font-medium">Toque para assistir</span>
                       </button>
                     )}
                   </div>
                   <div className="px-4 py-3">
-                    <p className="text-white font-heading font-bold text-sm">{t.name}</p>
-                    <p className="text-white/60 text-xs font-body">{t.city}</p>
+                    <p className="text-white font-heading font-bold text-sm md:text-base">{t.name}</p>
+                    <p className="text-white/60 text-xs md:text-sm font-body">{t.city}</p>
                   </div>
                 </div>
               </div>
