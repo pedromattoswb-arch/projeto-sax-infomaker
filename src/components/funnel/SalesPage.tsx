@@ -18,6 +18,7 @@ import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
 import TestimonialCarousel from "./TestimonialCarousel";
 import PricingCards from "./PricingCards";
 import BonusSection from "./BonusSection";
+import SongCatalog from "./SongCatalog";
 import FAQ from "./FAQ";
 import WhatsAppButton from "./WhatsAppButton";
 
@@ -194,6 +195,9 @@ const SalesPage = () => {
           </div>
         </div>
       </section>
+
+      {/* CATÁLOGO DE MÚSICAS */}
+      <SongCatalog />
 
       {/* PRICING */}
       <PricingCards />
