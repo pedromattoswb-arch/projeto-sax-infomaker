@@ -9,42 +9,37 @@ const faqItems = [
   {
     question: "Funciona para Sax Alto e Tenor?",
     answer:
-      "Sim! Todas as partituras estão disponíveis para Sax Alto e Sax Tenor. Você escolhe a tonalidade ideal para o seu instrumento.",
+      "Sim! Todas as partituras estão disponíveis para Sax Alto e Sax Tenor. Você escolhe a tonalidade do seu instrumento.",
   },
   {
     question: "Como recebo o acesso?",
     answer:
-      "O acesso é enviado imediatamente assim que o pagamento é aprovado, por e-mail, através da plataforma Cakto. Você recebe tudo na hora, 24 horas por dia, sem precisar esperar.",
+      "Imediatamente. Assim que o pagamento é aprovado, você recebe o acesso por e-mail. Funciona 24h, inclusive de madrugada e fim de semana.",
   },
   {
     question: "As partituras são de qualidade profissional?",
     answer:
-      "Sim! Todas as partituras foram revisadas por músicos profissionais. São cifradas, com melodia, harmonia e arranjos completos em PDF de alta resolução.",
+      "Sim. Todas foram revisadas por músicos profissionais — com melodia, harmonia e arranjos completos em PDF de alta resolução.",
   },
   {
     question: "Posso acessar pelo celular?",
     answer:
-      "Sim! A plataforma é 100% responsiva. Você pode acessar pelo celular, tablet ou computador, onde e quando quiser.",
+      "Sim! Celular, tablet ou computador. A plataforma é 100% responsiva.",
   },
   {
-    question: "Qual a diferença entre o plano Essencial e o Premium?",
+    question: "Qual a diferença entre Essencial e Premium?",
     answer:
-      "O Essencial inclui 1.600 partituras em PDF. O Premium inclui tudo isso MAIS 400 partituras extras, playbacks profissionais sincronizados, formato interativo exclusivo, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por apenas R$ 10 a mais, vale muito mais a pena.",
+      "O Essencial tem 1.600 partituras em PDF. O Premium tem tudo isso + 400 partituras extras, playbacks sincronizados, formato interativo, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por R$ 10 a mais, é a escolha óbvia.",
   },
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia incondicional. Se por qualquer motivo não ficar satisfeito, devolvemos 100% do seu dinheiro. Sem perguntas, sem burocracia. Risco zero.",
-  },
-  {
-    question: "Posso parcelar o pagamento?",
-    answer:
-      "O valor já é super acessível (a partir de R$ 9,90), mas sim, oferecemos opções de pagamento via Pix e cartão de crédito na página de checkout.",
+      "Você tem 7 dias de garantia incondicional. Devolvemos 100% do valor, sem perguntas. Risco zero.",
   },
   {
     question: "O acesso é realmente vitalício?",
     answer:
-      "Sim! Tanto o plano Essencial quanto o Premium oferecem acesso vitalício. Você paga uma única vez e acessa para sempre.",
+      "Sim. Pague uma vez e acesse para sempre — nos dois planos.",
   },
 ];
 
@@ -53,10 +48,10 @@ const FAQ = () => {
     <section className="py-16 px-4 md:px-8" id="faq">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading">
-          Perguntas Frequentes
+          Dúvidas? A Gente Responde
         </h2>
         <p className="text-center text-foreground mb-10 font-body text-base">
-          Tire suas dúvidas antes de garantir seu acesso
+          As perguntas mais comuns antes de garantir o acesso
         </p>
 
         <Accordion type="single" collapsible className="space-y-3">

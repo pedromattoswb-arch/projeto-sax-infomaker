@@ -1,4 +1,4 @@
-import { Check, Star, ArrowRight, Sparkles, Crown } from "lucide-react";
+import { Check, Star, ArrowRight, Sparkles, Crown, Zap } from "lucide-react";
 import { trackInitiateCheckout } from "@/hooks/useMetaPixel";
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/tdt6ypb_738069";
@@ -6,9 +6,9 @@ const PREMIUM_LINK = "https://pay.cakto.com.br/3djucaz";
 
 const essentialFeatures = [
   "1.600 partituras em PDF",
-  "Todas as categorias (Pop, MPB, Rock, Gospel, Jazz, Blues, Samba, Flashback)",
-  "Sax Alto e Tenor",
-  "Acesso vitalício",
+  "Sax Alto e Tenor inclusos",
+  "8 categorias (Pop, MPB, Rock, Gospel, Jazz, Blues, Samba, Flashback)",
+  "Acesso vitalício — pague uma vez só",
   "Suporte por e-mail",
 ];
 
@@ -16,8 +16,8 @@ const premiumFeatures = [
   "Tudo do Essencial +",
   "+2.000 partituras (400 a mais)",
   "Playbacks profissionais sincronizados",
-  "Formato interativo exclusivo",
-  "Atualizações mensais com músicas novas",
+  "Formato interativo exclusivo (partitura + áudio)",
+  "Músicas novas todo mês",
   "Harpa Cristã COMPLETA",
   "BÔNUS: Guia Rotina de Estudo",
   "BÔNUS: Mapa de Tonalidades",
@@ -40,10 +40,10 @@ const PricingCards = () => {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-4">
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
-            Escolha Seu Plano e Comece Agora
+            Escolha Seu Plano e Comece a Tocar Agora
           </h2>
           <p className="text-foreground font-body text-base">
-            Acesso vitalício. Pague uma vez, acesse para sempre.
+            Pagamento único. Acesso vitalício. Garantia de 7 dias.
           </p>
         </div>
 
@@ -71,6 +71,11 @@ const PricingCards = () => {
                 <span className="text-xl font-bold font-heading text-primary">,90</span>
               </div>
               <span className="text-xs text-primary font-semibold font-body">Economia de 95% • Pagamento único</span>
+            </div>
+
+            <div className="flex items-center gap-2 bg-primary/5 border border-primary/15 rounded-lg px-3 py-2 mb-6">
+              <Zap className="w-4 h-4 text-primary shrink-0" />
+              <span className="text-xs font-semibold font-body text-primary">Acesso imediato após o pagamento</span>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -110,7 +115,7 @@ const PricingCards = () => {
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Premium</h3>
               <p className="text-muted-foreground text-sm font-body">
-                O acervo completo + playbacks + bônus exclusivos
+                Acervo completo + playbacks + bônus exclusivos
               </p>
             </div>
 
@@ -121,6 +126,11 @@ const PricingCards = () => {
                 <span className="text-xl font-bold font-heading text-gold">,90</span>
               </div>
               <span className="text-xs text-gold-dark font-semibold font-body">Economia de 96% • Pagamento único</span>
+            </div>
+
+            <div className="flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 mb-6">
+              <Zap className="w-4 h-4 text-gold shrink-0" />
+              <span className="text-xs font-semibold font-body text-gold-dark">Acesso imediato + bônus liberados na hora</span>
             </div>
 
             <ul className="space-y-3 mb-6">
@@ -146,8 +156,7 @@ const PricingCards = () => {
             <div className="bg-primary/5 border border-primary/15 rounded-xl p-3 mb-6">
               <p className="text-xs font-semibold font-body text-center">
                 💡 Por apenas <strong className="text-primary">R$ 10 a mais</strong>, você leva
-                playbacks, formato interativo e 3 bônus. <br />
-                <span className="text-muted-foreground">Não faz sentido levar o Essencial.</span>
+                playbacks, formato interativo e 3 bônus exclusivos.
               </p>
             </div>
 
