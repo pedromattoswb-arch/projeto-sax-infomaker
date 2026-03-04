@@ -19,6 +19,7 @@ import TestimonialCarousel from "./TestimonialCarousel";
 import PricingCards from "./PricingCards";
 import BonusSection from "./BonusSection";
 import FAQ from "./FAQ";
+import WhatsAppButton from "./WhatsAppButton";
 
 const categories = [
   { name: "Pop", emoji: "🎤" },
@@ -269,6 +270,7 @@ const SalesPage = () => {
       </div>
 
       <div className="h-14 md:hidden" />
+      <WhatsAppButton />
     </div>
   );
 };
