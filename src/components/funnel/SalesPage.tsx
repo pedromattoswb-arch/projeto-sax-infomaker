@@ -22,24 +22,13 @@ import SongCatalog from "./SongCatalog";
 import FAQ from "./FAQ";
 import WhatsAppButton from "./WhatsAppButton";
 
-const categories = [
-  { name: "Pop", emoji: "🎤" },
-  { name: "Flashback", emoji: "📻" },
-  { name: "MPB", emoji: "🇧🇷" },
-  { name: "Rock", emoji: "🎸" },
-  { name: "Gospel", emoji: "🙏" },
-  { name: "Jazz", emoji: "🎷" },
-  { name: "Blues", emoji: "🎵" },
-  { name: "Samba", emoji: "🥁" },
-];
-
 const features = [
-  { icon: Music, title: "+2.000 Partituras", description: "Organizadas por gênero e nível", gradient: "from-emerald-500 to-green-700" },
-  { icon: Headphones, title: "Playbacks Profissionais", description: "Áudio sincronizado com a partitura", gradient: "from-amber-500 to-orange-600" },
-  { icon: Monitor, title: "Formato Interativo", description: "Partitura e áudio juntos na tela", gradient: "from-blue-500 to-indigo-600" },
-  { icon: FolderOpen, title: "8 Categorias", description: "Pop, MPB, Rock, Gospel, Jazz e mais", gradient: "from-purple-500 to-violet-600" },
-  { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez, acesse para sempre", gradient: "from-rose-500 to-pink-600" },
-  { icon: RefreshCw, title: "Atualizações Mensais", description: "Novas músicas todo mês", gradient: "from-teal-500 to-cyan-600" },
+  { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-emerald-500 to-green-700" },
+  { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-amber-500 to-orange-600" },
+  { icon: Monitor, title: "Formato Interativo", description: "Partitura + áudio juntos na tela", gradient: "from-blue-500 to-indigo-600" },
+  { icon: FolderOpen, title: "8 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz…", gradient: "from-purple-500 to-violet-600" },
+  { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre", gradient: "from-rose-500 to-pink-600" },
+  { icon: RefreshCw, title: "Músicas Novas Todo Mês", description: "O acervo nunca para de crescer", gradient: "from-teal-500 to-cyan-600" },
 ];
 
 const scrollToOffers = () => {
@@ -69,7 +58,7 @@ const SalesPage = () => {
         <div className="max-w-3xl mx-auto text-center">
           <img
             src="/mockup-acervo.png"
-            alt="Mockup do acervo de partituras para saxofone"
+            alt="Acervo de partituras para saxofone do Clube do Sax"
             className="w-full max-w-[280px] md:max-w-sm mx-auto rounded-2xl shadow-2xl border border-border/50 mb-6 md:mb-8"
             loading="eager"
             width={280}
@@ -77,25 +66,25 @@ const SalesPage = () => {
           />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
-            🎷 +847 Saxofonistas Já Garantiram
+            🎷 +847 Saxofonistas Já Garantiram Acesso
           </span>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
-            Chega de Perder Horas Procurando{" "}
-            <span className="text-primary">Partituras Ruins</span> na Internet
+            +2.000 Partituras Profissionais Para Sax —{" "}
+            <span className="text-primary">Prontas Para Você Tocar Agora</span>
           </h1>
 
           <p className="text-[15px] md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            Tenha agora o maior acervo de partituras para sax do Brasil —{" "}
-            <strong>organizado, profissional e pronto para tocar.</strong>{" "}
-            Enquanto você busca, outros saxofonistas já estão tocando.
+            O maior acervo de partituras para saxofone do Brasil.{" "}
+            <strong>Organizado, profissional e com playbacks</strong> — para você parar de perder tempo
+            e começar a tocar as músicas que sempre quis.
           </p>
 
           <div className="flex flex-col items-start mx-auto w-fit gap-2.5 mb-6 md:mb-8">
             {[
-              "Partituras em PDF de alta qualidade",
+              "PDF de alta qualidade — sax alto e tenor",
               "Playbacks profissionais sincronizados",
-              "Acesso imediato — comece a tocar em minutos",
+              "Acesso imediato — comece em 2 minutos",
               "Garantia de 7 dias — risco zero pra você",
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2.5">
@@ -109,12 +98,12 @@ const SalesPage = () => {
             onClick={scrollToOffers}
             className="gradient-cta text-primary-foreground font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
           >
-            GARANTIR MEU ACESSO AGORA
+            QUERO MEU ACESSO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
           </button>
 
           <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 9,90</strong> — menos que um café ☕
+            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único, acesso vitalício
           </p>
         </div>
       </section>
@@ -123,10 +112,10 @@ const SalesPage = () => {
       <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-[22px] md:text-3xl font-bold text-center font-heading mb-2">
-            Tudo Que Você Precisa Para Evoluir no Sax
+            Seu Arsenal Completo de Partituras
           </h2>
           <p className="text-center text-foreground font-body text-[15px] md:text-base mb-8 md:mb-10">
-            Pare de improvisar sua evolução. Tenha as ferramentas certas.
+            Tudo que você precisa num só lugar — sem improviso, sem perda de tempo
           </p>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
@@ -143,32 +132,15 @@ const SalesPage = () => {
               </div>
             ))}
           </div>
-
-          <div className="mt-8 md:mt-12 text-center">
-            <h3 className="text-xs md:text-sm font-bold text-foreground font-heading mb-4 md:mb-5 uppercase tracking-wide">
-              🎵 Categorias Disponíveis
-            </h3>
-            <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-              {categories.map((cat) => (
-                <span
-                  key={cat.name}
-                  className="bg-card border border-border px-3.5 md:px-5 py-2 md:py-2.5 rounded-full text-[13px] md:text-sm font-semibold font-body shadow-sm text-foreground hover:shadow-md hover:border-primary/30 transition-all cursor-default flex items-center gap-1.5 md:gap-2"
-                >
-                  <span className="text-base md:text-lg">{cat.emoji}</span>
-                  {cat.name}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* PROVA SOCIAL (DARK) */}
+      {/* PROVA SOCIAL */}
       <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(240,20%,10%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
-              Veja o Que Dizem os Saxofonistas
+              Saxofonistas Reais, Resultados Reais
             </h2>
             <div className="flex items-center justify-center gap-1 mb-2">
               {[...Array(5)].map((_, i) => (
@@ -196,7 +168,7 @@ const SalesPage = () => {
         </div>
       </section>
 
-      {/* CATÁLOGO DE MÚSICAS */}
+      {/* CATÁLOGO COMPACTO */}
       <SongCatalog />
 
       {/* PRICING */}
@@ -217,12 +189,11 @@ const SalesPage = () => {
             height={144}
           />
           <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3 text-white">
-            Garantia Incondicional de 7 Dias
+            7 Dias Para Testar — Risco Zero
           </h2>
           <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed">
-            Se por qualquer motivo você não ficar satisfeito, devolvemos{" "}
-            <strong className="text-white">100% do seu dinheiro</strong>. Sem perguntas, sem
-            burocracia. O risco é todo nosso — você não tem nada a perder.
+            Não gostou? Devolvemos <strong className="text-white">100% do seu dinheiro</strong> em até 7 dias.
+            Sem perguntas, sem burocracia. Você não arrisca nada.
           </p>
         </div>
       </section>
@@ -236,13 +207,13 @@ const SalesPage = () => {
       <section className="py-12 md:py-16 px-4 md:px-8">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 md:mb-3">
-            Você Está a Um Passo de Nunca Mais Perder Tempo
+            Enquanto Você Pensa, Outros Já Estão Tocando
           </h2>
           <p className="text-foreground font-body text-[15px] md:text-base mb-3 md:mb-4">
-            +2.000 partituras profissionais com playbacks. Acesso vitalício. Garantia de 7 dias.
+            +2.000 partituras. Playbacks. Acesso vitalício. Garantia de 7 dias. A partir de R$ 9,90.
           </p>
           <p className="text-xs md:text-sm text-muted-foreground font-body mb-6 md:mb-8">
-            ⚠️ Esse preço promocional pode mudar a qualquer momento.
+            ⚠️ Preço promocional — pode acabar a qualquer momento.
           </p>
           <button
             onClick={scrollToOffers}
