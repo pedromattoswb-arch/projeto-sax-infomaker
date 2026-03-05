@@ -1,6 +1,8 @@
-import { ArrowLeft, Download, Star, Music } from "lucide-react";
+import { ArrowLeft, Download, Star, Music, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import logo from "@/assets/logo-clube-sax.webp";
+import { generateMusicasPDF } from "@/lib/pdfGenerators";
 
 type Song = {
   name: string;
@@ -123,7 +125,19 @@ const difficultyColor = {
 };
 
 const BonusMusicas = () => {
+  const [loading, setLoading] = useState(false);
   const genres = [...new Set(songs.map((s) => s.genre))];
+
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      await generateMusicasPDF();
+    } catch (e) {
+      console.error("Erro ao gerar PDF:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -159,13 +173,14 @@ const BonusMusicas = () => {
           <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-6 text-center mb-10 shadow-lg">
             <h3 className="text-white font-bold font-heading text-lg mb-2">📥 Baixar Lista Completa em PDF</h3>
             <p className="text-white/80 text-sm font-body mb-4">Com todas as 100 músicas, dicas e níveis de dificuldade</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-orange-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 bg-white text-orange-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR PDF GRATUITO
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR PDF GRATUITO"}
+            </button>
           </div>
 
           {/* Stats */}
@@ -226,13 +241,14 @@ const BonusMusicas = () => {
 
           {/* Bottom CTA */}
           <div className="mt-10 text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR LISTA EM PDF
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR LISTA EM PDF"}
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Conteúdo exclusivo para membros Premium do Clube do Sax
             </p>

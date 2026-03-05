@@ -1,6 +1,8 @@
-import { ArrowLeft, Download, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import logo from "@/assets/logo-clube-sax.webp";
+import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 
 const transposicao = [
   { sax: "Sax Alto (Eb)", regra: "Sobe 3 semitons (uma terça menor)", exemplo: "Dó no piano = Lá no Sax Alto" },
@@ -43,6 +45,19 @@ const modos = [
 ];
 
 const BonusTonalidades = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      await generateTonalidadesPDF();
+    } catch (e) {
+      console.error("Erro ao gerar PDF:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">
@@ -77,13 +92,14 @@ const BonusTonalidades = () => {
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-center mb-10 shadow-lg">
             <h3 className="text-white font-bold font-heading text-lg mb-2">📥 Baixar Mapa Completo em PDF</h3>
             <p className="text-white/80 text-sm font-body mb-4">Imprima e tenha sempre à mão durante seus estudos e ensaios</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR PDF GRATUITO
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR PDF GRATUITO"}
+            </button>
           </div>
 
           {/* Transposição */}
@@ -197,13 +213,14 @@ const BonusTonalidades = () => {
 
           {/* Bottom CTA */}
           <div className="text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR MAPA EM PDF
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR MAPA EM PDF"}
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Conteúdo exclusivo para membros Premium do Clube do Sax
             </p>

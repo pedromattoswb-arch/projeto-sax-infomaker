@@ -1,5 +1,7 @@
-import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headphones } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headphones, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { generateRotinaPDF } from "@/lib/pdfGenerators";
 import logo from "@/assets/logo-clube-sax.webp";
 
 const sections = [
@@ -73,6 +75,19 @@ const weeklySchedule = [
 ];
 
 const BonusRotina = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      await generateRotinaPDF();
+    } catch (e) {
+      console.error("Erro ao gerar PDF:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -108,13 +123,14 @@ const BonusRotina = () => {
           <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-center mb-10 shadow-lg">
             <h3 className="text-white font-bold font-heading text-lg mb-2">📥 Baixar Guia Completo em PDF</h3>
             <p className="text-white/80 text-sm font-body mb-4">Salve no celular ou imprima para consultar durante seus estudos</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR PDF GRATUITO
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR PDF GRATUITO"}
+            </button>
           </div>
 
           {/* Content */}
@@ -168,13 +184,14 @@ const BonusRotina = () => {
 
           {/* Bottom Download CTA */}
           <div className="mt-10 text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:hover:scale-100"
             >
-              <Download className="w-5 h-5" />
-              BAIXAR GUIA EM PDF
-            </a>
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              {loading ? "GERANDO PDF..." : "BAIXAR GUIA EM PDF"}
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Conteúdo exclusivo para membros Premium do Clube do Sax
             </p>

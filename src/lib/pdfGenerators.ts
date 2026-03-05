@@ -877,3 +877,533 @@ export async function generateManutencaoPDF() {
   addPageNumber(doc, logoBase64);
   doc.save("Checklist-Manutencao-Sax-Clube-do-Sax.pdf");
 }
+
+/* ═══════════════════════════════════════════════════════════
+   PDF BÔNUS 1 — ROTINA DE ESTUDO PARA SAXOFONISTAS
+   ═══════════════════════════════════════════════════════════ */
+
+export async function generateRotinaPDF() {
+  const logoBase64 = await loadLogoBase64();
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+  const sections = [
+    {
+      titulo: "Aquecimento (10-15 min)",
+      color: COLORS.emerald,
+      items: [
+        "Notas longas: Comece com Sib, Do, Re — toque cada nota por 8 tempos, foco em timbre e afinacao",
+        "Respiracao diafragmatica: Inspire 4 tempos, segure 4, expire 8 — repita 5x",
+        "Escalas cromaticas lentas: Suba e desca do Sib grave ao Fa# agudo, sem pressa",
+        "Glissandos suaves entre notas vizinhas para soltar a embocadura",
+      ],
+    },
+    {
+      titulo: "Tecnica (15-20 min)",
+      color: COLORS.blue,
+      items: [
+        "Escalas maiores: Pratique 2 tonalidades por dia (ex: Segunda = Do e Sol, Terca = Re e La)",
+        "Escalas menores: Natural, harmonica e melodica — alterne semanalmente",
+        "Arpejos: Maior, menor, dominante e diminuto nas mesmas tonalidades",
+        "Intervalos de tercas e quartas sobre cada escala",
+        "Exercicios de articulacao: staccato, legato, acentuacao — use metronomo",
+        "Padroes ritmicos: colcheias, tercinas, semicolcheias com swing e straight",
+      ],
+    },
+    {
+      titulo: "Repertorio (20-30 min)",
+      color: COLORS.amber,
+      items: [
+        "Escolha 2-3 musicas do acervo Clube do Sax por semana",
+        "Dia 1: Leitura lenta, identificando passagens dificeis",
+        "Dia 2: Trabalhe os trechos dificeis isoladamente, em loop",
+        "Dia 3: Toque a musica inteira com o playback em andamento lento",
+        "Dia 4: Toque no andamento original com o playback",
+        "Dia 5: Grave-se tocando e ouca criticamente",
+        "Mantenha um repertorio rotativo de 8-10 musicas sempre em pratica",
+      ],
+    },
+    {
+      titulo: "Improvisacao (10-15 min)",
+      color: COLORS.violet,
+      items: [
+        "Toque sobre um backing track em tom maior — use apenas a escala pentatonica",
+        "Adicione a blue note e cromatismos conforme ganhar confianca",
+        "Pratique frases de 2 compassos: crie, repita, varie",
+        "Copie solos de referencia (Charlie Parker, Stan Getz, Cannonball Adderley)",
+        "Grave seus improvisos e analise o que funcionou",
+      ],
+    },
+    {
+      titulo: "Revisao e Desafio Semanal",
+      color: COLORS.green,
+      items: [
+        "Domingo: Revise o que praticou na semana e anote progresso",
+        "Escolha 1 musica desafiadora acima do seu nivel atual como meta semanal",
+        "Alterne generos: uma semana jazz, outra gospel, outra pop",
+        "Registre seu tempo de pratica diario (meta minima: 30 min/dia)",
+        "A cada mes, grave uma performance completa para medir evolucao",
+      ],
+    },
+  ];
+
+  const weeklySchedule = [
+    { day: "Segunda", focus: "Aquecimento + Tecnica (escalas Do/Sol) + Repertorio" },
+    { day: "Terca", focus: "Aquecimento + Tecnica (arpejos) + Improvisacao" },
+    { day: "Quarta", focus: "Aquecimento + Repertorio (trechos dificeis) + Leitura a primeira vista" },
+    { day: "Quinta", focus: "Aquecimento + Tecnica (escalas Re/La) + Repertorio com playback" },
+    { day: "Sexta", focus: "Aquecimento + Improvisacao + Gravacao de repertorio" },
+    { day: "Sabado", focus: "Sessao livre: toque o que quiser, explore musicas novas" },
+    { day: "Domingo", focus: "Revisao semanal + planejamento da proxima semana" },
+  ];
+
+  const dicas = [
+    "Consistencia > intensidade: 30 minutos por dia sao melhores que 3 horas no fim de semana",
+    "Use metronomo SEMPRE: Comece devagar e aumente 5 BPM por dia",
+    "Grave-se: Ouvir sua performance de fora revela erros que voce nao percebe tocando",
+    "Varie os generos: Isso desenvolve versatilidade e mantem a motivacao",
+    "Descanse: Se a embocadura cansar, pare. Forcar causa maus habitos",
+  ];
+
+  // COVER
+  drawCoverPage(doc, "Rotina de Estudo", "Para Saxofonistas — Do Iniciante ao Avancado", "BONUS EXCLUSIVO PREMIUM", COLORS.emerald, [
+    "Aquecimento estruturado (10-15 min)",
+    "Tecnica com escalas, arpejos e articulacao",
+    "Repertorio com metodo de 5 dias por musica",
+    "Improvisacao guiada com backing tracks",
+    "Rotina semanal completa dia a dia",
+    "Dicas essenciais dos profissionais",
+  ], logoBase64);
+
+  // TOC
+  doc.addPage();
+  drawPageBg(doc);
+  doc.setFillColor(...COLORS.emerald);
+  doc.rect(0, 0, PAGE_W, 4, "F");
+  addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
+
+  const tocItems = [
+    "1. Aquecimento (10-15 min) .......... pag. 3",
+    "2. Tecnica (15-20 min) .......... pag. 4",
+    "3. Repertorio (20-30 min) .......... pag. 5",
+    "4. Improvisacao (10-15 min) .......... pag. 6",
+    "5. Revisao e Desafio Semanal .......... pag. 7",
+    "6. Rotina Semanal Sugerida .......... pag. 8",
+    "7. Dicas Importantes .......... pag. 9",
+  ];
+
+  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  tocItems.forEach((item, i) => {
+    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+  });
+
+  // SECTIONS
+  sections.forEach((sec) => {
+    doc.addPage();
+    drawPageBg(doc);
+    let y = drawSectionHeader(doc, MARGIN, sec.titulo, "Etapa da rotina diaria", sec.color);
+    y += 6;
+
+    sec.items.forEach((item, idx) => {
+      y = ensureSpace(doc, y, 16);
+      drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
+      addText(doc, `${idx + 1}.`, MARGIN + 6, y + 8.5, { size: 11, color: sec.color, style: "bold" });
+      addText(doc, item, MARGIN + 14, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
+      y += 16;
+    });
+  });
+
+  // WEEKLY SCHEDULE
+  doc.addPage();
+  drawPageBg(doc);
+  let y = drawSectionHeader(doc, MARGIN, "Rotina Semanal Sugerida", "Planejamento dia a dia para maxima evolucao", COLORS.emerald);
+  y += 6;
+
+  weeklySchedule.forEach((day) => {
+    y = ensureSpace(doc, y, 16);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
+    addText(doc, day.day, MARGIN + 6, y + 8.5, { size: 11, color: COLORS.emerald, style: "bold" });
+    addText(doc, day.focus, MARGIN + 35, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 42 });
+    y += 16;
+  });
+
+  // DICAS
+  doc.addPage();
+  drawPageBg(doc);
+  y = drawSectionHeader(doc, MARGIN, "Dicas Importantes", "Conselhos que fazem a diferenca na sua evolucao", COLORS.emerald);
+  y += 6;
+
+  dicas.forEach((dica, idx) => {
+    y = ensureSpace(doc, y, 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
+    addText(doc, `${idx + 1}.`, MARGIN + 6, y + 9, { size: 11, color: COLORS.amber, style: "bold" });
+    addText(doc, dica, MARGIN + 14, y + 9, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
+    y += 18;
+  });
+
+  y += 8;
+  y = ensureSpace(doc, y, 30);
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 25, 4, COLORS.cardBg);
+  addText(doc, "Lembre-se:", MARGIN + 8, y + 10, { size: 14, color: COLORS.emerald, style: "bold" });
+  addText(doc, "A pratica consistente e o segredo de todo grande saxofonista.", MARGIN + 8, y + 19, { size: 11, color: COLORS.white });
+
+  addPageNumber(doc, logoBase64);
+  doc.save("Rotina-de-Estudo-Saxofonistas-Clube-do-Sax.pdf");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PDF BÔNUS 2 — MAPA DE TONALIDADES PARA SAX
+   ═══════════════════════════════════════════════════════════ */
+
+export async function generateTonalidadesPDF() {
+  const logoBase64 = await loadLogoBase64();
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+  const transposicao = [
+    { sax: "Sax Alto (Eb)", regra: "Sobe 3 semitons (uma terca menor)", exemplo: "Do no piano = La no Sax Alto" },
+    { sax: "Sax Tenor (Bb)", regra: "Sobe 1 tom (uma segunda maior)", exemplo: "Do no piano = Re no Sax Tenor" },
+    { sax: "Sax Soprano (Bb)", regra: "Mesma transposicao do Tenor", exemplo: "Do no piano = Re no Soprano" },
+    { sax: "Sax Baritono (Eb)", regra: "Mesma transposicao do Alto (oitava abaixo)", exemplo: "Do no piano = La no Baritono" },
+  ];
+
+  const escalasMaiores = [
+    { tom: "Do Maior", notas: "Do - Re - Mi - Fa - Sol - La - Si", acidentes: "Nenhum" },
+    { tom: "Sol Maior", notas: "Sol - La - Si - Do - Re - Mi - Fa#", acidentes: "1 sustenido" },
+    { tom: "Re Maior", notas: "Re - Mi - Fa# - Sol - La - Si - Do#", acidentes: "2 sustenidos" },
+    { tom: "La Maior", notas: "La - Si - Do# - Re - Mi - Fa# - Sol#", acidentes: "3 sustenidos" },
+    { tom: "Mi Maior", notas: "Mi - Fa# - Sol# - La - Si - Do# - Re#", acidentes: "4 sustenidos" },
+    { tom: "Si Maior", notas: "Si - Do# - Re# - Mi - Fa# - Sol# - La#", acidentes: "5 sustenidos" },
+    { tom: "Fa Maior", notas: "Fa - Sol - La - Sib - Do - Re - Mi", acidentes: "1 bemol" },
+    { tom: "Sib Maior", notas: "Sib - Do - Re - Mib - Fa - Sol - La", acidentes: "2 bemois" },
+    { tom: "Mib Maior", notas: "Mib - Fa - Sol - Lab - Sib - Do - Re", acidentes: "3 bemois" },
+    { tom: "Lab Maior", notas: "Lab - Sib - Do - Reb - Mib - Fa - Sol", acidentes: "4 bemois" },
+  ];
+
+  const escalasRelativas = [
+    { maior: "Do Maior", menor: "La menor" },
+    { maior: "Sol Maior", menor: "Mi menor" },
+    { maior: "Re Maior", menor: "Si menor" },
+    { maior: "La Maior", menor: "Fa# menor" },
+    { maior: "Fa Maior", menor: "Re menor" },
+    { maior: "Sib Maior", menor: "Sol menor" },
+    { maior: "Mib Maior", menor: "Do menor" },
+  ];
+
+  const modos = [
+    { nome: "Jonio (I)", caracter: "Alegre, brilhante", uso: "Pop, MPB" },
+    { nome: "Dorico (II)", caracter: "Menor suave, jazzy", uso: "Jazz, Funk, Fusion" },
+    { nome: "Frigio (III)", caracter: "Exotico, tenso", uso: "Flamenco, Metal" },
+    { nome: "Lidio (IV)", caracter: "Sonhador, aberto", uso: "Film scoring, Fusion" },
+    { nome: "Mixolidio (V)", caracter: "Dominante, bluesy", uso: "Blues, Rock, Baiao" },
+    { nome: "Eolio (VI)", caracter: "Melancolico, natural", uso: "Baladas, Gospel" },
+    { nome: "Locrio (VII)", caracter: "Instavel, dissonante", uso: "Jazz avancado" },
+  ];
+
+  // COVER
+  drawCoverPage(doc, "Mapa de Tonalidades", "Para Sax — Referencia Completa", "BONUS EXCLUSIVO PREMIUM", COLORS.blue, [
+    "Tabela de transposicao para 4 saxofones",
+    "10 escalas maiores com notas e acidentes",
+    "7 tonalidades relativas (maior/menor)",
+    "Os 7 modos gregos com aplicacao pratica",
+    "Dicas de como usar no dia a dia",
+    "Pronto para imprimir e consultar",
+  ], logoBase64);
+
+  // TOC
+  doc.addPage();
+  drawPageBg(doc);
+  doc.setFillColor(...COLORS.blue);
+  doc.rect(0, 0, PAGE_W, 4, "F");
+  addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
+
+  const tocItems = [
+    "1. Tabela de Transposicao .......... pag. 3",
+    "2. Escalas Maiores .......... pag. 4",
+    "3. Tonalidades Relativas .......... pag. 6",
+    "4. Os 7 Modos Gregos .......... pag. 7",
+    "5. Como Usar Este Mapa .......... pag. 8",
+  ];
+
+  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  tocItems.forEach((item, i) => {
+    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+  });
+
+  // TRANSPOSIÇÃO
+  doc.addPage();
+  drawPageBg(doc);
+  let y = drawSectionHeader(doc, MARGIN, "Tabela de Transposicao", "O sax e um instrumento transpositor — use esta referencia", COLORS.blue);
+  y += 6;
+
+  transposicao.forEach((t) => {
+    y = ensureSpace(doc, y, 24);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
+    addText(doc, t.sax, MARGIN + 6, y + 7, { size: 12, color: COLORS.blue, style: "bold" });
+    addText(doc, `Regra: ${t.regra}`, MARGIN + 6, y + 13, { size: 10, color: COLORS.white });
+    addText(doc, `Exemplo: ${t.exemplo}`, MARGIN + 6, y + 18, { size: 10, color: COLORS.muted, style: "italic" });
+    y += 24;
+  });
+
+  // ESCALAS MAIORES
+  doc.addPage();
+  drawPageBg(doc);
+  y = drawSectionHeader(doc, MARGIN, "Escalas Maiores", "Concert Pitch — nota real", COLORS.blue);
+  y += 4;
+
+  // Table header
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
+  addText(doc, "TONALIDADE", MARGIN + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  addText(doc, "NOTAS", MARGIN + 50, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  addText(doc, "ACIDENTES", MARGIN + 140, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  y += 12;
+
+  escalasMaiores.forEach((e, i) => {
+    y = ensureSpace(doc, y, 10);
+    const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
+    addText(doc, e.tom, MARGIN + 5, y + 6.5, { size: 10, color: COLORS.white, style: "bold" });
+    addText(doc, e.notas, MARGIN + 50, y + 6.5, { size: 9, color: COLORS.cyan });
+    addText(doc, e.acidentes, MARGIN + 140, y + 6.5, { size: 9, color: COLORS.amber });
+    y += 11;
+  });
+
+  // RELATIVAS
+  doc.addPage();
+  drawPageBg(doc);
+  y = drawSectionHeader(doc, MARGIN, "Tonalidades Relativas", "Cada maior tem uma menor que compartilha as mesmas notas", COLORS.blue);
+  y += 6;
+
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
+  addText(doc, "TONALIDADE MAIOR", MARGIN + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  addText(doc, "RELATIVA MENOR", MARGIN + CONTENT_W / 2 + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  y += 12;
+
+  escalasRelativas.forEach((r, i) => {
+    y = ensureSpace(doc, y, 10);
+    const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 1, bg);
+    addText(doc, r.maior, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, r.menor, MARGIN + CONTENT_W / 2 + 5, y + 7, { size: 11, color: COLORS.cyan });
+    y += 12;
+  });
+
+  // MODOS
+  doc.addPage();
+  drawPageBg(doc);
+  y = drawSectionHeader(doc, MARGIN, "Os 7 Modos Gregos", "Variacoes da escala maior que criam diferentes cores sonoras", COLORS.violet);
+  y += 6;
+
+  modos.forEach((m) => {
+    y = ensureSpace(doc, y, 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 15, 3, COLORS.cardBg);
+    addText(doc, m.nome, MARGIN + 6, y + 7, { size: 12, color: COLORS.violet, style: "bold" });
+    addText(doc, m.caracter, MARGIN + 55, y + 7, { size: 10, color: COLORS.white });
+    addText(doc, `Usado em: ${m.uso}`, MARGIN + 6, y + 13, { size: 10, color: COLORS.muted, style: "italic" });
+    y += 18;
+  });
+
+  // COMO USAR
+  doc.addPage();
+  drawPageBg(doc);
+  y = drawSectionHeader(doc, MARGIN, "Como Usar Este Mapa", "Dicas praticas para aplicar no seu dia a dia", COLORS.blue);
+  y += 6;
+
+  const dicasUso = [
+    "Antes de tocar: Identifique a tonalidade da musica e confira a escala correspondente",
+    "Transposicao: Se receber uma partitura de piano, use a tabela para encontrar as notas do seu sax",
+    "Improvisacao: Identifique o modo adequado ao estilo que esta tocando",
+    "Imprima: Tenha este guia ao lado da estante durante os estudos",
+  ];
+
+  dicasUso.forEach((dica, idx) => {
+    y = ensureSpace(doc, y, 16);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
+    addText(doc, `${idx + 1}.`, MARGIN + 6, y + 8.5, { size: 11, color: COLORS.blue, style: "bold" });
+    addText(doc, dica, MARGIN + 14, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
+    y += 16;
+  });
+
+  y += 8;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 25, 4, COLORS.cardBg);
+  addText(doc, "Este mapa e sua bussola musical.", MARGIN + 8, y + 10, { size: 14, color: COLORS.blue, style: "bold" });
+  addText(doc, "Consulte sempre que precisar e internalize as tonalidades aos poucos.", MARGIN + 8, y + 19, { size: 11, color: COLORS.white });
+
+  addPageNumber(doc, logoBase64);
+  doc.save("Mapa-de-Tonalidades-Sax-Clube-do-Sax.pdf");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PDF BÔNUS 3 — 100 MÚSICAS QUE TODO SAXOFONISTA PRECISA SABER
+   ═══════════════════════════════════════════════════════════ */
+
+export async function generateMusicasPDF() {
+  const logoBase64 = await loadLogoBase64();
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+  const songs = [
+    { name: "Careless Whisper", artist: "George Michael", genre: "Pop", difficulty: "Intermediario", tip: "O riff de sax mais famoso do mundo. Domine o vibrato no tema principal." },
+    { name: "Baker Street", artist: "Gerry Rafferty", genre: "Rock", difficulty: "Intermediario", tip: "Solo iconico de sax. Trabalhe o registro agudo com potencia." },
+    { name: "Just the Two of Us", artist: "Grover Washington Jr.", genre: "Jazz/Pop", difficulty: "Avancado", tip: "Fraseado suave e articulacao jazz." },
+    { name: "Take Five", artist: "Dave Brubeck", genre: "Jazz", difficulty: "Avancado", tip: "Compasso 5/4 — pratique com metronomo." },
+    { name: "The Pink Panther", artist: "Henry Mancini", genre: "Jazz", difficulty: "Iniciante", tip: "Tema simples e divertido. Otimo para treinar dinamicas." },
+    { name: "Fly Me to the Moon", artist: "Frank Sinatra", genre: "Jazz", difficulty: "Intermediario", tip: "Standard essencial. Decore a melodia e improvise." },
+    { name: "Shape of You", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Melodia moderna e acessivel." },
+    { name: "Perfect", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Balada perfeita para casamentos." },
+    { name: "All of Me", artist: "John Legend", genre: "Pop", difficulty: "Iniciante", tip: "Melodia emotiva. Explore dinamicas piano/forte." },
+    { name: "Someone Like You", artist: "Adele", genre: "Pop", difficulty: "Iniciante", tip: "Balada poderosa. Trabalhe o fraseado longo." },
+    { name: "Autumn Leaves", artist: "Joseph Kosma", genre: "Jazz", difficulty: "Intermediario", tip: "O standard mais tocado. Domine em todas as tonalidades." },
+    { name: "So What", artist: "Miles Davis", genre: "Jazz", difficulty: "Intermediario", tip: "Modal jazz. Use escala dorica." },
+    { name: "Summertime", artist: "George Gershwin", genre: "Jazz", difficulty: "Intermediario", tip: "Melodia belissima. Cada versao pode ser unica." },
+    { name: "My Funny Valentine", artist: "Chet Baker", genre: "Jazz", difficulty: "Avancado", tip: "Balada jazz de referencia. Foco em expressao." },
+    { name: "Body and Soul", artist: "Coleman Hawkins", genre: "Jazz", difficulty: "Avancado", tip: "Definiu o sax tenor no jazz." },
+    { name: "Misty", artist: "Erroll Garner", genre: "Jazz", difficulty: "Intermediario", tip: "Melodia romantica. Ideal para shows." },
+    { name: "In a Sentimental Mood", artist: "Duke Ellington", genre: "Jazz", difficulty: "Intermediario", tip: "Expressividade maxima. Cada nota conta." },
+    { name: "Georgia on My Mind", artist: "Ray Charles", genre: "Jazz/Blues", difficulty: "Intermediario", tip: "Classico atemporal." },
+    { name: "Blue Bossa", artist: "Kenny Dorham", genre: "Jazz", difficulty: "Intermediario", tip: "Bossa nova + jazz. Otimo para praticar ii-V-I." },
+    { name: "Cantaloupe Island", artist: "Herbie Hancock", genre: "Jazz", difficulty: "Intermediario", tip: "Groove funky. Use pentatonica." },
+    { name: "Garota de Ipanema", artist: "Tom Jobim", genre: "MPB/Bossa", difficulty: "Intermediario", tip: "O classico brasileiro. Estude a versao de Stan Getz." },
+    { name: "Carinhoso", artist: "Pixinguinha", genre: "Choro/MPB", difficulty: "Intermediario", tip: "Hino do sax brasileiro. Ornamentacao essencial." },
+    { name: "Wave", artist: "Tom Jobim", genre: "Bossa Nova", difficulty: "Intermediario", tip: "Harmonia sofisticada." },
+    { name: "Mas Que Nada", artist: "Jorge Ben Jor", genre: "MPB", difficulty: "Iniciante", tip: "Energia pura. Bom para apresentacoes." },
+    { name: "Aguas de Marco", artist: "Tom Jobim", genre: "MPB", difficulty: "Intermediario", tip: "Desafio ritmico interessante." },
+    { name: "Eu Sei Que Vou Te Amar", artist: "Tom Jobim", genre: "Bossa Nova", difficulty: "Intermediario", tip: "Uma das mais bonitas de Jobim." },
+    { name: "Aquarela do Brasil", artist: "Ary Barroso", genre: "Samba", difficulty: "Intermediario", tip: "Toque com grandiosidade." },
+    { name: "Chega de Saudade", artist: "Tom Jobim", genre: "Bossa Nova", difficulty: "Avancado", tip: "Marco da Bossa Nova." },
+    { name: "Detalhes", artist: "Roberto Carlos", genre: "MPB", difficulty: "Iniciante", tip: "Romantica e popular." },
+    { name: "Evidencias", artist: "Chitozinho & Xororo", genre: "MPB", difficulty: "Iniciante", tip: "Hino do karaoke brasileiro." },
+    { name: "Quao Grande E o Meu Deus", artist: "Soraya Moraes", genre: "Gospel", difficulty: "Iniciante", tip: "Hino de adoracao." },
+    { name: "Nada Alem do Sangue", artist: "Fernandinho", genre: "Gospel", difficulty: "Iniciante", tip: "Adoracao intensa." },
+    { name: "Amazing Grace", artist: "Tradicional", genre: "Gospel", difficulty: "Iniciante", tip: "O hino mais tocado do mundo." },
+    { name: "Bondade de Deus", artist: "Isaias Saad", genre: "Gospel", difficulty: "Iniciante", tip: "Hit moderno da adoracao." },
+    { name: "Oceanos", artist: "Hillsong (Ana Nobrega)", genre: "Gospel", difficulty: "Intermediario", tip: "Adoracao profunda." },
+    { name: "Way Maker", artist: "Sinach", genre: "Gospel", difficulty: "Iniciante", tip: "Melodia simples e poderosa." },
+    { name: "10.000 Reasons", artist: "Matt Redman", genre: "Gospel", difficulty: "Iniciante", tip: "Louvor congregacional." },
+    { name: "Lugar Secreto", artist: "Gabriela Rocha", genre: "Gospel", difficulty: "Intermediario", tip: "Adoracao intimista." },
+    { name: "Yeshua", artist: "Fernandinho", genre: "Gospel", difficulty: "Iniciante", tip: "Deixe a melodia falar." },
+    { name: "Grandioso Es Tu", artist: "Tradicional", genre: "Gospel", difficulty: "Iniciante", tip: "Classico eterno." },
+    { name: "The Thrill Is Gone", artist: "B.B. King", genre: "Blues", difficulty: "Intermediario", tip: "Blues menor. Use blue notes." },
+    { name: "At Last", artist: "Etta James", genre: "Blues/Soul", difficulty: "Intermediario", tip: "Classico romantico." },
+    { name: "Feeling Good", artist: "Nina Simone", genre: "Blues/Soul", difficulty: "Intermediario", tip: "Build dramatico." },
+    { name: "Ain't No Sunshine", artist: "Bill Withers", genre: "Soul", difficulty: "Iniciante", tip: "Menos notas, mais sentimento." },
+    { name: "What a Wonderful World", artist: "Louis Armstrong", genre: "Jazz/Soul", difficulty: "Iniciante", tip: "Toque com sinceridade." },
+    { name: "Bohemian Rhapsody", artist: "Queen", genre: "Rock", difficulty: "Avancado", tip: "Arranjo desafiador." },
+    { name: "Hotel California", artist: "Eagles", genre: "Rock", difficulty: "Intermediario", tip: "Muito pedido em eventos." },
+    { name: "Nothing Else Matters", artist: "Metallica", genre: "Rock", difficulty: "Intermediario", tip: "Balada rock no sax soa incrivel." },
+    { name: "My Heart Will Go On", artist: "Celine Dion", genre: "Soundtrack", difficulty: "Iniciante", tip: "Tema reconhecivel instantaneamente." },
+    { name: "Cinema Paradiso", artist: "Ennio Morricone", genre: "Soundtrack", difficulty: "Intermediario", tip: "Obra-prima cinematografica." },
+    { name: "Pais Tropical", artist: "Jorge Ben Jor", genre: "Samba", difficulty: "Iniciante", tip: "Alegre e festivo." },
+    { name: "Trem das Onze", artist: "Adoniran Barbosa", genre: "Samba", difficulty: "Iniciante", tip: "Classico paulistano." },
+    { name: "Deixa a Vida Me Levar", artist: "Zeca Pagodinho", genre: "Samba/Pagode", difficulty: "Iniciante", tip: "Hit de roda de samba." },
+    { name: "Preciso Me Encontrar", artist: "Cartola", genre: "Samba", difficulty: "Intermediario", tip: "Poesia em forma de musica." },
+    { name: "Brasileirinho", artist: "Waldir Azevedo", genre: "Choro", difficulty: "Avancado", tip: "Velocidade e precisao." },
+    { name: "Besame Mucho", artist: "Consuelo Velazquez", genre: "Bolero", difficulty: "Iniciante", tip: "Romance latino." },
+    { name: "Tequila", artist: "The Champs", genre: "Rock/Latina", difficulty: "Iniciante", tip: "Divertida e energetica." },
+    { name: "Smooth Operator", artist: "Sade", genre: "Jazz/Pop", difficulty: "Intermediario", tip: "Groove suave." },
+    { name: "Yakety Sax", artist: "Boots Randolph", genre: "Country/Fun", difficulty: "Avancado", tip: "Velocidade extrema. Tecnica pura." },
+    { name: "Harlem Nocturne", artist: "Earle Hagen", genre: "Jazz", difficulty: "Intermediario", tip: "Noir e cinematografico." },
+    { name: "Sway", artist: "Dean Martin", genre: "Bolero/Pop", difficulty: "Iniciante", tip: "Perfeito para eventos sociais." },
+    { name: "Moon River", artist: "Henry Mancini", genre: "Jazz/Soundtrack", difficulty: "Iniciante", tip: "Agora e sua vez no sax." },
+    { name: "New York, New York", artist: "Frank Sinatra", genre: "Jazz", difficulty: "Intermediario", tip: "Big band feel." },
+    { name: "Can't Help Falling in Love", artist: "Elvis Presley", genre: "Pop", difficulty: "Iniciante", tip: "Suavidade total." },
+    { name: "Thinking Out Loud", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Hit de casamento." },
+    { name: "A Thousand Years", artist: "Christina Perri", genre: "Pop", difficulty: "Iniciante", tip: "Simples e lindo." },
+    { name: "Hallelujah", artist: "Leonard Cohen", genre: "Folk/Pop", difficulty: "Iniciante", tip: "Universal. Funciona em qualquer contexto." },
+    { name: "Unchained Melody", artist: "The Righteous Brothers", genre: "Pop", difficulty: "Intermediario", tip: "Melodia inesquecivel." },
+    { name: "Hello", artist: "Adele", genre: "Pop", difficulty: "Intermediario", tip: "Potencia vocal traduzida no sax." },
+    { name: "Shallow", artist: "Lady Gaga", genre: "Pop", difficulty: "Intermediario", tip: "Crescendo emocional no final." },
+    { name: "Yesterday", artist: "The Beatles", genre: "Pop/Rock", difficulty: "Iniciante", tip: "Simplicidade e tudo." },
+    { name: "Imagine", artist: "John Lennon", genre: "Pop/Rock", difficulty: "Iniciante", tip: "Hino da paz." },
+    { name: "Stand By Me", artist: "Ben E. King", genre: "Soul", difficulty: "Iniciante", tip: "Groove constante." },
+    { name: "I Will Always Love You", artist: "Whitney Houston", genre: "Pop", difficulty: "Intermediario", tip: "Desafio de registro e potencia." },
+    { name: "Despacito", artist: "Luis Fonsi", genre: "Pop/Latin", difficulty: "Iniciante", tip: "Surpreenda o publico." },
+    { name: "Havana", artist: "Camila Cabello", genre: "Pop/Latin", difficulty: "Iniciante", tip: "Groove cubano moderno." },
+    { name: "Insensatez", artist: "Tom Jobim", genre: "Bossa Nova", difficulty: "Intermediario", tip: "Harmonia cromatica." },
+    { name: "Dindi", artist: "Tom Jobim", genre: "Bossa Nova", difficulty: "Intermediario", tip: "Docura e delicadeza." },
+    { name: "Night and Day", artist: "Cole Porter", genre: "Jazz", difficulty: "Intermediario", tip: "Standard elegante." },
+    { name: "Donna Lee", artist: "Charlie Parker", genre: "Bebop", difficulty: "Avancado", tip: "Teste supremo de tecnica." },
+    { name: "Giant Steps", artist: "John Coltrane", genre: "Jazz", difficulty: "Avancado", tip: "O Monte Everest do jazz." },
+    { name: "Spain", artist: "Chick Corea", genre: "Jazz/Fusion", difficulty: "Avancado", tip: "Fusao latina brilhante." },
+    { name: "Stella by Starlight", artist: "Victor Young", genre: "Jazz", difficulty: "Avancado", tip: "Harmonia complexa." },
+    { name: "St. Thomas", artist: "Sonny Rollins", genre: "Jazz", difficulty: "Intermediario", tip: "Calipso jazz. Ritmo contagiante." },
+    { name: "All The Things You Are", artist: "Jerome Kern", genre: "Jazz", difficulty: "Avancado", tip: "Progressao harmonica perfeita." },
+    { name: "Round Midnight", artist: "Thelonious Monk", genre: "Jazz", difficulty: "Avancado", tip: "Balada noturna." },
+    { name: "Naima", artist: "John Coltrane", genre: "Jazz", difficulty: "Intermediario", tip: "Beleza pura." },
+    { name: "Watermelon Man", artist: "Herbie Hancock", genre: "Jazz/Funk", difficulty: "Intermediario", tip: "Funky e acessivel." },
+    { name: "Chameleon", artist: "Herbie Hancock", genre: "Jazz/Funk", difficulty: "Avancado", tip: "Groove hipnotico." },
+    { name: "Tenor Madness", artist: "Sonny Rollins", genre: "Jazz", difficulty: "Avancado", tip: "Blues em Bb. Base para jam sessions." },
+    { name: "Moanin'", artist: "Art Blakey", genre: "Hard Bop", difficulty: "Intermediario", tip: "Call and response poderoso." },
+    { name: "Song for My Father", artist: "Horace Silver", genre: "Hard Bop", difficulty: "Intermediario", tip: "Bossa + hard bop." },
+    { name: "Work Song", artist: "Nat Adderley", genre: "Hard Bop", difficulty: "Intermediario", tip: "Blues form com energia gospel." },
+    { name: "Mas Que Nada (Mendes)", artist: "Sergio Mendes", genre: "MPB", difficulty: "Iniciante", tip: "Versao instrumental energetica." },
+    { name: "Preciso Me Encontrar (samba)", artist: "Cartola", genre: "Samba", difficulty: "Intermediario", tip: "Toque com alma." },
+  ];
+
+  const diffColor: Record<string, [number, number, number]> = {
+    Iniciante: COLORS.green,
+    Intermediario: COLORS.amber,
+    Avancado: COLORS.red,
+  };
+
+  // COVER
+  drawCoverPage(doc, "100 Musicas", "Que Todo Saxofonista Precisa Saber", "BONUS EXCLUSIVO PREMIUM", COLORS.amber, [
+    "100 musicas curadas por genero e nivel",
+    "Pop, Jazz, MPB, Gospel, Blues, Rock e mais",
+    "3 niveis: Iniciante, Intermediario, Avancado",
+    "Dicas de interpretacao para cada musica",
+    "Pronto para imprimir e usar como guia",
+  ], logoBase64);
+
+  // TOC
+  doc.addPage();
+  drawPageBg(doc);
+  doc.setFillColor(...COLORS.amber);
+  doc.rect(0, 0, PAGE_W, 4, "F");
+  addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
+
+  const tocItems = [
+    "1. Lista Completa — 100 Musicas .......... pag. 3-14",
+    "2. Organizadas por numero com genero e nivel",
+    "3. Dica de interpretacao para cada musica",
+  ];
+
+  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  tocItems.forEach((item, i) => {
+    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+  });
+
+  // Stats
+  const iniciantes = songs.filter(s => s.difficulty === "Iniciante").length;
+  const intermediarios = songs.filter(s => s.difficulty === "Intermediario").length;
+  const avancados = songs.filter(s => s.difficulty === "Avancado").length;
+  
+  let yToc = 58 + tocItems.length * 12 + 10;
+  drawRoundedRect(doc, MARGIN + 5, yToc, CONTENT_W - 10, 30, 6, COLORS.lightCardBg);
+  addText(doc, "RESUMO", MARGIN + 15, yToc + 8, { size: 10, color: COLORS.amber, style: "bold" });
+  addText(doc, `${songs.length} musicas  |  ${iniciantes} Iniciante  |  ${intermediarios} Intermediario  |  ${avancados} Avancado`, MARGIN + 15, yToc + 16, { size: 10, color: COLORS.white });
+  const genres = [...new Set(songs.map(s => s.genre))];
+  addText(doc, `${genres.length} generos: Pop, Jazz, MPB, Gospel, Blues, Rock e mais`, MARGIN + 15, yToc + 24, { size: 10, color: COLORS.muted });
+
+  // SONG LIST
+  doc.addPage();
+  drawPageBg(doc);
+  let y = drawSectionHeader(doc, MARGIN, "100 Musicas Essenciais", "Lista completa com genero, nivel e dicas", COLORS.amber);
+  y += 4;
+
+  songs.forEach((song, i) => {
+    y = ensureSpace(doc, y, 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 15, 2, COLORS.cardBg);
+    
+    const num = String(i + 1).padStart(2, "0");
+    addText(doc, num, MARGIN + 4, y + 6, { size: 9, color: COLORS.muted, style: "bold" });
+    addText(doc, song.name, MARGIN + 14, y + 6, { size: 10, color: COLORS.white, style: "bold" });
+    
+    const dc = diffColor[song.difficulty] || COLORS.white;
+    addText(doc, song.difficulty, MARGIN + CONTENT_W - 5, y + 6, { size: 7, color: dc, style: "bold", align: "right" });
+    
+    addText(doc, `${song.artist} | ${song.genre}`, MARGIN + 14, y + 11, { size: 8, color: COLORS.muted });
+    addText(doc, song.tip, MARGIN + 14, y + 14.5, { size: 7.5, color: dc, style: "italic", maxWidth: CONTENT_W - 20 });
+    y += 17;
+  });
+
+  addPageNumber(doc, logoBase64);
+  doc.save("100-Musicas-Saxofonista-Clube-do-Sax.pdf");
+}
