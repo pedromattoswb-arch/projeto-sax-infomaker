@@ -9,6 +9,9 @@ import {
   ArrowRight,
   Star,
   CheckCircle2,
+  ShieldCheck,
+  Lock,
+  BadgeCheck,
 } from "lucide-react";
 import { trackLandingView } from "@/hooks/useMetaPixel";
 
@@ -192,9 +195,12 @@ const SalesPage = () => {
           <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3 text-white">
             7 Dias Para Testar — Risco Zero
           </h2>
-          <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed">
+          <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed mb-3">
             Não gostou? Devolvemos <strong className="text-white">100% do seu dinheiro</strong> em até 7 dias.
             Sem perguntas, sem burocracia. Você não arrisca nada.
+          </p>
+          <p className="text-white/60 font-body text-xs md:text-sm">
+            O reembolso é processado diretamente pela plataforma Cakto — você não precisa falar com ninguém.
           </p>
         </div>
       </section>
@@ -223,12 +229,36 @@ const SalesPage = () => {
             GARANTIR MEU ACESSO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
           </button>
+          <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
+            <Lock className="w-3.5 h-3.5" />
+            Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas já compraram
+          </p>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-5 md:py-6 px-4 border-t border-border text-center">
-        <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto mx-auto mb-2 md:mb-3" loading="lazy" />
+      <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
+        <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto mx-auto mb-3 md:mb-4" loading="lazy" />
+
+        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <ShieldCheck className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Site Seguro</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Lock className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Pagamento via Cakto</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <BadgeCheck className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Dados Protegidos com SSL</span>
+          </div>
+        </div>
+
+        <p className="text-xs text-muted-foreground font-body mb-2 max-w-md mx-auto leading-relaxed">
+          Produto digital com entrega imediata. Após a confirmação do pagamento, você recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam.
+        </p>
+
         <p className="text-xs text-muted-foreground font-body">
           © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
         </p>
