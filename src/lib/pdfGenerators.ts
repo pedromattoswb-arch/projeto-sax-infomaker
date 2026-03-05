@@ -1,8 +1,30 @@
 import jsPDF from "jspdf";
+import logoSrc from "@/assets/logo-clube-sax.webp";
 
 /* ═══════════════════════════════════════════════════════════
    UTILIDADES COMPARTILHADAS
    ═══════════════════════════════════════════════════════════ */
+
+let cachedLogoBase64: string | null = null;
+
+async function loadLogoBase64(): Promise<string> {
+  if (cachedLogoBase64) return cachedLogoBase64;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
+      cachedLogoBase64 = canvas.toDataURL("image/png");
+      resolve(cachedLogoBase64);
+    };
+    img.onerror = reject;
+    img.src = logoSrc;
+  });
+}
 
 const COLORS = {
   darkBg: [26, 26, 26] as [number, number, number],
@@ -82,31 +104,38 @@ function addWrappedText(doc: jsPDF, text: string, x: number, y: number, maxWidth
   return y + lines.length * lineHeight;
 }
 
-function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: string, accentColor: [number, number, number], items: string[]) {
+function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: string, accentColor: [number, number, number], items: string[], logoBase64: string) {
   drawPageBg(doc);
   
   // Accent bar
   doc.setFillColor(...accentColor);
   doc.rect(0, 0, PAGE_W, 6, "F");
   
-  // Logo text
-  addText(doc, "CLUBE DO SAX BRASIL", PAGE_W / 2, 40, { size: 12, color: COLORS.muted, style: "normal", align: "center" });
+  // Logo image
+  try {
+    const logoW = 50;
+    const logoH = 14;
+    doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
+  } catch {
+    // fallback text if image fails
+    addText(doc, "CLUBE DO SAX BRASIL", PAGE_W / 2, 28, { size: 12, color: COLORS.muted, style: "normal", align: "center" });
+  }
   
   // Badge
-  drawRoundedRect(doc, PAGE_W / 2 - 40, 50, 80, 10, 5, [accentColor[0], accentColor[1], accentColor[2]]);
-  addText(doc, badge, PAGE_W / 2, 57, { size: 8, color: COLORS.white, style: "bold", align: "center" });
+  drawRoundedRect(doc, PAGE_W / 2 - 40, 42, 80, 10, 5, [accentColor[0], accentColor[1], accentColor[2]]);
+  addText(doc, badge, PAGE_W / 2, 49, { size: 8, color: COLORS.white, style: "bold", align: "center" });
   
   // Title
-  addText(doc, title, PAGE_W / 2, 85, { size: 26, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, title, PAGE_W / 2, 80, { size: 26, color: COLORS.white, style: "bold", align: "center" });
   
   // Subtitle
-  addText(doc, subtitle, PAGE_W / 2, 100, { size: 14, color: accentColor, style: "bold", align: "center" });
+  addText(doc, subtitle, PAGE_W / 2, 95, { size: 14, color: accentColor, style: "bold", align: "center" });
   
   // Items
-  drawRoundedRect(doc, MARGIN + 10, 120, CONTENT_W - 20, items.length * 9 + 16, 6, COLORS.cardBg);
-  addText(doc, "O QUE ESTA INCLUIDO:", MARGIN + 20, 132, { size: 9, color: COLORS.muted, style: "bold" });
+  drawRoundedRect(doc, MARGIN + 10, 112, CONTENT_W - 20, items.length * 9 + 16, 6, COLORS.cardBg);
+  addText(doc, "O QUE ESTA INCLUIDO:", MARGIN + 20, 124, { size: 9, color: COLORS.muted, style: "bold" });
   items.forEach((item, i) => {
-    addText(doc, `✓  ${item}`, MARGIN + 20, 142 + i * 9, { size: 9, color: COLORS.white });
+    addText(doc, `✓  ${item}`, MARGIN + 20, 134 + i * 9, { size: 9, color: COLORS.white });
   });
   
   // Footer
@@ -122,10 +151,14 @@ function drawSectionHeader(doc: jsPDF, y: number, title: string, subtitle: strin
   return y + 22;
 }
 
-function addPageNumber(doc: jsPDF) {
+function addPageNumber(doc: jsPDF, logoBase64: string) {
   const pageCount = doc.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
+  for (let i = 2; i <= pageCount; i++) {
     doc.setPage(i);
+    // Small logo on every page (top-right)
+    try {
+      doc.addImage(logoBase64, "PNG", PAGE_W - MARGIN - 28, 5, 28, 8);
+    } catch { /* ignore */ }
     addText(doc, `${i} / ${pageCount}`, PAGE_W - MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted, align: "right" });
     addText(doc, "Clube do Sax Brasil", MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted });
   }
@@ -135,7 +168,8 @@ function addPageNumber(doc: jsPDF) {
    PDF 1 — DIGITAÇÃO COMPLETA
    ═══════════════════════════════════════════════════════════ */
 
-export function generateDigitacaoPDF() {
+export async function generateDigitacaoPDF() {
+  const logoBase64 = await loadLogoBase64();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
   const registros = [
@@ -212,7 +246,7 @@ export function generateDigitacaoPDF() {
     "Dicas de embocadura por registro",
     "Exercicios de harmonicos para altissimo",
     "Tabela pronta para imprimir e colar na estante",
-  ]);
+  ], logoBase64);
 
   // TABLE OF CONTENTS
   doc.addPage();
@@ -321,7 +355,7 @@ export function generateDigitacaoPDF() {
   addText(doc, "ROTINA SUGERIDA:", MARGIN + 8, y, { size: 10, color: COLORS.amber, style: "bold" });
   y = addWrappedText(doc, "Escolha 1 registro por dia. Toque cada nota 4 tempos (q = 60), foco em timbre e afinacao. Em 4 dias, voce cobriu todo o sax.", MARGIN + 8, y + 6, CONTENT_W - 16, { size: 9, color: COLORS.white });
 
-  addPageNumber(doc);
+  addPageNumber(doc, logoBase64);
   doc.save("Tabela-Digitacao-Completa-Clube-do-Sax.pdf");
 }
 
@@ -329,7 +363,8 @@ export function generateDigitacaoPDF() {
    PDF 2 — TRANSPOSIÇÃO INSTANTÂNEA
    ═══════════════════════════════════════════════════════════ */
 
-export function generateTransposicaoPDF() {
+export async function generateTransposicaoPDF() {
+  const logoBase64 = await loadLogoBase64();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
   const tabelaTransposicao = [
@@ -389,7 +424,7 @@ export function generateTransposicaoPDF() {
     "8 cifras comuns ja transpostas",
     "Dicas praticas por situacao (igreja, banda, evento)",
     "Tabela de bolso para imprimir",
-  ]);
+  ], logoBase64);
 
   // TOC
   doc.addPage();
@@ -580,7 +615,7 @@ export function generateTransposicaoPDF() {
   y += 5;
   addText(doc, "Soprano = coluna Tenor  |  Baritono = coluna Alto", PAGE_W / 2, y, { size: 8, color: COLORS.muted, align: "center" });
 
-  addPageNumber(doc);
+  addPageNumber(doc, logoBase64);
   doc.save("Kit-Transposicao-Instantanea-Clube-do-Sax.pdf");
 }
 
@@ -588,7 +623,8 @@ export function generateTransposicaoPDF() {
    PDF 3 — MANUTENÇÃO DO SAX
    ═══════════════════════════════════════════════════════════ */
 
-export function generateManutencaoPDF() {
+export async function generateManutencaoPDF() {
+  const logoBase64 = await loadLogoBase64();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
   const cuidadosDiarios = [
@@ -668,7 +704,7 @@ export function generateManutencaoPDF() {
     "6 sinais de alerta com custos estimados",
     "Guia completo de palhetas (escolha, amaciamento, marcas)",
     "Checklist imprimivel + Tabela de economia",
-  ]);
+  ], logoBase64);
 
   // TOC
   doc.addPage();
@@ -838,6 +874,6 @@ export function generateManutencaoPDF() {
   addText(doc, "centenas de reais por ano.", MARGIN + 8, y + 27, { size: 12, color: COLORS.white });
   addText(doc, "Imprima o checklist. Cole no espaco de estudo. Transforme em habito.", MARGIN + 8, y + 35, { size: 9, color: COLORS.muted, style: "italic" });
 
-  addPageNumber(doc);
+  addPageNumber(doc, logoBase64);
   doc.save("Checklist-Manutencao-Sax-Clube-do-Sax.pdf");
 }
