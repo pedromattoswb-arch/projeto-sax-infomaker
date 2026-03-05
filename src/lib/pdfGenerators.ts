@@ -144,11 +144,11 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
 }
 
 function drawSectionHeader(doc: jsPDF, y: number, title: string, subtitle: string, color: [number, number, number]): number {
-  y = ensureSpace(doc, y, 20);
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 18, 4, color);
-  addText(doc, title.toUpperCase(), MARGIN + 8, y + 8, { size: 12, color: COLORS.white, style: "bold" });
-  addText(doc, subtitle, MARGIN + 8, y + 14, { size: 8, color: [255, 255, 255] });
-  return y + 22;
+  y = ensureSpace(doc, y, 24);
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 22, 4, color);
+  addText(doc, title.toUpperCase(), MARGIN + 8, y + 10, { size: 14, color: COLORS.white, style: "bold" });
+  addText(doc, subtitle, MARGIN + 8, y + 18, { size: 10, color: [255, 255, 255] });
+  return y + 26;
 }
 
 function drawSeparator(doc: jsPDF, y: number, color: [number, number, number], style: "line" | "dots" | "gradient" = "line"): number {
@@ -184,17 +184,15 @@ function drawAccentBar(doc: jsPDF, y: number, color: [number, number, number]): 
 }
 
 function drawHighlightBox(doc: jsPDF, y: number, title: string, text: string, color: [number, number, number]): number {
-  y = ensureSpace(doc, y, 35);
-  // Border effect
+  y = ensureSpace(doc, y, 40);
   doc.setFillColor(...color);
-  doc.roundedRect(MARGIN, y, CONTENT_W, 30, 4, 4, "F");
-  drawRoundedRect(doc, MARGIN + 1.5, y + 1.5, CONTENT_W - 3, 27, 3, COLORS.cardBg);
-  // Accent line left
+  doc.roundedRect(MARGIN, y, CONTENT_W, 35, 4, 4, "F");
+  drawRoundedRect(doc, MARGIN + 1.5, y + 1.5, CONTENT_W - 3, 32, 3, COLORS.cardBg);
   doc.setFillColor(...color);
-  doc.roundedRect(MARGIN + 1.5, y + 5, 2.5, 18, 1, 1, "F");
-  addText(doc, title, MARGIN + 10, y + 12, { size: 14, color, style: "bold" });
-  addText(doc, text, MARGIN + 10, y + 21, { size: 11, color: COLORS.white });
-  return y + 35;
+  doc.roundedRect(MARGIN + 1.5, y + 6, 2.5, 22, 1, 1, "F");
+  addText(doc, title, MARGIN + 10, y + 15, { size: 16, color, style: "bold" });
+  addText(doc, text, MARGIN + 10, y + 25, { size: 12, color: COLORS.white });
+  return y + 40;
 }
 
 function addPageNumber(doc: jsPDF, logoBase64: string) {
@@ -325,12 +323,12 @@ export async function generateDigitacaoPDF() {
     y += 3;
 
     reg.notas.forEach((nota) => {
-      y = ensureSpace(doc, y, 22);
-      drawRoundedRect(doc, MARGIN, y, CONTENT_W, 18, 3, COLORS.cardBg);
-      addText(doc, nota.nota, MARGIN + 5, y + 6, { size: 11, color: COLORS.white, style: "bold" });
-      addText(doc, `Chaves: ${nota.chaves}`, MARGIN + 5, y + 11, { size: 8, color: COLORS.muted, maxWidth: CONTENT_W - 10 });
-      addText(doc, `→ ${nota.dica}`, MARGIN + 5, y + 15.5, { size: 8, color: reg.color, style: "italic" });
-      y += 21;
+      y = ensureSpace(doc, y, 26);
+      drawRoundedRect(doc, MARGIN, y, CONTENT_W, 22, 3, COLORS.cardBg);
+      addText(doc, nota.nota, MARGIN + 5, y + 7, { size: 13, color: COLORS.white, style: "bold" });
+      addText(doc, `Chaves: ${nota.chaves}`, MARGIN + 5, y + 13, { size: 10, color: COLORS.muted, maxWidth: CONTENT_W - 10 });
+      addText(doc, `→ ${nota.dica}`, MARGIN + 5, y + 19, { size: 10, color: reg.color, style: "italic" });
+      y += 25;
     });
   });
 
@@ -341,13 +339,13 @@ export async function generateDigitacaoPDF() {
   y += 3;
 
   alternativas.forEach((alt) => {
-    y = ensureSpace(doc, y, 26);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 22, 3, COLORS.cardBg);
-    addText(doc, alt.titulo, MARGIN + 5, y + 6, { size: 10, color: COLORS.white, style: "bold" });
-    addText(doc, `Contexto: ${alt.contexto}`, MARGIN + 5, y + 11, { size: 8, color: COLORS.muted, style: "italic" });
-    addText(doc, `Como: ${alt.como}`, MARGIN + 5, y + 15.5, { size: 8, color: COLORS.white });
-    addText(doc, `Quando usar: ${alt.quando}`, MARGIN + 5, y + 19.5, { size: 8, color: COLORS.violet });
-    y += 25;
+    y = ensureSpace(doc, y, 30);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 26, 3, COLORS.cardBg);
+    addText(doc, alt.titulo, MARGIN + 5, y + 7, { size: 12, color: COLORS.white, style: "bold" });
+    addText(doc, `Contexto: ${alt.contexto}`, MARGIN + 5, y + 13, { size: 10, color: COLORS.muted, style: "italic" });
+    addText(doc, `Como: ${alt.como}`, MARGIN + 5, y + 18.5, { size: 10, color: COLORS.white });
+    addText(doc, `Quando usar: ${alt.quando}`, MARGIN + 5, y + 23.5, { size: 10, color: COLORS.violet });
+    y += 29;
   });
 
   // EMBOCADURA
@@ -357,13 +355,13 @@ export async function generateDigitacaoPDF() {
   y += 3;
 
   embocadura.forEach((reg) => {
-    y = ensureSpace(doc, y, 36);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, reg.dicas.length * 5.5 + 10, 3, COLORS.cardBg);
-    addText(doc, reg.registro.toUpperCase(), MARGIN + 5, y + 7, { size: 10, color: COLORS.violet, style: "bold" });
+    y = ensureSpace(doc, y, 40);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, reg.dicas.length * 7 + 14, 3, COLORS.cardBg);
+    addText(doc, reg.registro.toUpperCase(), MARGIN + 5, y + 9, { size: 12, color: COLORS.violet, style: "bold" });
     reg.dicas.forEach((d, j) => {
-      addText(doc, `• ${d}`, MARGIN + 8, y + 13 + j * 5.5, { size: 8.5, color: COLORS.white });
+      addText(doc, `• ${d}`, MARGIN + 8, y + 17 + j * 7, { size: 11, color: COLORS.white });
     });
-    y += reg.dicas.length * 5.5 + 14;
+    y += reg.dicas.length * 7 + 18;
   });
 
   // EXERCÍCIOS
@@ -379,13 +377,13 @@ export async function generateDigitacaoPDF() {
   ];
 
   exercicios.forEach((ex) => {
-    y = ensureSpace(doc, y, 35);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, ex.passos.length * 5.5 + 12, 3, COLORS.cardBg);
-    addText(doc, ex.titulo, MARGIN + 5, y + 7, { size: 10, color: COLORS.red, style: "bold" });
+    y = ensureSpace(doc, y, 40);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, ex.passos.length * 7 + 14, 3, COLORS.cardBg);
+    addText(doc, ex.titulo, MARGIN + 5, y + 9, { size: 12, color: COLORS.red, style: "bold" });
     ex.passos.forEach((p, j) => {
-      addText(doc, `${j + 1}. ${p}`, MARGIN + 8, y + 13 + j * 5.5, { size: 8.5, color: COLORS.white });
+      addText(doc, `${j + 1}. ${p}`, MARGIN + 8, y + 17 + j * 7, { size: 11, color: COLORS.white });
     });
-    y += ex.passos.length * 5.5 + 16;
+    y += ex.passos.length * 7 + 18;
   });
 
   // DICA DE OURO
@@ -394,12 +392,12 @@ export async function generateDigitacaoPDF() {
   y = drawSectionHeader(doc, MARGIN, "Dica de Ouro", "Rotina sugerida de pratica", COLORS.violet);
   y += 5;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 45, 4, COLORS.cardBg);
-  addText(doc, "Nao decore — internalize.", MARGIN + 8, y + 10, { size: 12, color: COLORS.violet, style: "bold" });
-  y = addWrappedText(doc, "Pratique cada nota ate que seus dedos se movam automaticamente. A tabela e para consulta, nao para decorar.", MARGIN + 8, y + 18, CONTENT_W - 16, { size: 10, color: COLORS.white });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 50, 4, COLORS.cardBg);
+  addText(doc, "Nao decore — internalize.", MARGIN + 8, y + 12, { size: 14, color: COLORS.violet, style: "bold" });
+  y = addWrappedText(doc, "Pratique cada nota ate que seus dedos se movam automaticamente. A tabela e para consulta, nao para decorar.", MARGIN + 8, y + 22, CONTENT_W - 16, { size: 12, color: COLORS.white });
   y += 5;
-  addText(doc, "ROTINA SUGERIDA:", MARGIN + 8, y, { size: 10, color: COLORS.amber, style: "bold" });
-  y = addWrappedText(doc, "Escolha 1 registro por dia. Toque cada nota 4 tempos (q = 60), foco em timbre e afinacao. Em 4 dias, voce cobriu todo o sax.", MARGIN + 8, y + 6, CONTENT_W - 16, { size: 9, color: COLORS.white });
+  addText(doc, "ROTINA SUGERIDA:", MARGIN + 8, y, { size: 12, color: COLORS.amber, style: "bold" });
+  y = addWrappedText(doc, "Escolha 1 registro por dia. Toque cada nota 4 tempos (q = 60), foco em timbre e afinacao. Em 4 dias, voce cobriu todo o sax.", MARGIN + 8, y + 7, CONTENT_W - 16, { size: 11, color: COLORS.white });
 
   addPageNumber(doc, logoBase64);
   doc.save("Tabela-Digitacao-Completa-Clube-do-Sax.pdf");
@@ -501,19 +499,19 @@ export async function generateTransposicaoPDF() {
   y += 5;
 
   passos.forEach((p) => {
-    y = ensureSpace(doc, y, 22);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 18, 3, COLORS.cardBg);
-    drawRoundedRect(doc, MARGIN + 4, y + 3, 12, 12, 6, COLORS.blue);
-    addText(doc, p.n, MARGIN + 10, y + 11, { size: 12, color: COLORS.white, style: "bold", align: "center" });
-    addText(doc, p.titulo, MARGIN + 20, y + 7, { size: 11, color: COLORS.white, style: "bold" });
-    addText(doc, p.desc, MARGIN + 20, y + 13, { size: 8, color: COLORS.muted, maxWidth: CONTENT_W - 30 });
-    y += 22;
+    y = ensureSpace(doc, y, 26);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 22, 3, COLORS.cardBg);
+    drawRoundedRect(doc, MARGIN + 4, y + 3, 14, 14, 7, COLORS.blue);
+    addText(doc, p.n, MARGIN + 11, y + 12.5, { size: 14, color: COLORS.white, style: "bold", align: "center" });
+    addText(doc, p.titulo, MARGIN + 22, y + 8, { size: 13, color: COLORS.white, style: "bold" });
+    addText(doc, p.desc, MARGIN + 22, y + 15, { size: 10, color: COLORS.muted, maxWidth: CONTENT_W - 30 });
+    y += 25;
   });
 
   y += 5;
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.lightCardBg);
-  addText(doc, "REGRA RAPIDA:", MARGIN + 5, y + 5.5, { size: 9, color: COLORS.amber, style: "bold" });
-  addText(doc, "Alto/Baritono (Eb) = sobe 3 semitons  |  Tenor/Soprano (Bb) = sobe 2 semitons", MARGIN + 5, y + 10.5, { size: 8, color: COLORS.white });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 16, 3, COLORS.lightCardBg);
+  addText(doc, "REGRA RAPIDA:", MARGIN + 5, y + 6.5, { size: 11, color: COLORS.amber, style: "bold" });
+  addText(doc, "Alto/Baritono (Eb) = sobe 3 semitons  |  Tenor/Soprano (Bb) = sobe 2 semitons", MARGIN + 5, y + 12.5, { size: 10, color: COLORS.white });
 
   // TABELA DE TRANSPOSIÇÃO
   doc.addPage();
@@ -522,31 +520,31 @@ export async function generateTransposicaoPDF() {
   y += 3;
 
   // Table header
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
-  addText(doc, "CONCERT PITCH", MARGIN + 5, y + 7, { size: 8, color: COLORS.white, style: "bold" });
-  addText(doc, "SAX ALTO (Eb)", MARGIN + 65, y + 7, { size: 8, color: COLORS.white, style: "bold" });
-  addText(doc, "SAX TENOR (Bb)", MARGIN + 125, y + 7, { size: 8, color: COLORS.white, style: "bold" });
-  y += 12;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 12, 2, COLORS.blue);
+  addText(doc, "CONCERT PITCH", MARGIN + 5, y + 8, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "SAX ALTO (Eb)", MARGIN + 65, y + 8, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "SAX TENOR (Bb)", MARGIN + 125, y + 8, { size: 10, color: COLORS.white, style: "bold" });
+  y += 14;
 
   tabelaTransposicao.forEach((row, i) => {
-    y = ensureSpace(doc, y, 10);
+    y = ensureSpace(doc, y, 12);
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
-    addText(doc, row.concert, MARGIN + 5, y + 6.5, { size: 9, color: COLORS.white, style: "bold" });
-    addText(doc, row.alto, MARGIN + 65, y + 6.5, { size: 9, color: COLORS.cyan });
-    addText(doc, row.tenor, MARGIN + 125, y + 6.5, { size: 9, color: COLORS.amber });
-    y += 10;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 11, 1, bg);
+    addText(doc, row.concert, MARGIN + 5, y + 7.5, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, row.alto, MARGIN + 65, y + 7.5, { size: 11, color: COLORS.cyan });
+    addText(doc, row.tenor, MARGIN + 125, y + 7.5, { size: 11, color: COLORS.amber });
+    y += 12;
   });
 
   y += 3;
   y = ensureSpace(doc, y, 18);
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W / 2 - 2, 14, 3, COLORS.lightCardBg);
-  addText(doc, "Soprano (Bb):", MARGIN + 5, y + 6, { size: 8, color: COLORS.cyan, style: "bold" });
-  addText(doc, "Mesma coluna do Tenor", MARGIN + 5, y + 11, { size: 8, color: COLORS.muted });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W / 2 - 2, 16, 3, COLORS.lightCardBg);
+  addText(doc, "Soprano (Bb):", MARGIN + 5, y + 7, { size: 10, color: COLORS.cyan, style: "bold" });
+  addText(doc, "Mesma coluna do Tenor", MARGIN + 5, y + 13, { size: 10, color: COLORS.muted });
 
-  drawRoundedRect(doc, MARGIN + CONTENT_W / 2 + 2, y, CONTENT_W / 2 - 2, 14, 3, COLORS.lightCardBg);
-  addText(doc, "Baritono (Eb):", MARGIN + CONTENT_W / 2 + 7, y + 6, { size: 8, color: COLORS.cyan, style: "bold" });
-  addText(doc, "Mesma coluna do Alto (oitava abaixo)", MARGIN + CONTENT_W / 2 + 7, y + 11, { size: 8, color: COLORS.muted });
+  drawRoundedRect(doc, MARGIN + CONTENT_W / 2 + 2, y, CONTENT_W / 2 - 2, 16, 3, COLORS.lightCardBg);
+  addText(doc, "Baritono (Eb):", MARGIN + CONTENT_W / 2 + 7, y + 7, { size: 10, color: COLORS.cyan, style: "bold" });
+  addText(doc, "Mesma coluna do Alto (oitava abaixo)", MARGIN + CONTENT_W / 2 + 7, y + 13, { size: 10, color: COLORS.muted });
 
   // ARMADURAS
   doc.addPage();
@@ -554,27 +552,27 @@ export async function generateTransposicaoPDF() {
   y = drawSectionHeader(doc, MARGIN, "Armaduras de Clave", "Quantos sustenidos (#) ou bemois (b) por tonalidade", COLORS.blue);
   y += 3;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 8, 2, COLORS.blue);
-  addText(doc, "TONALIDADE", MARGIN + 5, y + 5.5, { size: 7, color: COLORS.white, style: "bold" });
-  addText(doc, "ACIDENTES", MARGIN + 80, y + 5.5, { size: 7, color: COLORS.white, style: "bold" });
-  addText(doc, "NOTAS ALTERADAS", MARGIN + 105, y + 5.5, { size: 7, color: COLORS.white, style: "bold" });
-  y += 9;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
+  addText(doc, "TONALIDADE", MARGIN + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  addText(doc, "ACIDENTES", MARGIN + 80, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  addText(doc, "NOTAS ALTERADAS", MARGIN + 105, y + 7, { size: 9, color: COLORS.white, style: "bold" });
+  y += 11;
 
   armaduras.forEach((row, i) => {
-    y = ensureSpace(doc, y, 8);
+    y = ensureSpace(doc, y, 10);
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 7.5, 1, bg);
-    addText(doc, row.tom, MARGIN + 5, y + 5.5, { size: 7.5, color: COLORS.white, style: "bold" });
-    addText(doc, row.acidentes, MARGIN + 80, y + 5.5, { size: 7.5, color: COLORS.amber, style: "bold" });
-    addText(doc, row.notas, MARGIN + 105, y + 5.5, { size: 7, color: COLORS.muted });
-    y += 8;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
+    addText(doc, row.tom, MARGIN + 5, y + 6.5, { size: 10, color: COLORS.white, style: "bold" });
+    addText(doc, row.acidentes, MARGIN + 80, y + 6.5, { size: 10, color: COLORS.amber, style: "bold" });
+    addText(doc, row.notas, MARGIN + 105, y + 6.5, { size: 9, color: COLORS.muted });
+    y += 10;
   });
 
   y += 4;
-  y = ensureSpace(doc, y, 12);
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 12, 3, COLORS.lightCardBg);
-  addText(doc, "MACETE:", MARGIN + 5, y + 5, { size: 8, color: COLORS.amber, style: "bold" });
-  addText(doc, "Sustenidos: Fa, Do, Sol, Re, La, Mi, Si  |  Bemois: inverso — Si, Mi, La, Re, Sol, Do, Fa", MARGIN + 5, y + 10, { size: 7.5, color: COLORS.white });
+  y = ensureSpace(doc, y, 14);
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.lightCardBg);
+  addText(doc, "MACETE:", MARGIN + 5, y + 5.5, { size: 10, color: COLORS.amber, style: "bold" });
+  addText(doc, "Sustenidos: Fa, Do, Sol, Re, La, Mi, Si  |  Bemois: inverso — Si, Mi, La, Re, Sol, Do, Fa", MARGIN + 5, y + 11, { size: 9, color: COLORS.white });
 
   // CIFRAS
   doc.addPage();
@@ -583,13 +581,13 @@ export async function generateTransposicaoPDF() {
   y += 3;
 
   cifras.forEach((c) => {
-    y = ensureSpace(doc, y, 24);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
-    addText(doc, c.nome, MARGIN + 5, y + 6, { size: 9, color: COLORS.blue, style: "bold" });
-    addText(doc, `Original: ${c.original}`, MARGIN + 5, y + 12, { size: 8, color: COLORS.muted });
-    addText(doc, `Alto: ${c.alto}`, MARGIN + 5, y + 16.5, { size: 8, color: COLORS.cyan });
-    addText(doc, `Tenor: ${c.tenor}`, MARGIN + CONTENT_W / 2, y + 16.5, { size: 8, color: COLORS.amber });
-    y += 23;
+    y = ensureSpace(doc, y, 28);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 24, 3, COLORS.cardBg);
+    addText(doc, c.nome, MARGIN + 5, y + 7, { size: 11, color: COLORS.blue, style: "bold" });
+    addText(doc, `Original: ${c.original}`, MARGIN + 5, y + 13.5, { size: 10, color: COLORS.muted });
+    addText(doc, `Alto: ${c.alto}`, MARGIN + 5, y + 19.5, { size: 10, color: COLORS.cyan });
+    addText(doc, `Tenor: ${c.tenor}`, MARGIN + CONTENT_W / 2, y + 19.5, { size: 10, color: COLORS.amber });
+    y += 27;
   });
 
   // DICAS PRÁTICAS
@@ -607,11 +605,11 @@ export async function generateTransposicaoPDF() {
   ];
 
   dicas.forEach((d) => {
-    y = ensureSpace(doc, y, 18);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
-    addText(doc, d.titulo, MARGIN + 5, y + 6, { size: 9, color: COLORS.white, style: "bold" });
-    addText(doc, d.texto, MARGIN + 5, y + 11, { size: 8, color: COLORS.muted, maxWidth: CONTENT_W - 10 });
-    y += 17;
+    y = ensureSpace(doc, y, 22);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 18, 3, COLORS.cardBg);
+    addText(doc, d.titulo, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, d.texto, MARGIN + 5, y + 14, { size: 10, color: COLORS.muted, maxWidth: CONTENT_W - 10 });
+    y += 21;
   });
 
   // RESUMO
@@ -620,19 +618,19 @@ export async function generateTransposicaoPDF() {
   y = drawSectionHeader(doc, MARGIN, "Resumo Rapido para Decorar", "Cole esta pagina no seu caderno de cifras", COLORS.blue);
   y += 8;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W / 2 - 3, 35, 4, COLORS.cardBg);
-  addText(doc, "SAX ALTO / BARITONO (Eb)", MARGIN + 5, y + 8, { size: 10, color: COLORS.cyan, style: "bold" });
-  addText(doc, "Toque uma terca menor acima", MARGIN + 5, y + 15, { size: 9, color: COLORS.white, style: "bold" });
-  addText(doc, "(3 semitons) da nota Concert.", MARGIN + 5, y + 20.5, { size: 9, color: COLORS.white });
-  addText(doc, "Cifra Do → toque La", MARGIN + 5, y + 27, { size: 9, color: COLORS.amber });
-  addText(doc, "Cifra Fa → toque Re", MARGIN + 5, y + 32, { size: 9, color: COLORS.amber });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W / 2 - 3, 40, 4, COLORS.cardBg);
+  addText(doc, "SAX ALTO / BARITONO (Eb)", MARGIN + 5, y + 9, { size: 12, color: COLORS.cyan, style: "bold" });
+  addText(doc, "Toque uma terca menor acima", MARGIN + 5, y + 17, { size: 11, color: COLORS.white, style: "bold" });
+  addText(doc, "(3 semitons) da nota Concert.", MARGIN + 5, y + 23, { size: 11, color: COLORS.white });
+  addText(doc, "Cifra Do → toque La", MARGIN + 5, y + 30, { size: 11, color: COLORS.amber });
+  addText(doc, "Cifra Fa → toque Re", MARGIN + 5, y + 36, { size: 11, color: COLORS.amber });
 
-  drawRoundedRect(doc, MARGIN + CONTENT_W / 2 + 3, y, CONTENT_W / 2 - 3, 35, 4, COLORS.cardBg);
-  addText(doc, "SAX TENOR / SOPRANO (Bb)", MARGIN + CONTENT_W / 2 + 8, y + 8, { size: 10, color: COLORS.amber, style: "bold" });
-  addText(doc, "Toque um tom acima", MARGIN + CONTENT_W / 2 + 8, y + 15, { size: 9, color: COLORS.white, style: "bold" });
-  addText(doc, "(2 semitons) da nota Concert.", MARGIN + CONTENT_W / 2 + 8, y + 20.5, { size: 9, color: COLORS.white });
-  addText(doc, "Cifra Do → toque Re", MARGIN + CONTENT_W / 2 + 8, y + 27, { size: 9, color: COLORS.amber });
-  addText(doc, "Cifra Fa → toque Sol", MARGIN + CONTENT_W / 2 + 8, y + 32, { size: 9, color: COLORS.amber });
+  drawRoundedRect(doc, MARGIN + CONTENT_W / 2 + 3, y, CONTENT_W / 2 - 3, 40, 4, COLORS.cardBg);
+  addText(doc, "SAX TENOR / SOPRANO (Bb)", MARGIN + CONTENT_W / 2 + 8, y + 9, { size: 12, color: COLORS.amber, style: "bold" });
+  addText(doc, "Toque um tom acima", MARGIN + CONTENT_W / 2 + 8, y + 17, { size: 11, color: COLORS.white, style: "bold" });
+  addText(doc, "(2 semitons) da nota Concert.", MARGIN + CONTENT_W / 2 + 8, y + 23, { size: 11, color: COLORS.white });
+  addText(doc, "Cifra Do → toque Re", MARGIN + CONTENT_W / 2 + 8, y + 30, { size: 11, color: COLORS.amber });
+  addText(doc, "Cifra Fa → toque Sol", MARGIN + CONTENT_W / 2 + 8, y + 36, { size: 11, color: COLORS.amber });
 
   // TABELA DE BOLSO
   doc.addPage();
@@ -643,23 +641,23 @@ export async function generateTransposicaoPDF() {
   // Compact table
   doc.setDrawColor(100, 100, 100);
   const colW = CONTENT_W / 3;
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 8, 2, COLORS.blue);
-  addText(doc, "CONCERT", MARGIN + colW * 0.5, y + 5.5, { size: 8, color: COLORS.white, style: "bold", align: "center" });
-  addText(doc, "ALTO (Eb)", MARGIN + colW * 1.5, y + 5.5, { size: 8, color: COLORS.white, style: "bold", align: "center" });
-  addText(doc, "TENOR (Bb)", MARGIN + colW * 2.5, y + 5.5, { size: 8, color: COLORS.white, style: "bold", align: "center" });
-  y += 9;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
+  addText(doc, "CONCERT", MARGIN + colW * 0.5, y + 7, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, "ALTO (Eb)", MARGIN + colW * 1.5, y + 7, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, "TENOR (Bb)", MARGIN + colW * 2.5, y + 7, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+  y += 11;
 
   tabelaTransposicao.forEach((row, i) => {
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 7, 1, bg);
-    addText(doc, row.concert, MARGIN + colW * 0.5, y + 5, { size: 8, color: COLORS.white, style: "bold", align: "center" });
-    addText(doc, row.alto, MARGIN + colW * 1.5, y + 5, { size: 8, color: COLORS.cyan, align: "center" });
-    addText(doc, row.tenor, MARGIN + colW * 2.5, y + 5, { size: 8, color: COLORS.amber, align: "center" });
-    y += 7.5;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
+    addText(doc, row.concert, MARGIN + colW * 0.5, y + 6.5, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+    addText(doc, row.alto, MARGIN + colW * 1.5, y + 6.5, { size: 10, color: COLORS.cyan, align: "center" });
+    addText(doc, row.tenor, MARGIN + colW * 2.5, y + 6.5, { size: 10, color: COLORS.amber, align: "center" });
+    y += 9.5;
   });
 
   y += 5;
-  addText(doc, "Soprano = coluna Tenor  |  Baritono = coluna Alto", PAGE_W / 2, y, { size: 8, color: COLORS.muted, align: "center" });
+  addText(doc, "Soprano = coluna Tenor  |  Baritono = coluna Alto", PAGE_W / 2, y, { size: 10, color: COLORS.muted, align: "center" });
 
   addPageNumber(doc, logoBase64);
   doc.save("Kit-Transposicao-Instantanea-Clube-do-Sax.pdf");
@@ -796,9 +794,9 @@ export async function generateManutencaoPDF() {
     // Fix bottom corners of header
     doc.setFillColor(...group.color);
     doc.rect(x, y + 6, colW, 4, "F");
-    addText(doc, group.freq, x + colW / 2, y + 7, { size: 9, color: COLORS.white, style: "bold", align: "center" });
+    addText(doc, group.freq, x + colW / 2, y + 7, { size: 10, color: COLORS.white, style: "bold", align: "center" });
     group.items.forEach((item, j) => {
-      addText(doc, `☐  ${item}`, x + 5, y + 17 + j * 8, { size: 8, color: COLORS.white });
+      addText(doc, `☐  ${item}`, x + 5, y + 17 + j * 9, { size: 10, color: COLORS.white });
     });
   });
 
@@ -809,12 +807,12 @@ export async function generateManutencaoPDF() {
   y += 3;
 
   cuidadosDiarios.forEach((item) => {
-    y = ensureSpace(doc, y, 24);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
-    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 6, { size: 9, color: COLORS.white, style: "bold" });
-    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 11.5, { size: 8, color: COLORS.muted });
-    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 16.5, { size: 8, color: COLORS.emerald, style: "italic" });
-    y += 23;
+    y = ensureSpace(doc, y, 28);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 24, 3, COLORS.cardBg);
+    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 14, { size: 10, color: COLORS.muted });
+    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 20, { size: 10, color: COLORS.emerald, style: "italic" });
+    y += 27;
   });
 
   // CUIDADOS SEMANAIS
@@ -824,12 +822,12 @@ export async function generateManutencaoPDF() {
   y += 3;
 
   cuidadosSemanais.forEach((item) => {
-    y = ensureSpace(doc, y, 24);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
-    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 6, { size: 9, color: COLORS.white, style: "bold" });
-    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 11.5, { size: 8, color: COLORS.muted });
-    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 16.5, { size: 8, color: COLORS.blue, style: "italic" });
-    y += 23;
+    y = ensureSpace(doc, y, 28);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 24, 3, COLORS.cardBg);
+    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 14, { size: 10, color: COLORS.muted });
+    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 20, { size: 10, color: COLORS.blue, style: "italic" });
+    y += 27;
   });
 
   // CUIDADOS MENSAIS
@@ -839,12 +837,12 @@ export async function generateManutencaoPDF() {
   y += 3;
 
   cuidadosMensais.forEach((item) => {
-    y = ensureSpace(doc, y, 24);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
-    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 6, { size: 9, color: COLORS.white, style: "bold" });
-    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 11.5, { size: 8, color: COLORS.muted });
-    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 16.5, { size: 8, color: COLORS.amber, style: "italic" });
-    y += 23;
+    y = ensureSpace(doc, y, 28);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 24, 3, COLORS.cardBg);
+    addText(doc, `✓ ${item.acao}`, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
+    addText(doc, `Como: ${item.como}`, MARGIN + 5, y + 14, { size: 10, color: COLORS.muted });
+    addText(doc, `→ ${item.porque}`, MARGIN + 5, y + 20, { size: 10, color: COLORS.amber, style: "italic" });
+    y += 27;
   });
 
   // SINAIS DE ALERTA
@@ -854,15 +852,15 @@ export async function generateManutencaoPDF() {
   y += 3;
 
   sinaisAlerta.forEach((item) => {
-    y = ensureSpace(doc, y, 28);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 24, 3, COLORS.cardBg);
-    addText(doc, item.sinal, MARGIN + 5, y + 6, { size: 9, color: COLORS.white, style: "bold" });
+    y = ensureSpace(doc, y, 32);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 28, 3, COLORS.cardBg);
+    addText(doc, item.sinal, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
     const gravColor = item.gravidade === "ALTA" ? COLORS.red : item.gravidade === "MEDIA" ? COLORS.amber : COLORS.green;
-    addText(doc, item.gravidade, MARGIN + CONTENT_W - 25, y + 6, { size: 7, color: gravColor, style: "bold" });
-    addText(doc, `Causa: ${item.causa}`, MARGIN + 5, y + 11.5, { size: 8, color: COLORS.muted });
-    addText(doc, `Acao: ${item.acao}`, MARGIN + 5, y + 16.5, { size: 8, color: COLORS.white });
-    addText(doc, `Custo estimado: ${item.custo}`, MARGIN + 5, y + 21, { size: 8, color: COLORS.amber, style: "italic" });
-    y += 27;
+    addText(doc, item.gravidade, MARGIN + CONTENT_W - 25, y + 7, { size: 9, color: gravColor, style: "bold" });
+    addText(doc, `Causa: ${item.causa}`, MARGIN + 5, y + 13.5, { size: 10, color: COLORS.muted });
+    addText(doc, `Acao: ${item.acao}`, MARGIN + 5, y + 19.5, { size: 10, color: COLORS.white });
+    addText(doc, `Custo estimado: ${item.custo}`, MARGIN + 5, y + 25, { size: 10, color: COLORS.amber, style: "italic" });
+    y += 31;
   });
 
   // GUIA DE PALHETAS
@@ -872,13 +870,13 @@ export async function generateManutencaoPDF() {
   y += 3;
 
   palhetas.forEach((sec) => {
-    y = ensureSpace(doc, y, sec.itens.length * 6 + 16);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, sec.itens.length * 6 + 12, 3, COLORS.cardBg);
-    addText(doc, sec.titulo, MARGIN + 5, y + 7, { size: 10, color: COLORS.emerald, style: "bold" });
+    y = ensureSpace(doc, y, sec.itens.length * 7 + 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, sec.itens.length * 7 + 14, 3, COLORS.cardBg);
+    addText(doc, sec.titulo, MARGIN + 5, y + 8, { size: 12, color: COLORS.emerald, style: "bold" });
     sec.itens.forEach((item, j) => {
-      addText(doc, `• ${item}`, MARGIN + 8, y + 14 + j * 6, { size: 8, color: COLORS.white });
+      addText(doc, `• ${item}`, MARGIN + 8, y + 16 + j * 7, { size: 10, color: COLORS.white });
     });
-    y += sec.itens.length * 6 + 16;
+    y += sec.itens.length * 7 + 18;
   });
 
   // TABELA DE ECONOMIA
@@ -887,26 +885,26 @@ export async function generateManutencaoPDF() {
   y = drawSectionHeader(doc, MARGIN, "Quanto Voce Economiza", "Comparativo real: com vs sem manutencao preventiva", COLORS.emerald);
   y += 3;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.emerald);
-  addText(doc, "PROBLEMA", MARGIN + 5, y + 7, { size: 8, color: COLORS.white, style: "bold" });
-  addText(doc, "SEM CUIDADO", MARGIN + 75, y + 7, { size: 8, color: COLORS.red, style: "bold" });
-  addText(doc, "COM ESTE GUIA", MARGIN + 130, y + 7, { size: 8, color: COLORS.green, style: "bold" });
-  y += 12;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 12, 2, COLORS.emerald);
+  addText(doc, "PROBLEMA", MARGIN + 5, y + 8, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "SEM CUIDADO", MARGIN + 75, y + 8, { size: 10, color: COLORS.red, style: "bold" });
+  addText(doc, "COM ESTE GUIA", MARGIN + 130, y + 8, { size: 10, color: COLORS.green, style: "bold" });
+  y += 14;
 
   economia.forEach((row, i) => {
-    y = ensureSpace(doc, y, 10);
+    y = ensureSpace(doc, y, 12);
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
-    addText(doc, row.item, MARGIN + 5, y + 6.5, { size: 8, color: COLORS.white, style: "bold" });
-    addText(doc, row.sem, MARGIN + 75, y + 6.5, { size: 8, color: COLORS.red });
-    addText(doc, row.com, MARGIN + 130, y + 6.5, { size: 8, color: COLORS.green });
-    y += 10;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 11, 1, bg);
+    addText(doc, row.item, MARGIN + 5, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+    addText(doc, row.sem, MARGIN + 75, y + 7.5, { size: 10, color: COLORS.red });
+    addText(doc, row.com, MARGIN + 130, y + 7.5, { size: 10, color: COLORS.green });
+    y += 12;
   });
 
   y += 6;
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.lightCardBg);
-  addText(doc, "ECONOMIA ESTIMADA:", MARGIN + 5, y + 6, { size: 9, color: COLORS.amber, style: "bold" });
-  addText(doc, "R$ 500 a R$ 1.000 por ano seguindo este checklist. O guia se paga na primeira semana.", MARGIN + 5, y + 11.5, { size: 8, color: COLORS.white });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 16, 3, COLORS.lightCardBg);
+  addText(doc, "ECONOMIA ESTIMADA:", MARGIN + 5, y + 7, { size: 11, color: COLORS.amber, style: "bold" });
+  addText(doc, "R$ 500 a R$ 1.000 por ano seguindo este checklist. O guia se paga na primeira semana.", MARGIN + 5, y + 13, { size: 10, color: COLORS.white });
 
   // REGRA DE OURO
   doc.addPage();
@@ -914,11 +912,11 @@ export async function generateManutencaoPDF() {
   y = drawSectionHeader(doc, MARGIN, "Regra de Ouro", "O segredo dos profissionais", COLORS.emerald);
   y += 8;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 40, 4, COLORS.cardBg);
-  addText(doc, "5 minutos de cuidado apos cada sessao", MARGIN + 8, y + 12, { size: 13, color: COLORS.emerald, style: "bold" });
-  addText(doc, "economizam horas no luthier e", MARGIN + 8, y + 20, { size: 12, color: COLORS.white });
-  addText(doc, "centenas de reais por ano.", MARGIN + 8, y + 27, { size: 12, color: COLORS.white });
-  addText(doc, "Imprima o checklist. Cole no espaco de estudo. Transforme em habito.", MARGIN + 8, y + 35, { size: 9, color: COLORS.muted, style: "italic" });
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 45, 4, COLORS.cardBg);
+  addText(doc, "5 minutos de cuidado apos cada sessao", MARGIN + 8, y + 14, { size: 15, color: COLORS.emerald, style: "bold" });
+  addText(doc, "economizam horas no luthier e", MARGIN + 8, y + 23, { size: 13, color: COLORS.white });
+  addText(doc, "centenas de reais por ano.", MARGIN + 8, y + 31, { size: 13, color: COLORS.white });
+  addText(doc, "Imprima o checklist. Cole no espaco de estudo. Transforme em habito.", MARGIN + 8, y + 40, { size: 11, color: COLORS.muted, style: "italic" });
 
   addPageNumber(doc, logoBase64);
   doc.save("Checklist-Manutencao-Sax-Clube-do-Sax.pdf");
