@@ -2,6 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Star, Lightbulb, Printer, BookOpen, 
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logo from "@/assets/logo-clube-sax.webp";
+import { generateDigitacaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
 
@@ -324,13 +325,13 @@ const OrderBumpDigitacao = () => {
               <h3 className="text-white font-bold font-heading text-lg">Baixar Guia Completo em PDF</h3>
             </div>
             <p className="text-white/70 text-sm font-body mb-4">26+ páginas • Imprima e cole na estante do sax • Consulta rápida para sempre</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-violet-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={generateDigitacaoPDF}
+              className="inline-flex items-center gap-2 bg-white text-violet-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR PDF COMPLETO
-            </a>
+            </button>
           </div>
 
           {/* REGISTROS — cada um com accordion */}
@@ -448,13 +449,13 @@ const OrderBumpDigitacao = () => {
 
           {/* Bottom Download CTA */}
           <div className="mt-10 text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={generateDigitacaoPDF}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR GUIA COMPLETO EM PDF (26+ PÁG)
-            </a>
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Imprima todas as páginas e tenha sempre à mão
             </p>
