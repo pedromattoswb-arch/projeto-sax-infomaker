@@ -2,6 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Wrench, AlertTriangle, CalendarCheck
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logo from "@/assets/logo-clube-sax.webp";
+import { generateManutencaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
 
@@ -289,13 +290,13 @@ const OrderBumpManutencao = () => {
               <h3 className="text-white font-bold font-heading text-lg">Baixar Guia Completo em PDF</h3>
             </div>
             <p className="text-white/70 text-sm font-body mb-4">22+ páginas • Checklist imprimível • Guia de palhetas • Tabela de economia</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={generateManutencaoPDF}
+              className="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR PDF COMPLETO
-            </a>
+            </button>
           </div>
 
           {/* Checklist Visual Imprimível */}
@@ -467,13 +468,13 @@ const OrderBumpManutencao = () => {
 
           {/* Bottom Download CTA */}
           <div className="mt-10 text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={generateManutencaoPDF}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR GUIA COMPLETO EM PDF (22+ PÁG)
-            </a>
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Checklist + Guia de Palhetas + Tabela de Economia
             </p>

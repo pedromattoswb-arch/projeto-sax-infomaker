@@ -2,6 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, ArrowRightLeft, Music, BookOpen, Pri
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logo from "@/assets/logo-clube-sax.webp";
+import { generateTransposicaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
 
@@ -180,13 +181,13 @@ const OrderBumpTransposicao = () => {
               <h3 className="text-white font-bold font-heading text-lg">Baixar Kit Completo em PDF</h3>
             </div>
             <p className="text-white/70 text-sm font-body mb-4">18+ páginas • Imprima a tabela de bolso • Guarde dentro do case</p>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md"
+            <button
+              onClick={generateTransposicaoPDF}
+              className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold font-heading px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR PDF COMPLETO
-            </a>
+            </button>
           </div>
 
           {/* 3 Passos */}
@@ -358,13 +359,13 @@ const OrderBumpTransposicao = () => {
 
           {/* Bottom Download CTA */}
           <div className="mt-10 text-center">
-            <a
-              href="#download"
-              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            <button
+              onClick={generateTransposicaoPDF}
+              className="inline-flex items-center gap-2 gradient-cta text-primary-foreground font-bold font-heading px-8 py-4 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <Download className="w-5 h-5" />
               BAIXAR KIT COMPLETO EM PDF (18+ PÁG)
-            </a>
+            </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Imprima a tabela de bolso e nunca mais sofra pra transpor
             </p>
