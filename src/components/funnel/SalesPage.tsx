@@ -13,6 +13,7 @@ import {
 import { trackLandingView } from "@/hooks/useMetaPixel";
 
 import logo from "@/assets/logo-clube-sax.webp";
+import mockupHero from "@/assets/mockup-saxofone-hero.webp";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
 import TestimonialCarousel from "./TestimonialCarousel";
@@ -56,23 +57,23 @@ const SalesPage = () => {
       {/* HERO */}
       <section className="py-10 md:py-20 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <img
-            src="/mockup-acervo.png"
-            alt="Acervo de partituras para saxofone do Clube do Sax"
-            className="w-full max-w-[280px] md:max-w-sm mx-auto rounded-2xl shadow-2xl border border-border/50 mb-6 md:mb-8"
-            loading="eager"
-            width={280}
-            height={280}
-          />
-
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
             🎷 +847 Saxofonistas Já Garantiram Acesso
           </span>
 
-          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
+          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-5 md:mb-6">
             +2.000 Partituras Profissionais Para Sax —{" "}
             <span className="text-primary">Prontas Para Você Tocar Agora</span>
           </h1>
+
+          <img
+            src={mockupHero}
+            alt="Saxofone dourado com partituras e tablet - Clube do Sax Brasil"
+            className="w-full max-w-[220px] md:max-w-[280px] mx-auto mb-5 md:mb-6 drop-shadow-2xl"
+            loading="eager"
+            width={280}
+            height={400}
+          />
 
           <p className="text-[15px] md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
             O maior acervo de partituras para saxofone do Brasil.{" "}
