@@ -1,4 +1,4 @@
-import { Check, Star, ArrowRight, Sparkles, Crown, Zap } from "lucide-react";
+import { Check, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck } from "lucide-react";
 import { trackInitiateCheckout } from "@/hooks/useMetaPixel";
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/tdt6ypb_738069";
@@ -177,6 +177,26 @@ const PricingCards = () => {
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
           ⭐ Mais de <strong>847 saxofonistas</strong> já garantiram seu acesso
         </p>
+
+        {/* Trust Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mt-6 pt-6 border-t border-border">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <ShieldCheck className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Site Seguro</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Lock className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Dados Protegidos</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <BadgeCheck className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Pagamento via Cakto</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="text-xs font-body">Acesso Imediato</span>
+          </div>
+        </div>
       </div>
     </section>
   );

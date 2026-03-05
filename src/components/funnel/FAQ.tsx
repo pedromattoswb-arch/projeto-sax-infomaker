@@ -14,7 +14,12 @@ const faqItems = [
   {
     question: "Como recebo o acesso?",
     answer:
-      "Imediatamente. Assim que o pagamento é aprovado, você recebe o acesso por e-mail. Funciona 24h, inclusive de madrugada e fim de semana.",
+      "Assim que o pagamento é confirmado, a plataforma Cakto envia automaticamente um e-mail com seu login e senha de acesso. A entrega é instantânea — funciona 24h, inclusive de madrugada e fim de semana. Importante: confira sua caixa de entrada, a aba \"Promoções\" e a pasta de spam/lixo eletrônico.",
+  },
+  {
+    question: "Quem processa o pagamento?",
+    answer:
+      "O pagamento é processado pela Cakto, uma plataforma brasileira de pagamentos digitais utilizada por milhares de produtores de conteúdo. Toda a transação é protegida com criptografia SSL e nenhuma informação bancária é armazenada em nosso site.",
   },
   {
     question: "As partituras são de qualidade profissional?",
@@ -34,12 +39,17 @@ const faqItems = [
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia incondicional. Devolvemos 100% do valor, sem perguntas. Risco zero.",
+      "Você tem 7 dias de garantia incondicional. O reembolso é processado diretamente pela plataforma Cakto — devolvemos 100% do valor, sem perguntas. Risco zero.",
   },
   {
     question: "O acesso é realmente vitalício?",
     answer:
       "Sim. Pague uma vez e acesse para sempre — nos dois planos.",
+  },
+  {
+    question: "Posso confiar neste site?",
+    answer:
+      "Com certeza. O Clube do Sax Brasil é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp. Estamos aqui para te ajudar.",
   },
 ];
 
