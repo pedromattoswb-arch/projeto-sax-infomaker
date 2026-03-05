@@ -57,6 +57,15 @@ const SalesPage = () => {
       {/* HERO */}
       <section className="py-10 md:py-20 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
+          <img
+            src={mockupHero}
+            alt="Saxofone dourado com partituras no tablet e celular - Clube do Sax Brasil"
+            className="w-full max-w-[320px] md:max-w-md mx-auto mb-5 md:mb-6 drop-shadow-2xl"
+            loading="eager"
+            width={500}
+            height={280}
+          />
+
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
             🎷 +847 Saxofonistas Já Garantiram Acesso
           </span>
@@ -65,15 +74,6 @@ const SalesPage = () => {
             +2.000 Partituras Profissionais Para Sax —{" "}
             <span className="text-primary">Prontas Para Você Tocar Agora</span>
           </h1>
-
-          <img
-            src={mockupHero}
-            alt="Saxofone dourado com partituras e tablet - Clube do Sax Brasil"
-            className="w-full max-w-[220px] md:max-w-[280px] mx-auto mb-5 md:mb-6 drop-shadow-2xl"
-            loading="eager"
-            width={280}
-            height={400}
-          />
 
           <p className="text-[15px] md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
             O maior acervo de partituras para saxofone do Brasil.{" "}
