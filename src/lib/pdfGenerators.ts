@@ -151,6 +151,52 @@ function drawSectionHeader(doc: jsPDF, y: number, title: string, subtitle: strin
   return y + 22;
 }
 
+function drawSeparator(doc: jsPDF, y: number, color: [number, number, number], style: "line" | "dots" | "gradient" = "line"): number {
+  y = ensureSpace(doc, y, 8);
+  if (style === "dots") {
+    const dotCount = 15;
+    const spacing = CONTENT_W / (dotCount + 1);
+    for (let i = 1; i <= dotCount; i++) {
+      doc.setFillColor(...color);
+      doc.circle(MARGIN + i * spacing, y + 3, 0.8, "F");
+    }
+  } else if (style === "gradient") {
+    // Gradient-like bar with accent color
+    doc.setFillColor(...color);
+    doc.roundedRect(MARGIN + 30, y + 2, CONTENT_W - 60, 1.5, 0.75, 0.75, "F");
+    // Small diamond accent in center
+    doc.setFillColor(...color);
+    const cx = PAGE_W / 2;
+    doc.circle(cx, y + 2.75, 2, "F");
+    doc.setFillColor(...COLORS.darkBg);
+    doc.circle(cx, y + 2.75, 1, "F");
+  } else {
+    doc.setFillColor(...color);
+    doc.roundedRect(MARGIN + 20, y + 2.5, CONTENT_W - 40, 0.8, 0.4, 0.4, "F");
+  }
+  return y + 8;
+}
+
+function drawAccentBar(doc: jsPDF, y: number, color: [number, number, number]): number {
+  doc.setFillColor(...color);
+  doc.roundedRect(MARGIN, y, 3, 12, 1.5, 1.5, "F");
+  return y;
+}
+
+function drawHighlightBox(doc: jsPDF, y: number, title: string, text: string, color: [number, number, number]): number {
+  y = ensureSpace(doc, y, 35);
+  // Border effect
+  doc.setFillColor(...color);
+  doc.roundedRect(MARGIN, y, CONTENT_W, 30, 4, 4, "F");
+  drawRoundedRect(doc, MARGIN + 1.5, y + 1.5, CONTENT_W - 3, 27, 3, COLORS.cardBg);
+  // Accent line left
+  doc.setFillColor(...color);
+  doc.roundedRect(MARGIN + 1.5, y + 5, 2.5, 18, 1, 1, "F");
+  addText(doc, title, MARGIN + 10, y + 12, { size: 14, color, style: "bold" });
+  addText(doc, text, MARGIN + 10, y + 21, { size: 11, color: COLORS.white });
+  return y + 35;
+}
+
 function addPageNumber(doc: jsPDF, logoBase64: string) {
   const pageCount = doc.getNumberOfPages();
   for (let i = 2; i <= pageCount; i++) {
@@ -890,6 +936,7 @@ export async function generateRotinaPDF() {
     {
       titulo: "Aquecimento (10-15 min)",
       color: COLORS.emerald,
+      icon: "WARM-UP",
       items: [
         "Notas longas: Comece com Sib, Do, Re — toque cada nota por 8 tempos, foco em timbre e afinacao",
         "Respiracao diafragmatica: Inspire 4 tempos, segure 4, expire 8 — repita 5x",
@@ -900,6 +947,7 @@ export async function generateRotinaPDF() {
     {
       titulo: "Tecnica (15-20 min)",
       color: COLORS.blue,
+      icon: "TECHNIQUE",
       items: [
         "Escalas maiores: Pratique 2 tonalidades por dia (ex: Segunda = Do e Sol, Terca = Re e La)",
         "Escalas menores: Natural, harmonica e melodica — alterne semanalmente",
@@ -912,6 +960,7 @@ export async function generateRotinaPDF() {
     {
       titulo: "Repertorio (20-30 min)",
       color: COLORS.amber,
+      icon: "REPERTOIRE",
       items: [
         "Escolha 2-3 musicas do acervo Clube do Sax por semana",
         "Dia 1: Leitura lenta, identificando passagens dificeis",
@@ -925,6 +974,7 @@ export async function generateRotinaPDF() {
     {
       titulo: "Improvisacao (10-15 min)",
       color: COLORS.violet,
+      icon: "IMPROV",
       items: [
         "Toque sobre um backing track em tom maior — use apenas a escala pentatonica",
         "Adicione a blue note e cromatismos conforme ganhar confianca",
@@ -936,6 +986,7 @@ export async function generateRotinaPDF() {
     {
       titulo: "Revisao e Desafio Semanal",
       color: COLORS.green,
+      icon: "REVIEW",
       items: [
         "Domingo: Revise o que praticou na semana e anote progresso",
         "Escolha 1 musica desafiadora acima do seu nivel atual como meta semanal",
@@ -981,6 +1032,10 @@ export async function generateRotinaPDF() {
   doc.rect(0, 0, PAGE_W, 4, "F");
   addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
 
+  // Decorative line under title
+  doc.setFillColor(...COLORS.emerald);
+  doc.roundedRect(PAGE_W / 2 - 20, 39, 40, 1.5, 0.75, 0.75, "F");
+
   const tocItems = [
     "1. Aquecimento (10-15 min) .......... pag. 3",
     "2. Tecnica (15-20 min) .......... pag. 4",
@@ -991,60 +1046,92 @@ export async function generateRotinaPDF() {
     "7. Dicas Importantes .......... pag. 9",
   ];
 
-  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  drawRoundedRect(doc, MARGIN + 5, 48, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
   tocItems.forEach((item, i) => {
-    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+    addText(doc, item, MARGIN + 15, 61 + i * 12, { size: 11, color: COLORS.white });
   });
 
   // SECTIONS
-  sections.forEach((sec) => {
+  sections.forEach((sec, secIdx) => {
     doc.addPage();
     drawPageBg(doc);
-    let y = drawSectionHeader(doc, MARGIN, sec.titulo, "Etapa da rotina diaria", sec.color);
-    y += 6;
+    
+    // Decorative accent bar at top
+    doc.setFillColor(...sec.color);
+    doc.rect(0, 0, PAGE_W, 3, "F");
+    
+    let y = drawSectionHeader(doc, MARGIN + 5, sec.titulo, "Etapa da rotina diaria", sec.color);
+    y += 4;
 
     sec.items.forEach((item, idx) => {
-      y = ensureSpace(doc, y, 16);
-      drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
-      addText(doc, `${idx + 1}.`, MARGIN + 6, y + 8.5, { size: 11, color: sec.color, style: "bold" });
-      addText(doc, item, MARGIN + 14, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
-      y += 16;
+      y = ensureSpace(doc, y, 18);
+      
+      // Card with left accent bar
+      drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
+      drawAccentBar(doc, y + 1, sec.color);
+      
+      addText(doc, `${idx + 1}.`, MARGIN + 8, y + 9, { size: 12, color: sec.color, style: "bold" });
+      addText(doc, item, MARGIN + 16, y + 9, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 24 });
+      y += 17;
     });
+
+    // Separator between sections
+    if (secIdx < sections.length - 1) {
+      y = drawSeparator(doc, y + 2, sec.color, "dots");
+    }
   });
 
   // WEEKLY SCHEDULE
   doc.addPage();
   drawPageBg(doc);
-  let y = drawSectionHeader(doc, MARGIN, "Rotina Semanal Sugerida", "Planejamento dia a dia para maxima evolucao", COLORS.emerald);
-  y += 6;
+  doc.setFillColor(...COLORS.emerald);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  
+  let y = drawSectionHeader(doc, MARGIN + 5, "Rotina Semanal Sugerida", "Planejamento dia a dia para maxima evolucao", COLORS.emerald);
+  y += 4;
 
-  weeklySchedule.forEach((day) => {
-    y = ensureSpace(doc, y, 16);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
-    addText(doc, day.day, MARGIN + 6, y + 8.5, { size: 11, color: COLORS.emerald, style: "bold" });
-    addText(doc, day.focus, MARGIN + 35, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 42 });
-    y += 16;
+  const dayColors: [number, number, number][] = [COLORS.blue, COLORS.violet, COLORS.amber, COLORS.blue, COLORS.emerald, COLORS.cyan, COLORS.green];
+
+  weeklySchedule.forEach((day, i) => {
+    y = ensureSpace(doc, y, 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
+    
+    // Day badge
+    drawRoundedRect(doc, MARGIN + 3, y + 2, 28, 10, 2, dayColors[i] || COLORS.emerald);
+    addText(doc, day.day, MARGIN + 17, y + 9, { size: 9, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, day.focus, MARGIN + 36, y + 9, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 42 });
+    y += 17;
   });
+
+  // Separator
+  y = drawSeparator(doc, y + 4, COLORS.emerald, "gradient");
 
   // DICAS
   doc.addPage();
   drawPageBg(doc);
-  y = drawSectionHeader(doc, MARGIN, "Dicas Importantes", "Conselhos que fazem a diferenca na sua evolucao", COLORS.emerald);
-  y += 6;
+  doc.setFillColor(...COLORS.amber);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  
+  y = drawSectionHeader(doc, MARGIN + 5, "Dicas Importantes", "Conselhos que fazem a diferenca na sua evolucao", COLORS.amber);
+  y += 4;
 
   dicas.forEach((dica, idx) => {
-    y = ensureSpace(doc, y, 18);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
-    addText(doc, `${idx + 1}.`, MARGIN + 6, y + 9, { size: 11, color: COLORS.amber, style: "bold" });
-    addText(doc, dica, MARGIN + 14, y + 9, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
-    y += 18;
+    y = ensureSpace(doc, y, 20);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 16, 3, COLORS.cardBg);
+    drawAccentBar(doc, y + 2, COLORS.amber);
+    
+    // Number circle
+    drawRoundedRect(doc, MARGIN + 7, y + 3, 10, 10, 5, COLORS.amber);
+    addText(doc, `${idx + 1}`, MARGIN + 12, y + 10, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, dica, MARGIN + 22, y + 10, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 28 });
+    y += 20;
   });
 
-  y += 8;
-  y = ensureSpace(doc, y, 30);
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 25, 4, COLORS.cardBg);
-  addText(doc, "Lembre-se:", MARGIN + 8, y + 10, { size: 14, color: COLORS.emerald, style: "bold" });
-  addText(doc, "A pratica consistente e o segredo de todo grande saxofonista.", MARGIN + 8, y + 19, { size: 11, color: COLORS.white });
+  // Final highlight box
+  y += 6;
+  y = drawHighlightBox(doc, y, "Lembre-se:", "A pratica consistente e o segredo de todo grande saxofonista.", COLORS.emerald);
 
   addPageNumber(doc, logoBase64);
   doc.save("Rotina-de-Estudo-Saxofonistas-Clube-do-Sax.pdf");
@@ -1114,6 +1201,8 @@ export async function generateTonalidadesPDF() {
   doc.setFillColor(...COLORS.blue);
   doc.rect(0, 0, PAGE_W, 4, "F");
   addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
+  doc.setFillColor(...COLORS.blue);
+  doc.roundedRect(PAGE_W / 2 - 20, 39, 40, 1.5, 0.75, 0.75, "F");
 
   const tocItems = [
     "1. Tabela de Transposicao .......... pag. 3",
@@ -1123,89 +1212,116 @@ export async function generateTonalidadesPDF() {
     "5. Como Usar Este Mapa .......... pag. 8",
   ];
 
-  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  drawRoundedRect(doc, MARGIN + 5, 48, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
   tocItems.forEach((item, i) => {
-    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+    addText(doc, item, MARGIN + 15, 61 + i * 12, { size: 11, color: COLORS.white });
   });
 
   // TRANSPOSIÇÃO
   doc.addPage();
   drawPageBg(doc);
-  let y = drawSectionHeader(doc, MARGIN, "Tabela de Transposicao", "O sax e um instrumento transpositor — use esta referencia", COLORS.blue);
-  y += 6;
+  doc.setFillColor(...COLORS.blue);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  let y = drawSectionHeader(doc, MARGIN + 5, "Tabela de Transposicao", "O sax e um instrumento transpositor — use esta referencia", COLORS.blue);
+  y += 4;
 
   transposicao.forEach((t) => {
-    y = ensureSpace(doc, y, 24);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 20, 3, COLORS.cardBg);
-    addText(doc, t.sax, MARGIN + 6, y + 7, { size: 12, color: COLORS.blue, style: "bold" });
-    addText(doc, `Regra: ${t.regra}`, MARGIN + 6, y + 13, { size: 10, color: COLORS.white });
-    addText(doc, `Exemplo: ${t.exemplo}`, MARGIN + 6, y + 18, { size: 10, color: COLORS.muted, style: "italic" });
-    y += 24;
+    y = ensureSpace(doc, y, 26);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 22, 3, COLORS.cardBg);
+    drawAccentBar(doc, y + 3, COLORS.blue);
+    addText(doc, t.sax, MARGIN + 8, y + 8, { size: 13, color: COLORS.blue, style: "bold" });
+    addText(doc, `Regra: ${t.regra}`, MARGIN + 8, y + 14, { size: 10, color: COLORS.white });
+    addText(doc, `Exemplo: ${t.exemplo}`, MARGIN + 8, y + 19.5, { size: 10, color: COLORS.muted, style: "italic" });
+    y += 26;
   });
+
+  y = drawSeparator(doc, y, COLORS.blue, "dots");
 
   // ESCALAS MAIORES
   doc.addPage();
   drawPageBg(doc);
-  y = drawSectionHeader(doc, MARGIN, "Escalas Maiores", "Concert Pitch — nota real", COLORS.blue);
+  doc.setFillColor(...COLORS.blue);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  y = drawSectionHeader(doc, MARGIN + 5, "Escalas Maiores", "Concert Pitch — nota real", COLORS.blue);
   y += 4;
 
   // Table header
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
-  addText(doc, "TONALIDADE", MARGIN + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
-  addText(doc, "NOTAS", MARGIN + 50, y + 7, { size: 9, color: COLORS.white, style: "bold" });
-  addText(doc, "ACIDENTES", MARGIN + 140, y + 7, { size: 9, color: COLORS.white, style: "bold" });
-  y += 12;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 11, 2, COLORS.blue);
+  addText(doc, "TONALIDADE", MARGIN + 5, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "NOTAS", MARGIN + 50, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "ACIDENTES", MARGIN + 140, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+  y += 13;
 
   escalasMaiores.forEach((e, i) => {
-    y = ensureSpace(doc, y, 10);
+    y = ensureSpace(doc, y, 11);
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 9, 1, bg);
-    addText(doc, e.tom, MARGIN + 5, y + 6.5, { size: 10, color: COLORS.white, style: "bold" });
-    addText(doc, e.notas, MARGIN + 50, y + 6.5, { size: 9, color: COLORS.cyan });
-    addText(doc, e.acidentes, MARGIN + 140, y + 6.5, { size: 9, color: COLORS.amber });
-    y += 11;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 1, bg);
+    addText(doc, e.tom, MARGIN + 5, y + 7, { size: 10, color: COLORS.white, style: "bold" });
+    addText(doc, e.notas, MARGIN + 50, y + 7, { size: 9, color: COLORS.cyan });
+    addText(doc, e.acidentes, MARGIN + 140, y + 7, { size: 9, color: COLORS.amber });
+    y += 12;
   });
+
+  y = drawSeparator(doc, y + 2, COLORS.blue, "gradient");
 
   // RELATIVAS
   doc.addPage();
   drawPageBg(doc);
-  y = drawSectionHeader(doc, MARGIN, "Tonalidades Relativas", "Cada maior tem uma menor que compartilha as mesmas notas", COLORS.blue);
-  y += 6;
+  doc.setFillColor(...COLORS.cyan);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  y = drawSectionHeader(doc, MARGIN + 5, "Tonalidades Relativas", "Cada maior tem uma menor que compartilha as mesmas notas", COLORS.cyan);
+  y += 4;
 
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 2, COLORS.blue);
-  addText(doc, "TONALIDADE MAIOR", MARGIN + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
-  addText(doc, "RELATIVA MENOR", MARGIN + CONTENT_W / 2 + 5, y + 7, { size: 9, color: COLORS.white, style: "bold" });
-  y += 12;
+  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 11, 2, COLORS.cyan);
+  addText(doc, "TONALIDADE MAIOR", MARGIN + 5, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+  addText(doc, "RELATIVA MENOR", MARGIN + CONTENT_W / 2 + 5, y + 7.5, { size: 10, color: COLORS.white, style: "bold" });
+  y += 13;
 
   escalasRelativas.forEach((r, i) => {
-    y = ensureSpace(doc, y, 10);
+    y = ensureSpace(doc, y, 12);
     const bg = i % 2 === 0 ? COLORS.cardBg : COLORS.lightCardBg;
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 10, 1, bg);
-    addText(doc, r.maior, MARGIN + 5, y + 7, { size: 11, color: COLORS.white, style: "bold" });
-    addText(doc, r.menor, MARGIN + CONTENT_W / 2 + 5, y + 7, { size: 11, color: COLORS.cyan });
-    y += 12;
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 11, 1, bg);
+    addText(doc, r.maior, MARGIN + 5, y + 7.5, { size: 11, color: COLORS.white, style: "bold" });
+    // Arrow connector
+    addText(doc, "-->", MARGIN + CONTENT_W / 2 - 5, y + 7.5, { size: 9, color: COLORS.muted });
+    addText(doc, r.menor, MARGIN + CONTENT_W / 2 + 5, y + 7.5, { size: 11, color: COLORS.cyan });
+    y += 13;
   });
+
+  y = drawSeparator(doc, y + 2, COLORS.cyan, "dots");
 
   // MODOS
   doc.addPage();
   drawPageBg(doc);
-  y = drawSectionHeader(doc, MARGIN, "Os 7 Modos Gregos", "Variacoes da escala maior que criam diferentes cores sonoras", COLORS.violet);
-  y += 6;
+  doc.setFillColor(...COLORS.violet);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  y = drawSectionHeader(doc, MARGIN + 5, "Os 7 Modos Gregos", "Variacoes da escala maior que criam diferentes cores sonoras", COLORS.violet);
+  y += 4;
 
-  modos.forEach((m) => {
-    y = ensureSpace(doc, y, 18);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 15, 3, COLORS.cardBg);
-    addText(doc, m.nome, MARGIN + 6, y + 7, { size: 12, color: COLORS.violet, style: "bold" });
-    addText(doc, m.caracter, MARGIN + 55, y + 7, { size: 10, color: COLORS.white });
-    addText(doc, `Usado em: ${m.uso}`, MARGIN + 6, y + 13, { size: 10, color: COLORS.muted, style: "italic" });
-    y += 18;
+  const modeColors: [number, number, number][] = [COLORS.green, COLORS.blue, COLORS.red, COLORS.cyan, COLORS.amber, COLORS.emerald, COLORS.violet];
+
+  modos.forEach((m, i) => {
+    y = ensureSpace(doc, y, 20);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 16, 3, COLORS.cardBg);
+    drawAccentBar(doc, y + 2, modeColors[i]);
+    
+    // Mode number badge
+    drawRoundedRect(doc, MARGIN + 7, y + 2, 8, 12, 2, modeColors[i]);
+    addText(doc, `${i + 1}`, MARGIN + 11, y + 10, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, m.nome, MARGIN + 20, y + 7, { size: 12, color: modeColors[i], style: "bold" });
+    addText(doc, m.caracter, MARGIN + 65, y + 7, { size: 10, color: COLORS.white });
+    addText(doc, `Usado em: ${m.uso}`, MARGIN + 20, y + 13.5, { size: 10, color: COLORS.muted, style: "italic" });
+    y += 19;
   });
 
   // COMO USAR
   doc.addPage();
   drawPageBg(doc);
-  y = drawSectionHeader(doc, MARGIN, "Como Usar Este Mapa", "Dicas praticas para aplicar no seu dia a dia", COLORS.blue);
-  y += 6;
+  doc.setFillColor(...COLORS.blue);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  y = drawSectionHeader(doc, MARGIN + 5, "Como Usar Este Mapa", "Dicas praticas para aplicar no seu dia a dia", COLORS.blue);
+  y += 4;
 
   const dicasUso = [
     "Antes de tocar: Identifique a tonalidade da musica e confira a escala correspondente",
@@ -1215,17 +1331,19 @@ export async function generateTonalidadesPDF() {
   ];
 
   dicasUso.forEach((dica, idx) => {
-    y = ensureSpace(doc, y, 16);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 13, 3, COLORS.cardBg);
-    addText(doc, `${idx + 1}.`, MARGIN + 6, y + 8.5, { size: 11, color: COLORS.blue, style: "bold" });
-    addText(doc, dica, MARGIN + 14, y + 8.5, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 22 });
-    y += 16;
+    y = ensureSpace(doc, y, 18);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 14, 3, COLORS.cardBg);
+    drawAccentBar(doc, y + 1, COLORS.blue);
+    
+    drawRoundedRect(doc, MARGIN + 7, y + 2, 10, 10, 5, COLORS.blue);
+    addText(doc, `${idx + 1}`, MARGIN + 12, y + 9, { size: 10, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, dica, MARGIN + 22, y + 9, { size: 10, color: COLORS.white, maxWidth: CONTENT_W - 28 });
+    y += 18;
   });
 
-  y += 8;
-  drawRoundedRect(doc, MARGIN, y, CONTENT_W, 25, 4, COLORS.cardBg);
-  addText(doc, "Este mapa e sua bussola musical.", MARGIN + 8, y + 10, { size: 14, color: COLORS.blue, style: "bold" });
-  addText(doc, "Consulte sempre que precisar e internalize as tonalidades aos poucos.", MARGIN + 8, y + 19, { size: 11, color: COLORS.white });
+  y += 6;
+  y = drawHighlightBox(doc, y, "Este mapa e sua bussola musical.", "Consulte sempre que precisar e internalize as tonalidades aos poucos.", COLORS.blue);
 
   addPageNumber(doc, logoBase64);
   doc.save("Mapa-de-Tonalidades-Sax-Clube-do-Sax.pdf");
@@ -1358,6 +1476,8 @@ export async function generateMusicasPDF() {
   doc.setFillColor(...COLORS.amber);
   doc.rect(0, 0, PAGE_W, 4, "F");
   addText(doc, "SUMARIO", PAGE_W / 2, 35, { size: 20, color: COLORS.white, style: "bold", align: "center" });
+  doc.setFillColor(...COLORS.amber);
+  doc.roundedRect(PAGE_W / 2 - 20, 39, 40, 1.5, 0.75, 0.75, "F");
 
   const tocItems = [
     "1. Lista Completa — 100 Musicas .......... pag. 3-14",
@@ -1365,9 +1485,9 @@ export async function generateMusicasPDF() {
     "3. Dica de interpretacao para cada musica",
   ];
 
-  drawRoundedRect(doc, MARGIN + 5, 45, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
+  drawRoundedRect(doc, MARGIN + 5, 48, CONTENT_W - 10, tocItems.length * 12 + 15, 6, COLORS.cardBg);
   tocItems.forEach((item, i) => {
-    addText(doc, item, MARGIN + 15, 58 + i * 12, { size: 11, color: COLORS.white });
+    addText(doc, item, MARGIN + 15, 61 + i * 12, { size: 11, color: COLORS.white });
   });
 
   // Stats
@@ -1375,33 +1495,62 @@ export async function generateMusicasPDF() {
   const intermediarios = songs.filter(s => s.difficulty === "Intermediario").length;
   const avancados = songs.filter(s => s.difficulty === "Avancado").length;
   
-  let yToc = 58 + tocItems.length * 12 + 10;
-  drawRoundedRect(doc, MARGIN + 5, yToc, CONTENT_W - 10, 30, 6, COLORS.lightCardBg);
-  addText(doc, "RESUMO", MARGIN + 15, yToc + 8, { size: 10, color: COLORS.amber, style: "bold" });
-  addText(doc, `${songs.length} musicas  |  ${iniciantes} Iniciante  |  ${intermediarios} Intermediario  |  ${avancados} Avancado`, MARGIN + 15, yToc + 16, { size: 10, color: COLORS.white });
+  let yToc = 61 + tocItems.length * 12 + 10;
+  drawRoundedRect(doc, MARGIN + 5, yToc, CONTENT_W - 10, 35, 6, COLORS.lightCardBg);
+  addText(doc, "RESUMO DA LISTA", MARGIN + 15, yToc + 9, { size: 11, color: COLORS.amber, style: "bold" });
+  
+  // Stat badges
+  const statY = yToc + 15;
+  const badgeW = (CONTENT_W - 30) / 3;
+  
+  drawRoundedRect(doc, MARGIN + 10, statY, badgeW, 14, 3, COLORS.green);
+  addText(doc, `${iniciantes}`, MARGIN + 10 + badgeW / 2, statY + 6, { size: 12, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, "Iniciante", MARGIN + 10 + badgeW / 2, statY + 11.5, { size: 8, color: COLORS.white, align: "center" });
+  
+  drawRoundedRect(doc, MARGIN + 10 + badgeW + 5, statY, badgeW, 14, 3, COLORS.amber);
+  addText(doc, `${intermediarios}`, MARGIN + 10 + badgeW + 5 + badgeW / 2, statY + 6, { size: 12, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, "Intermediario", MARGIN + 10 + badgeW + 5 + badgeW / 2, statY + 11.5, { size: 8, color: COLORS.white, align: "center" });
+  
+  drawRoundedRect(doc, MARGIN + 10 + (badgeW + 5) * 2, statY, badgeW, 14, 3, COLORS.red);
+  addText(doc, `${avancados}`, MARGIN + 10 + (badgeW + 5) * 2 + badgeW / 2, statY + 6, { size: 12, color: COLORS.white, style: "bold", align: "center" });
+  addText(doc, "Avancado", MARGIN + 10 + (badgeW + 5) * 2 + badgeW / 2, statY + 11.5, { size: 8, color: COLORS.white, align: "center" });
+
   const genres = [...new Set(songs.map(s => s.genre))];
-  addText(doc, `${genres.length} generos: Pop, Jazz, MPB, Gospel, Blues, Rock e mais`, MARGIN + 15, yToc + 24, { size: 10, color: COLORS.muted });
+  addText(doc, `${genres.length} generos: Pop, Jazz, MPB, Gospel, Blues, Rock e mais`, PAGE_W / 2, yToc + 33, { size: 9, color: COLORS.muted, align: "center" });
 
   // SONG LIST
   doc.addPage();
   drawPageBg(doc);
-  let y = drawSectionHeader(doc, MARGIN, "100 Musicas Essenciais", "Lista completa com genero, nivel e dicas", COLORS.amber);
-  y += 4;
+  doc.setFillColor(...COLORS.amber);
+  doc.rect(0, 0, PAGE_W, 3, "F");
+  let y = drawSectionHeader(doc, MARGIN + 5, "100 Musicas Essenciais", "Lista completa com genero, nivel e dicas", COLORS.amber);
+  y += 3;
 
   songs.forEach((song, i) => {
-    y = ensureSpace(doc, y, 18);
-    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 15, 2, COLORS.cardBg);
+    y = ensureSpace(doc, y, 19);
+    drawRoundedRect(doc, MARGIN, y, CONTENT_W, 16, 2, COLORS.cardBg);
     
     const num = String(i + 1).padStart(2, "0");
-    addText(doc, num, MARGIN + 4, y + 6, { size: 9, color: COLORS.muted, style: "bold" });
-    addText(doc, song.name, MARGIN + 14, y + 6, { size: 10, color: COLORS.white, style: "bold" });
-    
     const dc = diffColor[song.difficulty] || COLORS.white;
-    addText(doc, song.difficulty, MARGIN + CONTENT_W - 5, y + 6, { size: 7, color: dc, style: "bold", align: "right" });
     
-    addText(doc, `${song.artist} | ${song.genre}`, MARGIN + 14, y + 11, { size: 8, color: COLORS.muted });
-    addText(doc, song.tip, MARGIN + 14, y + 14.5, { size: 7.5, color: dc, style: "italic", maxWidth: CONTENT_W - 20 });
-    y += 17;
+    // Number badge
+    drawRoundedRect(doc, MARGIN + 2, y + 2, 12, 12, 2, dc);
+    addText(doc, num, MARGIN + 8, y + 10, { size: 9, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, song.name, MARGIN + 18, y + 6.5, { size: 10, color: COLORS.white, style: "bold" });
+    
+    // Difficulty badge on right
+    drawRoundedRect(doc, MARGIN + CONTENT_W - 28, y + 2, 26, 6, 3, dc);
+    addText(doc, song.difficulty, MARGIN + CONTENT_W - 15, y + 6.5, { size: 6.5, color: COLORS.white, style: "bold", align: "center" });
+    
+    addText(doc, `${song.artist}  |  ${song.genre}`, MARGIN + 18, y + 11, { size: 8, color: COLORS.muted });
+    addText(doc, song.tip, MARGIN + 18, y + 14.5, { size: 7.5, color: dc, style: "italic", maxWidth: CONTENT_W - 24 });
+    y += 18;
+    
+    // Add separator every 25 songs
+    if ((i + 1) % 25 === 0 && i < songs.length - 1) {
+      y = drawSeparator(doc, y, COLORS.amber, "dots");
+    }
   });
 
   addPageNumber(doc, logoBase64);
