@@ -8,6 +8,9 @@ import NotFound from "./pages/NotFound";
 import BonusRotina from "./pages/BonusRotina";
 import BonusTonalidades from "./pages/BonusTonalidades";
 import BonusMusicas from "./pages/BonusMusicas";
+import OrderBumpDigitacao from "./pages/OrderBumpDigitacao";
+import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
+import OrderBumpManutencao from "./pages/OrderBumpManutencao";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +25,9 @@ const App = () => (
           <Route path="/bonus/rotina-de-estudo" element={<BonusRotina />} />
           <Route path="/bonus/mapa-de-tonalidades" element={<BonusTonalidades />} />
           <Route path="/bonus/100-musicas" element={<BonusMusicas />} />
+          <Route path="/orderbump/digitacao" element={<OrderBumpDigitacao />} />
+          <Route path="/orderbump/transposicao" element={<OrderBumpTransposicao />} />
+          <Route path="/orderbump/manutencao" element={<OrderBumpManutencao />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
