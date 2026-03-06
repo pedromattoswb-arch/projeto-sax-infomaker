@@ -3,7 +3,8 @@ const WhatsAppButton = () => {
   const message = encodeURIComponent(
     "Olá! Tenho interesse no acervo de partituras para saxofone do Clube do Sax. Pode me ajudar?"
   );
-  const url = `https://wa.me/${phone}?text=${message}`;
+  const params = typeof window !== "undefined" ? window.location.search : "";
+  const url = `https://wa.me/${phone}?text=${message}${params ? "&" + params.substring(1) : ""}`;
 
   return (
     <a
