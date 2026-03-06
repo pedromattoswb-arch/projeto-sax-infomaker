@@ -37,7 +37,7 @@ const PartituraCarousel = () => {
               <img
                 src={src}
                 alt={`Exemplo de partitura ${(i % partituras.length) + 1}`}
-                className="w-full h-auto rounded-lg md:rounded-xl border border-white/10 shadow-lg shadow-black/30"
+                className="w-full h-auto rounded-lg md:rounded-xl border border-white/10 shadow-lg shadow-black/30 bg-white"
                 loading="lazy"
                 draggable={false}
               />
