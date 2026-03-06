@@ -45,7 +45,7 @@ const PartituraCarousel = () => {
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, dragFree: false, align: "start", speed: 5 },
+    { loop: true, dragFree: false, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false, playOnInit: true })]
   );
 
