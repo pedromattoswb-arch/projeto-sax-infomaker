@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Music,
   Headphones,
@@ -13,7 +12,6 @@ import {
   Lock,
   BadgeCheck,
 } from "lucide-react";
-import { trackLandingView } from "@/hooks/useMetaPixel";
 
 import logo from "@/assets/logo-clube-sax.webp";
 import mockupHero from "@/assets/mockup-saxofone-hero.webp";
@@ -40,10 +38,6 @@ const scrollToOffers = () => {
 };
 
 const SalesPage = () => {
-  useEffect(() => {
-    trackLandingView();
-  }, []);
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}

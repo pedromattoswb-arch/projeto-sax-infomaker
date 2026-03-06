@@ -1,5 +1,4 @@
 import { Check, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck } from "lucide-react";
-import { trackInitiateCheckout } from "@/hooks/useMetaPixel";
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/tdt6ypb_738069";
 const PREMIUM_LINK = "https://pay.cakto.com.br/3djucaz";
@@ -26,13 +25,11 @@ const premiumFeatures = [
 
 const PricingCards = () => {
   const handleCheckout = (plan: "essential" | "premium") => {
-    const value = plan === "essential" ? 9.9 : 19.9;
-    trackInitiateCheckout({
-      content_name: plan === "essential" ? "Essencial" : "Premium",
-      value,
-      currency: "BRL",
-    });
-    window.open(plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK, "_blank");
+    const link = plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK;
+    const params = window.location.search;
+    const separator = link.includes("?") ? "&" : "?";
+    const finalUrl = params ? `${link}${separator}${params.substring(1)}` : link;
+    window.location.href = finalUrl;
   };
 
   return (
