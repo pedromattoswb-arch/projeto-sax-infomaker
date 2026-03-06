@@ -23,6 +23,7 @@ import BonusSection from "./BonusSection";
 import SongCatalog from "./SongCatalog";
 import FAQ from "./FAQ";
 import WhatsAppButton from "./WhatsAppButton";
+import PartituraCarousel from "./PartituraCarousel";
 
 const features = [
   { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-emerald-500 to-green-700" },
@@ -105,6 +106,9 @@ const SalesPage = () => {
           </p>
         </div>
       </section>
+
+      {/* CARROSSEL DE PARTITURAS */}
+      <PartituraCarousel />
 
       {/* O QUE VOCÊ RECEBE */}
       <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
