@@ -1,35 +1,64 @@
 
 
-## Plano: Carrossel Infinito de Partituras de Exemplo
+## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
 
-### O que vamos fazer
-Criar um carrossel horizontal com scroll infinito e continuo (sem parar), mostrando as partituras enviadas como exemplos visuais do acervo. Sera inserido entre a secao HERO e a secao "O Que Voce Recebe", com um titulo reforçando a quantidade do acervo.
+### Estrategia Principal
+A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
 
-### Implementacao
+---
 
-**1. Copiar as 8 imagens de partitura para `src/assets/partituras-exemplo/`**
-- As 8 imagens enviadas (Somewhere Over The Rainbow p1-p2, Alem do Horizonte p1-p2, A Viagem p1, A Sua p1-p2, Ainda Lembro p1-p2)
+### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
 
-**2. Criar componente `src/components/funnel/PartituraCarousel.tsx`**
-- Tecnica: CSS `@keyframes` scroll infinito (sem biblioteca), duplicando as imagens para efeito seamless
-- Duas fileiras (ou uma) de imagens deslizando horizontalmente sem pausa
-- Cada imagem com borda arredondada, sombra sutil, leve rotacao/tilt para efeito visual
-- Velocidade constante, sem interacao do usuario (puro visual)
-- Ao hover, desacelera levemente (opcional)
+**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
+- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
+- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
+- Informar que o e-mail vem do remetente da Cakto com login e senha
 
-**3. Editar `SalesPage.tsx`**
-- Inserir entre o HERO (linha 107) e "O Que Voce Recebe" (linha 109)
-- Titulo: "Veja Alguns Exemplos do Acervo" + subtitulo reforçando "+2.000 partituras profissionais para sax alto e tenor"
-- Fundo escuro para destacar as partituras brancas
+**Nova pergunta: "Quem processa o pagamento?"**
+- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
+- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
 
-### Tecnica do scroll infinito CSS
-- Duplicar o array de imagens 2x dentro de um container flex
-- Aplicar `animation: scroll Xs linear infinite` que translada -50% no eixo X
-- Isso cria loop visual perfeito sem JavaScript
+**Nova pergunta: "Posso confiar neste site?"**
+- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
 
-### Arquivos
-- Copiar 8 imagens para `src/assets/partituras-exemplo/`
-- Criar `src/components/funnel/PartituraCarousel.tsx`
-- Editar `src/components/funnel/SalesPage.tsx` (importar e inserir)
-- Editar `src/index.css` (adicionar keyframe de scroll se necessario)
+---
+
+### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+
+Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
+- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
+- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+
+---
+
+### 3. SalesPage.tsx — Garantia section reforçada
+
+Adicionar uma linha extra na secao de garantia:
+- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+
+---
+
+### 4. SalesPage.tsx — Footer profissional com selos
+
+Expandir o footer com:
+- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
+- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
+- Icones de ShieldCheck e Lock para reforço visual
+
+---
+
+### 5. SalesPage.tsx — Micro-copy no CTA final
+
+Abaixo do botao CTA final, adicionar:
+- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+
+---
+
+### Arquivos editados
+- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
+- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
+- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+
+### Principio guia
+Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
 

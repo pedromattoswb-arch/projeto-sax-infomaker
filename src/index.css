@@ -181,6 +181,16 @@
     animation: shimmer 3s linear infinite;
   }
 
+  /* Partitura infinite scroll */
+  @keyframes partitura-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-partitura-scroll {
+    animation: partitura-scroll 30s linear infinite;
+  }
+
   /* Arrow bounce */
   @keyframes arrow-bounce {
     0%, 100% { transform: translateX(0); }
