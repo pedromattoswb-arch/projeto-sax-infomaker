@@ -45,8 +45,8 @@ const PartituraCarousel = () => {
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, dragFree: true, align: "start" },
-    [Autoplay({ delay: 0, stopOnInteraction: false, playOnInit: true })]
+    { loop: true, dragFree: false, align: "start", speed: 5 },
+    [Autoplay({ delay: 3000, stopOnInteraction: false, playOnInit: true })]
   );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
