@@ -4,7 +4,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
 import p1 from "@/assets/partituras-exemplo/partitura-1.png";
-import p2 from "@/assets/partituras-exemplo/partitura-2.png";
 import p3 from "@/assets/partituras-exemplo/partitura-3.png";
 import p4 from "@/assets/partituras-exemplo/partitura-4.png";
 import p5 from "@/assets/partituras-exemplo/partitura-5.png";
@@ -15,7 +14,6 @@ import p9 from "@/assets/partituras-exemplo/partitura-9.png";
 
 const allPartituras = [
   { id: "p1", src: p1 },
-  { id: "p2", src: p2 },
   { id: "p3", src: p3 },
   { id: "p4", src: p4 },
   { id: "p5", src: p5 },
