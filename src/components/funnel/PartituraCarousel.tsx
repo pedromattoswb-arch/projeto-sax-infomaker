@@ -64,7 +64,7 @@ const PartituraCarousel = () => {
   if (visiblePartituras.length === 0) return null;
 
   return (
-    <section className="py-10 md:py-14 px-0 bg-[hsl(240,20%,10%)] overflow-hidden">
+    <section className="pt-10 md:pt-14 pb-4 md:pb-6 px-0 bg-[hsl(240,20%,10%)] overflow-hidden">
       <div className="max-w-3xl mx-auto text-center px-4 mb-6 md:mb-8 relative">
         <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
           Veja Alguns Exemplos do Acervo
