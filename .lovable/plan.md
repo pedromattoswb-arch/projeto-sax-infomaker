@@ -1,64 +1,70 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Seção de Playbacks de Amostra na Área de Exemplos do Acervo
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
+### O que vamos fazer
+Criar uma seção de reprodutores de áudio logo abaixo do carrossel de partituras (dentro da mesma área escura de exemplos), com players estilizados mostrando nome da música e gênero musical. Os 10 MP3s enviados serão copiados para `public/playbacks/` e reproduzidos via elemento `<audio>` nativo com controles customizados (botão play/pause grande e visível, barra de progresso).
 
----
+### Arquivos dos playbacks e nomes limpos
 
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
+| Arquivo | Nome exibido | Gênero |
+|---------|-------------|--------|
+| ABBA - Dancing Queen | Dancing Queen | Pop |
+| Alcione - Estranha Loucura | Estranha Loucura | MPB |
+| Bruno e Marrone - Boate Azul | Boate Azul | Sertanejo |
+| Caetano Veloso - Sozinho | Sozinho | MPB |
+| Dire Straits - Your Latest Trick | Your Latest Trick | Rock |
+| Amigo de Deus - Adhemar Campos | Amigo de Deus | Gospel |
+| Jingle Bells | Jingle Bells | Clássico |
+| Prince Ali | Prince Ali | Trilha Sonora |
+| Alegria Está no Coração | Alegria Está no Coração | Gospel |
+| Espírito Espírito | Espírito Espírito | Gospel |
 
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
+### Implementação
 
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
+**1. Copiar os 10 MP3s para `public/playbacks/`**
+- Usar `public/` pois áudio não precisa de bundling via Vite
 
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+**2. Criar componente `src/components/funnel/PlaybackSamples.tsx`**
+- Grid responsivo (2 colunas mobile, 3 desktop) de cards de áudio
+- Cada card: botão play/pause circular grande e chamativo (verde/primary), nome da música em bold, gênero em tag/badge pequena
+- Player customizado com `useRef<HTMLAudioElement>` + estado play/pause + barra de progresso
+- Apenas um áudio toca por vez (ao dar play em um, pausa os outros)
+- Visual: cards com fundo semi-transparente (glass effect), ícone de play grande, borda sutil
+- Texto de chamada: "🎧 Ouça Alguns Playbacks de Amostra" + subtítulo "Isso é só uma amostra — no acervo completo você terá acesso a muito mais"
 
----
+**3. Editar `SalesPage.tsx`**
+- Importar e inserir `<PlaybackSamples />` logo após `<PartituraCarousel />`
+- Ficará dentro do mesmo bloco visual (fundo escuro continua)
 
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+**4. Editar `PartituraCarousel.tsx`**
+- Remover o padding-bottom da section para que a transição para os playbacks seja fluida (ou manter e ajustar visualmente)
 
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+### Estrutura visual
 
----
+```text
+┌─────────────────────────────────────┐
+│  Veja Alguns Exemplos do Acervo     │  ← título existente
+│  [carrossel de partituras]          │  ← já existe
+│                                     │
+│  🎧 Ouça Alguns Playbacks de Amostra│  ← NOVO subtítulo
+│  "Isso é só uma amostra..."        │
+│                                     │
+│  ┌──────┐ ┌──────┐ ┌──────┐        │
+│  │ ▶ DQ │ │ ▶ EL │ │ ▶ BA │        │  ← cards com play
+│  │ Pop  │ │ MPB  │ │Sert. │        │
+│  └──────┘ └──────┘ └──────┘        │
+│  ┌──────┐ ┌──────┐ ┌──────┐        │
+│  │ ▶ Sz │ │ ▶ YLT│ │ ▶ AD │        │
+│  └──────┘ └──────┘ └──────┘        │
+│  ... mais cards                     │
+└─────────────────────────────────────┘
+```
 
-### 3. SalesPage.tsx — Garantia section reforçada
-
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
-
----
-
-### 4. SalesPage.tsx — Footer profissional com selos
-
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
-
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
-
----
-
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+### Detalhes técnicos
+- Player customizado via `<audio>` nativo (sem biblioteca extra)
+- Estado global dentro do componente: `playingId` para garantir que só um toca por vez
+- Barra de progresso com `timeupdate` event + slider ou div animada
+- Botão play grande (48x48) com animação de pulse quando tocando
+- Responsivo: 1 coluna em telas muito pequenas, 2 em mobile, 3 em desktop
 
