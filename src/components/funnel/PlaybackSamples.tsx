@@ -175,7 +175,7 @@ const PlaybackSamples = () => {
                 <audio
                   ref={(el) => registerAudio(track.id, el)}
                   src={track.file}
-                  preload="metadata"
+                  preload="none"
                   onTimeUpdate={(e) => handleTimeUpdate(track.id, e.currentTarget)}
                   onLoadedMetadata={(e) => handleLoadedMetadata(track.id, e.currentTarget)}
                   onEnded={() => handleEnded(track.id)}
