@@ -69,13 +69,17 @@ const VideoTestimonialCarousel = () => {
                     ) : (
                       <button
                         onClick={() => handleVideoClick(i)}
-                        className="relative w-full aspect-[9/16] flex flex-col items-center justify-center cursor-pointer group"
+                        className="relative w-full aspect-[9/16] flex flex-col items-center justify-center cursor-pointer group overflow-hidden"
                         aria-label={`Assistir depoimento de ${t.name}`}
                       >
-                        {/* Gradient placeholder with initials */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,18%)] via-[hsl(240,15%,22%)] to-[hsl(240,20%,12%)] flex flex-col items-center justify-center gap-2">
-                          <span className="text-3xl font-heading font-bold text-white/20">{t.initials}</span>
-                        </div>
+                        {/* Silent video as thumbnail — preload="metadata" loads only first frames */}
+                        <video
+                          src={t.src}
+                          preload="metadata"
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
 
                         {/* Play overlay */}
                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50 group-hover:from-black/5 group-hover:to-black/40 transition-all" />
