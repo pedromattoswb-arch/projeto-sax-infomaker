@@ -123,7 +123,7 @@ const PartituraCarousel = () => {
 
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {visiblePartituras.map((p) => (
+            {visiblePartituras.map((p, index) => (
               <div
                 key={p.id}
                 className="flex-[0_0_200px] md:flex-[0_0_260px] min-w-0 mx-2 md:mx-3 relative group/card"
