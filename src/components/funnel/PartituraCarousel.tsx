@@ -141,8 +141,10 @@ const PartituraCarousel = () => {
                   src={p.src}
                   alt={`Exemplo de partitura`}
                   className="w-full h-auto rounded-lg md:rounded-xl border border-white/10 shadow-lg shadow-black/30 bg-white"
-                  loading="lazy"
+                  loading={index < 3 ? "eager" : "lazy"}
                   draggable={false}
+                  width={260}
+                  height={367}
                 />
               </div>
             ))}

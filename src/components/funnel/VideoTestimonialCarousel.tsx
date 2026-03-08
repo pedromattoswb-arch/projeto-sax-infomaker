@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -11,44 +11,6 @@ const videoTestimonials = [
   { src: "/testimonials/gabriela-santana-sp.mp4", name: "Gabriela Santana", city: "São Paulo", initials: "GS" },
 ];
 
-// Generate a poster from the video's first frame
-const generatePoster = (videoSrc: string): Promise<string> => {
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.crossOrigin = "anonymous";
-    video.preload = "metadata";
-    video.muted = true;
-    video.playsInline = true;
-    video.src = videoSrc;
-
-    video.addEventListener("loadeddata", () => {
-      video.currentTime = 0.5; // Grab frame at 0.5s
-    });
-
-    video.addEventListener("seeked", () => {
-      try {
-        const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth || 360;
-        canvas.height = video.videoHeight || 640;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL("image/jpeg", 0.7));
-        } else {
-          resolve("");
-        }
-      } catch {
-        resolve("");
-      }
-    });
-
-    video.addEventListener("error", () => resolve(""));
-
-    // Timeout fallback
-    setTimeout(() => resolve(""), 5000);
-  });
-};
-
 const VideoTestimonialCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -58,18 +20,6 @@ const VideoTestimonialCarousel = () => {
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [posters, setPosters] = useState<Record<number, string>>({});
-
-  // Generate posters on mount
-  useEffect(() => {
-    videoTestimonials.forEach((t, i) => {
-      generatePoster(t.src).then((dataUrl) => {
-        if (dataUrl) {
-          setPosters((prev) => ({ ...prev, [i]: dataUrl }));
-        }
-      });
-    });
-  }, []);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -114,7 +64,6 @@ const VideoTestimonialCarousel = () => {
                         preload="auto"
                         playsInline
                         onPlay={() => handlePlay(i)}
-                        poster={posters[i] || undefined}
                         className="w-full aspect-[9/16] object-cover bg-[hsl(240,20%,12%)]"
                       />
                     ) : (
@@ -123,18 +72,10 @@ const VideoTestimonialCarousel = () => {
                         className="relative w-full aspect-[9/16] flex flex-col items-center justify-center cursor-pointer group"
                         aria-label={`Assistir depoimento de ${t.name}`}
                       >
-                        {/* Poster image or gradient placeholder */}
-                        {posters[i] ? (
-                          <img
-                            src={posters[i]}
-                            alt={`Thumbnail ${t.name}`}
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,18%)] via-[hsl(240,15%,22%)] to-[hsl(240,20%,12%)] flex flex-col items-center justify-center gap-2">
-                            <span className="text-3xl font-heading font-bold text-white/20">{t.initials}</span>
-                          </div>
-                        )}
+                        {/* Gradient placeholder with initials */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,18%)] via-[hsl(240,15%,22%)] to-[hsl(240,20%,12%)] flex flex-col items-center justify-center gap-2">
+                          <span className="text-3xl font-heading font-bold text-white/20">{t.initials}</span>
+                        </div>
 
                         {/* Play overlay */}
                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50 group-hover:from-black/5 group-hover:to-black/40 transition-all" />
