@@ -1,64 +1,58 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Otimização de Performance da Página
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
+### Problemas identificados
 
----
+1. **VideoTestimonialCarousel** — carrega TODOS os 6 vídeos no mount para gerar thumbnails via canvas (`generatePoster`). Isso é o maior gargalo: 6 vídeos baixados simultaneamente só para capturar um frame.
 
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
+2. **TestimonialCarousel** — 10 imagens PNG com `loading="eager"` e `fetchPriority="high"`. Essa seção fica bem abaixo do fold, não precisa carregar imediatamente.
 
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
+3. **PlaybackSamples** — 15 elementos `<audio>` com `preload="metadata"` renderizados todos de uma vez. São 15 requests de rede simultâneos.
 
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
+4. **PartituraCarousel** — imagens importadas via Vite (bundled), mas com `loading="lazy"` mesmo estando perto do topo. Deveria ser `loading="eager"` para as primeiras.
 
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+5. **Falta de preload** — a imagem hero e o logo não têm `<link rel="preload">` no HTML.
 
----
+### Implementação
 
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+**1. `index.html` — Preload de assets críticos**
+- Adicionar `<link rel="preload">` para o logo e o mockup hero (WebP)
+- Adicionar `<link rel="preload">` para as fontes se houver
 
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+**2. `VideoTestimonialCarousel.tsx` — Eliminar geração de poster**
+- Remover a função `generatePoster` e todo o `useEffect` que carrega 6 vídeos
+- Usar apenas o placeholder com gradiente + iniciais (já existe como fallback)
+- O vídeo só carrega quando o usuário clica em "Assistir"
+- Resultado: elimina 6 downloads de vídeo no carregamento
 
----
+**3. `TestimonialCarousel.tsx` — Lazy load das imagens**
+- Mudar de `loading="eager"` para `loading="lazy"` em todas as imagens
+- Remover `fetchPriority="high"` — essa seção está longe do topo
 
-### 3. SalesPage.tsx — Garantia section reforçada
+**4. `PlaybackSamples.tsx` — Lazy audio loading**
+- Mudar `preload="metadata"` para `preload="none"` em todos os `<audio>`
+- O metadata só será carregado quando o usuário clicar play (ou podemos carregar sob demanda)
+- Ajustar `handlePlay` para lidar com o caso onde a duração ainda não foi carregada
 
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+**5. `PartituraCarousel.tsx` — Eager load das primeiras imagens**
+- As primeiras 3 imagens com `loading="eager"`, restante `loading="lazy"`
+- Adicionar `width` e `height` para evitar layout shift
 
----
+**6. `SalesPage.tsx` — Lazy load do selo de garantia**
+- Já está com `loading="lazy"`, manter. Verificar se o logo do footer também está lazy.
 
-### 4. SalesPage.tsx — Footer profissional com selos
+### Arquivos alterados
+- `index.html` — preload de assets críticos
+- `src/components/funnel/VideoTestimonialCarousel.tsx` — remover geração de poster
+- `src/components/funnel/TestimonialCarousel.tsx` — lazy load imagens
+- `src/components/funnel/PlaybackSamples.tsx` — preload="none" nos áudios
+- `src/components/funnel/PartituraCarousel.tsx` — eager nas primeiras imagens
 
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
-
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
-
----
-
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+### Impacto esperado
+- Elimina ~6 downloads de vídeo no carregamento inicial
+- Elimina ~15 requests de metadados de áudio
+- Adia ~8 imagens de depoimentos para quando forem visíveis
+- Hero e logo aparecem mais rápido com preload
+- Zero mudanças visuais ou de layout
 
