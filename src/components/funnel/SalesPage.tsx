@@ -142,7 +142,7 @@ const SalesPage = () => {
       </section>
 
       {/* PROVA SOCIAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(240,20%,10%)]">
+      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,30%,12%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
