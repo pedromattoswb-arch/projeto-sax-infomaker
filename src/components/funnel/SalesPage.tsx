@@ -240,7 +240,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <span className="font-heading font-extrabold text-lg text-primary mb-3 md:mb-4 block">SaxPlay</span>
+        <img src={logoSaxplay} alt="SaxPlay" className="h-8 mx-auto mb-3 md:mb-4" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
