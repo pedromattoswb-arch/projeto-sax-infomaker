@@ -96,7 +96,7 @@ const BonusRotina = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img sspan span span className="font-heading font-bold text-sm text-primary">SaxPlay</spanspanspan     </div>
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>     </div>
       </header>
 
       <main className="py-10 md:py-16 px-4 md:px-8">
