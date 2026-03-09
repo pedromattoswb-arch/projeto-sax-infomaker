@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Logo placeholder
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 
 const transposicao = [
