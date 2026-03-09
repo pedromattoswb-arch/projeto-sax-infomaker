@@ -147,7 +147,7 @@ const BonusMusicas = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</spanlay</span>
         </div>
       </header>
 
@@ -250,7 +250,7 @@ const BonusMusicas = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR LISTA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para membros Premium do Clube do Sax
+              Conteúdo exclusivo para membros PrSaxPlaybe do Sax
             </p>
           </div>
         </div>
