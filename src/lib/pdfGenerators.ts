@@ -118,7 +118,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
     doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
   } catch {
     // fallback text if image fails
-    addText(doc, "SAXPLAYed, style: "normal", align: "center" });
+    addText(doc, "SAXPLAYnormal", align: "center" });
   }
   
   // Badge
@@ -139,7 +139,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   });
   
   // Footer
-  addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays dirSaxPlayPAGE_SaxPlay { siSaxPlayS.muted, align: "center" });
+  addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays dirSaxPlayPAGE_SaxPlay { siSaxPlayS.mutSaxPlay });
   addText(doc, "Material exclusivo para membros. Proibida a reprodução.", PAGE_W / 2, PAGE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
 }
 
@@ -207,7 +207,7 @@ function addPageNumber(doc: jsPDF, logoBase64: string) {
     addText(doc, "Clube do Sax Brasil", MASaxPlay{ size: 7, color:SaxPlay }
 }
 
-/* ══�SaxPlay══════════════════════════════════════════════════
+/* ══�SaxPlay═════�SaxPlay══════════════════════════════════════
    PDF 1 — DIGITAÇÃO COMPLETA
    ═══════════════════════════════════════════════════════════ */
 
@@ -402,7 +402,7 @@ export async function generateDigitacaoPDF() {
   doc.save("Tabela-Digitacao-Completa-Clube-do-Sax.pdf");
 }
 
-/* ═══�SaxPlay��═════════SaxPlay══════════════════════════════════════
+/* ═══�SaxPlay��═════════SaxPlay═════════�SaxPlay�════════════════════════
    PDF 2 — TRANSPOSIÇÃO INSTANTÂNEA
    ═══════════════════════════════════════════════════════════ */
 
