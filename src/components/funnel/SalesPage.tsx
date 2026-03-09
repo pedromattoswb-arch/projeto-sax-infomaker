@@ -58,7 +58,7 @@ const SalesPage = () => {
         <div className="max-w-3xl mx-auto text-center">
           <img
             src={mockupHero}
-            alt="Saxofone dourado com partituras no tablet e celular - Clube do Sax Brasil"
+            alt="Saxofone dourado com partituras no tablet e celular - SaxPlay"
             className="w-full max-w-[320px] md:max-w-md mx-auto mb-5 md:mb-6 drop-shadow-2xl"
             loading="eager"
             width={500}
