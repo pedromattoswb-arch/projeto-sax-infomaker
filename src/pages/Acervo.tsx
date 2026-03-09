@@ -177,6 +177,7 @@ const Acervo = () => {
                 song={song}
                 isPlaying={isPlaying && currentSong?.id === song.id}
                 onTogglePlay={handleTogglePlay}
+                onViewPdf={(s) => setViewingPdfSong(s)}
               />
             ))}
           </div>
