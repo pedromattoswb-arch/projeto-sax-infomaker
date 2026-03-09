@@ -118,7 +118,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
     doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
   } catch {
     // fallback text if image fails
-    addText(doc, "SAXPLAY", PAGE_W / 2, 28, { size: 12, color: COLORS.muted, style: "normal", align: "center" });
+    addText(doc, "SAXPLAY2, 28, { size: 12, color: COLORS.muted, style: "normal", align: "center" });
   }
   
   // Badge
@@ -139,7 +139,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   });
   
   // Footer
-  addText(doc, `© ${new Date().getFullYear()} Clube do Sax Brasil — Todos os direitos reservados`, PAGE_W / 2, PAGE_H - 20, { size: 7, color: COLORS.muted, align: "center" });
+  addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays direitos reservados`, PAGE_W / 2, PAGE_H - 20, { size: 7, color: COLORS.muted, align: "center" });
   addText(doc, "Material exclusivo para membros. Proibida a reprodução.", PAGE_W / 2, PAGE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
 }
 
