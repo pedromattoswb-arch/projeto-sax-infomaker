@@ -145,7 +145,9 @@ const BonusMusicas = () => {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Volimg src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" /xt-sm text-primary">SaxPlay</span>
+            Voltar
+          </Link>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
         </div>
       </header>
 
