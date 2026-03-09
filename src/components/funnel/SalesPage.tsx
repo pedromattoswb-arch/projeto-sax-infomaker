@@ -27,8 +27,8 @@ import PartituraCarousel from "./PartituraCarousel";
 import PlaybackSamples from "./PlaybackSamples";
 
 const features = [
-  { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-emerald-500 to-green-700" },
-  { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-amber-500 to-orange-600" },
+  { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-amber-500 to-amber-700" },
+  { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-blue-500 to-blue-700" },
   { icon: Monitor, title: "Formato Interativo", description: "Partitura + áudio juntos na tela", gradient: "from-blue-500 to-indigo-600" },
   { icon: FolderOpen, title: "8 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz…", gradient: "from-purple-500 to-violet-600" },
   { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre", gradient: "from-rose-500 to-pink-600" },
