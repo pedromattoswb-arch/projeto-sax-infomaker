@@ -5,6 +5,7 @@ interface SongCardProps {
   song: Song;
   isPlaying: boolean;
   onTogglePlay: (song: Song) => void;
+  onViewPdf?: (song: Song) => void;
 }
 
 const genreColors: Record<string, string> = {
