@@ -118,7 +118,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
     doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
   } catch {
     // fallback text if image fails
-    addText(doc, "SAXPLAYe: 12, color: COLORS.muted, style: "normal", align: "center" });
+    addText(doc, "SAXPLAY: COLORS.muted, style: "normal", align: "center" });
   }
   
   // Badge
@@ -139,7 +139,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   });
   
   // Footer
-  addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays dirSaxPlayPAGE_W / 2, PAGE_H - 20, { size: 7, color: COLORS.muted, align: "center" });
+  addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays dirSaxPlayPAGE_SaxPlay { size: 7, color: COLORS.muted, align: "center" });
   addText(doc, "Material exclusivo para membros. Proibida a reprodução.", PAGE_W / 2, PAGE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
 }
 
@@ -204,8 +204,7 @@ function addPageNumber(doc: jsPDF, logoBase64: string) {
       doc.addImage(logoBase64, "PNG", PAGE_W - MARGIN - 28, 5, 28, 8);
     } catch { /* ignore */ }
     addText(doc, `${i} / ${pageCount}`, PAGE_W - MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted, align: "right" });
-    addText(doc, "Clube do Sax Brasil", MASaxPlay{ size: 7, color: COLORS.muted });
-  }
+    addText(doc, "Clube do Sax Brasil", MASaxPlay{ size: 7, color:SaxPlay }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -403,7 +402,7 @@ export async function generateDigitacaoPDF() {
   doc.save("Tabela-Digitacao-Completa-Clube-do-Sax.pdf");
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══�SaxPlay��═══════════════════════════════════════════════════
    PDF 2 — TRANSPOSIÇÃO INSTANTÂNEA
    ═══════════════════════════════════════════════════════════ */
 
