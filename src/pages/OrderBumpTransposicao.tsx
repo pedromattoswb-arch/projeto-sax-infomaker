@@ -124,7 +124,7 @@ const OrderBumpTransposicao = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto" />
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
         </div>
       </header>
 
