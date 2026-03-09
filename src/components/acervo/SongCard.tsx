@@ -60,10 +60,17 @@ const SongCard = ({ song, isPlaying, onTogglePlay, onViewPdf }: SongCardProps) =
               {song.genre}
             </span>
             {song.pdfUrl && (
-              <span className="text-[10px] md:text-xs text-muted-foreground flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewPdf?.(song);
+                }}
+                className="text-[10px] md:text-xs text-primary hover:text-primary/80 flex items-center gap-1 font-semibold hover:underline transition-colors"
+                aria-label={`Ver partitura de ${song.title}`}
+              >
                 <FileText className="w-3 h-3" />
-                PDF
-              </span>
+                Ver PDF
+              </button>
             )}
           </div>
         </div>
