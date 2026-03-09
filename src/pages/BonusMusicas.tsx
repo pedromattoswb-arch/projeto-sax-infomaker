@@ -147,7 +147,7 @@ const BonusMusicas = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</spanlay</spanlay</span>
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
         </div>
       </header>
 
