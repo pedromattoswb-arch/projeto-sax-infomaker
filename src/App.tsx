@@ -23,6 +23,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/acervo" element={<Acervo />} />
           <Route path="/bonus/rotina-de-estudo" element={<BonusRotina />} />
           <Route path="/bonus/mapa-de-tonalidades" element={<BonusTonalidades />} />
           <Route path="/bonus/100-musicas" element={<BonusMusicas />} />
