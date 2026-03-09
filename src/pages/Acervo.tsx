@@ -5,6 +5,7 @@ import { mockSongs, ALL_GENRES } from "@/data/mockSongs";
 import type { Song, Genre } from "@/types/acervo";
 import SongCard from "@/components/acervo/SongCard";
 import AudioPlayer from "@/components/acervo/AudioPlayer";
+import PdfViewer from "@/components/acervo/PdfViewer";
 
 const Acervo = () => {
   const [search, setSearch] = useState("");
@@ -12,7 +13,7 @@ const Acervo = () => {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-
+  const [viewingPdfSong, setViewingPdfSong] = useState<Song | null>(null);
   const filteredSongs = useMemo(() => {
     let result = mockSongs;
     if (search.trim()) {
@@ -176,6 +177,7 @@ const Acervo = () => {
                 song={song}
                 isPlaying={isPlaying && currentSong?.id === song.id}
                 onTogglePlay={handleTogglePlay}
+                onViewPdf={(s) => setViewingPdfSong(s)}
               />
             ))}
           </div>
@@ -206,6 +208,11 @@ const Acervo = () => {
         onNext={handleNext}
         onPrev={handlePrev}
       />
+
+      {/* PDF Viewer */}
+      {viewingPdfSong && (
+        <PdfViewer song={viewingPdfSong} onClose={() => setViewingPdfSong(null)} />
+      )}
     </div>
   );
 };

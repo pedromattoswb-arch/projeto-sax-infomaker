@@ -1,45 +1,64 @@
 
 
-## Plano: Visualizador de PDF embutido para partituras
+## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
 
-### O que será feito
+### Estrategia Principal
+A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
 
-Criar um modal/dialog de visualização de partituras que abre ao clicar no card da música. Como estamos no mockup (sem Google Drive ainda), usaremos as imagens de partitura existentes em `src/assets/partituras-exemplo/` como conteúdo de exemplo.
+---
 
-### Componentes
+### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
 
-**1. `PdfViewer.tsx`** — Modal fullscreen com:
-- Exibição da partitura (imagem no mockup, `<iframe>` para PDFs reais futuramente)
-- Controles de zoom (+ / - / reset) via CSS `transform: scale()`
-- Navegação de páginas (prev/next) para partituras multi-página
-- Botão de download
-- Botão de fechar
-- Scroll para navegar na partitura com zoom
-- Design responsivo, otimizado para mobile
+**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
+- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
+- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
+- Informar que o e-mail vem do remetente da Cakto com login e senha
 
-**2. Atualizar `SongCard.tsx`**:
-- Tornar o badge "PDF" clicável — abre o visualizador
-- Adicionar prop `onViewPdf` callback
+**Nova pergunta: "Quem processa o pagamento?"**
+- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
+- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
 
-**3. Atualizar `mockSongs.ts`**:
-- Preencher `pdfUrl` com caminhos para as imagens de partitura existentes (mock)
+**Nova pergunta: "Posso confiar neste site?"**
+- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
 
-**4. Atualizar `Acervo.tsx`**:
-- Gerenciar estado do viewer (qual música está aberta)
-- Renderizar o componente `PdfViewer`
+---
 
-### Arquivos
+### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
 
-| Arquivo | Ação |
-|---------|------|
-| `src/components/acervo/PdfViewer.tsx` | Criar |
-| `src/components/acervo/SongCard.tsx` | Editar — PDF clicável |
-| `src/data/mockSongs.ts` | Editar — preencher pdfUrl |
-| `src/pages/Acervo.tsx` | Editar — estado + render do viewer |
+Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
+- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
+- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
 
-### UX
-- Modal ocupa tela inteira com fundo escuro
-- Gestos de pinch-to-zoom no mobile (via CSS touch-action)
-- Botões grandes e visíveis para o público-alvo (leigo/idoso)
-- Transição suave ao abrir/fechar
+---
+
+### 3. SalesPage.tsx — Garantia section reforçada
+
+Adicionar uma linha extra na secao de garantia:
+- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+
+---
+
+### 4. SalesPage.tsx — Footer profissional com selos
+
+Expandir o footer com:
+- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
+- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
+- Icones de ShieldCheck e Lock para reforço visual
+
+---
+
+### 5. SalesPage.tsx — Micro-copy no CTA final
+
+Abaixo do botao CTA final, adicionar:
+- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+
+---
+
+### Arquivos editados
+- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
+- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
+- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+
+### Principio guia
+Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
 

@@ -5,6 +5,7 @@ interface SongCardProps {
   song: Song;
   isPlaying: boolean;
   onTogglePlay: (song: Song) => void;
+  onViewPdf?: (song: Song) => void;
 }
 
 const genreColors: Record<string, string> = {
@@ -18,7 +19,7 @@ const genreColors: Record<string, string> = {
   "Clássico": "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300",
 };
 
-const SongCard = ({ song, isPlaying, onTogglePlay }: SongCardProps) => {
+const SongCard = ({ song, isPlaying, onTogglePlay, onViewPdf }: SongCardProps) => {
   const hasAudio = !!song.audioUrl;
 
   return (
@@ -59,10 +60,17 @@ const SongCard = ({ song, isPlaying, onTogglePlay }: SongCardProps) => {
               {song.genre}
             </span>
             {song.pdfUrl && (
-              <span className="text-[10px] md:text-xs text-muted-foreground flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewPdf?.(song);
+                }}
+                className="text-[10px] md:text-xs text-primary hover:text-primary/80 flex items-center gap-1 font-semibold hover:underline transition-colors"
+                aria-label={`Ver partitura de ${song.title}`}
+              >
                 <FileText className="w-3 h-3" />
-                PDF
-              </span>
+                Ver PDF
+              </button>
             )}
           </div>
         </div>
