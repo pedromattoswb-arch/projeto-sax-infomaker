@@ -45,7 +45,7 @@ const SalesPage = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-heading font-extrabold text-lg md:text-2xl text-primary tracking-tight">SaxPlay</span>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-8 md:h-10 w-auto" />
           <div className="text-right">
             <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
             <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
