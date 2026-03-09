@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, ArrowRightLeft, Music, BookOpen, Printer, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Logo placeholder
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateTransposicaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
