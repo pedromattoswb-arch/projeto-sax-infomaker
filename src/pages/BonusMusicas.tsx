@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, Star, Music, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Logo placeholder
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateMusicasPDF } from "@/lib/pdfGenerators";
 
 type Song = {
