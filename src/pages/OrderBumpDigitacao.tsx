@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Star, Lightbulb, Printer, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoSaxplay from "@/assets/logo-saxplay.png";from "@/assets/logo-saxplay.png";
 import { generateDigitacaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
@@ -268,9 +268,7 @@ const OrderBumpDigitacao = () => {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Voltar
-          </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
+            Volimg src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" /xt-sm text-primary">SaxPlay</span>
         </div>
       </header>
 
