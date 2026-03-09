@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Acervo from "./pages/Acervo";
 import NotFound from "./pages/NotFound";
 import BonusRotina from "./pages/BonusRotina";
 import BonusTonalidades from "./pages/BonusTonalidades";
