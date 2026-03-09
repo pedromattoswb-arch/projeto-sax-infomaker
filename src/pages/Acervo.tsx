@@ -208,6 +208,11 @@ const Acervo = () => {
         onNext={handleNext}
         onPrev={handlePrev}
       />
+
+      {/* PDF Viewer */}
+      {viewingPdfSong && (
+        <PdfViewer song={viewingPdfSong} onClose={() => setViewingPdfSong(null)} />
+      )}
     </div>
   );
 };
