@@ -31,7 +31,7 @@ const sections = [
     icon: Music,
     title: "3. Repertório (20–30 min)",
     items: [
-      "Escolha 2–3 músicas do acervo SaxPlaysemana",
+      "Escolha 2–3 músicas do acervo SaxPlaya",
       "Dia 1: Leitura lenta, identificando passagens difíceis",
       "Dia 2: Trabalhe os trechos difíceis isoladamente, em loop",
       "Dia 3: Toque a música inteira com o playback em andamento lento",
@@ -97,7 +97,7 @@ const BonusRotina = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img sspan className="font-heading font-bold text-sm text-primary">SaxPlay</span     </div>
+          <img sspan span className="font-heading font-bold text-sm text-primary">SaxPlay</spanspan     </div>
       </header>
 
       <main className="py-10 md:py-16 px-4 md:px-8">
@@ -192,7 +192,7 @@ const BonusRotina = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR GUIA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para membros Premium do Clube do Sax
+              Conteúdo exclusivo para membros PremiumSaxPlay Sax
             </p>
           </div>
         </div>
