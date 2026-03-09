@@ -19,7 +19,7 @@ const genreColors: Record<string, string> = {
   "Clássico": "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300",
 };
 
-const SongCard = ({ song, isPlaying, onTogglePlay }: SongCardProps) => {
+const SongCard = ({ song, isPlaying, onTogglePlay, onViewPdf }: SongCardProps) => {
   const hasAudio = !!song.audioUrl;
 
   return (
