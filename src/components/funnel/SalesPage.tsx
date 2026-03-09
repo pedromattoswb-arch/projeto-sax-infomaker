@@ -262,7 +262,7 @@ const SalesPage = () => {
         </p>
 
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
 
