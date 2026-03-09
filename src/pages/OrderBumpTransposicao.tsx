@@ -375,7 +375,7 @@ const OrderBumpTransposicao = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFulSaxPlayax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
     </div>

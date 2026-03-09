@@ -31,7 +31,8 @@ const sections = [
     icon: Music,
     title: "3. Repertório (20–30 min)",
     items: [
-      "Escolha 2–3 músicas do acervo SaxPlay     "Dia 1: Leitura lenta, identificando passagens difíceis",
+      "Escolha 2–3 músicas do acervo SaxPlay por semana",
+      "Dia 1: Leitura lenta, identificando passagens difíceis",
       "Dia 2: Trabalhe os trechos difíceis isoladamente, em loop",
       "Dia 3: Toque a música inteira com o playback em andamento lento",
       "Dia 4: Toque no andamento original com o playback",
