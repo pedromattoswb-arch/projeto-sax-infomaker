@@ -5,6 +5,7 @@ import { mockSongs, ALL_GENRES } from "@/data/mockSongs";
 import type { Song, Genre } from "@/types/acervo";
 import SongCard from "@/components/acervo/SongCard";
 import AudioPlayer from "@/components/acervo/AudioPlayer";
+import PdfViewer from "@/components/acervo/PdfViewer";
 
 const Acervo = () => {
   const [search, setSearch] = useState("");
