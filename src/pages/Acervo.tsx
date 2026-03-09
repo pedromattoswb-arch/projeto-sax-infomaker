@@ -13,7 +13,7 @@ const Acervo = () => {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-
+  const [viewingPdfSong, setViewingPdfSong] = useState<Song | null>(null);
   const filteredSongs = useMemo(() => {
     let result = mockSongs;
     if (search.trim()) {
