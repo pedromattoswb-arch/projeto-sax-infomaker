@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 
 const transposicao = [

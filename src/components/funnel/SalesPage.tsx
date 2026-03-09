@@ -13,7 +13,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo will be replaced when user provides the new SaxPlay logo
 import mockupHero from "@/assets/mockup-saxofone-hero.webp";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";

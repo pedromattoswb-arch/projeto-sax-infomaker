@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Star, Lightbulb, Printer, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder
 import { generateDigitacaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */

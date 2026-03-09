@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, Star, Music, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder
 import { generateMusicasPDF } from "@/lib/pdfGenerators";
 
 type Song = {

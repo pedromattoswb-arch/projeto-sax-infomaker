@@ -118,8 +118,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
     doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
   } catch {
     // fallback text if image fails
-    addText(doc, "SAXPLAY  // Badge
-  drawRoundedRect(doc, PAGE_W / 2 - 40, 42, 80, 10, 5, [accentColor[0], accentColor[1], accentColor[2]]);
+    addText(doc, "SAXPLAY drawRoundedRect(doc, PAGE_W / 2 - 40, 42, 80, 10, 5, [accentColor[0], accentColor[1], accentColor[2]]);
   addText(doc, badge, PAGE_W / 2, 49, { size: 8, color: COLORS.white, style: "bold", align: "center" });
   
   // Title
@@ -137,7 +136,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   
   // Footer
   addText(doc, `© ${new Date().getFullYear()} Clube do SaxSaxPlays dirSaxPlayPAGE_SaxPlay { siSaxPlayS.mutSaxPlay });
-SaxPlayerialSaxPlaybros.SaxPlayção.", PAGE_W / 2, PAGE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
+SaxPlayerialSaxPlaybros.SaxPlayçãoSaxPlayE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
 }
 
 function drawSectionHeader(doc: jsPDF, y: number, title: string, subtitle: string, color: [number, number, number]): number {
@@ -205,7 +204,7 @@ function addPageNumber(doc: jsPDF, logoBase64: string) {
 }
 
 /* ══�SaxPlay═════�SaxPlay═════�SaxPlay═════�SaxPlay═════�SaxPlay══
-   PDF 1 — DIGITAÇÃO COMPLETA
+   PDF 1 �SaxPlayLETA
    ═══════════════════════════════════════════════════════════ */
 
 export async function generateDigitacaoPDF() {
@@ -399,7 +398,7 @@ export async function generateDigitacaoPDF() {
   doc.save("Tabela-Digitacao-Completa-Clube-do-Sax.pdf");
 }
 
-/* ═══�SaxPlay��═════════SaxPlay═════════�SaxPlay�═════════�SaxPlay��═════════SaxPlay — TRANSPOSIÇÃO INSTANTÂSaxPlay�═════════════════════════════════════════════════════════ */
+/* ═══�SaxPlay��═════════SaxPlay═════════�SaxPlay�═════════�SaxPlay��═════════SaxPlay — TRANSPOSIÇÃO INSTANTÂSaxPlay�═════════�SaxPlay��═══════════════════════════════════════════ */
 
 export async function generateTransposicaoPDF() {
   const logoBase64 = await loadLogoBase64();
