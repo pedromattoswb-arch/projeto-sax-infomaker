@@ -31,7 +31,7 @@ const sections = [
     icon: Music,
     title: "3. Repertório (20–30 min)",
     items: [
-      "Escolha 2–3 músicas do acervo Clube do Sax por semana",
+      "Escolha 2–3 músicas do acervo SaxPlay por semana",
       "Dia 1: Leitura lenta, identificando passagens difíceis",
       "Dia 2: Trabalhe os trechos difíceis isoladamente, em loop",
       "Dia 3: Toque a música inteira com o playback em andamento lento",
