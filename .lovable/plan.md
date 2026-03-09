@@ -1,64 +1,93 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Rebranding "Clube do Sax" → "SaxPlay" + Definição do App
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
-
----
-
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
-
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
-
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
-
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+Este é um projeto grande com duas fases. Vou detalhar a **Fase 1** (rebranding) para implementação imediata e apresentar a **Fase 2** (app do acervo) como roadmap.
 
 ---
 
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+### FASE 1 — Rebranding para "SaxPlay"
 
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+#### 1. Nova paleta de cores
+Trocar o verde escuro institucional por uma paleta mais moderna e ligada ao saxofone — tons de **dourado/amber** (remetendo ao latão do sax) com **azul escuro/navy** (elegância e profissionalismo):
+
+- **Primary**: Amber/dourado `hsl(38, 85%, 50%)` — cor do saxofone
+- **CTA**: Gradiente dourado para amber escuro
+- **Seções escuras**: Navy profundo `hsl(220, 30%, 12%)`
+- **Accent**: Azul vibrante para destaques
+
+#### 2. Substituição de texto — 12 arquivos afetados
+Trocar todas as 163 ocorrências de "Clube do Sax Brasil" / "Clube do Sax" por "SaxPlay" em:
+
+| Arquivo | Ocorrências |
+|---------|-------------|
+| `index.html` | SEO, OG tags, schema.org |
+| `SalesPage.tsx` | Header, hero alt, footer |
+| `FAQ.tsx` | Resposta sobre confiança |
+| `BonusRotina.tsx` | Header, footer, conteúdo |
+| `BonusTonalidades.tsx` | Header, footer |
+| `BonusMusicas.tsx` | Header, footer |
+| `OrderBumpDigitacao.tsx` | Header, footer |
+| `OrderBumpTransposicao.tsx` | Header, footer |
+| `OrderBumpManutencao.tsx` | Header, footer |
+| `pdfGenerators.ts` | Watermarks, footers nos PDFs |
+| `WhatsAppButton.tsx` | Mensagem padrão |
+| `PlaybackSamples.tsx` | Se houver referência |
+
+#### 3. Logo
+- O usuário disse que tem logo pronto — **precisamos que envie o arquivo** para substituir `src/assets/logo-clube-sax.webp`
+- Enquanto isso, usaremos o nome "SaxPlay" estilizado em texto como placeholder
+
+#### 4. CSS e Tailwind
+- Atualizar `src/index.css`: novas variáveis `--primary`, `--cta`, `--gold`, gradientes
+- Atualizar `tailwind.config.ts`: cores correspondentes
+- Atualizar classes `gradient-cta`, `shadow-cta` para a nova paleta
+
+#### 5. Rename do asset
+- `src/assets/logo-clube-sax.webp` → referências atualizadas para o novo logo quando enviado
 
 ---
 
-### 3. SalesPage.tsx — Garantia section reforçada
+### FASE 2 — App do Acervo (roadmap para próximas iterações)
 
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+Baseado no relatório, o app web será acessado por link direto com uma verificação simples (captcha ou código) antes de entrar. Os arquivos virão do Google Drive.
+
+**Funcionalidades da v1:**
+- Rota `/acervo` — página principal do app
+- Tela de verificação simples (reCAPTCHA ou código de acesso) antes de entrar
+- Biblioteca com busca por nome, filtro por gênero (Pop, MPB, Gospel, Rock, Jazz, etc.)
+- Visualizador de PDF embutido (partituras)
+- Player de áudio integrado (playbacks)
+- Botão de download para cada arquivo
+- Integração com Google Drive API para listar e servir os arquivos
+- Interface super simples e intuitiva para público leigo/idoso (botões grandes, fontes grandes)
+
+**Isso requer:**
+- Google Drive API key (será configurada via edge function)
+- Estrutura de pastas organizada no Drive
+- Lovable Cloud habilitado para edge functions
+
+> A Fase 2 será planejada em detalhe após o rebranding estar completo e o logo enviado.
 
 ---
 
-### 4. SalesPage.tsx — Footer profissional com selos
+### Implementação agora (Fase 1)
 
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
+**Arquivos a editar:**
+- `src/index.css` — nova paleta de cores (dourado + navy)
+- `tailwind.config.ts` — cores atualizadas
+- `index.html` — SEO, OG tags, schema
+- `src/components/funnel/SalesPage.tsx` — textos + logo placeholder
+- `src/components/funnel/FAQ.tsx` — texto
+- `src/components/funnel/WhatsAppButton.tsx` — texto
+- `src/components/funnel/PlaybackSamples.tsx` — se houver referência
+- `src/pages/BonusRotina.tsx` — textos
+- `src/pages/BonusTonalidades.tsx` — textos
+- `src/pages/BonusMusicas.tsx` — textos
+- `src/pages/OrderBumpDigitacao.tsx` — textos
+- `src/pages/OrderBumpTransposicao.tsx` — textos
+- `src/pages/OrderBumpManutencao.tsx` — textos
+- `src/lib/pdfGenerators.ts` — watermarks e footers
 
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
-
----
-
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+**Importante:** Envie o logo do SaxPlay para que eu possa incluí-lo. Enquanto isso, posso avançar com todo o rebranding de textos e cores.
 
