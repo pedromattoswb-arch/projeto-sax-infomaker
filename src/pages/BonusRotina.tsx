@@ -2,7 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headph
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
-// Logo placeholder - will be replaced when user provides new SaxPlay logo
+import logoSaxplay from "@/assets/logo-saxplay.png";
 
 const sections = [
   {
@@ -97,7 +97,8 @@ const BonusRotina = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>     </div>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
+        </div>
       </header>
 
       <main className="py-10 md:py-16 px-4 md:px-8">

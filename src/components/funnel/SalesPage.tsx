@@ -13,7 +13,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-// Logo will be replaced when user provides the new SaxPlay logo
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import mockupHero from "@/assets/mockup-saxofone-hero.webp";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
@@ -45,7 +45,7 @@ const SalesPage = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-heading font-extrabold text-lg md:text-2xl text-primary tracking-tight">SaxPlay</span>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-8 md:h-10 w-auto" />
           <div className="text-right">
             <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
             <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
@@ -240,7 +240,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <span className="font-heading font-extrabold text-lg text-primary mb-3 md:mb-4 block">SaxPlay</span>
+        <img src={logoSaxplay} alt="SaxPlay" className="h-8 mx-auto mb-3 md:mb-4" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">

@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, Star, Music, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Logo placeholder
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateMusicasPDF } from "@/lib/pdfGenerators";
 
 type Song = {
@@ -147,7 +147,7 @@ const BonusMusicas = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
         </div>
       </header>
 

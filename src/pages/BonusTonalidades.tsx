@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-// Logo placeholder
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 
 const transposicao = [
@@ -66,7 +66,7 @@ const BonusTonalidades = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
         </div>
       </header>
 
