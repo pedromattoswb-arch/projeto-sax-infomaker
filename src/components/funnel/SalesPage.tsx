@@ -13,7 +13,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo will be replaced when user provides the new SaxPlay logo
 import mockupHero from "@/assets/mockup-saxofone-hero.webp";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
@@ -27,8 +27,8 @@ import PartituraCarousel from "./PartituraCarousel";
 import PlaybackSamples from "./PlaybackSamples";
 
 const features = [
-  { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-emerald-500 to-green-700" },
-  { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-amber-500 to-orange-600" },
+  { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-amber-500 to-amber-700" },
+  { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-blue-500 to-blue-700" },
   { icon: Monitor, title: "Formato Interativo", description: "Partitura + áudio juntos na tela", gradient: "from-blue-500 to-indigo-600" },
   { icon: FolderOpen, title: "8 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz…", gradient: "from-purple-500 to-violet-600" },
   { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre", gradient: "from-rose-500 to-pink-600" },
@@ -45,7 +45,7 @@ const SalesPage = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <img src={logo} alt="Clube do Sax Brasil" className="h-9 md:h-12 w-auto" loading="eager" />
+          <span className="font-heading font-extrabold text-lg md:text-2xl text-primary tracking-tight">SaxPlay</span>
           <div className="text-right">
             <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
             <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
@@ -58,7 +58,7 @@ const SalesPage = () => {
         <div className="max-w-3xl mx-auto text-center">
           <img
             src={mockupHero}
-            alt="Saxofone dourado com partituras no tablet e celular - Clube do Sax Brasil"
+            alt="Saxofone dourado com partituras no tablet e celular - SaxPlay"
             className="w-full max-w-[320px] md:max-w-md mx-auto mb-5 md:mb-6 drop-shadow-2xl"
             loading="eager"
             width={500}
@@ -142,7 +142,7 @@ const SalesPage = () => {
       </section>
 
       {/* PROVA SOCIAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(240,20%,10%)]">
+      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,30%,12%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
@@ -240,7 +240,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto mx-auto mb-3 md:mb-4" loading="lazy" />
+        <span className="font-heading font-extrabold text-lg text-primary mb-3 md:mb-4 block">SaxPlay</span>
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -262,7 +262,7 @@ const SalesPage = () => {
         </p>
 
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
 

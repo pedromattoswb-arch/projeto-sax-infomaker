@@ -49,7 +49,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Com certeza. O Clube do Sax Brasil é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp. Estamos aqui para te ajudar.",
+      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp. Estamos aqui para te ajudar.",
   },
 ];
 

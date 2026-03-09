@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 
 const transposicao = [
@@ -66,7 +66,7 @@ const BonusTonalidades = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto" />
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
         </div>
       </header>
 
@@ -222,7 +222,7 @@ const BonusTonalidades = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR MAPA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para membros Premium do Clube do Sax
+              Conteúdo exclusivo para mSaxPlayPlaybe do Sax
             </p>
           </div>
         </div>
@@ -230,7 +230,7 @@ const BonusTonalidades = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
     </div>

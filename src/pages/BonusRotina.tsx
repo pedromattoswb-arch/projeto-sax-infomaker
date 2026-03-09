@@ -2,7 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headph
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder - will be replaced when user provides new SaxPlay logo
 
 const sections = [
   {
@@ -31,7 +31,7 @@ const sections = [
     icon: Music,
     title: "3. Repertório (20–30 min)",
     items: [
-      "Escolha 2–3 músicas do acervo Clube do Sax por semana",
+      "Escolha 2–3 músicas do acervo SaxPlay por semana",
       "Dia 1: Leitura lenta, identificando passagens difíceis",
       "Dia 2: Trabalhe os trechos difíceis isoladamente, em loop",
       "Dia 3: Toque a música inteira com o playback em andamento lento",
@@ -97,8 +97,7 @@ const BonusRotina = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto" />
-        </div>
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>     </div>
       </header>
 
       <main className="py-10 md:py-16 px-4 md:px-8">
@@ -193,7 +192,7 @@ const BonusRotina = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR GUIA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para membros Premium do Clube do Sax
+              Conteúdo exclusivo para membros PreSaxPlaySax
             </p>
           </div>
         </div>
@@ -201,7 +200,7 @@ const BonusRotina = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} CSaxPlay Todos os direitos reservados.
         </p>
       </footer>
     </div>

@@ -1,7 +1,7 @@
 const WhatsAppButton = () => {
   const phone = "5517981769259";
   const message = encodeURIComponent(
-    "Olá! Tenho interesse no acervo de partituras para saxofone do Clube do Sax. Pode me ajudar?"
+    "Olá! Tenho interesse no acervo de partituras para saxofone do SaxPlay. Pode me ajudar?"
   );
   const params = typeof window !== "undefined" ? window.location.search : "";
   const url = `https://wa.me/${phone}?text=${message}${params ? "&" + params.substring(1) : ""}`;

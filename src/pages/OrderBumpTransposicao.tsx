@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, ArrowRightLeft, Music, BookOpen, Printer, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logo from "@/assets/logo-clube-sax.webp";
+// Logo placeholder
 import { generateTransposicaoPDF } from "@/lib/pdfGenerators";
 
 /* ─── DADOS ─── */
@@ -124,7 +124,7 @@ const OrderBumpTransposicao = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logo} alt="Clube do Sax Brasil" className="h-8 w-auto" />
+          <span className="font-heading font-bold text-sm text-primary">SaxPlay</span>
         </div>
       </header>
 
@@ -375,7 +375,7 @@ const OrderBumpTransposicao = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax Brasil. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
     </div>
