@@ -2,7 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headph
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
-// Logo placeholder - will be replaced when user provides new SaxPlay logo
+import logoSaxplay from "@/assets/logo-saxplay.png";
 
 const sections = [
   {
