@@ -65,7 +65,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="font-body font-bold text-sm md:text-base text-foreground truncate">
+        <p className="font-body font-bold text-sm md:text-base text-foreground break-words">
           {file.name}
         </p>
         <div className="flex items-center gap-2 mt-0.5">
