@@ -4,7 +4,7 @@ const corsHeaders = {
 };
 
 const GOOGLE_API_KEY = Deno.env.get('GOOGLE_API_KEY')!;
-const FOLDER_ID = '1D60NzFn3fDfEcAGUa1OkbzZnq4RoH4xR';
+const ROOT_FOLDER_ID = '1D60NzFn3fDfEcAGUa1OkbzZnq4RoH4xR';
 
 interface DriveFile {
   id: string;
@@ -12,6 +12,7 @@ interface DriveFile {
   mimeType: string;
   webViewLink?: string;
   webContentLink?: string;
+  size?: string;
 }
 
 interface DriveListResponse {
@@ -27,8 +28,9 @@ async function listFilesInFolder(folderId: string): Promise<DriveFile[]> {
     const params = new URLSearchParams({
       q: `'${folderId}' in parents and trashed = false`,
       key: GOOGLE_API_KEY,
-      fields: 'nextPageToken, files(id, name, mimeType, webViewLink, webContentLink)',
+      fields: 'nextPageToken, files(id, name, mimeType, webViewLink, webContentLink, size)',
       pageSize: '1000',
+      orderBy: 'name',
     });
     if (pageToken) params.set('pageToken', pageToken);
 
@@ -52,62 +54,49 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // List all items in the root folder
-    const rootItems = await listFilesInFolder(FOLDER_ID);
+    const url = new URL(req.url);
+    const folderId = url.searchParams.get('folderId') || ROOT_FOLDER_ID;
 
-    // Separate subfolders and loose files
-    const subfolders = rootItems.filter(f => f.mimeType === 'application/vnd.google-apps.folder');
-    const looseFiles = rootItems.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
+    const items = await listFilesInFolder(folderId);
 
-    // For each subfolder, list its contents (each subfolder = one song)
-    const songs = await Promise.all(
-      subfolders.map(async (folder) => {
-        const files = await listFilesInFolder(folder.id);
+    const folders = items
+      .filter(f => f.mimeType === 'application/vnd.google-apps.folder')
+      .map(f => ({
+        id: f.id,
+        name: f.name,
+        type: 'folder' as const,
+      }));
 
-        const pdfFile = files.find(f =>
-          f.mimeType === 'application/pdf' ||
-          f.name.toLowerCase().endsWith('.pdf')
-        );
-        const audioFile = files.find(f =>
-          f.mimeType?.startsWith('audio/') ||
-          f.name.toLowerCase().match(/\.(mp3|wav|ogg|m4a)$/)
-        );
-        const imageFile = files.find(f =>
-          f.mimeType?.startsWith('image/') ||
-          f.name.toLowerCase().match(/\.(png|jpg|jpeg|webp)$/)
-        );
+    const files = items
+      .filter(f => f.mimeType !== 'application/vnd.google-apps.folder')
+      .map(f => {
+        const isPdf = f.mimeType === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf');
+        const isAudio = f.mimeType?.startsWith('audio/') || /\.(mp3|wav|ogg|m4a)$/i.test(f.name);
+        const isImage = f.mimeType?.startsWith('image/') || /\.(png|jpg|jpeg|webp|gif)$/i.test(f.name);
+
+        let fileType = 'other';
+        if (isPdf) fileType = 'pdf';
+        else if (isAudio) fileType = 'audio';
+        else if (isImage) fileType = 'image';
 
         return {
-          id: folder.id,
-          folderName: folder.name,
-          pdf: pdfFile ? {
-            id: pdfFile.id,
-            name: pdfFile.name,
-            viewUrl: `https://drive.google.com/file/d/${pdfFile.id}/preview`,
-            downloadUrl: `https://drive.google.com/uc?export=download&id=${pdfFile.id}`,
-          } : null,
-          audio: audioFile ? {
-            id: audioFile.id,
-            name: audioFile.name,
-            streamUrl: `https://docs.google.com/uc?export=download&id=${audioFile.id}`,
-          } : null,
-          image: imageFile ? {
-            id: imageFile.id,
-            name: imageFile.name,
-            url: `https://drive.google.com/thumbnail?id=${imageFile.id}&sz=w400`,
-          } : null,
-          allFiles: files.map(f => ({ id: f.id, name: f.name, mimeType: f.mimeType })),
+          id: f.id,
+          name: f.name,
+          type: fileType,
+          mimeType: f.mimeType,
+          size: f.size ? parseInt(f.size) : null,
+          viewUrl: isPdf ? `https://drive.google.com/file/d/${f.id}/preview` : null,
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${f.id}`,
+          streamUrl: isAudio ? `https://docs.google.com/uc?export=download&id=${f.id}` : null,
+          thumbnailUrl: isImage ? `https://drive.google.com/thumbnail?id=${f.id}&sz=w400` : null,
         };
-      })
-    );
-
-    // Sort alphabetically by folder name
-    songs.sort((a, b) => a.folderName.localeCompare(b.folderName));
+      });
 
     return new Response(JSON.stringify({
-      songs,
-      looseFiles: looseFiles.map(f => ({ id: f.id, name: f.name, mimeType: f.mimeType })),
-      totalFolders: subfolders.length,
+      folderId,
+      isRoot: folderId === ROOT_FOLDER_ID,
+      folders,
+      files,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
