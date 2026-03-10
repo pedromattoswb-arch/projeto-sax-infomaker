@@ -1,72 +1,64 @@
 
 
-## Plano de Melhorias do Acervo — Mobile-First
+## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
 
-### Resumo
-Reformular completamente a página `/acervo` com foco em usabilidade mobile, adicionar cache local, menu hamburger, melhor distinção entre PDFs e áudios, e permitir PDF aberto enquanto áudio toca.
-
----
-
-### 1. Cache com sessionStorage no hook `useDriveFiles`
-- Armazenar resposta de cada `folderId` em `sessionStorage` com chave `drive_cache_{folderId}`
-- Ao navegar para pasta já visitada, carregar do cache instantaneamente (sem loading spinner)
-- Ainda fazer fetch em background para atualizar se necessário (stale-while-revalidate)
-
-### 2. Menu Hamburger Mobile
-- Criar componente `MobileNav` com menu lateral (Sheet/Drawer) contendo:
-  - Logo grande (aumentada ~50%)
-  - Links para: Acervo, Bônus (Rotina de Estudo, Mapa de Tonalidades, 100 Músicas), Order Bumps
-  - Contador de pastas/arquivos
-- Header: logo à esquerda, ícone hamburger à direita no mobile
-- Desktop: manter header atual com navegação inline
-
-### 3. Renomear Pastas (no frontend)
-- Criar mapeamento de nomes originais do Drive para nomes amigáveis:
-  - `BOOKS` → `Livros & Métodos`
-  - `CHRISTMAS` → `Natal`
-  - `CLASSICAL MUSIC` → `Música Clássica`
-  - `COLLECTION` → `Coleção Completa`
-  - `FILMES E SÉRIES` → `Filmes & Séries`
-  - Outros nomes: capitalizar e formatar automaticamente
-- Aplicar mapeamento no hook ou no componente antes de renderizar
-
-### 4. Distinção Clara entre PDF e Áudio
-- **PDFs**: Badge vermelha "PARTITURA" com ícone de documento, botão grande "Abrir Partitura" em vermelho
-- **Áudios**: Badge dourada/primária "PLAYBACK" com ícone de nota musical, botão circular de play proeminente
-- Cards separados visualmente: PDFs com borda esquerda vermelha, Áudios com borda esquerda dourada
-- Agrupar arquivos por tipo dentro da pasta: primeiro Partituras, depois Playbacks
-
-### 5. PDF sobre Áudio (overlay sem pausar)
-- Mudar o PDF viewer de `fixed inset-0` para um painel que ocupa ~70% da tela
-- Quando áudio está tocando e PDF é aberto: ajustar z-index para PDF ficar acima do conteúdo mas o player de áudio permanecer visível e funcional no bottom
-- No mobile: PDF viewer ocupa tela inteira MAS o mini-player de áudio fica fixo no bottom (abaixo do PDF ou sobreposto com botão flutuante)
-
-### 6. Melhorias de UX/Design Mobile-First
-- **Botões maiores**: touch targets mínimos de 48px
-- **Logo maior**: `h-12` no mobile, `h-14` no desktop
-- **Tipografia**: títulos maiores, labels mais claros
-- **Botão "Baixar"**: texto visível "Baixar" com ícone (não apenas ícone)
-- **Botão "Abrir PDF"**: texto "Ver Partitura" sempre visível
-- **Botão Play**: circular 48px com label "Ouvir"
-- **Loading skeleton**: placeholders animados em vez de spinner central
-- **Breadcrumbs**: scroll horizontal suave, chips maiores no mobile
-- **Pasta cards**: altura maior, ícone maior, texto maior
-- **Player de áudio mobile**: progress bar no topo do player, controles centralizados, nome da música em destaque
-
-### 7. Performance
-- Usar `React.memo` nos cards de pasta e arquivo
-- Debounce no campo de busca (300ms)
-- Lazy loading de componentes pesados (PDF viewer)
+### Estrategia Principal
+A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
 
 ---
 
-### Arquivos Modificados
-| Arquivo | Ação |
-|---|---|
-| `src/hooks/useDriveFiles.ts` | Adicionar cache sessionStorage + mapeamento de nomes |
-| `src/pages/Acervo.tsx` | Reescrever com mobile-first, distinção PDF/áudio, overlay PDF |
-| `src/components/acervo/MobileNav.tsx` | Criar menu hamburger |
-| `src/components/acervo/FileCard.tsx` | Componente dedicado para arquivo (PDF ou áudio) |
-| `src/components/acervo/FolderCard.tsx` | Componente dedicado para pasta |
-| `src/components/acervo/AudioPlayerBar.tsx` | Player de áudio fixo refatorado |
+### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
+
+**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
+- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
+- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
+- Informar que o e-mail vem do remetente da Cakto com login e senha
+
+**Nova pergunta: "Quem processa o pagamento?"**
+- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
+- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
+
+**Nova pergunta: "Posso confiar neste site?"**
+- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+
+---
+
+### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+
+Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
+- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
+- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+
+---
+
+### 3. SalesPage.tsx — Garantia section reforçada
+
+Adicionar uma linha extra na secao de garantia:
+- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+
+---
+
+### 4. SalesPage.tsx — Footer profissional com selos
+
+Expandir o footer com:
+- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
+- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
+- Icones de ShieldCheck e Lock para reforço visual
+
+---
+
+### 5. SalesPage.tsx — Micro-copy no CTA final
+
+Abaixo do botao CTA final, adicionar:
+- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+
+---
+
+### Arquivos editados
+- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
+- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
+- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+
+### Principio guia
+Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
 
