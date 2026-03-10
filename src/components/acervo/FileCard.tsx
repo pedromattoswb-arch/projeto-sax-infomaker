@@ -114,7 +114,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
           aria-label={`Baixar ${file.name}`}
         >
           <Download className="w-4 h-4" />
-          <span className="hidden sm:inline">Baixar</span>
+          <span>Baixar</span>
         </a>
       </div>
     </div>

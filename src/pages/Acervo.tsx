@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
   Search,
   Folder,
@@ -8,6 +8,8 @@ import {
   AlertCircle,
   X,
   Menu,
+  FileText,
+  Music,
 } from "lucide-react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
@@ -16,6 +18,8 @@ import FileCard from "@/components/acervo/FileCard";
 import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
 import MobileNav from "@/components/acervo/MobileNav";
 import { Skeleton } from "@/components/ui/skeleton";
+
+type FileFilter = "all" | "pdf" | "audio";
 
 const Acervo = () => {
   const {
@@ -36,6 +40,7 @@ const Acervo = () => {
   const [viewingPdf, setViewingPdf] = useState<DriveFile | null>(null);
   const [currentAudio, setCurrentAudio] = useState<DriveFile | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [fileFilter, setFileFilter] = useState<FileFilter>("all");
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -57,10 +62,15 @@ const Acervo = () => {
     ? files.filter((f) => f.name.toLowerCase().includes(searchDebounced.toLowerCase()))
     : files;
 
-  // Sort: PDFs first, then audio
   const pdfFiles = allFiles.filter((f) => f.type === "pdf");
   const audioFiles = allFiles.filter((f) => f.type === "audio");
   const otherFiles = allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio");
+
+  // Apply filter
+  const showPdfs = fileFilter === "all" || fileFilter === "pdf";
+  const showAudio = fileFilter === "all" || fileFilter === "audio";
+
+  const hasFiles = pdfFiles.length > 0 || audioFiles.length > 0;
 
   const playAudio = useCallback((file: DriveFile) => {
     if (playerRef.current) {
@@ -74,6 +84,7 @@ const Acervo = () => {
     (folder: DriveFolder) => {
       setSearch("");
       setSearchDebounced("");
+      setFileFilter("all");
       navigateToFolder(folder);
     },
     [navigateToFolder]
@@ -108,14 +119,14 @@ const Acervo = () => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
       <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
-        {/* Breadcrumbs */}
-        <nav className="flex items-center gap-1 mb-5 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+        {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
+        <nav className="flex flex-wrap items-center gap-1 mb-5">
           {breadcrumbs.map((crumb, idx) => (
-            <div key={crumb.id} className="flex items-center gap-1 shrink-0">
-              {idx > 0 && <ChevronRight className="w-4 h-4 text-muted-foreground/40" />}
+            <div key={crumb.id} className="flex items-center gap-1">
+              {idx > 0 && <ChevronRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />}
               <button
                 onClick={() => navigateToBreadcrumb(idx)}
-                className={`text-sm font-body px-3 py-1.5 rounded-lg transition-colors min-h-[36px] ${
+                className={`text-sm font-body px-3 py-1.5 rounded-lg transition-colors min-h-[36px] break-words text-left ${
                   idx === breadcrumbs.length - 1
                     ? "font-bold text-foreground bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -128,7 +139,7 @@ const Acervo = () => {
         </nav>
 
         {/* Search + Back */}
-        <div className="flex gap-2 mb-5">
+        <div className="flex gap-2 mb-4">
           {!isRoot && (
             <button
               onClick={goBack}
@@ -158,6 +169,63 @@ const Acervo = () => {
           </div>
         </div>
 
+        {/* Filter Tabs - always visible when there are files */}
+        {!loading && !error && hasFiles && (
+          <div className="sticky top-[73px] z-20 bg-background/95 backdrop-blur-md -mx-4 px-4 py-3 mb-4 border-b border-border/50">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setFileFilter("all")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
+                  fileFilter === "all"
+                    ? "bg-foreground text-background shadow-md"
+                    : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20"
+                }`}
+              >
+                Todos
+                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
+                  fileFilter === "all" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"
+                }`}>
+                  {pdfFiles.length + audioFiles.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setFileFilter("pdf")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
+                  fileFilter === "pdf"
+                    ? "bg-destructive text-destructive-foreground shadow-md"
+                    : "bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/30"
+                }`}
+              >
+                <FileText className="w-4 h-4" />
+                Partituras
+                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
+                  fileFilter === "pdf" ? "bg-destructive-foreground/20 text-destructive-foreground" : "bg-destructive/10 text-destructive"
+                }`}>
+                  {pdfFiles.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setFileFilter("audio")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
+                  fileFilter === "audio"
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary/30"
+                }`}
+              >
+                <Music className="w-4 h-4" />
+                Playbacks
+                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
+                  fileFilter === "audio" ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
+                }`}>
+                  {audioFiles.length}
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Loading Skeletons */}
         {loading && (
           <div className="space-y-3">
@@ -171,7 +239,7 @@ const Acervo = () => {
         {error && !loading && (
           <div className="flex flex-col items-center justify-center py-16">
             <AlertCircle className="w-12 h-12 text-destructive mb-3" />
-            <p className="text-destructive font-body text-base mb-4">{error}</p>
+            <p className="text-destructive font-body text-base mb-4 break-words text-center">{error}</p>
             <button
               onClick={() => fetchFolder(breadcrumbs[breadcrumbs.length - 1]?.id === "root" ? undefined : breadcrumbs[breadcrumbs.length - 1]?.id)}
               className="px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-body font-bold text-sm hover:opacity-90 transition-opacity min-h-[44px]"
@@ -200,7 +268,7 @@ const Acervo = () => {
             )}
 
             {/* PDFs (Partituras) */}
-            {pdfFiles.length > 0 && (
+            {showPdfs && pdfFiles.length > 0 && (
               <div className="mb-6">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-destructive inline-block" />
@@ -222,7 +290,7 @@ const Acervo = () => {
             )}
 
             {/* Audio (Playbacks) */}
-            {audioFiles.length > 0 && (
+            {showAudio && audioFiles.length > 0 && (
               <div className="mb-6">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary inline-block" />
@@ -281,11 +349,20 @@ const Acervo = () => {
                 )}
               </div>
             )}
+
+            {/* Empty after filter */}
+            {hasFiles && ((fileFilter === "pdf" && pdfFiles.length === 0) || (fileFilter === "audio" && audioFiles.length === 0)) && (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground font-body text-base">
+                  Nenhum {fileFilter === "pdf" ? "partitura" : "playback"} nesta pasta.
+                </p>
+              </div>
+            )}
           </>
         )}
       </main>
 
-      {/* Audio Player (persists below PDF overlay) */}
+      {/* Audio Player */}
       <AudioPlayerBar
         ref={playerRef}
         currentAudio={currentAudio}
@@ -293,7 +370,7 @@ const Acervo = () => {
         onClose={() => setCurrentAudio(null)}
       />
 
-      {/* PDF Viewer - overlay that doesn't block audio player */}
+      {/* PDF Viewer */}
       {viewingPdf && viewingPdf.viewUrl && (
         <div
           className={`fixed inset-0 flex flex-col bg-foreground/95 animate-in fade-in duration-200 ${
@@ -303,14 +380,14 @@ const Acervo = () => {
         >
           <div className="flex items-center justify-between px-4 py-3 bg-card/10 backdrop-blur-sm border-b border-border/20">
             <div className="min-w-0 flex-1 mr-3">
-              <h3 className="font-body font-bold text-sm md:text-base text-background truncate">
+              <h3 className="font-body font-bold text-sm md:text-base text-background break-words line-clamp-2">
                 {viewingPdf.name}
               </h3>
               <span className="text-[10px] font-bold uppercase tracking-wider text-destructive">
                 Partitura
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <a
                 href={viewingPdf.downloadUrl}
                 target="_blank"
