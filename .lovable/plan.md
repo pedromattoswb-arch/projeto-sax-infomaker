@@ -1,39 +1,64 @@
 
 
-## Plano: Filtros Visíveis + Textos Completos + Zero Scroll Lateral
+## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
 
-### Problema
-1. Playbacks ficam abaixo das Partituras — usuário pode não rolar e achar que não tem playback
-2. Textos truncados (`truncate`) escondem nomes de pastas/arquivos
-3. Breadcrumbs têm `overflow-x-auto` causando scroll lateral
-4. Não há filtro visual ativo para alternar entre Partituras e Playbacks
+### Estrategia Principal
+A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
 
-### Solução
+---
 
-#### 1. Tabs/Filtro fixo de tipo (Partituras | Playbacks | Todos)
-- Adicionar barra de filtro sticky abaixo do search com 3 botões: **Todos**, **Partituras**, **Playbacks**
-- Cada botão com badge de contagem e cor correspondente (vermelho para Partituras, dourado para Playbacks)
-- Quando "Partituras" está ativo, mostrar só PDFs. Quando "Playbacks", só áudios. "Todos" mostra ambos
-- Visível SEMPRE que a pasta tem arquivos (não apenas pastas)
-- Botões grandes, touch-friendly (48px altura), com ícone + texto + contador
+### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
 
-#### 2. Eliminar truncamento de texto
-- **FolderCard**: remover `truncate` do nome da pasta — usar `break-words` para quebrar linha
-- **FileCard**: remover `truncate` do nome do arquivo — usar `break-words` 
-- **AudioPlayerBar**: remover `truncate` do nome da música — usar `line-clamp-2`
-- **Breadcrumbs**: remover `overflow-x-auto` — fazer wrap (flex-wrap) em vez de scroll lateral
-- **PDF viewer header**: remover `truncate` — usar `line-clamp-2`
+**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
+- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
+- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
+- Informar que o e-mail vem do remetente da Cakto com login e senha
 
-#### 3. Breadcrumbs sem scroll lateral
-- Trocar `overflow-x-auto scrollbar-none` por `flex-wrap` nos breadcrumbs
-- Cada chip quebra para próxima linha se não couber
+**Nova pergunta: "Quem processa o pagamento?"**
+- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
+- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
 
-### Arquivos Modificados
+**Nova pergunta: "Posso confiar neste site?"**
+- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
 
-| Arquivo | Mudança |
-|---|---|
-| `src/pages/Acervo.tsx` | Adicionar estado de filtro, barra de tabs sticky, remover overflow-x dos breadcrumbs |
-| `src/components/acervo/FolderCard.tsx` | Remover `truncate`, usar `break-words` |
-| `src/components/acervo/FileCard.tsx` | Remover `truncate`, usar `break-words`, "Baixar" sempre visível |
-| `src/components/acervo/AudioPlayerBar.tsx` | Remover `truncate`, usar `line-clamp-2` |
+---
+
+### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+
+Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
+- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
+- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+
+---
+
+### 3. SalesPage.tsx — Garantia section reforçada
+
+Adicionar uma linha extra na secao de garantia:
+- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+
+---
+
+### 4. SalesPage.tsx — Footer profissional com selos
+
+Expandir o footer com:
+- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
+- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
+- Icones de ShieldCheck e Lock para reforço visual
+
+---
+
+### 5. SalesPage.tsx — Micro-copy no CTA final
+
+Abaixo do botao CTA final, adicionar:
+- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+
+---
+
+### Arquivos editados
+- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
+- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
+- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+
+### Principio guia
+Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
 
