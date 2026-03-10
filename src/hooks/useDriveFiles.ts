@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 
 export interface DriveFolder {
   id: string;
@@ -32,6 +32,70 @@ interface DriveResponse {
 
 const EDGE_FUNCTION_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/list-drive-files`;
 
+// Folder name mapping for user-friendly labels
+const FOLDER_NAME_MAP: Record<string, string> = {
+  "BOOKS": "Livros & Métodos",
+  "CHRISTMAS": "Natal",
+  "CLASSICAL MUSIC": "Música Clássica",
+  "COLLECTION": "Coleção Completa",
+  "FILMES E SÉRIES": "Filmes & Séries",
+  "GOSPEL": "Gospel",
+  "JAZZ": "Jazz",
+  "POP": "Pop",
+  "MPB": "MPB",
+  "SERTANEJO": "Sertanejo",
+  "FORRÓ": "Forró",
+  "BOSSA NOVA": "Bossa Nova",
+  "ROCK": "Rock",
+  "BLUES": "Blues",
+  "REGGAE": "Reggae",
+  "SAMBA": "Samba",
+  "INTERNATIONAL": "Internacional",
+  "BRASILEIRAS": "Brasileiras",
+  "ROMANTIC": "Românticas",
+};
+
+function formatFolderName(raw: string): string {
+  if (FOLDER_NAME_MAP[raw.toUpperCase()]) return FOLDER_NAME_MAP[raw.toUpperCase()];
+  if (FOLDER_NAME_MAP[raw]) return FOLDER_NAME_MAP[raw];
+  // Auto-capitalize: "SOME FOLDER NAME" → "Some Folder Name"
+  return raw
+    .toLowerCase()
+    .replace(/(?:^|\s|[-/])\S/g, (match) => match.toUpperCase());
+}
+
+function getCacheKey(folderId?: string): string {
+  return `drive_cache_${folderId || "root"}`;
+}
+
+function getCached(folderId?: string): DriveResponse | null {
+  try {
+    const raw = sessionStorage.getItem(getCacheKey(folderId));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    // Cache valid for 5 minutes
+    if (Date.now() - parsed._ts > 5 * 60 * 1000) return null;
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+function setCache(folderId: string | undefined, data: DriveResponse) {
+  try {
+    sessionStorage.setItem(
+      getCacheKey(folderId),
+      JSON.stringify({ data, _ts: Date.now() })
+    );
+  } catch {
+    // sessionStorage full — silently ignore
+  }
+}
+
+function applyFolderNames(folders: DriveFolder[]): DriveFolder[] {
+  return folders.map((f) => ({ ...f, name: formatFolderName(f.name) }));
+}
+
 export function useDriveFiles() {
   const [folders, setFolders] = useState<DriveFolder[]>([]);
   const [files, setFiles] = useState<DriveFile[]>([]);
@@ -41,22 +105,40 @@ export function useDriveFiles() {
     { id: "root", name: "Acervo" },
   ]);
   const [isRoot, setIsRoot] = useState(true);
+  const abortRef = useRef<AbortController | null>(null);
 
   const fetchFolder = useCallback(async (folderId?: string) => {
-    setLoading(true);
+    // Abort any in-flight request
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    // Try cache first (stale-while-revalidate)
+    const cached = getCached(folderId);
+    if (cached) {
+      setFolders(applyFolderNames(cached.folders));
+      setFiles(cached.files);
+      setIsRoot(cached.isRoot);
+      // Still fetch in background to update
+    }
+
+    if (!cached) setLoading(true);
     setError(null);
+
     try {
       const url = folderId
         ? `${EDGE_FUNCTION_URL}?folderId=${folderId}`
         : EDGE_FUNCTION_URL;
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: controller.signal });
       if (!res.ok) throw new Error("Erro ao carregar arquivos");
       const data: DriveResponse = await res.json();
-      setFolders(data.folders);
+      setCache(folderId, data);
+      setFolders(applyFolderNames(data.folders));
       setFiles(data.files);
       setIsRoot(data.isRoot);
     } catch (err: any) {
-      setError(err.message || "Erro desconhecido");
+      if (err.name === "AbortError") return;
+      if (!cached) setError(err.message || "Erro desconhecido");
     } finally {
       setLoading(false);
     }
@@ -72,21 +154,30 @@ export function useDriveFiles() {
 
   const navigateToBreadcrumb = useCallback(
     (index: number) => {
-      const target = breadcrumbs[index];
-      setBreadcrumbs((prev) => prev.slice(0, index + 1));
-      if (index === 0) {
-        fetchFolder();
-      } else {
-        fetchFolder(target.id);
-      }
+      setBreadcrumbs((prev) => {
+        const target = prev[index];
+        setTimeout(() => {
+          if (index === 0) fetchFolder();
+          else fetchFolder(target.id);
+        }, 0);
+        return prev.slice(0, index + 1);
+      });
     },
-    [breadcrumbs, fetchFolder]
+    [fetchFolder]
   );
 
   const goBack = useCallback(() => {
-    if (breadcrumbs.length <= 1) return;
-    navigateToBreadcrumb(breadcrumbs.length - 2);
-  }, [breadcrumbs, navigateToBreadcrumb]);
+    setBreadcrumbs((prev) => {
+      if (prev.length <= 1) return prev;
+      const newBreadcrumbs = prev.slice(0, -1);
+      const target = newBreadcrumbs[newBreadcrumbs.length - 1];
+      setTimeout(() => {
+        if (target.id === "root") fetchFolder();
+        else fetchFolder(target.id);
+      }, 0);
+      return newBreadcrumbs;
+    });
+  }, [fetchFolder]);
 
   return {
     folders,

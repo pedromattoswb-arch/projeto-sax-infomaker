@@ -1,26 +1,21 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import {
   Search,
   Folder,
-  FileText,
-  Music as MusicIcon,
-  Image,
-  File,
   ChevronRight,
   ArrowLeft,
   Download,
-  Loader2,
   AlertCircle,
   X,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Volume2,
-  VolumeX,
+  Menu,
 } from "lucide-react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
+import FolderCard from "@/components/acervo/FolderCard";
+import FileCard from "@/components/acervo/FileCard";
+import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
+import MobileNav from "@/components/acervo/MobileNav";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Acervo = () => {
   const {
@@ -37,139 +32,90 @@ const Acervo = () => {
   } = useDriveFiles();
 
   const [search, setSearch] = useState("");
+  const [searchDebounced, setSearchDebounced] = useState("");
   const [viewingPdf, setViewingPdf] = useState<DriveFile | null>(null);
-
-  // Audio player state
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [currentAudio, setCurrentAudio] = useState<DriveFile | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [muted, setMuted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const playerRef = useRef<AudioPlayerHandle>(null);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     fetchFolder();
   }, [fetchFolder]);
 
-  // Filter by search
-  const filteredFolders = search.trim()
-    ? folders.filter((f) => f.name.toLowerCase().includes(search.toLowerCase()))
+  // Debounced search
+  useEffect(() => {
+    searchTimerRef.current = setTimeout(() => setSearchDebounced(search), 300);
+    return () => clearTimeout(searchTimerRef.current);
+  }, [search]);
+
+  const filteredFolders = searchDebounced.trim()
+    ? folders.filter((f) => f.name.toLowerCase().includes(searchDebounced.toLowerCase()))
     : folders;
-  const filteredFiles = search.trim()
-    ? files.filter((f) => f.name.toLowerCase().includes(search.toLowerCase()))
+
+  const allFiles = searchDebounced.trim()
+    ? files.filter((f) => f.name.toLowerCase().includes(searchDebounced.toLowerCase()))
     : files;
 
-  const audioFiles = filteredFiles.filter((f) => f.type === "audio");
+  // Sort: PDFs first, then audio
+  const pdfFiles = allFiles.filter((f) => f.type === "pdf");
+  const audioFiles = allFiles.filter((f) => f.type === "audio");
+  const otherFiles = allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio");
 
-  // Audio controls
-  const playAudio = useCallback(
-    (file: DriveFile) => {
-      if (currentAudio?.id === file.id) {
-        setIsPlaying((p) => !p);
-      } else {
-        setCurrentAudio(file);
-        setIsPlaying(true);
-      }
-    },
-    [currentAudio?.id]
-  );
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !currentAudio?.streamUrl) return;
-    audio.src = currentAudio.streamUrl;
-    if (isPlaying) audio.play().catch(() => {});
-  }, [currentAudio?.id]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (isPlaying) audio.play().catch(() => {});
-    else audio.pause();
-  }, [isPlaying]);
-
-  const handleTimeUpdate = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    setProgress(audio.currentTime);
-    setDuration(audio.duration || 0);
+  const playAudio = useCallback((file: DriveFile) => {
+    if (playerRef.current) {
+      playerRef.current.play(file);
+    } else {
+      setCurrentAudio(file);
+    }
   }, []);
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const time = Number(e.target.value);
-    audio.currentTime = time;
-    setProgress(time);
-  };
+  const handleFolderOpen = useCallback(
+    (folder: DriveFolder) => {
+      setSearch("");
+      setSearchDebounced("");
+      navigateToFolder(folder);
+    },
+    [navigateToFolder]
+  );
 
-  const playNext = useCallback(() => {
-    if (!currentAudio || audioFiles.length === 0) return;
-    const idx = audioFiles.findIndex((f) => f.id === currentAudio.id);
-    const next = audioFiles[(idx + 1) % audioFiles.length];
-    setCurrentAudio(next);
-    setIsPlaying(true);
-  }, [currentAudio, audioFiles]);
-
-  const playPrev = useCallback(() => {
-    if (!currentAudio || audioFiles.length === 0) return;
-    const idx = audioFiles.findIndex((f) => f.id === currentAudio.id);
-    const prev = audioFiles[(idx - 1 + audioFiles.length) % audioFiles.length];
-    setCurrentAudio(prev);
-    setIsPlaying(true);
-  }, [currentAudio, audioFiles]);
-
-  const formatTime = (s: number) => {
-    if (!s || isNaN(s)) return "0:00";
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return `${m}:${sec.toString().padStart(2, "0")}`;
-  };
-
-  const getFileIcon = (type: string) => {
-    switch (type) {
-      case "pdf":
-        return <FileText className="w-5 h-5 text-red-500" />;
-      case "audio":
-        return <MusicIcon className="w-5 h-5 text-primary" />;
-      case "image":
-        return <Image className="w-5 h-5 text-emerald-500" />;
-      default:
-        return <File className="w-5 h-5 text-muted-foreground" />;
-    }
-  };
-
-  const formatFileSize = (bytes: number | null) => {
-    if (!bytes) return "";
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1048576) return `${(bytes / 1024).toFixed(0)} KB`;
-    return `${(bytes / 1048576).toFixed(1)} MB`;
-  };
+  const hasAudioPlaying = currentAudio !== null;
 
   return (
-    <div className={`min-h-screen bg-background ${currentAudio ? "pb-32 md:pb-24" : ""}`}>
+    <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-card/95 backdrop-blur-md border-b border-border">
+      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay" className="h-8 md:h-10 w-auto" />
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Folder className="w-4 h-4 text-primary" />
-            <span className="text-xs md:text-sm font-body font-medium">
-              {folders.length} pastas · {files.length} arquivos
-            </span>
+          <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2 text-muted-foreground">
+              <Folder className="w-4 h-4 text-primary" />
+              <span className="text-sm font-body font-medium">
+                {folders.length} pastas · {files.length} arquivos
+              </span>
+            </div>
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="md:hidden p-2 rounded-xl hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-6 md:py-10">
+      <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
+
+      <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
         {/* Breadcrumbs */}
-        <nav className="flex items-center gap-1 mb-6 overflow-x-auto pb-1 scrollbar-none">
+        <nav className="flex items-center gap-1 mb-5 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {breadcrumbs.map((crumb, idx) => (
             <div key={crumb.id} className="flex items-center gap-1 shrink-0">
-              {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50" />}
+              {idx > 0 && <ChevronRight className="w-4 h-4 text-muted-foreground/40" />}
               <button
                 onClick={() => navigateToBreadcrumb(idx)}
-                className={`text-xs md:text-sm font-body px-2 py-1 rounded-md transition-colors ${
+                className={`text-sm font-body px-3 py-1.5 rounded-lg transition-colors min-h-[36px] ${
                   idx === breadcrumbs.length - 1
                     ? "font-bold text-foreground bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -182,52 +128,53 @@ const Acervo = () => {
         </nav>
 
         {/* Search + Back */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-5">
           {!isRoot && (
             <button
               onClick={goBack}
-              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center"
               aria-label="Voltar"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
           )}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar nesta pasta..."
-              className="w-full pl-10 pr-10 py-3 bg-card border border-border rounded-xl text-sm md:text-base font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all"
+              className="w-full pl-11 pr-11 py-3 bg-card border border-border rounded-xl text-base font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all min-h-[48px]"
             />
             {search && (
               <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                onClick={() => { setSearch(""); setSearchDebounced(""); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             )}
           </div>
         </div>
 
-        {/* Loading */}
+        {/* Loading Skeletons */}
         {loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
-            <p className="text-muted-foreground font-body text-sm">Carregando arquivos...</p>
+          <div className="space-y-3">
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="h-16 rounded-2xl" />
+            ))}
           </div>
         )}
 
         {/* Error */}
         {error && !loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <AlertCircle className="w-10 h-10 text-destructive mb-3" />
-            <p className="text-destructive font-body text-sm mb-3">{error}</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <AlertCircle className="w-12 h-12 text-destructive mb-3" />
+            <p className="text-destructive font-body text-base mb-4">{error}</p>
             <button
               onClick={() => fetchFolder(breadcrumbs[breadcrumbs.length - 1]?.id === "root" ? undefined : breadcrumbs[breadcrumbs.length - 1]?.id)}
-              className="text-sm text-primary hover:underline font-body"
+              className="px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-body font-bold text-sm hover:opacity-90 transition-opacity min-h-[44px]"
             >
               Tentar novamente
             </button>
@@ -240,120 +187,94 @@ const Acervo = () => {
             {/* Folders */}
             {filteredFolders.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-xs uppercase tracking-wider text-muted-foreground font-body font-semibold mb-3">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
+                  <Folder className="w-4 h-4" />
                   Pastas ({filteredFolders.length})
                 </h2>
-                <div className="grid gap-2 md:gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredFolders.map((folder) => (
-                    <button
-                      key={folder.id}
-                      onClick={() => {
-                        setSearch("");
-                        navigateToFolder(folder);
-                      }}
-                      className="group flex items-center gap-3 p-4 bg-card border border-border rounded-xl hover:shadow-md hover:border-primary/30 transition-all duration-200 text-left"
-                    >
-                      <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <Folder className="w-5 h-5 text-primary" />
-                      </div>
-                      <span className="font-body font-semibold text-sm text-foreground truncate flex-1">
-                        {folder.name}
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-primary shrink-0 transition-colors" />
-                    </button>
+                    <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Files */}
-            {filteredFiles.length > 0 && (
-              <div>
-                <h2 className="text-xs uppercase tracking-wider text-muted-foreground font-body font-semibold mb-3">
-                  Arquivos ({filteredFiles.length})
+            {/* PDFs (Partituras) */}
+            {pdfFiles.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-destructive inline-block" />
+                  Partituras ({pdfFiles.length})
                 </h2>
                 <div className="flex flex-col gap-2">
-                  {filteredFiles.map((file) => (
-                    <div
+                  {pdfFiles.map((file) => (
+                    <FileCard
                       key={file.id}
-                      className={`flex items-center gap-3 p-3 md:p-4 bg-card border rounded-xl transition-all duration-200 ${
-                        currentAudio?.id === file.id && isPlaying
-                          ? "border-primary shadow-md bg-primary/5"
-                          : "border-border hover:shadow-sm hover:border-primary/20"
-                      }`}
-                    >
-                      {/* Icon / Play button */}
-                      {file.type === "audio" ? (
-                        <button
-                          onClick={() => playAudio(file)}
-                          className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                            currentAudio?.id === file.id && isPlaying
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
-                          }`}
-                          aria-label={currentAudio?.id === file.id && isPlaying ? "Pausar" : "Tocar"}
-                        >
-                          {currentAudio?.id === file.id && isPlaying ? (
-                            <Pause className="w-4 h-4" fill="currentColor" />
-                          ) : (
-                            <Play className="w-4 h-4 ml-0.5" fill="currentColor" />
-                          )}
-                        </button>
-                      ) : (
-                        <div className="shrink-0 w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                          {getFileIcon(file.type)}
-                        </div>
-                      )}
+                      file={file}
+                      isCurrentAudio={false}
+                      isPlaying={false}
+                      onPlay={playAudio}
+                      onViewPdf={setViewingPdf}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
-                      {/* File name */}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-body font-semibold text-sm text-foreground truncate">
-                          {file.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground font-body">
-                          {file.type === "pdf" ? "PDF" : file.type === "audio" ? "Áudio" : file.type === "image" ? "Imagem" : "Arquivo"}
-                          {file.size ? ` · ${formatFileSize(file.size)}` : ""}
-                        </p>
-                      </div>
+            {/* Audio (Playbacks) */}
+            {audioFiles.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary inline-block" />
+                  Playbacks ({audioFiles.length})
+                </h2>
+                <div className="flex flex-col gap-2">
+                  {audioFiles.map((file) => (
+                    <FileCard
+                      key={file.id}
+                      file={file}
+                      isCurrentAudio={playerRef.current?.currentId === file.id}
+                      isPlaying={playerRef.current?.isPlaying ?? false}
+                      onPlay={playAudio}
+                      onViewPdf={setViewingPdf}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
-                      {/* Actions */}
-                      <div className="flex items-center gap-1 shrink-0">
-                        {file.type === "pdf" && file.viewUrl && (
-                          <button
-                            onClick={() => setViewingPdf(file)}
-                            className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors text-xs font-semibold font-body flex items-center gap-1"
-                          >
-                            <FileText className="w-4 h-4" />
-                            <span className="hidden md:inline">Ver</span>
-                          </button>
-                        )}
-                        <a
-                          href={file.downloadUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                          aria-label={`Baixar ${file.name}`}
-                        >
-                          <Download className="w-4 h-4" />
-                        </a>
-                      </div>
-                    </div>
+            {/* Other files */}
+            {otherFiles.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3">
+                  Outros ({otherFiles.length})
+                </h2>
+                <div className="flex flex-col gap-2">
+                  {otherFiles.map((file) => (
+                    <FileCard
+                      key={file.id}
+                      file={file}
+                      isCurrentAudio={false}
+                      isPlaying={false}
+                      onPlay={playAudio}
+                      onViewPdf={setViewingPdf}
+                    />
                   ))}
                 </div>
               </div>
             )}
 
             {/* Empty */}
-            {filteredFolders.length === 0 && filteredFiles.length === 0 && (
-              <div className="text-center py-16">
-                <Folder className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-                <p className="text-muted-foreground font-body text-sm">
+            {filteredFolders.length === 0 && allFiles.length === 0 && (
+              <div className="text-center py-20">
+                <Folder className="w-14 h-14 text-muted-foreground/20 mx-auto mb-4" />
+                <p className="text-muted-foreground font-body text-base">
                   {search ? "Nenhum resultado encontrado." : "Esta pasta está vazia."}
                 </p>
                 {search && (
                   <button
-                    onClick={() => setSearch("")}
-                    className="mt-3 text-sm text-primary hover:underline font-body"
+                    onClick={() => { setSearch(""); setSearchDebounced(""); }}
+                    className="mt-4 px-5 py-2.5 bg-muted text-foreground rounded-xl font-body font-bold text-sm hover:bg-muted/80 transition-colors min-h-[44px]"
                   >
                     Limpar busca
                   </button>
@@ -364,95 +285,46 @@ const Acervo = () => {
         )}
       </main>
 
-      {/* Audio Player */}
-      {currentAudio && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border shadow-2xl px-4 py-3 md:py-4">
-          <audio
-            ref={audioRef}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={playNext}
-            muted={muted}
-            preload="metadata"
-          />
-          <div className="max-w-4xl mx-auto flex items-center gap-3 md:gap-5">
-            <div className="flex-1 min-w-0">
-              <p className="font-heading font-bold text-sm md:text-base text-foreground truncate">
-                {currentAudio.name}
-              </p>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <button onClick={playPrev} className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <SkipBack className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-              <button
-                onClick={() => setIsPlaying((p) => !p)}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-md"
-              >
-                {isPlaying ? <Pause className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-0.5" fill="currentColor" />}
-              </button>
-              <button onClick={playNext} className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <SkipForward className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-            </div>
-            <div className="hidden md:flex items-center gap-2 flex-1 max-w-xs">
-              <span className="text-xs text-muted-foreground font-mono w-10 text-right">{formatTime(progress)}</span>
-              <input
-                type="range"
-                min={0}
-                max={duration || 0}
-                value={progress}
-                onChange={handleSeek}
-                className="flex-1 h-1.5 rounded-full accent-primary cursor-pointer"
-              />
-              <span className="text-xs text-muted-foreground font-mono w-10">{formatTime(duration)}</span>
-            </div>
-            <button
-              onClick={() => setMuted(!muted)}
-              className="hidden md:block p-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            </button>
-          </div>
-          <div className="md:hidden mt-2">
-            <input
-              type="range"
-              min={0}
-              max={duration || 0}
-              value={progress}
-              onChange={handleSeek}
-              className="w-full h-1 rounded-full accent-primary cursor-pointer"
-            />
-            <div className="flex justify-between text-[10px] text-muted-foreground font-mono mt-0.5">
-              <span>{formatTime(progress)}</span>
-              <span>{formatTime(duration)}</span>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Audio Player (persists below PDF overlay) */}
+      <AudioPlayerBar
+        ref={playerRef}
+        currentAudio={currentAudio}
+        audioFiles={audioFiles}
+        onClose={() => setCurrentAudio(null)}
+      />
 
-      {/* PDF Viewer */}
+      {/* PDF Viewer - overlay that doesn't block audio player */}
       {viewingPdf && viewingPdf.viewUrl && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-foreground/95 animate-in fade-in duration-200">
+        <div
+          className={`fixed inset-0 flex flex-col bg-foreground/95 animate-in fade-in duration-200 ${
+            hasAudioPlaying ? "z-[45]" : "z-50"
+          }`}
+          style={hasAudioPlaying ? { bottom: "140px" } : undefined}
+        >
           <div className="flex items-center justify-between px-4 py-3 bg-card/10 backdrop-blur-sm border-b border-border/20">
             <div className="min-w-0 flex-1 mr-3">
-              <h3 className="font-heading font-bold text-sm md:text-base text-background truncate">
+              <h3 className="font-body font-bold text-sm md:text-base text-background truncate">
                 {viewingPdf.name}
               </h3>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-destructive">
+                Partitura
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <a
                 href={viewingPdf.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 md:p-2.5 rounded-lg bg-background/10 hover:bg-background/20 text-background transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-background/10 hover:bg-background/20 text-background transition-colors font-body font-bold text-xs min-h-[44px]"
               >
-                <Download className="w-4 h-4 md:w-5 md:h-5" />
+                <Download className="w-4 h-4" />
+                <span>Baixar</span>
               </a>
               <button
                 onClick={() => setViewingPdf(null)}
-                className="p-2 md:p-2.5 rounded-lg bg-destructive/80 hover:bg-destructive text-destructive-foreground transition-colors"
+                className="p-2.5 rounded-xl bg-destructive/80 hover:bg-destructive text-destructive-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
-                <X className="w-4 h-4 md:w-5 md:h-5" />
+                <X className="w-5 h-5" />
               </button>
             </div>
           </div>
