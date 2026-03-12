@@ -424,4 +424,47 @@ const Acervo = () => {
   );
 };
 
+/* Tutorial collapsible banner */
+const TUTORIALS = [
+  { title: "Como navegar pelo acervo", description: "Aprenda a encontrar partituras e playbacks rapidamente" },
+  { title: "Como usar os playbacks", description: "Toque junto com o playback no seu ritmo" },
+  { title: "Como baixar partituras", description: "Salve as partituras no seu celular ou computador" },
+  { title: "Como organizar seus estudos", description: "Dicas para montar sua rotina de prática com o acervo" },
+];
+
+const TutorialBanner = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mb-4">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
+      >
+        <PlayCircle className="w-5 h-5 text-primary shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-body font-bold text-foreground">Vídeos Tutoriais</p>
+          <p className="text-xs text-muted-foreground">Aprenda a usar o acervo completo</p>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {TUTORIALS.map((t, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
+              <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <PlayCircle className="w-5 h-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
+                <p className="text-xs text-muted-foreground break-words">{t.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default Acervo;
