@@ -179,7 +179,8 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           </div>
           <button
             onClick={() => { setIsPlaying(false); onClose(); }}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+            aria-label="Fechar reprodutor"
           >
             <X className="w-4 h-4" />
           </button>

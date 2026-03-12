@@ -21,7 +21,8 @@ const FolderCard = React.memo(({ folder, onOpen }: FolderCardProps) => (
       {folder.name}
     </span>
     <ChevronRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-primary shrink-0 transition-colors" />
-  </button>
+    </button>
+  </div>
 ));
 
 FolderCard.displayName = "FolderCard";

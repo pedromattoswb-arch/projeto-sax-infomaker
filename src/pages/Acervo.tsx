@@ -451,7 +451,7 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
     <button onClick={onClick} className={`${baseClasses} ${variantClasses[variant]}`}>
       {icon}
       {children}
-      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${badgeClasses[variant]}`}>
+      <span className={`text-[11px] px-1.5 py-0.5 rounded-full font-bold ${badgeClasses[variant]}`}>
         {count}
       </span>
     </button>

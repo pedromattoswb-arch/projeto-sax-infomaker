@@ -44,7 +44,7 @@ const SongCatalog = () => {
                 {cat.highlights.map((song, i) => (
                   <div key={i} className="flex items-center gap-1.5">
                     <Music className="w-3 h-3 text-primary shrink-0" />
-                    <span className="text-xs font-body text-muted-foreground truncate">{song}</span>
+                    <span className="text-xs font-body text-muted-foreground break-words">{song}</span>
                   </div>
                 ))}
               </div>

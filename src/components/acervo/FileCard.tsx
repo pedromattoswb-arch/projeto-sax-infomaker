@@ -73,7 +73,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
           </p>
           <div className="flex items-center gap-2 mt-0.5">
             <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+              className={`text-[11px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
                 isPdf
                   ? "bg-destructive/10 text-destructive"
                   : isAudio

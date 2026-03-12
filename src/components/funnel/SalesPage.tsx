@@ -85,6 +85,7 @@ const SalesPage = () => {
             {[
               "PDF de alta qualidade — sax alto e tenor",
               "Playbacks profissionais sincronizados",
+              "Busca inteligente por voz — encontre qualquer música",
               "Acesso imediato — comece em 2 minutos",
               "Garantia de 7 dias — risco zero pra você",
             ].map((item, i) => (
