@@ -109,7 +109,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           onTimeUpdate={handleTimeUpdate}
           onEnded={playNext}
           muted={muted}
-          preload="metadata"
+          preload="auto"
         />
         
         {/* Mobile progress bar on top */}

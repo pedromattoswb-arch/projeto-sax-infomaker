@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
           size: f.size ? parseInt(f.size) : null,
           viewUrl: isPdf ? `https://drive.google.com/file/d/${f.id}/preview` : null,
           downloadUrl: `https://drive.google.com/uc?export=download&id=${f.id}`,
-          streamUrl: isAudio ? `https://docs.google.com/uc?export=download&id=${f.id}` : null,
+          streamUrl: isAudio ? `https://${Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr'}.supabase.co/functions/v1/stream-audio?id=${f.id}` : null,
           thumbnailUrl: isImage ? `https://drive.google.com/thumbnail?id=${f.id}&sz=w400` : null,
         };
       });
