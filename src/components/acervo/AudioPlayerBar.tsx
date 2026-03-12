@@ -171,7 +171,8 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           <div className="hidden md:flex items-center gap-1">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+              aria-label={muted ? "Ativar som" : "Silenciar"}
             >
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
