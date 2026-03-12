@@ -4,18 +4,20 @@ const ESSENTIAL_LINK = "https://pay.cakto.com.br/tdt6ypb_738069";
 const PREMIUM_LINK = "https://pay.cakto.com.br/3djucaz";
 
 const essentialFeatures = [
-  "1.600 partituras em PDF",
+  "+5.000 partituras em PDF",
   "Sax Alto e Tenor inclusos",
-  "8 categorias (Pop, MPB, Rock, Gospel, Jazz, Blues, Samba, Flashback)",
+  "16 categorias musicais organizadas",
+  "Plataforma exclusiva com busca inteligente",
   "Acesso vitalício — pague uma vez só",
-  "Suporte por e-mail",
+  "Suporte por e-mail e WhatsApp",
 ];
 
 const premiumFeatures = [
   "Tudo do Essencial +",
-  "+2.000 partituras (400 a mais)",
-  "Playbacks profissionais sincronizados",
-  "Formato interativo exclusivo (partitura + áudio)",
+  "+10.000 partituras e playbacks profissionais",
+  "Plataforma exclusiva estilo app",
+  "Busca inteligente por voz",
+  "Vídeos tutoriais integrados",
   "Músicas novas todo mês",
   "Harpa Cristã COMPLETA",
   "BÔNUS: Guia Rotina de Estudo",
@@ -57,7 +59,7 @@ const PricingCards = () => {
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Essencial</h3>
               <p className="text-muted-foreground text-sm font-body">
-                O acervo completo de partituras em PDF
+                +5.000 partituras na plataforma exclusiva
               </p>
             </div>
 
@@ -112,7 +114,7 @@ const PricingCards = () => {
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Premium</h3>
               <p className="text-muted-foreground text-sm font-body">
-                Acervo completo + playbacks + bônus exclusivos
+                Acervo completo + playbacks + tutoriais + bônus
               </p>
             </div>
 
@@ -153,7 +155,7 @@ const PricingCards = () => {
             <div className="bg-primary/5 border border-primary/15 rounded-xl p-3 mb-6">
               <p className="text-xs font-semibold font-body text-center">
                 💡 Por apenas <strong className="text-primary">R$ 10 a mais</strong>, você leva
-                playbacks, formato interativo e 3 bônus exclusivos.
+                playbacks, busca por voz, tutoriais e 3 bônus exclusivos.
               </p>
             </div>
 
@@ -172,7 +174,7 @@ const PricingCards = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
-          ⭐ Mais de <strong>847 saxofonistas</strong> já garantiram seu acesso
+          ⭐ Mais de <strong>847 saxofonistas</strong> já garantiram seu acesso • Recomendado por escolas de sax
         </p>
 
         {/* Trust Bar */}
