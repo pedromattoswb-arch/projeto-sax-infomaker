@@ -178,55 +178,32 @@ const Acervo = () => {
         {!loading && !error && hasFiles && (
           <div className="sticky top-[73px] z-20 bg-background/95 backdrop-blur-md -mx-4 px-4 py-3 mb-4 border-b border-border/50">
             <div className="flex flex-wrap gap-2">
-              <button
+              <FilterTab
+                active={fileFilter === "all"}
                 onClick={() => setFileFilter("all")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
-                  fileFilter === "all"
-                    ? "bg-foreground text-background shadow-md"
-                    : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20"
-                }`}
+                count={pdfFiles.length + audioFiles.length}
+                variant="default"
               >
                 Todos
-                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
-                  fileFilter === "all" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"
-                }`}>
-                  {pdfFiles.length + audioFiles.length}
-                </span>
-              </button>
-
-              <button
+              </FilterTab>
+              <FilterTab
+                active={fileFilter === "pdf"}
                 onClick={() => setFileFilter("pdf")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
-                  fileFilter === "pdf"
-                    ? "bg-destructive text-destructive-foreground shadow-md"
-                    : "bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/30"
-                }`}
+                count={pdfFiles.length}
+                icon={<FileText className="w-4 h-4" />}
+                variant="pdf"
               >
-                <FileText className="w-4 h-4" />
                 Partituras
-                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
-                  fileFilter === "pdf" ? "bg-destructive-foreground/20 text-destructive-foreground" : "bg-destructive/10 text-destructive"
-                }`}>
-                  {pdfFiles.length}
-                </span>
-              </button>
-
-              <button
+              </FilterTab>
+              <FilterTab
+                active={fileFilter === "audio"}
                 onClick={() => setFileFilter("audio")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
-                  fileFilter === "audio"
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary/30"
-                }`}
+                count={audioFiles.length}
+                icon={<Music className="w-4 h-4" />}
+                variant="audio"
               >
-                <Music className="w-4 h-4" />
                 Playbacks
-                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
-                  fileFilter === "audio" ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
-                }`}>
-                  {audioFiles.length}
-                </span>
-              </button>
+              </FilterTab>
             </div>
           </div>
         )}
