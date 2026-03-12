@@ -138,16 +138,17 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
 
           {/* Controls */}
           <div className="flex items-center gap-1 md:gap-2 shrink-0">
-            <button onClick={playPrev} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+            <button onClick={playPrev} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full" aria-label="Música anterior">
               <SkipBack className="w-5 h-5" />
             </button>
             <button
               onClick={() => setIsPlaying((p) => !p)}
-              className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg"
+              className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              aria-label={isPlaying ? "Pausar" : "Reproduzir"}
             >
               {isPlaying ? <Pause className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-0.5" fill="currentColor" />}
             </button>
-            <button onClick={playNext} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+            <button onClick={playNext} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full" aria-label="Próxima música">
               <SkipForward className="w-5 h-5" />
             </button>
           </div>
