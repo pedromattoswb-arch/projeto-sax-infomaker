@@ -98,8 +98,16 @@ const Acervo = () => {
 
   return (
     <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
+      {/* Skip Navigation */}
+      <a
+        href="#acervo-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-xl focus:text-sm focus:font-bold"
+      >
+        Ir para conteúdo
+      </a>
+
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border">
+      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
           <div className="flex items-center gap-3">
