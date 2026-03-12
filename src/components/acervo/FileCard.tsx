@@ -24,7 +24,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
 
   return (
     <div
-      className={`flex items-center gap-3 p-3 md:p-4 rounded-2xl border-l-4 transition-all duration-200 ${
+      className={`flex flex-col sm:flex-row sm:items-center gap-3 p-3 md:p-4 rounded-2xl border-l-4 transition-all duration-200 ${
         isPdf
           ? "border-l-destructive bg-card border border-border"
           : isAudio
@@ -34,83 +34,86 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
           : "border-l-muted bg-card border border-border"
       }`}
     >
-      {/* Type badge + icon */}
-      {isAudio ? (
-        <button
-          onClick={() => onPlay(file)}
-          className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-90 ${
-            isActive
-              ? "bg-primary text-primary-foreground shadow-lg"
-              : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
-          }`}
-          aria-label={isActive ? "Pausar" : "Ouvir"}
-        >
-          {isActive ? (
-            <Pause className="w-5 h-5" fill="currentColor" />
-          ) : (
-            <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
-          )}
-        </button>
-      ) : (
-        <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
-          isPdf ? "bg-destructive/10" : "bg-muted"
-        }`}>
-          {isPdf ? (
-            <FileText className="w-6 h-6 text-destructive" />
-          ) : (
-            <Music className="w-6 h-6 text-muted-foreground" />
-          )}
-        </div>
-      )}
-
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <p className="font-body font-bold text-sm md:text-base text-foreground break-words">
-          {file.name}
-        </p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span
-            className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-              isPdf
-                ? "bg-destructive/10 text-destructive"
-                : isAudio
-                ? "bg-primary/10 text-primary"
-                : "bg-muted text-muted-foreground"
+      {/* Top row: icon + info */}
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        {/* Type badge + icon */}
+        {isAudio ? (
+          <button
+            onClick={() => onPlay(file)}
+            className={`shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all active:scale-90 ${
+              isActive
+                ? "bg-primary text-primary-foreground shadow-lg"
+                : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
             }`}
+            aria-label={isActive ? "Pausar" : "Ouvir"}
           >
-            {isPdf ? "Partitura" : isAudio ? "Playback" : "Arquivo"}
-          </span>
-          {file.size ? (
-            <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
-          ) : null}
+            {isActive ? (
+              <Pause className="w-5 h-5" fill="currentColor" />
+            ) : (
+              <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
+            )}
+          </button>
+        ) : (
+          <div className={`shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
+            isPdf ? "bg-destructive/10" : "bg-muted"
+          }`}>
+            {isPdf ? (
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-destructive" />
+            ) : (
+              <Music className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+            )}
+          </div>
+        )}
+
+        {/* Info */}
+        <div className="min-w-0 flex-1">
+          <p className="font-body font-bold text-sm md:text-base text-foreground break-words leading-snug">
+            {file.name}
+          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span
+              className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                isPdf
+                  ? "bg-destructive/10 text-destructive"
+                  : isAudio
+                  ? "bg-primary/10 text-primary"
+                  : "bg-muted text-muted-foreground"
+              }`}
+            >
+              {isPdf ? "Partitura" : isAudio ? "Playback" : "Arquivo"}
+            </span>
+            {file.size ? (
+              <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
+            ) : null}
+          </div>
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-1 shrink-0">
+      {/* Actions - full width row on mobile */}
+      <div className="flex items-center gap-2 sm:gap-1 shrink-0 sm:ml-auto">
         {isPdf && file.viewUrl && (
           <button
             onClick={() => onViewPdf(file)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground text-xs font-bold font-body transition-colors min-h-[44px]"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground text-xs font-bold font-body transition-colors min-h-[44px]"
           >
             <Eye className="w-4 h-4" />
-            <span>Ver</span>
+            <span>Ver Partitura</span>
           </button>
         )}
         {isAudio && !isActive && (
           <button
             onClick={() => onPlay(file)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground text-xs font-bold font-body transition-colors min-h-[44px] md:flex hidden"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground text-xs font-bold font-body transition-colors min-h-[44px] sm:hidden"
           >
             <Play className="w-4 h-4" fill="currentColor" />
-            <span>Ouvir</span>
+            <span>Ouvir Playback</span>
           </button>
         )}
         <a
           href={file.downloadUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted text-xs font-bold font-body transition-colors min-h-[44px]"
+          className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted text-xs font-bold font-body transition-colors min-h-[44px] border border-border sm:border-0"
           aria-label={`Baixar ${file.name}`}
         >
           <Download className="w-4 h-4" />
