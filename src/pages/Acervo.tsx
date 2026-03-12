@@ -158,31 +158,38 @@ const Acervo = () => {
           {!isRoot && (
             <button
               onClick={goBack}
-              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center"
-              aria-label="Voltar"
+              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Voltar para pasta anterior"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
-          <div className="relative flex-1">
+          {/* Search trigger — opens full-screen panel */}
+          <button
+            onClick={() => setSearchPanelOpen(true)}
+            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-card border border-border rounded-xl text-base font-body text-muted-foreground hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
+            aria-label="Abrir painel de busca"
+          >
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar nesta pasta..."
-              className="w-full pl-11 pr-11 py-3 bg-card border border-border rounded-xl text-base font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all min-h-[48px]"
-            />
-            {search && (
-              <button
-                onClick={() => { setSearch(""); setSearchDebounced(""); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
+            <span>Buscar músicas, pastas...</span>
+          </button>
         </div>
+
+        {/* Global Search Panel */}
+        <GlobalSearchPanel
+          open={searchPanelOpen}
+          onClose={() => setSearchPanelOpen(false)}
+          folders={folders}
+          files={files}
+          onFolderOpen={(folder) => {
+            handleFolderOpen(folder);
+          }}
+          onFileOpen={(file) => {
+            if (file.type === "pdf") setViewingPdf(file);
+            else if (file.type === "audio") playAudio(file);
+          }}
+          onPlayAudio={playAudio}
+        />
 
         {/* Filter Tabs - always visible when there are files */}
         {!loading && !error && hasFiles && (
