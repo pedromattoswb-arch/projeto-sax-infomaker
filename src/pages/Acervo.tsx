@@ -19,6 +19,7 @@ import FolderCard from "@/components/acervo/FolderCard";
 import FileCard from "@/components/acervo/FileCard";
 import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
 import MobileNav from "@/components/acervo/MobileNav";
+import GlobalSearchPanel from "@/components/acervo/GlobalSearchPanel";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
