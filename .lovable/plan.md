@@ -1,64 +1,73 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Nomes de Pastas + Layout Mobile + Aba de Tutoriais
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
+### 1. Melhorar mapeamento de nomes de pastas
 
----
+Expandir `FOLDER_NAME_MAP` em `useDriveFiles.ts` com nomes completos e descritivos (sem abreviações):
 
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
+| Drive Original | Nome Exibido |
+|---|---|
+| BOOKS | Livros e Métodos de Estudo |
+| CHRISTMAS | Músicas de Natal |
+| CLASSICAL MUSIC | Música Clássica |
+| COLLECTION | Coleção Completa |
+| FILMES E SÉRIES | Trilhas de Filmes e Séries |
+| GOSPEL | Músicas Gospel |
+| JAZZ | Jazz |
+| POP | Pop Internacional |
+| MPB | Música Popular Brasileira |
+| SERTANEJO | Sertanejo |
+| FORRÓ | Forró |
+| BOSSA NOVA | Bossa Nova |
+| ROCK | Rock |
+| BLUES | Blues |
+| REGGAE | Reggae |
+| SAMBA | Samba |
+| INTERNATIONAL | Músicas Internacionais |
+| BRASILEIRAS | Músicas Brasileiras |
+| ROMANTIC | Músicas Românticas |
 
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
-
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
-
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
-
----
-
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
-
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
-
----
-
-### 3. SalesPage.tsx — Garantia section reforçada
-
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
+**Arquivo:** `src/hooks/useDriveFiles.ts`
 
 ---
 
-### 4. SalesPage.tsx — Footer profissional com selos
+### 2. Layout mobile do FileCard — eliminar texto espremido
 
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
+O problema: no mobile, nome da música + botões de ação ficam na mesma linha (`flex items-center`), espremendo o texto quando o nome é longo.
 
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+**Solução em `FileCard.tsx`:**
+- No mobile, mudar para layout vertical: nome/badge em cima, botões de ação embaixo (full-width)
+- Usar `flex-col` no mobile e `flex-row items-center` no desktop
+- Botões de ação no mobile viram uma row abaixo do nome, com largura total
+- Garantir que o nome da música nunca fique cortado: `break-words` + sem limite de largura
 
 ---
 
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+### 3. Aba de Vídeos Tutoriais no topo
 
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+Adicionar uma seção colapsável/semi-visível logo abaixo do header em `Acervo.tsx`:
+- Banner sutil com ícone de vídeo + texto "Vídeos Tutoriais — Aprenda a usar o acervo"
+- Ao clicar, expande e mostra cards de vídeos tutoriais (placeholder por agora com links/textos editáveis)
+- Usar `Collapsible` do Radix ou simplesmente um `useState` com toggle
+- Visual discreto mas visível: bg com opacidade, borda superior colorida
+
+---
+
+### 4. Melhorias gerais de responsividade
+
+- **FolderCard**: nome com `text-sm` no mobile para caber melhor, sem truncamento
+- **AudioPlayerBar**: no mobile, layout mais compacto — nome com `line-clamp-1` no player mas visível
+- **Breadcrumbs**: font-size menor no mobile (`text-xs`), padding reduzido
+
+---
+
+### Arquivos Modificados
+
+| Arquivo | Mudança |
+|---|---|
+| `src/hooks/useDriveFiles.ts` | Expandir FOLDER_NAME_MAP com nomes completos |
+| `src/components/acervo/FileCard.tsx` | Layout vertical no mobile (nome + ações em linhas separadas) |
+| `src/pages/Acervo.tsx` | Adicionar aba de tutoriais colapsável no topo |
+| `src/components/acervo/FolderCard.tsx` | Ajustes de responsividade no texto |
 
