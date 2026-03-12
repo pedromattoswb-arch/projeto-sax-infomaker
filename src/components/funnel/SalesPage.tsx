@@ -1,7 +1,7 @@
 import {
   Music,
   Headphones,
-  Monitor,
+  Mic,
   FolderOpen,
   Infinity,
   RefreshCw,
@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Lock,
   BadgeCheck,
+  Search,
 } from "lucide-react";
 
 import logoSaxplay from "@/assets/logo-saxplay.png";
@@ -29,10 +30,10 @@ import PlaybackSamples from "./PlaybackSamples";
 const features = [
   { icon: Music, title: "+2.000 Partituras", description: "PDF profissional, pronto pra tocar", gradient: "from-amber-500 to-amber-700" },
   { icon: Headphones, title: "Playbacks Inclusos", description: "Áudio sincronizado com cada música", gradient: "from-blue-500 to-blue-700" },
-  { icon: Monitor, title: "Formato Interativo", description: "Partitura + áudio juntos na tela", gradient: "from-blue-500 to-indigo-600" },
-  { icon: FolderOpen, title: "8 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz…", gradient: "from-purple-500 to-violet-600" },
+  { icon: Search, title: "Busca Inteligente", description: "Encontre qualquer música por nome ou por voz", gradient: "from-blue-500 to-indigo-600" },
+  { icon: FolderOpen, title: "+18 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz, Natal, Casamento…", gradient: "from-purple-500 to-violet-600" },
   { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre", gradient: "from-rose-500 to-pink-600" },
-  { icon: RefreshCw, title: "Músicas Novas Todo Mês", description: "O acervo nunca para de crescer", gradient: "from-teal-500 to-cyan-600" },
+  { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música e encontre na hora", gradient: "from-teal-500 to-cyan-600" },
 ];
 
 const scrollToOffers = () => {
@@ -84,6 +85,7 @@ const SalesPage = () => {
             {[
               "PDF de alta qualidade — sax alto e tenor",
               "Playbacks profissionais sincronizados",
+              "Busca inteligente por voz — encontre qualquer música",
               "Acesso imediato — comece em 2 minutos",
               "Garantia de 7 dias — risco zero pra você",
             ].map((item, i) => (

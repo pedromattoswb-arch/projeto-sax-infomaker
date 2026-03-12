@@ -19,6 +19,7 @@ import FolderCard from "@/components/acervo/FolderCard";
 import FileCard from "@/components/acervo/FileCard";
 import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
 import MobileNav from "@/components/acervo/MobileNav";
+import GlobalSearchPanel from "@/components/acervo/GlobalSearchPanel";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
@@ -42,6 +43,7 @@ const Acervo = () => {
   const [viewingPdf, setViewingPdf] = useState<DriveFile | null>(null);
   const [currentAudio, setCurrentAudio] = useState<DriveFile | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchPanelOpen, setSearchPanelOpen] = useState(false);
   const [fileFilter, setFileFilter] = useState<FileFilter>("all");
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
@@ -96,8 +98,16 @@ const Acervo = () => {
 
   return (
     <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
+      {/* Skip Navigation */}
+      <a
+        href="#acervo-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-xl focus:text-sm focus:font-bold"
+      >
+        Ir para conteúdo
+      </a>
+
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border">
+      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
           <div className="flex items-center gap-3">
@@ -120,12 +130,12 @@ const Acervo = () => {
 
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
-      <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
+      <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
         {/* Tutorial Banner */}
         <TutorialBanner />
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
-        <nav className="flex flex-wrap items-center gap-1 mb-4">
+        <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
           {breadcrumbs.map((crumb, idx) => (
             <div key={crumb.id} className="flex items-center gap-1">
               {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />}
@@ -148,31 +158,38 @@ const Acervo = () => {
           {!isRoot && (
             <button
               onClick={goBack}
-              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center"
-              aria-label="Voltar"
+              className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Voltar para pasta anterior"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
-          <div className="relative flex-1">
+          {/* Search trigger — opens full-screen panel */}
+          <button
+            onClick={() => setSearchPanelOpen(true)}
+            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-card border border-border rounded-xl text-base font-body text-muted-foreground hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
+            aria-label="Abrir painel de busca"
+          >
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar nesta pasta..."
-              className="w-full pl-11 pr-11 py-3 bg-card border border-border rounded-xl text-base font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all min-h-[48px]"
-            />
-            {search && (
-              <button
-                onClick={() => { setSearch(""); setSearchDebounced(""); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
+            <span>Buscar músicas, pastas...</span>
+          </button>
         </div>
+
+        {/* Global Search Panel */}
+        <GlobalSearchPanel
+          open={searchPanelOpen}
+          onClose={() => setSearchPanelOpen(false)}
+          folders={folders}
+          files={files}
+          onFolderOpen={(folder) => {
+            handleFolderOpen(folder);
+          }}
+          onFileOpen={(file) => {
+            if (file.type === "pdf") setViewingPdf(file);
+            else if (file.type === "audio") playAudio(file);
+          }}
+          onPlayAudio={playAudio}
+        />
 
         {/* Filter Tabs - always visible when there are files */}
         {!loading && !error && hasFiles && (
@@ -236,12 +253,12 @@ const Acervo = () => {
           <>
             {/* Folders */}
             {filteredFolders.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-6" role="region" aria-label="Pastas">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <Folder className="w-4 h-4" />
                   Pastas ({filteredFolders.length})
                 </h2>
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
                   {filteredFolders.map((folder) => (
                     <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
                   ))}
@@ -251,12 +268,12 @@ const Acervo = () => {
 
             {/* PDFs (Partituras) */}
             {showPdfs && pdfFiles.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-6" role="region" aria-label="Partituras">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-destructive inline-block" />
                   Partituras ({pdfFiles.length})
                 </h2>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2" role="list" aria-live="polite">
                   {pdfFiles.map((file) => (
                     <FileCard
                       key={file.id}
@@ -273,12 +290,12 @@ const Acervo = () => {
 
             {/* Audio (Playbacks) */}
             {showAudio && audioFiles.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-6" role="region" aria-label="Playbacks">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary inline-block" />
                   Playbacks ({audioFiles.length})
                 </h2>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2" role="list" aria-live="polite">
                   {audioFiles.map((file) => (
                     <FileCard
                       key={file.id}
@@ -410,7 +427,7 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
   variant: "default" | "pdf" | "audio";
   children: React.ReactNode;
 }) => {
-  const baseClasses = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-body font-bold transition-all min-h-[40px] sm:min-h-[48px]";
+  const baseClasses = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-body font-bold transition-all min-h-[40px] sm:min-h-[48px] focus-visible:ring-2 focus-visible:ring-primary";
   
   const variantClasses = {
     default: active
@@ -434,7 +451,7 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
     <button onClick={onClick} className={`${baseClasses} ${variantClasses[variant]}`}>
       {icon}
       {children}
-      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${badgeClasses[variant]}`}>
+      <span className={`text-[11px] px-1.5 py-0.5 rounded-full font-bold ${badgeClasses[variant]}`}>
         {count}
       </span>
     </button>

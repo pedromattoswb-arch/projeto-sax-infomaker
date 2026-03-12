@@ -24,6 +24,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
 
   return (
     <div
+      role="listitem"
       className={`flex flex-col sm:flex-row sm:items-center gap-3 p-3 md:p-4 rounded-2xl border-l-4 transition-all duration-200 ${
         isPdf
           ? "border-l-destructive bg-card border border-border"
@@ -72,7 +73,7 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
           </p>
           <div className="flex items-center gap-2 mt-0.5">
             <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+              className={`text-[11px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
                 isPdf
                   ? "bg-destructive/10 text-destructive"
                   : isAudio
