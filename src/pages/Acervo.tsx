@@ -253,12 +253,12 @@ const Acervo = () => {
           <>
             {/* Folders */}
             {filteredFolders.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-6" role="region" aria-label="Pastas">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <Folder className="w-4 h-4" />
                   Pastas ({filteredFolders.length})
                 </h2>
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
                   {filteredFolders.map((folder) => (
                     <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
                   ))}
