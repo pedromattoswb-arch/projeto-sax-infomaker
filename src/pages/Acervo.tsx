@@ -401,6 +401,46 @@ const Acervo = () => {
   );
 };
 
+/* Filter Tab component */
+const FilterTab = ({ active, onClick, count, icon, variant, children }: {
+  active: boolean;
+  onClick: () => void;
+  count: number;
+  icon?: React.ReactNode;
+  variant: "default" | "pdf" | "audio";
+  children: React.ReactNode;
+}) => {
+  const baseClasses = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-body font-bold transition-all min-h-[40px] sm:min-h-[48px]";
+  
+  const variantClasses = {
+    default: active
+      ? "bg-foreground text-background shadow-md"
+      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20",
+    pdf: active
+      ? "bg-destructive text-destructive-foreground shadow-md"
+      : "bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/30",
+    audio: active
+      ? "bg-primary text-primary-foreground shadow-md"
+      : "bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary/30",
+  };
+
+  const badgeClasses = {
+    default: active ? "bg-background/20 text-background" : "bg-muted text-muted-foreground",
+    pdf: active ? "bg-destructive-foreground/20 text-destructive-foreground" : "bg-destructive/10 text-destructive",
+    audio: active ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary",
+  };
+
+  return (
+    <button onClick={onClick} className={`${baseClasses} ${variantClasses[variant]}`}>
+      {icon}
+      {children}
+      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${badgeClasses[variant]}`}>
+        {count}
+      </span>
+    </button>
+  );
+};
+
 /* Tutorial collapsible banner */
 const TUTORIALS = [
   { title: "Como navegar pelo acervo", description: "Aprenda a encontrar partituras e playbacks rapidamente" },
