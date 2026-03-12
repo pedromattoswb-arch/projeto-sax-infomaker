@@ -43,6 +43,7 @@ const Acervo = () => {
   const [viewingPdf, setViewingPdf] = useState<DriveFile | null>(null);
   const [currentAudio, setCurrentAudio] = useState<DriveFile | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchPanelOpen, setSearchPanelOpen] = useState(false);
   const [fileFilter, setFileFilter] = useState<FileFilter>("all");
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
