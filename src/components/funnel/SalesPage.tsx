@@ -1,7 +1,7 @@
 import {
   Music,
   Headphones,
-  Monitor,
+  Mic,
   FolderOpen,
   Infinity,
   RefreshCw,
@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Lock,
   BadgeCheck,
+  Search,
 } from "lucide-react";
 
 import logoSaxplay from "@/assets/logo-saxplay.png";
