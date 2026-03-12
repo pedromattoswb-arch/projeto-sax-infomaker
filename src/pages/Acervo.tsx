@@ -427,7 +427,7 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
   variant: "default" | "pdf" | "audio";
   children: React.ReactNode;
 }) => {
-  const baseClasses = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-body font-bold transition-all min-h-[40px] sm:min-h-[48px]";
+  const baseClasses = "flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-body font-bold transition-all min-h-[40px] sm:min-h-[48px] focus-visible:ring-2 focus-visible:ring-primary";
   
   const variantClasses = {
     default: active
