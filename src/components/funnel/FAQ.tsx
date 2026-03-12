@@ -24,17 +24,27 @@ const faqItems = [
   {
     question: "As partituras são de qualidade profissional?",
     answer:
-      "Sim. Todas foram revisadas por músicos profissionais — com melodia, harmonia e arranjos completos em PDF de alta resolução.",
+      "Sim. Todas as +10.000 partituras foram revisadas por músicos profissionais — com melodia, harmonia e arranjos completos em PDF de alta resolução.",
   },
   {
     question: "Posso acessar pelo celular?",
     answer:
-      "Sim! Celular, tablet ou computador. A plataforma é 100% responsiva.",
+      "Sim! A plataforma SaxBrasil funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada.",
   },
   {
     question: "Qual a diferença entre Essencial e Premium?",
     answer:
-      "O Essencial tem 1.600 partituras em PDF. O Premium tem tudo isso + 400 partituras extras, playbacks sincronizados, formato interativo, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por R$ 10 a mais, é a escolha óbvia.",
+      "O Essencial tem +5.000 partituras em PDF com busca inteligente na plataforma. O Premium tem +10.000 partituras e playbacks, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos (Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). Por R$ 10 a mais, é a escolha óbvia.",
+  },
+  {
+    question: "O que são os vídeos tutoriais?",
+    answer:
+      "São vídeos integrados diretamente na plataforma SaxBrasil que ensinam como usar cada recurso: como buscar partituras, usar playbacks, organizar sua prática, entender tonalidades e muito mais. Exclusivo do plano Premium.",
+  },
+  {
+    question: "Como funciona a busca por voz?",
+    answer:
+      "Na plataforma SaxBrasil (plano Premium), você pode clicar no ícone de microfone e falar o nome da música que quer tocar. A plataforma reconhece sua voz e encontra a partitura e o playback instantaneamente. Funciona em português e é super fácil de usar.",
   },
   {
     question: "E se eu não gostar?",
@@ -44,12 +54,12 @@ const faqItems = [
   {
     question: "O acesso é realmente vitalício?",
     answer:
-      "Sim. Pague uma vez e acesse para sempre — nos dois planos.",
+      "Sim. Pague uma vez e acesse para sempre — nos dois planos. Inclui todas as atualizações futuras.",
   },
   {
     question: "Posso confiar neste site?",
     answer:
-      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp. Estamos aqui para te ajudar.",
+      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Somos recomendados por escolas e professores de saxofone em todo o Brasil. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp.",
   },
 ];
 

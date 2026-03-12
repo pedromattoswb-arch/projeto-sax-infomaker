@@ -1,95 +1,64 @@
 
 
-## Plano: Reestruturação Completa da Sales Page — SaxBrasil
+## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
 
-Reformulação total da comunicação, copy e conteúdo da página de vendas para posicionar o SaxBrasil como **o maior acervo de partituras e playbacks para saxofone do Brasil**, com +10.000 arquivos.
-
----
-
-### 1. Nova Comunicação e Copy (toda a página)
-
-**Mudança de posicionamento:** De "acervo de partituras" para "plataforma completa para saxofonistas" — maior do Brasil, recomendada por escolas, com inovação tecnológica.
-
-**Arquivo principal:** `src/components/funnel/SalesPage.tsx`
-
-- **Hero:** Reescrever headline para "+10.000 Partituras e Playbacks — O Maior Acervo Para Sax do Brasil". Subheadline destacando: plataforma própria, busca por voz, tutoriais, material de estudo. Badge atualizado para "+10.000 arquivos".
-- **Bullet points atualizados:** Mencionar busca inteligente por voz, vídeos tutoriais integrados, material de estudo completo, plataforma própria estilo app.
-- **Features array:** Reformular para incluir: Plataforma Exclusiva, +10.000 Arquivos, Busca por Voz, Vídeos Tutoriais, Material de Estudo, Acesso Vitalício.
-- **CTA final:** Atualizar números para +10.000. Copy com mais autoridade ("Recomendado por escolas de saxofone").
-- **Seção nova: "Conheça a Plataforma por Dentro"** — mockup/simulação visual do app real com tarja "SIMULAÇÃO — ACERVO REAL" mostrando a navegação do acervo (pastas, busca, player). Componente estático que recria visualmente a UI do Acervo com dados reais mas sem funcionalidade — apenas demonstração visual.
+### Estrategia Principal
+A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
 
 ---
 
-### 2. Seção de Simulação do App
+### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
 
-**Novo componente:** `src/components/funnel/AppSimulation.tsx`
+**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
+- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
+- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
+- Informar que o e-mail vem do remetente da Cakto com login e senha
 
-- Recria visualmente a interface do `/acervo` com dados estáticos: lista de pastas reais (Música Popular Brasileira, Jazz, Gospel, etc.), cards de arquivos de exemplo, player de áudio visual
-- Tarja superior fixa: "🔒 SIMULAÇÃO DO ACERVO REAL — APENAS PARA DEMONSTRAÇÃO"
-- Mockup de celular/tablet com a UI dentro, visual estilo screenshot interativo
-- Não funcional — apenas visual para mostrar como é por dentro
-- Incluir: pastas de gêneros, filtros, busca, player, tutoriais — tudo que temos
+**Nova pergunta: "Quem processa o pagamento?"**
+- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
+- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
 
----
-
-### 3. Playbacks de Amostra Atualizados
-
-**Arquivo:** `src/components/funnel/PlaybackSamples.tsx`
-
-Atualizar a lista de tracks com músicas mais famosas e desejadas que existem no acervo real:
-- Careless Whisper (mantém), Baker Street, Take Five, The Pink Panther, Fly Me to the Moon
-- Garota de Ipanema, Evidências, Asa Branca
-- Hallelujah, My Heart Will Go On, Just the Way You Are
-- Remover tracks menos conhecidos, priorizar os mais icônicos e reconhecíveis
-
-Atualizar texto: "Ouça alguns dos +10.000 playbacks do acervo"
+**Nova pergunta: "Posso confiar neste site?"**
+- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
 
 ---
 
-### 4. Catálogo Atualizado
+### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
 
-**Arquivo:** `src/components/funnel/SongCatalog.tsx`
-
-- Atualizar números: cada gênero com contagens maiores (total +10.000)
-- Adicionar mais gêneros que existem no acervo: Bossa Nova, Forró, Sertanejo, Românticas, Trilhas de Filmes, Músicas de Natal, Casamento
-- Headline: "+10.000 Partituras e Playbacks Organizados Por Gênero"
-- Expandir grid para mostrar mais categorias (12-16 cards)
+Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
+- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
+- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
 
 ---
 
-### 5. Pricing e Bonus Atualizados
+### 3. SalesPage.tsx — Garantia section reforçada
 
-**Arquivo:** `src/components/funnel/PricingCards.tsx`
-- Atualizar features do Essencial: "+5.000 partituras em PDF"
-- Atualizar features do Premium: "+10.000 partituras e playbacks", "Plataforma exclusiva estilo app", "Busca inteligente por voz", "Vídeos tutoriais integrados"
-- Adicionar menção a tutoriais nos bônus
-
-**Arquivo:** `src/components/funnel/BonusSection.tsx`
-- Manter os 3 bônus existentes
-- Adicionar na descrição: "Disponível dentro da plataforma SaxBrasil"
+Adicionar uma linha extra na secao de garantia:
+- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
 
 ---
 
-### 6. FAQ Atualizado
+### 4. SalesPage.tsx — Footer profissional com selos
 
-**Arquivo:** `src/components/funnel/FAQ.tsx`
-- Atualizar resposta sobre diferença Essencial/Premium com novos números
-- Adicionar pergunta: "O que são os vídeos tutoriais?"
-- Adicionar pergunta: "Como funciona a busca por voz?"
-- Atualizar todas as menções de "+2.000" para "+10.000"
-- Reforçar autoridade: "Recomendado por escolas e professores de saxofone"
+Expandir o footer com:
+- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
+- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
+- Icones de ShieldCheck e Lock para reforço visual
 
 ---
 
-### Arquivos Modificados
+### 5. SalesPage.tsx — Micro-copy no CTA final
 
-| Arquivo | Mudança |
-|---|---|
-| `src/components/funnel/SalesPage.tsx` | Copy completa reescrita, nova seção de simulação |
-| `src/components/funnel/AppSimulation.tsx` | **NOVO** — Simulação visual do app |
-| `src/components/funnel/PlaybackSamples.tsx` | Tracks atualizados com músicas mais famosas |
-| `src/components/funnel/SongCatalog.tsx` | +10.000, mais gêneros, mais cards |
-| `src/components/funnel/PricingCards.tsx` | Features e números atualizados |
-| `src/components/funnel/BonusSection.tsx` | Menção à plataforma |
-| `src/components/funnel/FAQ.tsx` | Novas perguntas, números atualizados |
+Abaixo do botao CTA final, adicionar:
+- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+
+---
+
+### Arquivos editados
+- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
+- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
+- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
+
+### Principio guia
+Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
 

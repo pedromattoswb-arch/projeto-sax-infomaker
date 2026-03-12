@@ -2,20 +2,20 @@ import { useState, useRef, useCallback } from "react";
 import { Play, Pause, Music2 } from "lucide-react";
 
 const tracks = [
-  { id: "dancing-queen", name: "Dancing Queen", genre: "Pop", file: "/playbacks/dancing-queen.mp3" },
-  { id: "estranha-loucura", name: "Estranha Loucura", genre: "MPB", file: "/playbacks/estranha-loucura.mp3" },
-  { id: "boate-azul", name: "Boate Azul", genre: "Sertanejo", file: "/playbacks/boate-azul.mp3" },
+  { id: "careless-whisper", name: "Careless Whisper", genre: "Pop", file: "/playbacks/careless-whisper.mp3" },
   { id: "sozinho", name: "Sozinho", genre: "MPB", file: "/playbacks/sozinho.mp3" },
   { id: "your-latest-trick", name: "Your Latest Trick", genre: "Rock", file: "/playbacks/your-latest-trick.mp3" },
-  { id: "careless-whisper", name: "Careless Whisper", genre: "Pop", file: "/playbacks/careless-whisper.mp3" },
-  { id: "endless-love", name: "Endless Love", genre: "Pop", file: "/playbacks/endless-love.mp3" },
+  { id: "dancing-queen", name: "Dancing Queen", genre: "Pop", file: "/playbacks/dancing-queen.mp3" },
+  { id: "endless-love", name: "Endless Love", genre: "Romântico", file: "/playbacks/endless-love.mp3" },
+  { id: "boate-azul", name: "Boate Azul", genre: "Sertanejo", file: "/playbacks/boate-azul.mp3" },
   { id: "amigo-de-deus", name: "Amigo de Deus", genre: "Gospel", file: "/playbacks/amigo-de-deus.mp3" },
-  { id: "tudo-e-possivel", name: "Tudo É Possível ao Que Crê", genre: "Gospel", file: "/playbacks/tudo-e-possivel.mp3" },
-  { id: "alegria-coracao", name: "Alegria Está no Coração", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
-  { id: "espirito", name: "Espírito Espírito", genre: "Gospel", file: "/playbacks/espirito-espirito.mp3" },
-  { id: "jingle-bells", name: "Jingle Bells", genre: "Clássico", file: "/playbacks/jingle-bells.mp3" },
+  { id: "estranha-loucura", name: "Estranha Loucura", genre: "MPB", file: "/playbacks/estranha-loucura.mp3" },
   { id: "prince-ali", name: "Prince Ali", genre: "Trilha Sonora", file: "/playbacks/prince-ali.mp3" },
+  { id: "jingle-bells", name: "Jingle Bells", genre: "Natal", file: "/playbacks/jingle-bells.mp3" },
+  { id: "tudo-e-possivel", name: "Tudo É Possível ao Que Crê", genre: "Gospel", file: "/playbacks/tudo-e-possivel.mp3" },
   { id: "tan-enamorados", name: "Tan Enamorados", genre: "Romântico", file: "/playbacks/tan-enamorados.mp3" },
+  { id: "espirito", name: "Espírito Espírito", genre: "Gospel", file: "/playbacks/espirito-espirito.mp3" },
+  { id: "alegria-coracao", name: "Alegria Está no Coração", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
   { id: "alguem-me-disse", name: "Alguém Me Disse", genre: "MPB", file: "/playbacks/alguem-me-disse.mp3" },
 ];
 
@@ -25,9 +25,9 @@ const genreColors: Record<string, string> = {
   Sertanejo: "bg-orange-500/20 text-orange-300",
   Rock: "bg-blue-500/20 text-blue-300",
   Gospel: "bg-emerald-500/20 text-emerald-300",
-  "Clássico": "bg-violet-500/20 text-violet-300",
   "Trilha Sonora": "bg-cyan-500/20 text-cyan-300",
   "Romântico": "bg-rose-500/20 text-rose-300",
+  "Natal": "bg-red-500/20 text-red-300",
 };
 
 const formatTime = (s: number) => {
@@ -102,14 +102,13 @@ const PlaybackSamples = () => {
         <div className="text-center mb-5 md:mb-7">
           <h3 className="text-xl md:text-2xl font-bold font-heading text-white flex items-center justify-center gap-2 mb-2">
             <Music2 className="w-6 h-6 text-primary" />
-            Ouça Alguns Playbacks de Amostra
+            Ouça Alguns dos +10.000 Playbacks do Acervo
           </h3>
           <p className="text-white/60 text-sm md:text-base font-body max-w-lg mx-auto">
-            Isso é só uma amostra — no acervo completo você terá acesso a <strong className="text-white/80">muito mais playbacks</strong> em diversos estilos
+            Esses são só alguns exemplos — no acervo completo você terá acesso a <strong className="text-white/80">milhares de playbacks</strong> em todos os estilos
           </p>
         </div>
 
-        {/* Playlist container */}
         <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {tracks.map((track, index) => {
             const isPlaying = playingId === track.id;
@@ -121,13 +120,10 @@ const PlaybackSamples = () => {
               <div
                 key={track.id}
                 className={`flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-3.5 cursor-pointer transition-colors duration-200 ${
-                  isPlaying
-                    ? "bg-primary/10"
-                    : "hover:bg-white/[0.04]"
+                  isPlaying ? "bg-primary/10" : "hover:bg-white/[0.04]"
                 } ${index > 0 ? "border-t border-white/[0.06]" : ""}`}
                 onClick={() => handlePlay(track.id)}
               >
-                {/* Play button */}
                 <button
                   className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 ${
                     isPlaying
@@ -143,7 +139,6 @@ const PlaybackSamples = () => {
                   )}
                 </button>
 
-                {/* Info + progress */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
@@ -159,7 +154,6 @@ const PlaybackSamples = () => {
                     </span>
                   </div>
 
-                  {/* Progress bar */}
                   <div
                     className="w-full h-2 rounded-full bg-white/10 overflow-hidden cursor-pointer group"
                     onClick={(e) => handleSeek(track.id, e)}
@@ -171,7 +165,6 @@ const PlaybackSamples = () => {
                   </div>
                 </div>
 
-                {/* Hidden audio */}
                 <audio
                   ref={(el) => registerAudio(track.id, el)}
                   src={track.file}
