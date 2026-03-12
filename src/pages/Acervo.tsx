@@ -290,12 +290,12 @@ const Acervo = () => {
 
             {/* Audio (Playbacks) */}
             {showAudio && audioFiles.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-6" role="region" aria-label="Playbacks">
                 <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary inline-block" />
                   Playbacks ({audioFiles.length})
                 </h2>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2" role="list" aria-live="polite">
                   {audioFiles.map((file) => (
                     <FileCard
                       key={file.id}
