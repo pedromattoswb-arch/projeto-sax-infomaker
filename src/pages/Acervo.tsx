@@ -121,14 +121,17 @@ const Acervo = () => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
       <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
+        {/* Tutorial Banner */}
+        <TutorialBanner />
+
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
-        <nav className="flex flex-wrap items-center gap-1 mb-5">
+        <nav className="flex flex-wrap items-center gap-1 mb-4">
           {breadcrumbs.map((crumb, idx) => (
             <div key={crumb.id} className="flex items-center gap-1">
-              {idx > 0 && <ChevronRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />}
+              {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />}
               <button
                 onClick={() => navigateToBreadcrumb(idx)}
-                className={`text-sm font-body px-3 py-1.5 rounded-lg transition-colors min-h-[36px] break-words text-left ${
+                className={`text-xs md:text-sm font-body px-2.5 py-1.5 rounded-lg transition-colors min-h-[32px] break-words text-left ${
                   idx === breadcrumbs.length - 1
                     ? "font-bold text-foreground bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
