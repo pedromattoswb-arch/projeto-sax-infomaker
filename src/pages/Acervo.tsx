@@ -177,7 +177,7 @@ const Acervo = () => {
         {/* Filter Tabs - always visible when there are files */}
         {!loading && !error && hasFiles && (
           <div className="sticky top-[73px] z-20 bg-background/95 backdrop-blur-md -mx-4 px-4 py-3 mb-4 border-b border-border/50">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setFileFilter("all")}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body font-bold transition-all min-h-[48px] ${
