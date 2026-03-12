@@ -130,12 +130,12 @@ const Acervo = () => {
 
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
-      <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
+      <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
         {/* Tutorial Banner */}
         <TutorialBanner />
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
-        <nav className="flex flex-wrap items-center gap-1 mb-4">
+        <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
           {breadcrumbs.map((crumb, idx) => (
             <div key={crumb.id} className="flex items-center gap-1">
               {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />}
