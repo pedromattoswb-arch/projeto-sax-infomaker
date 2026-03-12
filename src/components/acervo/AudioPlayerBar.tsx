@@ -125,10 +125,10 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           />
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-4xl mx-auto px-3 md:px-4 py-3 flex items-center gap-2 md:gap-3">
           {/* Song name */}
           <div className="flex-1 min-w-0">
-            <p className="font-body font-bold text-sm text-foreground line-clamp-2">
+            <p className="font-body font-bold text-xs sm:text-sm text-foreground line-clamp-1 sm:line-clamp-2 break-words">
               {activeFile.name}
             </p>
             <span className="text-[10px] font-bold uppercase tracking-wider text-primary">

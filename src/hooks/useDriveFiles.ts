@@ -34,15 +34,15 @@ const EDGE_FUNCTION_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.s
 
 // Folder name mapping for user-friendly labels
 const FOLDER_NAME_MAP: Record<string, string> = {
-  "BOOKS": "Livros & Métodos",
-  "CHRISTMAS": "Natal",
+  "BOOKS": "Livros e Métodos de Estudo",
+  "CHRISTMAS": "Músicas de Natal",
   "CLASSICAL MUSIC": "Música Clássica",
   "COLLECTION": "Coleção Completa",
-  "FILMES E SÉRIES": "Filmes & Séries",
-  "GOSPEL": "Gospel",
+  "FILMES E SÉRIES": "Trilhas de Filmes e Séries",
+  "GOSPEL": "Músicas Gospel",
   "JAZZ": "Jazz",
-  "POP": "Pop",
-  "MPB": "MPB",
+  "POP": "Pop Internacional",
+  "MPB": "Música Popular Brasileira",
   "SERTANEJO": "Sertanejo",
   "FORRÓ": "Forró",
   "BOSSA NOVA": "Bossa Nova",
@@ -50,9 +50,9 @@ const FOLDER_NAME_MAP: Record<string, string> = {
   "BLUES": "Blues",
   "REGGAE": "Reggae",
   "SAMBA": "Samba",
-  "INTERNATIONAL": "Internacional",
-  "BRASILEIRAS": "Brasileiras",
-  "ROMANTIC": "Românticas",
+  "INTERNATIONAL": "Músicas Internacionais",
+  "BRASILEIRAS": "Músicas Brasileiras",
+  "ROMANTIC": "Músicas Românticas",
 };
 
 function formatFolderName(raw: string): string {

@@ -10,6 +10,8 @@ import {
   Menu,
   FileText,
   Music,
+  PlayCircle,
+  ChevronDown,
 } from "lucide-react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
@@ -119,14 +121,17 @@ const Acervo = () => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
       <main className="max-w-5xl mx-auto px-4 py-5 md:py-8">
+        {/* Tutorial Banner */}
+        <TutorialBanner />
+
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
-        <nav className="flex flex-wrap items-center gap-1 mb-5">
+        <nav className="flex flex-wrap items-center gap-1 mb-4">
           {breadcrumbs.map((crumb, idx) => (
             <div key={crumb.id} className="flex items-center gap-1">
-              {idx > 0 && <ChevronRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />}
+              {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />}
               <button
                 onClick={() => navigateToBreadcrumb(idx)}
-                className={`text-sm font-body px-3 py-1.5 rounded-lg transition-colors min-h-[36px] break-words text-left ${
+                className={`text-xs md:text-sm font-body px-2.5 py-1.5 rounded-lg transition-colors min-h-[32px] break-words text-left ${
                   idx === breadcrumbs.length - 1
                     ? "font-bold text-foreground bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -413,6 +418,49 @@ const Acervo = () => {
               allow="autoplay"
             />
           </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* Tutorial collapsible banner */
+const TUTORIALS = [
+  { title: "Como navegar pelo acervo", description: "Aprenda a encontrar partituras e playbacks rapidamente" },
+  { title: "Como usar os playbacks", description: "Toque junto com o playback no seu ritmo" },
+  { title: "Como baixar partituras", description: "Salve as partituras no seu celular ou computador" },
+  { title: "Como organizar seus estudos", description: "Dicas para montar sua rotina de prática com o acervo" },
+];
+
+const TutorialBanner = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mb-4">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
+      >
+        <PlayCircle className="w-5 h-5 text-primary shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-body font-bold text-foreground">Vídeos Tutoriais</p>
+          <p className="text-xs text-muted-foreground">Aprenda a usar o acervo completo</p>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {TUTORIALS.map((t, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
+              <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <PlayCircle className="w-5 h-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
+                <p className="text-xs text-muted-foreground break-words">{t.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
