@@ -620,38 +620,47 @@ const TUTORIAL_TIPS = [
 const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
   const [open, setOpen] = useState(true);
 
-  if (locked) {
-    return (
-      <div className="mb-4">
-        <LockedFolderCard
-          folder={{ id: "quick-tips", name: "Tutoriais", type: "folder" as const }}
-          upgradeUrl={upgradeUrl}
-          icon={<BookOpen className="w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="mb-6">
-      {/* Video Tutorial — always visible and prominent */}
-      <div className="rounded-2xl overflow-hidden border-2 border-primary/30 bg-card shadow-lg mb-4">
+      {/* Video Tutorial — always visible, locked overlay on basic */}
+      <div className="rounded-2xl overflow-hidden border-2 border-primary/30 bg-card shadow-lg mb-4 relative">
         <div className="p-4 bg-primary/10 border-b border-primary/20">
           <h3 className="text-base font-body font-bold text-foreground flex items-center gap-2">
             🎬 Tutorial — Como Navegar pela SaxPlay
+            {locked && <Lock className="w-4 h-4 text-muted-foreground" />}
           </h3>
-          <p className="text-xs text-muted-foreground mt-1">Assista antes de começar! Veja como encontrar partituras, playbacks e bônus.</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {locked
+              ? "Disponível no plano completo. Faça upgrade para assistir!"
+              : "Assista antes de começar! Veja como encontrar partituras, playbacks e bônus."}
+          </p>
         </div>
-        <div className="aspect-video">
+        <div className="aspect-video relative">
           <video
-            controls
+            controls={!locked}
             playsInline
             preload="metadata"
-            className="w-full h-full bg-black"
+            className={`w-full h-full bg-black ${locked ? "pointer-events-none blur-[2px] opacity-60" : ""}`}
           >
             <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
             Seu navegador não suporta vídeo.
           </video>
+          {locked && (
+            <a
+              href={upgradeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 gap-3 cursor-pointer group"
+            >
+              <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Lock className="w-7 h-7 text-primary" />
+              </div>
+              <span className="text-sm font-body font-bold text-white">Disponível no Plano Completo</span>
+              <span className="text-xs font-body text-primary bg-primary/20 px-4 py-1.5 rounded-full border border-primary/30 group-hover:bg-primary/30 transition-colors">
+                Fazer Upgrade →
+              </span>
+            </a>
+          )}
         </div>
       </div>
 
