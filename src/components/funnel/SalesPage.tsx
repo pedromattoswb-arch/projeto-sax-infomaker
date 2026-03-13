@@ -16,6 +16,7 @@ import {
   Video,
   Smartphone,
   Award,
+  Zap,
 } from "lucide-react";
 
 import logoSaxplay from "@/assets/logo-saxplay.png";
@@ -61,7 +62,7 @@ const SalesPage = () => {
             </span>
             <div className="text-right">
               <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
+              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 19,90</span>
             </div>
           </div>
         </div>
@@ -72,7 +73,7 @@ const SalesPage = () => {
         <div className="max-w-3xl mx-auto text-center">
           <img
             src={mockupHero}
-            alt="Plataforma SaxBrasil com +10.000 partituras e playbacks para saxofone"
+            alt="Plataforma SaxPlay com +10.000 partituras e playbacks para saxofone"
             className="w-full max-w-[320px] md:max-w-md mx-auto mb-5 md:mb-6 drop-shadow-2xl"
             loading="eager"
             width={500}
@@ -80,46 +81,47 @@ const SalesPage = () => {
           />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
-            🎷 +847 Saxofonistas Já Garantiram Acesso • Recomendado por Escolas de Sax
+            🎷 +847 Saxofonistas Já Estão Tocando • Recomendado por Escolas de Sax
           </span>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-5 md:mb-6">
-            +10.000 Partituras e Playbacks —{" "}
-            <span className="text-primary">O Maior Acervo Para Sax do Brasil</span>
+            A SaxPlay é a{" "}
+            <span className="text-primary">sua plataforma personalizada</span>{" "}
+            para tocar saxofone
           </h1>
 
-          <p className="text-[15px] md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            A plataforma mais completa para saxofonistas do Brasil.{" "}
-            <strong>+10.000 arquivos organizados, busca inteligente por voz, vídeos tutoriais e material de estudo</strong> — tudo numa plataforma exclusiva, pronta pra você tocar agora.
+          <p className="text-[15px] md:text-lg text-foreground font-body mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto">
+            Escolha a melhor opção e comece a tocar as suas melhores músicas.{" "}
+            <strong>+10.000 partituras e playbacks, busca por voz, tutoriais e material de estudo</strong> — tudo na sua própria plataforma.
           </p>
 
-          <div className="flex flex-col items-start mx-auto w-fit gap-2.5 mb-6 md:mb-8">
+          {/* Bullets em grid profissional */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
             {[
-              "+10.000 partituras em PDF + playbacks profissionais",
-              "Plataforma exclusiva estilo app — celular, tablet ou PC",
-              "Busca inteligente por voz — encontre qualquer música falando",
-              "Vídeos tutoriais integrados na plataforma",
-              "Material de estudo: rotina, tonalidades e guias",
-              "Acesso imediato — comece em 2 minutos",
-              "Garantia de 7 dias — risco zero pra você",
+              { icon: Music, text: "+10.000 partituras e playbacks profissionais" },
+              { icon: Smartphone, text: "Plataforma exclusiva — celular, tablet ou PC" },
+              { icon: Mic, text: "Busca inteligente por voz integrada" },
+              { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
+              { icon: BookOpen, text: "Material de estudo: rotina e tonalidades" },
+              { icon: Zap, text: "Acesso imediato — comece em 2 minutos" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-[18px] h-[18px] text-primary shrink-0" />
-                <span className="text-[13px] md:text-sm font-medium font-body text-foreground">{item}</span>
+              <div key={i} className="flex items-center gap-3 bg-card/60 rounded-lg px-3 py-2.5 border border-border/50">
+                <item.icon className="w-4 h-4 text-primary shrink-0" />
+                <span className="text-[13px] md:text-sm font-medium font-body text-foreground">{item.text}</span>
               </div>
             ))}
           </div>
 
           <button
             onClick={scrollToOffers}
-            className="gradient-cta text-primary-foreground font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+            className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
           >
-            QUERO MEU ACESSO AGORA
+            ESCOLHER MEU PLANO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
           </button>
 
           <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único, acesso vitalício
+            A partir de <strong className="text-primary">R$ 19,90</strong> — pagamento único, acesso vitalício
           </p>
         </div>
       </section>
@@ -222,14 +224,11 @@ const SalesPage = () => {
             height={144}
           />
           <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3 text-white">
-            7 Dias Para Testar — Risco Zero
+            7 Dias de Garantia Total
           </h2>
-          <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed mb-3">
-            Não gostou? Devolvemos <strong className="text-white">100% do seu dinheiro</strong> em até 7 dias.
-            Sem perguntas, sem burocracia. Você não arrisca nada.
-          </p>
-          <p className="text-white/60 font-body text-xs md:text-sm">
-            O reembolso é processado diretamente pela plataforma Cakto — você não precisa falar com ninguém.
+          <p className="text-white/90 font-body text-[15px] md:text-base leading-relaxed">
+            Teste a plataforma durante 7 dias com total tranquilidade.
+            Se não for exatamente o que você esperava, <strong className="text-white">a gente resolve — sem complicação</strong>.
           </p>
         </div>
       </section>
@@ -246,14 +245,14 @@ const SalesPage = () => {
             Enquanto Você Pensa, Outros Já Estão Tocando
           </h2>
           <p className="text-foreground font-body text-[15px] md:text-base mb-3 md:mb-4">
-            +10.000 partituras e playbacks. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 9,90.
+            +10.000 partituras e playbacks. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
           <p className="text-xs md:text-sm text-muted-foreground font-body mb-6 md:mb-8">
             ⚠️ Preço promocional — pode acabar a qualquer momento.
           </p>
           <button
             onClick={scrollToOffers}
-            className="gradient-cta text-primary-foreground font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+            className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
           >
             GARANTIR MEU ACESSO AGORA
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
@@ -297,9 +296,9 @@ const SalesPage = () => {
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-2.5 z-50 shadow-lg safe-bottom">
         <button
           onClick={scrollToOffers}
-          className="w-full gradient-cta text-primary-foreground font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+          className="w-full gradient-cta text-white font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          GARANTIR ACESSO — A partir de R$ 9,90
+          ESCOLHER MEU PLANO — A partir de R$ 19,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
         </button>
       </div>
