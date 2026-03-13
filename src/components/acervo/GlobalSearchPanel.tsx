@@ -199,7 +199,7 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
                   <button
                     key={s}
                     onClick={() => setQuery(s)}
-                    className="px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-body font-bold hover:bg-primary/20 transition-colors min-h-[40px]"
+                    className="px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm font-body font-semibold hover:bg-muted/70 hover:text-foreground transition-colors min-h-[40px]"
                   >
                     {s}
                   </button>
@@ -208,9 +208,9 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
               {voiceSupported && (
                 <button
                   onClick={startListening}
-                  className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-body font-bold text-sm hover:opacity-90 transition-opacity min-h-[48px]"
+                  className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-muted text-foreground font-body font-bold text-sm hover:bg-muted/70 transition-colors min-h-[48px]"
                 >
-                  <Mic className="w-5 h-5" />
+                  <Mic className="w-5 h-5 text-muted-foreground" />
                   Buscar por Voz
                 </button>
               )}
