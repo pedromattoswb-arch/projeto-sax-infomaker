@@ -76,10 +76,5 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" 
       </div>
     </>
   );
-};
-      </div>
-    </>
-  );
-};
 
 export default MobileNav;
