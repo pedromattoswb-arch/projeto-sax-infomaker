@@ -91,7 +91,8 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
         'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
       },
     })
-      .then(data => {
+      .then(res => res.json())
+      .then((data: { folders?: DriveFolder[]; files?: DriveFile[] }) => {
         if (!controller.signal.aborted) {
           setSearchFolders(data.folders || []);
           setSearchFiles(data.files || []);
