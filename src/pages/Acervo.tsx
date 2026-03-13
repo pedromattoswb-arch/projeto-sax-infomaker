@@ -18,6 +18,7 @@ import {
   Piano,
   Globe,
   Crown,
+  Lock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
@@ -248,8 +249,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         )}
 
-        {/* Quick Tips Banner - only for premium */}
-        {!isBasic && <QuickTipsBanner />}
+        {/* Quick Tips Banner - locked on basic, open on premium */}
+        <QuickTipsBanner locked={isBasic} upgradeUrl={UPGRADE_URL} />
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
@@ -588,8 +589,34 @@ const QUICK_TIPS = [
   { title: "Como organizar seus estudos", description: "Dicas para montar sua rotina de prática com o acervo" },
 ];
 
-const QuickTipsBanner = () => {
+const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
   const [open, setOpen] = useState(false);
+
+  if (locked) {
+    return (
+      <div className="mb-4 relative">
+        <div className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 opacity-60">
+          <BookOpen className="w-5 h-5 text-muted-foreground shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-body font-bold text-muted-foreground">Guias Rápidos</p>
+            <p className="text-xs text-muted-foreground">Dicas para aproveitar ao máximo o acervo</p>
+          </div>
+          <Lock className="w-4 h-4 text-muted-foreground/60" />
+        </div>
+        <div className="absolute inset-0 rounded-xl bg-background/40 backdrop-blur-[1px] flex items-center justify-center">
+          <a
+            href={upgradeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-body font-bold text-xs shadow-lg transition-colors min-h-[40px]"
+          >
+            <Crown className="w-4 h-4" />
+            Disponível no Plano Completo
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-4">
