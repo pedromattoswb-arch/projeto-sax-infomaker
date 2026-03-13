@@ -520,4 +520,37 @@ const TutorialBanner = () => {
   );
 };
 
+/* Bonus Section visible in acervo root */
+const BONUS_ITEMS = [
+  { label: "Rotina de Estudo", description: "Organize sua prática diária", path: "/bonus/rotina-de-estudo", icon: BookOpen, color: "bg-emerald-500/10 text-emerald-600" },
+  { label: "Mapa de Tonalidades", description: "Domine todas as tonalidades", path: "/bonus/mapa-de-tonalidades", icon: Piano, color: "bg-violet-500/10 text-violet-600" },
+  { label: "100 Músicas para Tocar", description: "Lista curada de repertório", path: "/bonus/100-musicas", icon: Globe, color: "bg-blue-500/10 text-blue-600" },
+];
+
+const BonusSection = () => (
+  <div id="bonus" className="mb-6">
+    <div className="flex items-center gap-2 mb-3">
+      <Gift className="w-5 h-5 text-primary" />
+      <h2 className="text-sm uppercase tracking-widest text-foreground font-body font-bold">Seus Bônus</h2>
+    </div>
+    <div className="grid gap-2 sm:grid-cols-3">
+      {BONUS_ITEMS.map((item) => (
+        <Link
+          key={item.path}
+          to={item.path}
+          className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-md transition-all group"
+        >
+          <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
+            <item.icon className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-body font-bold text-foreground group-hover:text-primary transition-colors">{item.label}</p>
+            <p className="text-xs text-muted-foreground">{item.description}</p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+);
+
 export default Acervo;
