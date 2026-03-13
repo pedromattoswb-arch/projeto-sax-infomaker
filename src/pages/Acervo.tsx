@@ -334,9 +334,14 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                   Pastas ({filteredFolders.length})
                 </h2>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
-                  {filteredFolders.map((folder) => (
-                    <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
-                  ))}
+                  {filteredFolders.map((folder) => {
+                    const isLocked = isBasic && LOCKED_FOLDER_NAMES.includes(folder.name.toLowerCase().trim());
+                    return isLocked ? (
+                      <LockedFolderCard key={folder.id} folder={folder} upgradeUrl={UPGRADE_URL} />
+                    ) : (
+                      <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
+                    );
+                  })}
                 </div>
               </div>
             )}
