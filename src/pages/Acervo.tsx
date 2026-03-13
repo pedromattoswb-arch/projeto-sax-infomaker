@@ -530,7 +530,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           className={`fixed inset-0 flex flex-col bg-foreground/95 animate-in fade-in duration-200 ${
             hasAudioPlaying ? "z-[45]" : "z-50"
           }`}
-          style={hasAudioPlaying ? { bottom: "140px" } : undefined}
+          style={hasAudioPlaying && !isPlayerMinimized ? { bottom: "140px" } : hasAudioPlaying && isPlayerMinimized ? { bottom: "0px" } : undefined}
         >
           <div className="flex items-center justify-between px-4 py-3 bg-card/10 backdrop-blur-sm border-b border-border/20">
             <div className="min-w-0 flex-1 mr-3">
