@@ -1,64 +1,56 @@
 
+Objetivo: eliminar os bugs visuais do acervo com prioridade em celular, cobrindo vídeo tutorial, listas/cards e barra fixa de áudio.
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+1) Levantamento do que está quebrado hoje (confirmado)
+- Vídeo tutorial (premium): está renderizando `<video controls>` já no estado inicial no mobile, aparecendo controles nativos/“0:00” antes do play e visual inconsistente.
+- Vídeo tutorial (basic): o card bloqueado ainda renderiza `<video>` por baixo (com blur), o que mantém artefatos visuais desnecessários.
+- Barra fixa de áudio: ao tocar playback, o conteúdo de baixo fica encoberto (falta padding reativo da página).
+- Botão “X” do player: não fecha de verdade (player continua visível).
+- PDF + áudio: comportamento de “player visível enquanto vê partitura” fica inconsistente por estado fora de sincronia.
+- Navegação em pastas: ao entrar em subpastas profundas, o scroll não volta ao topo e a tela parece “quebrada/cortada”.
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
+2) Plano de correção (ordem de execução)
+- Etapa A — Corrigir arquitetura de estado do player
+  - Sincronizar estado do `AudioPlayerBar` com o `Acervo` (faixa ativa + tocando/pausado + visibilidade).
+  - Remover dependência visual de `playerRef.current` no render (não reativo).
+  - Fazer o “X” limpar faixa ativa internamente e externamente.
+  - Derivar `hasAudioPlaying` de estado real do player e aplicar padding inferior correto no layout.
+  - Ajustar overlay de PDF para respeitar player visível no mobile/desktop.
 
----
+- Etapa B — Reestruturar vídeo tutorial para evitar glitches
+  - Trocar o estado inicial para thumbnail estática com botão de play customizado.
+  - Montar o `<video>` apenas após clique (lazy mount), com autoplay/controls só no estado de reprodução.
+  - No plano básico, não renderizar `<video>` por baixo: usar apenas imagem + overlay de bloqueio.
+  - Garantir carregamento rápido do thumbnail sem piscar/artefatos.
 
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
+- Etapa C — Polimento de cards/listas e navegação
+  - Ajustar quebra de texto e ações dos cards para evitar desalinhamento em nomes longos.
+  - Garantir que botões dos cards mantenham layout estável no mobile.
+  - Aplicar scroll-to-top ao abrir pasta, voltar e clicar breadcrumb (evita sensação de tela “bugada” ao navegar profundo).
 
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
+3) Detalhes técnicos (implementação)
+- Arquivos principais:
+  - `src/pages/Acervo.tsx`
+  - `src/components/acervo/AudioPlayerBar.tsx`
+  - `src/components/acervo/FileCard.tsx`
+- Refactor do player:
+  - Introduzir callback de estado do player (`onStateChange`) para o pai.
+  - `onClose` passa a limpar `internalFile` + pausar áudio + resetar estado.
+  - UI de lista usa estado reativo do pai (não `ref` mutável) para “tocando agora”.
+- Tutorial:
+  - Estado `isTutorialPlaying` no banner.
+  - Pré-play = `<img>` + CTA; pós-play = `<video>`.
+  - Locked = thumbnail estática com overlay de upgrade (sem `<video>` ativo).
 
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
+4) Validação final (obrigatória)
+- Mobile primeiro (390x844), depois desktop (1366x768).
+- Rotas: `/plano-premium-completo` e `/acervo-basico`.
+- Cenários:
+  1. Abrir página e validar tutorial sem controles quebrados antes do play.
+  2. Entrar em múltiplas pastas e confirmar topo/navegação estáveis.
+  3. Tocar playback, rolar até o fim e validar que nada fica escondido pela barra.
+  4. Fechar player no “X” e confirmar desaparecimento total.
+  5. Com áudio ativo, abrir partitura e confirmar comportamento visual correto.
+  6. Repetir no desktop para garantir paridade visual.
 
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
-
----
-
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
-
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
-
----
-
-### 3. SalesPage.tsx — Garantia section reforçada
-
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
-
----
-
-### 4. SalesPage.tsx — Footer profissional com selos
-
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
-
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
-
----
-
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
-
+Sem mudanças de backend: correção é 100% frontend e de estado/UX.
