@@ -248,8 +248,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         )}
 
-        {/* Quick Tips Banner - only for premium */}
-        {!isBasic && <QuickTipsBanner />}
+        {/* Quick Tips Banner - locked on basic, open on premium */}
+        <QuickTipsBanner locked={isBasic} upgradeUrl={UPGRADE_URL} />
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
