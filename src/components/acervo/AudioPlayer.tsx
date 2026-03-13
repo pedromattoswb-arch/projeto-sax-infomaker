@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Music2 } from "lucide-react";
 import type { Song } from "@/types/acervo";
 
 interface AudioPlayerProps {
@@ -19,7 +19,6 @@ const AudioPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrev }: Au
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !currentSong?.audioUrl) return;
-
     audio.src = currentSong.audioUrl;
     if (isPlaying) {
       audio.play().catch(() => {});
@@ -43,12 +42,14 @@ const AudioPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrev }: Au
     setDuration(audio.duration || 0);
   }, []);
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
     const audio = audioRef.current;
-    if (!audio) return;
-    const time = Number(e.target.value);
-    audio.currentTime = time;
-    setProgress(time);
+    if (!audio || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    audio.currentTime = pct * duration;
+    setProgress(pct * duration);
   };
 
   const formatTime = (s: number) => {
@@ -60,8 +61,10 @@ const AudioPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrev }: Au
 
   if (!currentSong) return null;
 
+  const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border shadow-2xl px-4 py-3 md:py-4">
+    <div className="fixed bottom-0 left-0 right-0 z-50" style={{ backgroundColor: 'hsl(var(--player))' }}>
       <audio
         ref={audioRef}
         onTimeUpdate={handleTimeUpdate}
@@ -70,68 +73,85 @@ const AudioPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrev }: Au
         preload="metadata"
       />
 
-      <div className="max-w-4xl mx-auto flex items-center gap-3 md:gap-5">
-        {/* Song info */}
-        <div className="flex-1 min-w-0">
-          <p className="font-heading font-bold text-sm md:text-base text-foreground truncate">{currentSong.title}</p>
-          <p className="text-xs text-muted-foreground font-body truncate">{currentSong.artist}</p>
+      {/* Progress bar - clickable */}
+      <div
+        className="w-full h-1.5 cursor-pointer group relative"
+        onClick={handleSeek}
+        style={{ backgroundColor: 'hsl(var(--player-muted) / 0.3)' }}
+      >
+        <div
+          className="h-full bg-primary transition-[width] duration-100 relative"
+          style={{ width: `${progressPct}%` }}
+        >
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-md" />
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-3 md:px-4 py-2.5 md:py-3 flex items-center gap-3">
+        {/* Album art + song info */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'hsl(var(--player-muted) / 0.2)' }}>
+            <Music2 className="w-5 h-5" style={{ color: 'hsl(var(--primary))' }} />
+          </div>
+          <div className="min-w-0">
+            <p className="font-heading font-bold text-sm md:text-base truncate" style={{ color: 'hsl(var(--player-foreground))' }}>
+              {currentSong.title}
+            </p>
+            <p className="text-xs truncate" style={{ color: 'hsl(var(--player-muted))' }}>
+              {currentSong.artist}
+            </p>
+          </div>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-2 md:gap-3 shrink-0">
-          <button onClick={onPrev} className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Anterior">
+        <div className="flex items-center gap-0.5 md:gap-1.5 shrink-0">
+          <button
+            onClick={onPrev}
+            className="p-2 transition-colors rounded-full hover:bg-white/10"
+            style={{ color: 'hsl(var(--player-muted))' }}
+            aria-label="Anterior"
+          >
             <SkipBack className="w-4 h-4 md:w-5 md:h-5" />
           </button>
           <button
             onClick={onPlayPause}
-            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-md"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg"
             aria-label={isPlaying ? "Pausar" : "Tocar"}
           >
             {isPlaying ? <Pause className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-0.5" fill="currentColor" />}
           </button>
-          <button onClick={onNext} className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Próxima">
+          <button
+            onClick={onNext}
+            className="p-2 transition-colors rounded-full hover:bg-white/10"
+            style={{ color: 'hsl(var(--player-muted))' }}
+            aria-label="Próxima"
+          >
             <SkipForward className="w-4 h-4 md:w-5 md:h-5" />
           </button>
         </div>
 
-        {/* Progress */}
-        <div className="hidden md:flex items-center gap-2 flex-1 max-w-xs">
-          <span className="text-xs text-muted-foreground font-mono w-10 text-right">{formatTime(progress)}</span>
-          <input
-            type="range"
-            min={0}
-            max={duration || 0}
-            value={progress}
-            onChange={handleSeek}
-            className="flex-1 h-1.5 rounded-full accent-primary cursor-pointer"
-          />
-          <span className="text-xs text-muted-foreground font-mono w-10">{formatTime(duration)}</span>
+        {/* Desktop time */}
+        <div className="hidden md:flex items-center gap-2 min-w-[100px]">
+          <span className="text-xs font-mono" style={{ color: 'hsl(var(--player-muted))' }}>{formatTime(progress)}</span>
+          <span className="text-xs" style={{ color: 'hsl(var(--player-muted) / 0.5)' }}>/</span>
+          <span className="text-xs font-mono" style={{ color: 'hsl(var(--player-muted))' }}>{formatTime(duration)}</span>
         </div>
 
         {/* Volume */}
         <button
           onClick={() => setMuted(!muted)}
-          className="hidden md:block p-2 text-muted-foreground hover:text-foreground transition-colors"
+          className="hidden md:flex p-2 transition-colors rounded-full hover:bg-white/10 items-center justify-center"
+          style={{ color: 'hsl(var(--player-muted))' }}
           aria-label={muted ? "Ativar som" : "Mudo"}
         >
           {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Mobile progress bar */}
-      <div className="md:hidden mt-2">
-        <input
-          type="range"
-          min={0}
-          max={duration || 0}
-          value={progress}
-          onChange={handleSeek}
-          className="w-full h-1 rounded-full accent-primary cursor-pointer"
-        />
-        <div className="flex justify-between text-[10px] text-muted-foreground font-mono mt-0.5">
-          <span>{formatTime(progress)}</span>
-          <span>{formatTime(duration)}</span>
-        </div>
+      {/* Mobile time */}
+      <div className="md:hidden flex justify-between text-[10px] font-mono px-4 pb-2" style={{ color: 'hsl(var(--player-muted))' }}>
+        <span>{formatTime(progress)}</span>
+        <span>{formatTime(duration)}</span>
       </div>
     </div>
   );

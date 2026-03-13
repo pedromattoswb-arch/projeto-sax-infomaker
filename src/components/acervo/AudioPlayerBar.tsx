@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef } from "react";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2 } from "lucide-react";
 import type { DriveFile } from "@/hooks/useDriveFiles";
 
 interface AudioPlayerBarProps {
@@ -62,12 +62,14 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
       }
     }, []);
 
-    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
       const audio = audioRef.current;
-      if (!audio) return;
-      const time = Number(e.target.value);
-      audio.currentTime = time;
-      setProgress(time);
+      if (!audio || !duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, x / rect.width));
+      audio.currentTime = pct * duration;
+      setProgress(pct * duration);
     };
 
     const playNext = useCallback(() => {
@@ -102,8 +104,10 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
 
     if (!activeFile) return null;
 
+    const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
+
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-card/98 backdrop-blur-xl border-t border-border shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: 'hsl(var(--player))' }}>
         <audio
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
@@ -111,67 +115,82 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           muted={muted}
           preload="auto"
         />
-        
-        {/* Mobile progress bar on top */}
-        <div className="md:hidden">
-          <input
-            type="range"
-            min={0}
-            max={duration || 0}
-            value={progress}
-            onChange={handleSeek}
-            className="w-full h-1 rounded-none accent-primary cursor-pointer appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3"
-            style={{ margin: 0, padding: 0, display: "block" }}
-          />
+
+        {/* Progress bar - clickable */}
+        <div
+          className="w-full h-1.5 cursor-pointer group relative"
+          onClick={handleSeek}
+          style={{ backgroundColor: 'hsl(var(--player-muted) / 0.3)' }}
+        >
+          <div
+            className="h-full bg-primary transition-[width] duration-100 relative"
+            style={{ width: `${progressPct}%` }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-md" />
+          </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-3 md:px-4 py-3 flex items-center gap-2 md:gap-3">
-          {/* Song name */}
-          <div className="flex-1 min-w-0">
-            <p className="font-body font-bold text-xs sm:text-sm text-foreground line-clamp-1 sm:line-clamp-2 break-words">
-              {activeFile.name}
-            </p>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
-              Playback
-            </span>
+        <div className="max-w-4xl mx-auto px-3 md:px-4 py-2.5 md:py-3 flex items-center gap-3">
+          {/* Album art placeholder + song info */}
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: 'hsl(var(--player-muted) / 0.2)' }}>
+              <Music2 className="w-5 h-5" style={{ color: 'hsl(var(--primary))' }} />
+            </div>
+            <div className="min-w-0">
+              <p className="font-body font-bold text-xs sm:text-sm line-clamp-1 break-words" style={{ color: 'hsl(var(--player-foreground))' }}>
+                {activeFile.name}
+              </p>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'hsl(var(--primary))' }}>
+                  Playback
+                </span>
+                <span className="text-[10px] md:hidden" style={{ color: 'hsl(var(--player-muted))' }}>
+                  {formatTime(progress)} / {formatTime(duration)}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Controls */}
-          <div className="flex items-center gap-1 md:gap-2 shrink-0">
-            <button onClick={playPrev} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full" aria-label="Música anterior">
+          <div className="flex items-center gap-0.5 md:gap-1.5 shrink-0">
+            <button
+              onClick={playPrev}
+              className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-white/10"
+              style={{ color: 'hsl(var(--player-muted))' }}
+              aria-label="Música anterior"
+            >
               <SkipBack className="w-5 h-5" />
             </button>
             <button
               onClick={() => setIsPlaying((p) => !p)}
-              className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg"
               aria-label={isPlaying ? "Pausar" : "Reproduzir"}
             >
               {isPlaying ? <Pause className="w-5 h-5" fill="currentColor" /> : <Play className="w-5 h-5 ml-0.5" fill="currentColor" />}
             </button>
-            <button onClick={playNext} className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full" aria-label="Próxima música">
+            <button
+              onClick={playNext}
+              className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-white/10"
+              style={{ color: 'hsl(var(--player-muted))' }}
+              aria-label="Próxima música"
+            >
               <SkipForward className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Desktop progress */}
-          <div className="hidden md:flex items-center gap-2 flex-1 max-w-xs">
-            <span className="text-xs text-muted-foreground font-mono w-10 text-right">{formatTime(progress)}</span>
-            <input
-              type="range"
-              min={0}
-              max={duration || 0}
-              value={progress}
-              onChange={handleSeek}
-              className="flex-1 h-1.5 rounded-full accent-primary cursor-pointer"
-            />
-            <span className="text-xs text-muted-foreground font-mono w-10">{formatTime(duration)}</span>
+          {/* Desktop time */}
+          <div className="hidden md:flex items-center gap-2 min-w-[100px]">
+            <span className="text-xs font-mono" style={{ color: 'hsl(var(--player-muted))' }}>{formatTime(progress)}</span>
+            <span className="text-xs" style={{ color: 'hsl(var(--player-muted) / 0.5)' }}>/</span>
+            <span className="text-xs font-mono" style={{ color: 'hsl(var(--player-muted))' }}>{formatTime(duration)}</span>
           </div>
 
           {/* Mute + Close */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+              className="p-2 transition-colors rounded-full hover:bg-white/10"
+              style={{ color: 'hsl(var(--player-muted))' }}
               aria-label={muted ? "Ativar som" : "Silenciar"}
             >
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -179,17 +198,12 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           </div>
           <button
             onClick={() => { setIsPlaying(false); onClose(); }}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+            className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-white/10"
+            style={{ color: 'hsl(var(--player-muted))' }}
             aria-label="Fechar reprodutor"
           >
             <X className="w-4 h-4" />
           </button>
-        </div>
-
-        {/* Mobile time */}
-        <div className="md:hidden flex justify-between text-[10px] text-muted-foreground font-mono px-4 pb-2">
-          <span>{formatTime(progress)}</span>
-          <span>{formatTime(duration)}</span>
         </div>
       </div>
     );
