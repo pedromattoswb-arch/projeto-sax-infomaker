@@ -147,6 +147,9 @@ const Acervo = () => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
+        {/* Bonus Section */}
+        {isRoot && <BonusSection />}
+
         {/* Tutorial Banner */}
         <TutorialBanner />
 
