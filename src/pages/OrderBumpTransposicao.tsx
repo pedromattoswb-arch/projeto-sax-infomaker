@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateTransposicaoPDF } from "@/lib/pdfGenerators";
+import useNoIndex from "@/hooks/useNoIndex";
 
 /* ─── DADOS ─── */
 
@@ -116,6 +117,7 @@ const CollapsibleSection = ({ titulo, emoji, children }: { titulo: string; emoji
 /* ─── PÁGINA ─── */
 
 const OrderBumpTransposicao = () => {
+  useNoIndex();
   return (
     <div className="min-h-screen bg-background">
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">

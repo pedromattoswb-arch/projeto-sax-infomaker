@@ -1,14 +1,22 @@
+User-agent: *
+Allow: /
+Disallow: /acervo
+Disallow: /acervo-basico
+Disallow: /bonus/
+Disallow: /orderbump/
+
 User-agent: Googlebot
 Allow: /
+Disallow: /acervo
+Disallow: /acervo-basico
+Disallow: /bonus/
+Disallow: /orderbump/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /acervo
+Disallow: /acervo-basico
+Disallow: /bonus/
+Disallow: /orderbump/
 
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
-Allow: /
+Sitemap: https://melody-path-finder.lovable.app/sitemap.xml

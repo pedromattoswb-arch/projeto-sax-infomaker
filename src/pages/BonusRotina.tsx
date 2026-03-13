@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
 import logoSaxplay from "@/assets/logo-saxplay.png";
+import useNoIndex from "@/hooks/useNoIndex";
 
 const sections = [
   {
@@ -75,6 +76,7 @@ const weeklySchedule = [
 ];
 
 const BonusRotina = () => {
+  useNoIndex();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {

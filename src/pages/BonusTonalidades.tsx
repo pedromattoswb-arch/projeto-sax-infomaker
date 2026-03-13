@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
+import useNoIndex from "@/hooks/useNoIndex";
 
 const transposicao = [
   { sax: "Sax Alto (Eb)", regra: "Sobe 3 semitons (uma terça menor)", exemplo: "Dó no piano = Lá no Sax Alto" },
@@ -45,6 +46,7 @@ const modos = [
 ];
 
 const BonusTonalidades = () => {
+  useNoIndex();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {

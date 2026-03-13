@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
   Folder,
@@ -51,6 +52,7 @@ interface AcervoProps {
 
 const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const isBasic = plan === "basic";
+  useNoIndex();
   const {
     folders,
     files,
