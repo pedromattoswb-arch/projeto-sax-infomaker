@@ -618,7 +618,7 @@ const TUTORIAL_TIPS = [
 ];
 
 const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   if (locked) {
     return (
@@ -634,52 +634,46 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
 
   return (
     <div className="mb-6">
+      {/* Video Tutorial — always visible and prominent */}
+      <div className="rounded-2xl overflow-hidden border-2 border-primary/30 bg-card shadow-lg mb-4">
+        <div className="p-4 bg-primary/10 border-b border-primary/20">
+          <h3 className="text-base font-body font-bold text-foreground flex items-center gap-2">
+            🎬 Tutorial — Como Navegar pela SaxPlay
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">Assista antes de começar! Veja como encontrar partituras, playbacks e bônus.</p>
+        </div>
+        <div className="aspect-video">
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full bg-black"
+          >
+            <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeo.
+          </video>
+        </div>
+      </div>
+
+      {/* Collapsible tips */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 border border-border hover:bg-muted transition-colors text-left"
       >
-        <BookOpen className="w-5 h-5 text-primary shrink-0" />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-body font-bold text-foreground">📚 Tutoriais — Como usar o SaxPlay</p>
-          <p className="text-xs text-muted-foreground">Vídeo tutorial + orientações completas para aproveitar ao máximo</p>
-        </div>
+        <BookOpen className="w-4 h-4 text-primary shrink-0" />
+        <p className="text-sm font-body font-semibold text-foreground flex-1">📚 Orientações de uso</p>
         <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="mt-3 space-y-4">
-          {/* Video Tutorial */}
-          <div className="rounded-2xl overflow-hidden border border-border bg-card shadow-sm">
-            <div className="p-4 border-b border-border bg-primary/5">
-              <h3 className="text-sm font-body font-bold text-foreground flex items-center gap-2">
-                🎬 Vídeo Tutorial — Como Navegar pela SaxPlay
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">Assista o passo a passo completo para usar todas as funcionalidades</p>
-            </div>
-            <div className="aspect-video">
-              <video
-                controls
-                playsInline
-                preload="metadata"
-                className="w-full h-full bg-black"
-                poster=""
-              >
-                <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
-                Seu navegador não suporta vídeo.
-              </video>
-            </div>
-          </div>
-
-          {/* Text Instructions */}
-          <div className="grid gap-2 sm:grid-cols-2">
-            {TUTORIAL_TIPS.map((t, i) => (
-              <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border hover:border-primary/20 transition-colors">
-                <div className="min-w-0">
-                  <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
-                  <p className="text-xs text-muted-foreground break-words mt-0.5 leading-relaxed">{t.description}</p>
-                </div>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {TUTORIAL_TIPS.map((t, i) => (
+            <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border hover:border-primary/20 transition-colors">
+              <div className="min-w-0">
+                <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
+                <p className="text-xs text-muted-foreground break-words mt-0.5 leading-relaxed">{t.description}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
