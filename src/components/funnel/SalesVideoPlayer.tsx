@@ -22,8 +22,7 @@ const SalesVideoPlayer = () => {
         >
           {/* Thumbnail with fallback */}
           <img
-            src={thumbError ? thumbHQ : thumbMax}
-            onError={() => setThumbError(true)}
+            src={customThumb}
             alt="Vídeo de apresentação SaxPlay"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"
