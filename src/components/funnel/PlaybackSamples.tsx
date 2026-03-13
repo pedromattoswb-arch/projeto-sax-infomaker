@@ -1,22 +1,36 @@
 import { useState, useRef, useCallback } from "react";
-import { Play, Pause, Music2 } from "lucide-react";
+import { Play, Pause, Music2, Music } from "lucide-react";
 
-const tracks = [
+interface Track {
+  id: string;
+  name: string;
+  artist: string;
+  genre: string;
+  file?: string; // undefined = no local audio, show as "no acervo"
+}
+
+// Only songs confirmed to exist in Google Drive acervo
+const tracks: Track[] = [
+  // WITH local audio preview (confirmed in Drive)
   { id: "careless-whisper", name: "Careless Whisper", artist: "George Michael", genre: "Pop", file: "/playbacks/careless-whisper.mp3" },
-  { id: "your-latest-trick", name: "Your Latest Trick", artist: "Dire Straits", genre: "Rock", file: "/playbacks/your-latest-trick.mp3" },
   { id: "sozinho", name: "Sozinho", artist: "Caetano Veloso", genre: "MPB", file: "/playbacks/sozinho.mp3" },
   { id: "dancing-queen", name: "Dancing Queen", artist: "ABBA", genre: "Pop", file: "/playbacks/dancing-queen.mp3" },
-  { id: "endless-love", name: "Endless Love", artist: "Lionel Richie", genre: "Romântico", file: "/playbacks/endless-love.mp3" },
-  { id: "estranha-loucura", name: "Estranha Loucura", artist: "Barão Vermelho", genre: "MPB", file: "/playbacks/estranha-loucura.mp3" },
-  { id: "boate-azul", name: "Boate Azul", artist: "Bruno & Marrone", genre: "Sertanejo", file: "/playbacks/boate-azul.mp3" },
-  { id: "tan-enamorados", name: "Tan Enamorados", artist: "Fernando Villalona", genre: "Romântico", file: "/playbacks/tan-enamorados.mp3" },
-  { id: "alguem-me-disse", name: "Alguém Me Disse", artist: "Alcione", genre: "MPB", file: "/playbacks/alguem-me-disse.mp3" },
+  { id: "endless-love", name: "Endless Love", artist: "Lionel Richie", genre: "Pop", file: "/playbacks/endless-love.mp3" },
   { id: "amigo-de-deus", name: "Amigo de Deus", artist: "Trazendo a Arca", genre: "Gospel", file: "/playbacks/amigo-de-deus.mp3" },
   { id: "tudo-e-possivel", name: "Tudo É Possível", artist: "Davi Sacer", genre: "Gospel", file: "/playbacks/tudo-e-possivel.mp3" },
-  { id: "espirito", name: "Espírito Espírito", artist: "Preto no Branco", genre: "Gospel", file: "/playbacks/espirito-espirito.mp3" },
-  { id: "alegria-coracao", name: "Alegria Está no Coração", artist: "Kleber Lucas", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
-  { id: "prince-ali", name: "Prince Ali", artist: "Aladdin", genre: "Trilha Sonora", file: "/playbacks/prince-ali.mp3" },
+  { id: "alegria-coracao", name: "Alegria Está no Coração", artist: "Kléber Lucas", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
   { id: "jingle-bells", name: "Jingle Bells", artist: "Tradicional", genre: "Natal", file: "/playbacks/jingle-bells.mp3" },
+  // WITHOUT local audio (confirmed in Drive — shows as catalog entry)
+  { id: "can-you-feel", name: "Can You Feel the Love Tonight", artist: "Elton John", genre: "Pop" },
+  { id: "perfect", name: "Perfect", artist: "Ed Sheeran", genre: "Romântico" },
+  { id: "hallelujah", name: "Hallelujah (Aleluia)", artist: "Leonard Cohen", genre: "Casamento" },
+  { id: "marry-you", name: "Marry You", artist: "Bruno Mars", genre: "Pop" },
+  { id: "nao-deixe-samba", name: "Não Deixe O Samba Morrer", artist: "Alcione", genre: "MPB" },
+  { id: "ave-maria", name: "Ave Maria", artist: "Gounod", genre: "Clássico" },
+  { id: "a-thousand-years", name: "A Thousand Years", artist: "Christina Perri", genre: "Romântico" },
+  { id: "thats-what-i-like", name: "That's What I Like", artist: "Bruno Mars", genre: "Pop" },
+  { id: "sampa", name: "Sampa", artist: "Caetano Veloso", genre: "MPB" },
+  { id: "over-the-rainbow", name: "Over The Rainbow", artist: "Israel Kamakawiwoʻole", genre: "Pop" },
 ];
 
 const genreColors: Record<string, string> = {
@@ -28,6 +42,8 @@ const genreColors: Record<string, string> = {
   "Trilha Sonora": "bg-cyan-500/20 text-cyan-300",
   "Romântico": "bg-rose-500/20 text-rose-300",
   "Natal": "bg-red-500/20 text-red-300",
+  "Casamento": "bg-violet-500/20 text-violet-300",
+  "Clássico": "bg-sky-500/20 text-sky-300",
 };
 
 const formatTime = (s: number) => {
@@ -43,7 +59,12 @@ const PlaybackSamples = () => {
   const [durations, setDurations] = useState<Record<string, number>>({});
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
 
+  const playableTracks = tracks.filter(t => t.file);
+
   const handlePlay = useCallback((id: string) => {
+    const track = tracks.find(t => t.id === id);
+    if (!track?.file) return; // can't play tracks without audio
+
     Object.entries(audioRefs.current).forEach(([key, audio]) => {
       if (key !== id) audio.pause();
     });
@@ -73,8 +94,8 @@ const PlaybackSamples = () => {
   }, []);
 
   const handleEnded = useCallback((id: string) => {
-    const idx = tracks.findIndex(t => t.id === id);
-    const next = tracks[idx + 1];
+    const idx = playableTracks.findIndex(t => t.id === id);
+    const next = playableTracks[idx + 1];
     if (next) {
       const nextAudio = audioRefs.current[next.id];
       if (nextAudio) {
@@ -85,7 +106,7 @@ const PlaybackSamples = () => {
       setPlayingId(null);
     }
     setProgress(prev => ({ ...prev, [id]: 0 }));
-  }, []);
+  }, [playableTracks]);
 
   const handleSeek = useCallback((id: string, e: React.MouseEvent<HTMLDivElement>) => {
     const audio = audioRefs.current[id];
@@ -105,12 +126,13 @@ const PlaybackSamples = () => {
             Ouça Alguns dos +10.000 Playbacks do Acervo
           </h3>
           <p className="text-white/60 text-sm md:text-base font-body max-w-lg mx-auto">
-            Esses são só alguns exemplos — no acervo completo você terá acesso a <strong className="text-white/80">milhares de playbacks</strong> em todos os estilos
+            Todas essas músicas estão no acervo real — ouça os que têm preview e veja a variedade que te espera
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {tracks.map((track, index) => {
+            const hasAudio = !!track.file;
             const isPlaying = playingId === track.id;
             const dur = durations[track.id] || 0;
             const cur = progress[track.id] || 0;
@@ -119,70 +141,90 @@ const PlaybackSamples = () => {
             return (
               <div
                 key={track.id}
-                className={`flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-3.5 cursor-pointer transition-colors duration-200 ${
-                  isPlaying ? "bg-primary/10" : "hover:bg-white/[0.04]"
+                className={`flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-3.5 transition-colors duration-200 ${
+                  hasAudio ? "cursor-pointer" : "cursor-default"
+                } ${
+                  isPlaying ? "bg-primary/10" : hasAudio ? "hover:bg-white/[0.04]" : ""
                 } ${index > 0 ? "border-t border-white/[0.06]" : ""}`}
                 onClick={() => handlePlay(track.id)}
               >
-                <button
-                  className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 ${
-                    isPlaying
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-105"
-                      : "bg-primary/80 text-primary-foreground hover:bg-primary hover:scale-105"
-                  }`}
-                  aria-label={isPlaying ? "Pausar" : "Reproduzir"}
-                >
-                  {isPlaying ? (
-                    <Pause className="w-5 h-5" fill="currentColor" />
-                  ) : (
-                    <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
-                  )}
-                </button>
+                {hasAudio ? (
+                  <button
+                    className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 ${
+                      isPlaying
+                        ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-105"
+                        : "bg-primary/80 text-primary-foreground hover:bg-primary hover:scale-105"
+                    }`}
+                    aria-label={isPlaying ? "Pausar" : "Reproduzir"}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-5 h-5" fill="currentColor" />
+                    ) : (
+                      <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
+                    )}
+                  </button>
+                ) : (
+                  <div className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center bg-white/10">
+                    <Music className="w-5 h-5 text-white/40" />
+                  </div>
+                )}
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="flex flex-col min-w-0">
-                        <span className={`text-base md:text-lg font-bold font-heading truncate ${isPlaying ? "text-primary" : "text-white"}`}>
+                        <span className={`text-base md:text-lg font-bold font-heading truncate ${isPlaying ? "text-primary" : hasAudio ? "text-white" : "text-white/60"}`}>
                           {track.name}
                         </span>
-                        <span className="text-xs text-white/40 font-body truncate">{track.artist}</span>
+                        <span className={`text-xs font-body truncate ${hasAudio ? "text-white/40" : "text-white/30"}`}>{track.artist}</span>
                       </div>
                       <span className={`hidden sm:inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${genreColors[track.genre] || "bg-white/10 text-white/60"}`}>
                         {track.genre}
                       </span>
                     </div>
-                    <span className="text-xs md:text-sm text-white/50 font-body tabular-nums whitespace-nowrap">
-                      {formatTime(cur)} / {formatTime(dur)}
-                    </span>
+                    {hasAudio ? (
+                      <span className="text-xs md:text-sm text-white/50 font-body tabular-nums whitespace-nowrap">
+                        {formatTime(cur)} / {formatTime(dur)}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-white/30 font-body whitespace-nowrap italic">
+                        no acervo
+                      </span>
+                    )}
                   </div>
 
-                  <div
-                    className="w-full h-2 rounded-full bg-white/10 overflow-hidden cursor-pointer group"
-                    onClick={(e) => handleSeek(track.id, e)}
-                  >
+                  {hasAudio ? (
                     <div
-                      className={`h-full rounded-full transition-[width] duration-150 ${isPlaying ? "bg-primary" : "bg-white/30"}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
+                      className="w-full h-2 rounded-full bg-white/10 overflow-hidden cursor-pointer group"
+                      onClick={(e) => handleSeek(track.id, e)}
+                    >
+                      <div
+                        className={`h-full rounded-full transition-[width] duration-150 ${isPlaying ? "bg-primary" : "bg-white/30"}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-2 rounded-full bg-white/5" />
+                  )}
                 </div>
 
-                <audio
-                  ref={(el) => registerAudio(track.id, el)}
-                  src={track.file}
-                  preload="none"
-                  onTimeUpdate={(e) => handleTimeUpdate(track.id, e.currentTarget)}
-                  onLoadedMetadata={(e) => handleLoadedMetadata(track.id, e.currentTarget)}
-                  onEnded={() => handleEnded(track.id)}
-                />
+                {hasAudio && (
+                  <audio
+                    ref={(el) => registerAudio(track.id, el)}
+                    src={track.file}
+                    preload="none"
+                    onTimeUpdate={(e) => handleTimeUpdate(track.id, e.currentTarget)}
+                    onLoadedMetadata={(e) => handleLoadedMetadata(track.id, e.currentTarget)}
+                    onEnded={() => handleEnded(track.id)}
+                  />
+                )}
               </div>
             );
           })}
         </div>
 
         <p className="text-center text-white/30 text-xs mt-3 font-body">
-          Clique em qualquer música para ouvir • A playlist avança automaticamente
+          Clique para ouvir • {playableTracks.length} com preview de áudio • {tracks.length - playableTracks.length} disponíveis no acervo
         </p>
       </div>
     </section>
