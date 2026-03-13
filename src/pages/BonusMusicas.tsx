@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateMusicasPDF } from "@/lib/pdfGenerators";
+import useNoIndex from "@/hooks/useNoIndex";
 
 type Song = {
   name: string;

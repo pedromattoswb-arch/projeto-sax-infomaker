@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
 import logoSaxplay from "@/assets/logo-saxplay.png";
+import useNoIndex from "@/hooks/useNoIndex";
 
 const sections = [
   {
