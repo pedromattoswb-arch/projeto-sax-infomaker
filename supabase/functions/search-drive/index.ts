@@ -6,89 +6,52 @@ const corsHeaders = {
 const GOOGLE_API_KEY = Deno.env.get('GOOGLE_API_KEY')!;
 const ROOT_FOLDER_ID = '1D60NzFn3fDfEcAGUa1OkbzZnq4RoH4xR';
 
-interface DriveFile {
+interface DriveItem {
   id: string;
   name: string;
   mimeType: string;
   size?: string;
-  parents?: string[];
 }
 
 interface DriveListResponse {
-  files: DriveFile[];
+  files: DriveItem[];
   nextPageToken?: string;
 }
 
-// Search files by name across the entire Drive folder using Google's native search
-async function searchFilesByName(query: string): Promise<DriveFile[]> {
-  const allFiles: DriveFile[] = [];
+// List all items in a folder (single level)
+async function listFolder(folderId: string): Promise<DriveItem[]> {
+  const allItems: DriveItem[] = [];
   let pageToken = '';
-  
-  // Use fullText search which searches file names and content
-  // Also restrict to files under our root by using corpora=allDrives or just searching broadly
-  const escapedQuery = query.replace(/'/g, "\\'");
-  
+
   do {
     const params = new URLSearchParams({
-      q: `name contains '${escapedQuery}' and trashed = false and '${ROOT_FOLDER_ID}' in parents or name contains '${escapedQuery}' and trashed = false`,
+      q: `'${folderId}' in parents and trashed = false`,
       key: GOOGLE_API_KEY,
-      fields: 'nextPageToken, files(id, name, mimeType, size, parents)',
-      pageSize: '100',
+      fields: 'nextPageToken, files(id, name, mimeType, size)',
+      pageSize: '1000',
       orderBy: 'name',
     });
     if (pageToken) params.set('pageToken', pageToken);
 
     const res = await fetch(`https://www.googleapis.com/drive/v3/files?${params}`);
-    if (!res.ok) {
-      console.error('Search API error:', await res.text());
-      break;
-    }
+    if (!res.ok) break;
     const data: DriveListResponse = await res.json();
-    allFiles.push(...(data.files || []));
+    allItems.push(...(data.files || []));
     pageToken = data.nextPageToken || '';
-    
-    // Limit to avoid timeout
-    if (allFiles.length >= 200) break;
   } while (pageToken);
 
-  return allFiles;
+  return allItems;
 }
 
-// Search folders by name
-async function searchFoldersByName(query: string): Promise<DriveFile[]> {
-  const escapedQuery = query.replace(/'/g, "\\'");
-  const params = new URLSearchParams({
-    q: `name contains '${escapedQuery}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
-    key: GOOGLE_API_KEY,
-    fields: 'files(id, name, mimeType)',
-    pageSize: '50',
-    orderBy: 'name',
-  });
-
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files?${params}`);
-  if (!res.ok) return [];
-  const data: DriveListResponse = await res.json();
-  return data.files || [];
+// Normalize string for accent-insensitive matching
+function normalize(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
-// Search non-folder files by name
-async function searchNonFolderFilesByName(query: string): Promise<DriveFile[]> {
-  const escapedQuery = query.replace(/'/g, "\\'");
-  const params = new URLSearchParams({
-    q: `name contains '${escapedQuery}' and mimeType != 'application/vnd.google-apps.folder' and trashed = false`,
-    key: GOOGLE_API_KEY,
-    fields: 'files(id, name, mimeType, size)',
-    pageSize: '100',
-    orderBy: 'name',
-  });
-
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files?${params}`);
-  if (!res.ok) {
-    console.error('File search error:', await res.text());
-    return [];
-  }
-  const data: DriveListResponse = await res.json();
-  return data.files || [];
+// Check if item name matches query (supports partial, accent-insensitive)
+function nameMatches(name: string, queryTerms: string[]): boolean {
+  const normalized = normalize(name);
+  return queryTerms.every(term => normalized.includes(term));
 }
 
 Deno.serve(async (req) => {
@@ -107,24 +70,99 @@ Deno.serve(async (req) => {
     }
 
     const q = query.trim();
+    const queryTerms = normalize(q).split(/\s+/).filter(Boolean);
 
-    // Search folders and files in parallel using Google Drive native search
-    const [foundFolders, foundFiles] = await Promise.all([
-      searchFoldersByName(q),
-      searchNonFolderFilesByName(q),
-    ]);
+    const matchedFolders: { id: string; name: string }[] = [];
+    const matchedFiles: DriveItem[] = [];
+    const MAX_RESULTS = 60;
 
-    console.log(`Search "${q}": ${foundFolders.length} folders, ${foundFiles.length} files`);
+    // Phase 1: List root-level folders
+    const rootItems = await listFolder(ROOT_FOLDER_ID);
+    const rootFolders = rootItems.filter(i => i.mimeType === 'application/vnd.google-apps.folder');
+    const rootFiles = rootItems.filter(i => i.mimeType !== 'application/vnd.google-apps.folder');
+
+    // Check root-level files
+    for (const f of rootFiles) {
+      if (nameMatches(f.name, queryTerms)) matchedFiles.push(f);
+    }
+
+    // Check root-level folders
+    for (const f of rootFolders) {
+      if (nameMatches(f.name, queryTerms)) {
+        matchedFolders.push({ id: f.id, name: f.name });
+      }
+    }
+
+    // Phase 2: Search inside each root subfolder (level 2) - parallel
+    const level2Results = await Promise.all(
+      rootFolders.map(async (folder) => {
+        try {
+          const items = await listFolder(folder.id);
+          const subFolders = items.filter(i => i.mimeType === 'application/vnd.google-apps.folder');
+          const subFiles = items.filter(i => i.mimeType !== 'application/vnd.google-apps.folder');
+          return { subFolders, subFiles, parentName: folder.name };
+        } catch {
+          return { subFolders: [], subFiles: [], parentName: folder.name };
+        }
+      })
+    );
+
+    // Collect level 2 matches and gather level 3 folder IDs
+    const level3Folders: DriveItem[] = [];
+    for (const { subFolders, subFiles } of level2Results) {
+      for (const f of subFiles) {
+        if (nameMatches(f.name, queryTerms) && matchedFiles.length < MAX_RESULTS) {
+          matchedFiles.push(f);
+        }
+      }
+      for (const f of subFolders) {
+        if (nameMatches(f.name, queryTerms) && matchedFolders.length < 30) {
+          matchedFolders.push({ id: f.id, name: f.name });
+        }
+        level3Folders.push(f);
+      }
+    }
+
+    // Phase 3: Search inside level 3 folders (deepest common level: artist folders) - parallel with concurrency limit
+    const CONCURRENCY = 10;
+    for (let i = 0; i < level3Folders.length && matchedFiles.length < MAX_RESULTS; i += CONCURRENCY) {
+      const batch = level3Folders.slice(i, i + CONCURRENCY);
+      const batchResults = await Promise.all(
+        batch.map(async (folder) => {
+          try {
+            return await listFolder(folder.id);
+          } catch {
+            return [];
+          }
+        })
+      );
+
+      for (const items of batchResults) {
+        for (const item of items) {
+          if (item.mimeType === 'application/vnd.google-apps.folder') {
+            if (nameMatches(item.name, queryTerms) && matchedFolders.length < 30) {
+              matchedFolders.push({ id: item.id, name: item.name });
+            }
+          } else {
+            if (nameMatches(item.name, queryTerms) && matchedFiles.length < MAX_RESULTS) {
+              matchedFiles.push(item);
+            }
+          }
+        }
+      }
+    }
+
+    console.log(`Search "${q}": ${matchedFolders.length} folders, ${matchedFiles.length} files (scanned ${level3Folders.length} deep folders)`);
 
     const projectRef = Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr';
 
-    const folders = foundFolders.slice(0, 20).map(f => ({
+    const folders = matchedFolders.map(f => ({
       id: f.id,
       name: f.name,
       type: 'folder' as const,
     }));
 
-    const files = foundFiles.slice(0, 50).map(f => {
+    const files = matchedFiles.map(f => {
       const isPdf = f.mimeType === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf');
       const isAudio = f.mimeType?.startsWith('audio/') || /\.(mp3|wav|ogg|m4a)$/i.test(f.name);
 
