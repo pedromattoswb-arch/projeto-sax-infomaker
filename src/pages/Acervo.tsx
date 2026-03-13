@@ -144,7 +144,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       </a>
 
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
+      <header className="sticky top-0 z-30 bg-card border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
 
