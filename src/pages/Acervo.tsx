@@ -171,7 +171,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                 href={UPGRADE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-body font-bold bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+                className="ml-2 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-body font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <Crown className="w-4 h-4" />
                 Fazer Upgrade
@@ -191,18 +191,18 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         </div>
       </header>
 
-      {/* Upgrade Banner for Basic plan */}
+      {/* Upgrade Banner for Basic plan — non-sticky, subtle */}
       {isBasic && (
-        <div className="sticky top-[73px] z-25 bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-4">
+        <div className="bg-muted/60 border-b border-border py-2.5 px-4">
           <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
-            <p className="text-xs md:text-sm font-body font-bold flex-1">
-              ⚡ Você está no <span className="underline">Plano Básico</span> — Faça upgrade para ter acesso completo por apenas R$ 20 a mais!
+            <p className="text-xs md:text-sm font-body font-medium text-muted-foreground flex-1">
+              Você está no <span className="font-bold text-foreground">Plano Básico</span> — Alguns conteúdos são exclusivos do Plano Completo.
             </p>
             <a
               href={UPGRADE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-white text-amber-600 font-body font-bold text-xs hover:bg-amber-50 transition-colors min-h-[32px] flex items-center gap-1.5"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground font-body font-bold text-xs hover:bg-primary/90 transition-colors min-h-[32px] flex items-center gap-1.5"
             >
               <Crown className="w-3.5 h-3.5" />
               Upgrade
@@ -594,26 +594,12 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
 
   if (locked) {
     return (
-      <div className="mb-4 relative">
-        <div className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 opacity-60">
-          <BookOpen className="w-5 h-5 text-muted-foreground shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-body font-bold text-muted-foreground">Guias Rápidos</p>
-            <p className="text-xs text-muted-foreground">Dicas para aproveitar ao máximo o acervo</p>
-          </div>
-          <Lock className="w-4 h-4 text-muted-foreground/60" />
-        </div>
-        <div className="absolute inset-0 rounded-xl bg-background/40 backdrop-blur-[1px] flex items-center justify-center">
-          <a
-            href={upgradeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-body font-bold text-xs shadow-lg transition-colors min-h-[40px]"
-          >
-            <Crown className="w-4 h-4" />
-            Disponível no Plano Completo
-          </a>
-        </div>
+      <div className="mb-4">
+        <LockedFolderCard
+          folder={{ id: "quick-tips", name: "Guias Rápidos", type: "folder" as const }}
+          upgradeUrl={upgradeUrl}
+          icon={<BookOpen className="w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />}
+        />
       </div>
     );
   }
