@@ -19,6 +19,7 @@ import {
   Globe,
   Crown,
   Lock,
+  Play,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
@@ -85,6 +86,18 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
+  // Reactive player state synced from AudioPlayerBar
+  const [playerState, setPlayerState] = useState<{ activeId: string | null; isPlaying: boolean }>({
+    activeId: null,
+    isPlaying: false,
+  });
+
+  const handlePlayerStateChange = useCallback((state: { activeId: string | null; isPlaying: boolean }) => {
+    setPlayerState(state);
+  }, []);
+
+  const hasAudioPlaying = playerState.activeId !== null;
+
   useEffect(() => {
     fetchFolder();
   }, [fetchFolder]);
@@ -127,11 +140,27 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       setSearchDebounced("");
       setFileFilter("all");
       navigateToFolder(folder);
+      window.scrollTo(0, 0);
     },
     [navigateToFolder]
   );
 
-  const hasAudioPlaying = currentAudio !== null;
+  const handleBreadcrumbClick = useCallback(
+    (idx: number) => {
+      navigateToBreadcrumb(idx);
+      window.scrollTo(0, 0);
+    },
+    [navigateToBreadcrumb]
+  );
+
+  const handleGoBack = useCallback(() => {
+    goBack();
+    window.scrollTo(0, 0);
+  }, [goBack]);
+
+  const handlePlayerClose = useCallback(() => {
+    setCurrentAudio(null);
+  }, []);
 
   return (
     <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
@@ -258,7 +287,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
             <div key={crumb.id} className="flex items-center gap-1">
               {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40 shrink-0" />}
               <button
-                onClick={() => navigateToBreadcrumb(idx)}
+                onClick={() => handleBreadcrumbClick(idx)}
                 className={`text-xs md:text-sm font-body px-2.5 py-1.5 rounded-lg transition-colors min-h-[32px] break-words text-left ${
                   idx === breadcrumbs.length - 1
                     ? "font-bold text-foreground bg-primary/10"
@@ -275,7 +304,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         <div className="flex gap-2 mb-4">
           {!isRoot && (
             <button
-              onClick={goBack}
+              onClick={handleGoBack}
               className="shrink-0 px-3 py-3 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Voltar para pasta anterior"
             >
@@ -423,8 +452,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     <FileCard
                       key={file.id}
                       file={file}
-                      isCurrentAudio={playerRef.current?.currentId === file.id}
-                      isPlaying={playerRef.current?.isPlaying ?? false}
+                      isCurrentAudio={playerState.activeId === file.id}
+                      isPlaying={playerState.activeId === file.id && playerState.isPlaying}
                       onPlay={playAudio}
                       onViewPdf={setViewingPdf}
                     />
@@ -489,7 +518,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         ref={playerRef}
         currentAudio={currentAudio}
         audioFiles={audioFiles}
-        onClose={() => setCurrentAudio(null)}
+        onClose={handlePlayerClose}
+        onStateChange={handlePlayerStateChange}
       />
 
       {/* PDF Viewer */}
@@ -618,11 +648,24 @@ const TUTORIAL_TIPS = [
 ];
 
 const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayTutorial = useCallback(() => {
+    setIsTutorialPlaying(true);
+  }, []);
+
+  // Auto-play once video mounts
+  useEffect(() => {
+    if (isTutorialPlaying && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isTutorialPlaying]);
 
   return (
     <div className="mb-6">
-      {/* Video Tutorial — always visible, locked overlay on basic */}
+      {/* Video Tutorial — lazy mount, locked overlay on basic */}
       <div className="rounded-2xl overflow-hidden border-2 border-primary/30 bg-card shadow-lg mb-4 relative">
         <div className="p-4 bg-primary/10 border-b border-primary/20">
           <h3 className="text-base font-body font-bold text-foreground flex items-center gap-2">
@@ -635,32 +678,60 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
               : "Assista antes de começar! Veja como encontrar partituras, playbacks e bônus."}
           </p>
         </div>
-        <div className="aspect-video relative">
-          <video
-            controls={!locked}
-            playsInline
-            preload="none"
-            poster="/thumbnail-vsl.webp"
-            className={`w-full h-full object-cover bg-black ${locked ? "pointer-events-none blur-[2px] opacity-60" : ""}`}
-          >
-            <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
-            Seu navegador não suporta vídeo.
-          </video>
-          {locked && (
-            <a
-              href={upgradeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 gap-3 cursor-pointer group"
+        <div className="aspect-video relative bg-black">
+          {locked ? (
+            /* Locked: static thumbnail + overlay, no <video> */
+            <>
+              <img
+                src="/thumbnail-vsl.webp"
+                alt="Tutorial bloqueado"
+                className="w-full h-full object-cover opacity-60 blur-[2px]"
+              />
+              <a
+                href={upgradeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 gap-3 cursor-pointer group"
+              >
+                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Lock className="w-7 h-7 text-primary" />
+                </div>
+                <span className="text-sm font-body font-bold text-white">Disponível no Plano Completo</span>
+                <span className="text-xs font-body text-primary bg-primary/20 px-4 py-1.5 rounded-full border border-primary/30 group-hover:bg-primary/30 transition-colors">
+                  Fazer Upgrade →
+                </span>
+              </a>
+            </>
+          ) : !isTutorialPlaying ? (
+            /* Unlocked, pre-play: static thumbnail + play button */
+            <button
+              onClick={handlePlayTutorial}
+              className="w-full h-full relative group cursor-pointer"
+              aria-label="Assistir tutorial"
             >
-              <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Lock className="w-7 h-7 text-primary" />
+              <img
+                src="/thumbnail-vsl.webp"
+                alt="Clique para assistir o tutorial"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center shadow-xl group-hover:scale-110 active:scale-95 transition-transform">
+                  <Play className="w-7 h-7 md:w-8 md:h-8 ml-1" fill="currentColor" />
+                </div>
               </div>
-              <span className="text-sm font-body font-bold text-white">Disponível no Plano Completo</span>
-              <span className="text-xs font-body text-primary bg-primary/20 px-4 py-1.5 rounded-full border border-primary/30 group-hover:bg-primary/30 transition-colors">
-                Fazer Upgrade →
-              </span>
-            </a>
+            </button>
+          ) : (
+            /* Unlocked, playing: real <video> */
+            <video
+              ref={videoRef}
+              controls
+              playsInline
+              preload="auto"
+              className="w-full h-full object-contain bg-black"
+            >
+              <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
+              Seu navegador não suporta vídeo.
+            </video>
           )}
         </div>
       </div>
