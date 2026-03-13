@@ -149,7 +149,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link to={isBasic ? "/acervo-basico" : "/acervo"} className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+            <Link to={isBasic ? "/acervo-basico" : "/plano-premium-completo"} className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
               Acervo
             </Link>
             {!isBasic && (
