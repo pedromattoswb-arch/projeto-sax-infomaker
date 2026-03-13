@@ -1,64 +1,68 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Dois Acervos (Básico e Completo) + Copy para Cakto
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
+### Estratégia
 
----
-
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
-
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
-
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
-
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+Criar duas rotas separadas (`/acervo` para o Completo e `/acervo-basico` para o Básico), ambas usando o mesmo componente `Acervo.tsx` mas com uma prop `plan` que controla o que é visível. No plano Básico, certas pastas aparecem **bloqueadas** com um overlay de upgrade. Sem autenticação — cada link de checkout na Cakto entrega o link do acervo correspondente.
 
 ---
 
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+### 1. Rota e Componente
 
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+**`src/App.tsx`** — Adicionar rota `/acervo-basico`:
+```
+<Route path="/acervo-basico" element={<Acervo plan="basic" />} />
+<Route path="/acervo" element={<Acervo plan="premium" />} />
+```
+
+**`src/pages/Acervo.tsx`** — Receber prop `plan`:
+- Definir lista de pastas bloqueadas no plano básico (por nome): `"Playbacks"`, `"Vídeos Tutoriais"`, `"Harpa Cristã"`, `"Bônus"`, `"Material Complementar"`, etc.
+- Quando `plan === "basic"`:
+  - Pastas bloqueadas aparecem com overlay semitransparente + ícone de cadeado + botão "Fazer Upgrade → R$ 39,90"
+  - Esconder seção de Bônus (BonusSection)
+  - Esconder seção de Tutoriais (TutorialBanner)
+  - Mostrar banner fixo no topo: "Você está no Plano Básico — Faça upgrade para ter acesso completo"
+- Quando `plan === "premium"`: tudo liberado (comportamento atual)
+
+### 2. Componente de Pasta Bloqueada
+
+**`src/components/acervo/LockedFolderCard.tsx`** (NOVO):
+- Mesmo visual do `FolderCard` mas com opacity reduzida
+- Overlay com ícone Lock + texto "Disponível no Plano Completo"
+- Botão/link para a página de upgrade (link Cakto Premium ou página de vendas)
+
+### 3. Banner de Upgrade (Plano Básico)
+
+No `Acervo.tsx`, quando `plan === "basic"`:
+- Banner sticky abaixo do header com gradiente dourado
+- "Plano Básico — Faça upgrade para o Completo por apenas R$ 20 a mais"
+- Botão CTA direto para o link Cakto Premium
+
+### 4. Navegação Separada
+
+**`src/components/acervo/MobileNav.tsx`** — Receber prop `plan`:
+- Quando `basic`: esconder itens de bônus, mostrar item "Fazer Upgrade" com destaque
+- Quando `premium`: manter como está + adicionar itens de bônus
+
+### 5. Copy para Cadastro na Cakto
+
+Fornecer textos prontos para copiar e colar na Cakto para os dois produtos:
+
+**Produto 1 — SaxPlay Básico (R$ 19,90)**
+- Nome, descrição, bullets, e-mail de entrega com link `/acervo-basico`
+
+**Produto 2 — SaxPlay Completo (R$ 39,90)**
+- Nome, descrição, bullets, e-mail de entrega com link `/acervo`
 
 ---
 
-### 3. SalesPage.tsx — Garantia section reforçada
+### Arquivos Modificados
 
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
-
----
-
-### 4. SalesPage.tsx — Footer profissional com selos
-
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
-
----
-
-### 5. SalesPage.tsx — Micro-copy no CTA final
-
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
-
----
-
-### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+| Arquivo | Mudança |
+|---|---|
+| `src/App.tsx` | Nova rota `/acervo-basico` |
+| `src/pages/Acervo.tsx` | Prop `plan`, lógica de pastas bloqueadas, banner upgrade |
+| `src/components/acervo/LockedFolderCard.tsx` | **NOVO** — Card de pasta bloqueada |
+| `src/components/acervo/MobileNav.tsx` | Prop `plan`, item de upgrade |
 
