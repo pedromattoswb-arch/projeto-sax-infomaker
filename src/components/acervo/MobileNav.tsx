@@ -61,7 +61,22 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" 
               {item.label}
             </Link>
           ))}
+          {plan === "basic" && (
+            <a
+              href="https://melody-path-finder.lovable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 transition-colors font-body font-bold text-sm min-h-[48px] mt-2 border border-amber-500/20"
+            >
+              <Crown className="w-5 h-5" />
+              Fazer Upgrade — Plano Completo
+            </a>
+          )}
         </nav>
+      </div>
+    </>
+  );
+};
       </div>
     </>
   );
