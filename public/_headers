@@ -1,0 +1,14 @@
+/acervo-basico
+  X-Robots-Tag: noindex, nofollow
+
+/plano-premium-completo
+  X-Robots-Tag: noindex, nofollow
+
+/bonus/*
+  X-Robots-Tag: noindex, nofollow
+
+/orderbump/*
+  X-Robots-Tag: noindex, nofollow
+
+/tutorials/*
+  X-Robots-Tag: noindex, nofollow

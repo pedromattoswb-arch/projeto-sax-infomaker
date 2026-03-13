@@ -1,23 +1,28 @@
 User-agent: *
-Allow: /
+Allow: /$
 Disallow: /acervo
-Disallow: /plano-premium-completo
 Disallow: /acervo-basico
+Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
+Disallow: /tutorials/
 
 User-agent: Googlebot
-Allow: /
+Allow: /$
 Disallow: /acervo
 Disallow: /acervo-basico
+Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
+Disallow: /tutorials/
 
 User-agent: Bingbot
-Allow: /
+Allow: /$
 Disallow: /acervo
 Disallow: /acervo-basico
+Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
+Disallow: /tutorials/
 
 Sitemap: https://melody-path-finder.lovable.app/sitemap.xml
