@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /acervo
+Disallow: /plano-premium-completo
 Disallow: /acervo-basico
 Disallow: /bonus/
 Disallow: /orderbump/
