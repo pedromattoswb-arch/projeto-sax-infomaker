@@ -1,12 +1,12 @@
 import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef } from "react";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2, ChevronDown, ChevronUp, Minimize2 } from "lucide-react";
 import type { DriveFile } from "@/hooks/useDriveFiles";
 
 interface AudioPlayerBarProps {
   currentAudio: DriveFile | null;
   audioFiles: DriveFile[];
   onClose: () => void;
-  onStateChange?: (state: { activeId: string | null; isPlaying: boolean }) => void;
+  onStateChange?: (state: { activeId: string | null; isPlaying: boolean; minimized: boolean }) => void;
 }
 
 export interface AudioPlayerHandle {
@@ -31,18 +31,20 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
     const [duration, setDuration] = useState(0);
     const [muted, setMuted] = useState(false);
     const [internalFile, setInternalFile] = useState<DriveFile | null>(currentAudio);
+    const [minimized, setMinimized] = useState(false);
 
     const activeFile = internalFile || currentAudio;
 
-    // Notify parent of state changes
+    // Notify parent of state changes (including minimized)
     useEffect(() => {
-      onStateChange?.({ activeId: activeFile?.id || null, isPlaying });
-    }, [activeFile?.id, isPlaying, onStateChange]);
+      onStateChange?.({ activeId: activeFile?.id || null, isPlaying, minimized });
+    }, [activeFile?.id, isPlaying, minimized, onStateChange]);
 
     useEffect(() => {
       if (currentAudio) {
         setInternalFile(currentAudio);
         setIsPlaying(true);
+        setMinimized(false); // expand when new track starts
       }
     }, [currentAudio?.id]);
 
@@ -104,6 +106,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
       setInternalFile(null);
       setProgress(0);
       setDuration(0);
+      setMinimized(false);
       onClose();
     }, [onClose]);
 
@@ -114,6 +117,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
         } else {
           setInternalFile(file);
           setIsPlaying(true);
+          setMinimized(false);
         }
       },
       toggle: () => setIsPlaying((p) => !p),
@@ -125,8 +129,68 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
 
     const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
 
+    // ── Minimized floating pill ──
+    if (minimized) {
+      return (
+        <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2 bg-card border border-border rounded-full shadow-xl px-2 py-1.5 animate-in slide-in-from-bottom-4 duration-200">
+          <audio
+            ref={audioRef}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={playNext}
+            muted={muted}
+            preload="auto"
+          />
+
+          {/* Mini progress ring */}
+          <div className="relative w-10 h-10 shrink-0">
+            <svg className="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15" fill="none" className="stroke-muted" strokeWidth="3" />
+              <circle
+                cx="18" cy="18" r="15" fill="none"
+                className="stroke-primary"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray={`${progressPct * 0.942} 94.2`}
+              />
+            </svg>
+            <button
+              onClick={() => setIsPlaying((p) => !p)}
+              className="absolute inset-0 flex items-center justify-center text-primary"
+              aria-label={isPlaying ? "Pausar" : "Reproduzir"}
+            >
+              {isPlaying ? <Pause className="w-4 h-4" fill="currentColor" /> : <Play className="w-4 h-4 ml-0.5" fill="currentColor" />}
+            </button>
+          </div>
+
+          {/* Song name */}
+          <p className="font-body font-bold text-[11px] text-foreground max-w-[120px] sm:max-w-[160px] truncate">
+            {activeFile.name}
+          </p>
+
+          {/* Expand */}
+          <button
+            onClick={() => setMinimized(false)}
+            className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Expandir player"
+          >
+            <ChevronUp className="w-4 h-4" />
+          </button>
+
+          {/* Close */}
+          <button
+            onClick={handleClose}
+            className="p-1.5 rounded-full hover:bg-muted text-muted-foreground/60 hover:text-foreground transition-colors"
+            aria-label="Fechar reprodutor"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      );
+    }
+
+    // ── Full expanded player ──
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)] animate-in slide-in-from-bottom-2 duration-200">
         <audio
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
@@ -154,7 +218,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           <span className="text-[11px] font-mono font-semibold text-foreground/70 tabular-nums">{formatTime(duration)}</span>
         </div>
 
-        <div className="max-w-4xl mx-auto px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-3">
+        <div className="max-w-4xl mx-auto px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2 md:gap-3">
           {/* Album art placeholder + song info */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg flex items-center justify-center shrink-0 bg-primary/10">
@@ -171,7 +235,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
           </div>
 
           {/* Controls */}
-          <div className="flex items-center gap-1 md:gap-2 shrink-0">
+          <div className="flex items-center gap-0.5 md:gap-2 shrink-0">
             <button
               onClick={playPrev}
               className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted text-foreground/70 hover:text-foreground"
@@ -195,23 +259,30 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
             </button>
           </div>
 
-          {/* Mute + Close */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Mute (desktop) + Minimize + Close */}
+          <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-2 transition-colors rounded-full hover:bg-muted text-foreground/70 hover:text-foreground"
+              className="hidden md:flex p-2 transition-colors rounded-full hover:bg-muted text-foreground/70 hover:text-foreground items-center justify-center"
               aria-label={muted ? "Ativar som" : "Silenciar"}
             >
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
+            <button
+              onClick={() => setMinimized(true)}
+              className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted text-foreground/50 hover:text-foreground"
+              aria-label="Minimizar player"
+            >
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleClose}
+              className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted text-foreground/50 hover:text-foreground"
+              aria-label="Fechar reprodutor"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <button
-            onClick={handleClose}
-            className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted text-foreground/50 hover:text-foreground"
-            aria-label="Fechar reprodutor"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
       </div>
     );

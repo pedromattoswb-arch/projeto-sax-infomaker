@@ -87,16 +87,18 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Reactive player state synced from AudioPlayerBar
-  const [playerState, setPlayerState] = useState<{ activeId: string | null; isPlaying: boolean }>({
+  const [playerState, setPlayerState] = useState<{ activeId: string | null; isPlaying: boolean; minimized: boolean }>({
     activeId: null,
     isPlaying: false,
+    minimized: false,
   });
 
-  const handlePlayerStateChange = useCallback((state: { activeId: string | null; isPlaying: boolean }) => {
+  const handlePlayerStateChange = useCallback((state: { activeId: string | null; isPlaying: boolean; minimized: boolean }) => {
     setPlayerState(state);
   }, []);
 
   const hasAudioPlaying = playerState.activeId !== null;
+  const isPlayerMinimized = playerState.minimized;
 
   useEffect(() => {
     fetchFolder();
@@ -163,7 +165,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
+    <div className={`min-h-screen bg-background ${hasAudioPlaying && !isPlayerMinimized ? "pb-40 md:pb-28" : hasAudioPlaying && isPlayerMinimized ? "pb-6" : ""}`}>
       {/* Skip Navigation */}
       <a
         href="#acervo-content"
