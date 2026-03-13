@@ -8,8 +8,7 @@ const SalesVideoPlayer = () => {
   const [thumbError, setThumbError] = useState(false);
   const vid = V.map(c => String.fromCharCode(c)).join("");
 
-  const thumbHQ = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-  const thumbMax = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+  const customThumb = "/thumbnail-vsl.webp";
 
   return (
     <div
