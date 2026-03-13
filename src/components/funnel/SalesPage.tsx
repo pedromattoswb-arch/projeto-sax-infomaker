@@ -71,14 +71,7 @@ const SalesPage = () => {
       {/* HERO */}
       <section className="py-10 md:py-20 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <img
-            src={mockupHero}
-            alt="Plataforma SaxPlay com +10.000 partituras e playbacks para saxofone"
-            className="w-full max-w-[320px] md:max-w-md mx-auto mb-5 md:mb-6 drop-shadow-2xl"
-            loading="eager"
-            width={500}
-            height={280}
-          />
+          <SalesVideoPlayer />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
             🎷 +847 Saxofonistas Já Estão Tocando • Recomendado por Escolas de Sax
