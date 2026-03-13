@@ -171,7 +171,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                 href={UPGRADE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-body font-bold bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+                className="ml-2 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-body font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <Crown className="w-4 h-4" />
                 Fazer Upgrade
