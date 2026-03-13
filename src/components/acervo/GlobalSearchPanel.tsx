@@ -84,8 +84,13 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
 
     setSearching(true);
 
-    fetch(`${SEARCH_URL}?q=${encodeURIComponent(q)}`, { signal: controller.signal })
-      .then(res => res.json())
+    fetch(`${SEARCH_URL}?q=${encodeURIComponent(q)}`, {
+      signal: controller.signal,
+      headers: {
+        'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+    })
       .then(data => {
         if (!controller.signal.aborted) {
           setSearchFolders(data.folders || []);
