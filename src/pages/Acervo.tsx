@@ -144,7 +144,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       </a>
 
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
+      <header className="sticky top-0 z-30 bg-card border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
 
@@ -285,7 +285,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           {/* Search trigger — opens full-screen panel */}
           <button
             onClick={() => setSearchPanelOpen(true)}
-            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-card border border-border rounded-xl text-base font-body text-muted-foreground hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
+            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-muted border border-border rounded-xl text-base font-body text-muted-foreground hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
             aria-label="Abrir painel de busca"
           >
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -311,7 +311,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
         {/* Filter Tabs - always visible when there are files */}
         {!loading && !error && hasFiles && (
-          <div className="sticky top-[73px] z-20 bg-background/95 backdrop-blur-md -mx-4 px-4 py-3 mb-4 border-b border-border/50">
+          <div className="sticky top-[73px] z-20 bg-background -mx-4 px-4 py-3 mb-4 border-b border-border/50">
             <div className="flex flex-wrap gap-2">
               <FilterTab
                 active={fileFilter === "all"}
@@ -555,17 +555,17 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
   const variantClasses = {
     default: active
       ? "bg-foreground text-background shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20",
+      : "bg-muted border border-border text-muted-foreground hover:text-foreground hover:bg-muted/70",
     pdf: active
       ? "bg-destructive text-destructive-foreground shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/30",
+      : "bg-muted border border-border text-muted-foreground hover:text-destructive hover:bg-destructive/5",
     audio: active
       ? "bg-primary text-primary-foreground shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary/30",
+      : "bg-muted border border-border text-muted-foreground hover:text-primary hover:bg-primary/5",
   };
 
   const badgeClasses = {
-    default: active ? "bg-background/20 text-background" : "bg-muted text-muted-foreground",
+    default: active ? "bg-background/20 text-background" : "bg-background text-muted-foreground",
     pdf: active ? "bg-destructive-foreground/20 text-destructive-foreground" : "bg-destructive/10 text-destructive",
     audio: active ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary",
   };
