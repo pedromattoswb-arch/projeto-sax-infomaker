@@ -18,6 +18,7 @@ import {
   Piano,
   Globe,
   Crown,
+  Lock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
