@@ -12,6 +12,7 @@ import BonusMusicas from "./pages/BonusMusicas";
 import OrderBumpDigitacao from "./pages/OrderBumpDigitacao";
 import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
 import OrderBumpManutencao from "./pages/OrderBumpManutencao";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
