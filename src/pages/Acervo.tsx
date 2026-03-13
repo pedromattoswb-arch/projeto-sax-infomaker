@@ -213,11 +213,43 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} plan={plan} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
-        {/* Bonus Section - only for premium */}
-        {isRoot && !isBasic && <BonusSection />}
+        {/* Bonus Virtual Folders - shown at root level */}
+        {isRoot && (
+          <div className="mb-6" role="region" aria-label="Bônus">
+            <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
+              <Gift className="w-4 h-4" />
+              Bônus ({BONUS_VIRTUAL_FOLDERS.length})
+            </h2>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
+              {BONUS_VIRTUAL_FOLDERS.map((bonus) =>
+                isBasic ? (
+                  <LockedFolderCard
+                    key={bonus.id}
+                    folder={{ id: bonus.id, name: bonus.name }}
+                    upgradeUrl={UPGRADE_URL}
+                  />
+                ) : (
+                  <Link
+                    key={bonus.id}
+                    to={bonus.path}
+                    role="listitem"
+                    className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-md transition-all w-full min-h-[60px]"
+                  >
+                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                    </div>
+                    <span className="font-body font-bold text-sm md:text-base text-foreground group-hover:text-primary break-words leading-snug flex-1 transition-colors">
+                      {bonus.name}
+                    </span>
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        )}
 
-        {/* Tutorial Banner - only for premium */}
-        {!isBasic && <TutorialBanner />}
+        {/* Quick Tips Banner - only for premium */}
+        {!isBasic && <QuickTipsBanner />}
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
