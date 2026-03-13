@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 import logoSaxplay from "@/assets/logo-saxplay.png";
-import mockupHero from "@/assets/mockup-saxofone-hero.webp";
+import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
 import TestimonialCarousel from "./TestimonialCarousel";
