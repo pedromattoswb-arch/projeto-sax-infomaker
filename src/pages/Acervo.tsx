@@ -11,7 +11,7 @@ import {
   Menu,
   FileText,
   Music,
-  PlayCircle,
+  
   ChevronDown,
   Gift,
   BookOpen,
