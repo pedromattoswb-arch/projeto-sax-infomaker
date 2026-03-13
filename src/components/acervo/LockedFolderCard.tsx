@@ -24,27 +24,33 @@ const LockedFolderCard = React.memo(({ folder, upgradeUrl, icon }: LockedFolderC
       <div role="listitem">
         <button
           onClick={() => setOpen(true)}
-          className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border/40 rounded-2xl hover:border-muted-foreground/30 transition-all text-left w-full min-h-[60px] opacity-75 hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary"
+          className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border rounded-2xl hover:border-primary/40 hover:shadow-md transition-all text-left w-full min-h-[60px] focus-visible:ring-2 focus-visible:ring-primary"
           aria-label={`${folder.name} — bloqueado, disponível no Plano Completo`}
         >
-          <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted/60 flex items-center justify-center relative">
-            {icon || <Folder className="w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />}
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card border border-border flex items-center justify-center">
-              <Lock className="w-3 h-3 text-muted-foreground" />
+          <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center relative">
+            {icon || <Folder className="w-5 h-5 md:w-6 md:h-6 text-primary/70" />}
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-sm">
+              <Lock className="w-3 h-3 text-primary-foreground" />
             </div>
           </div>
-          <span className="font-body font-bold text-sm md:text-base text-muted-foreground break-words leading-snug flex-1">
-            {folder.name}
-          </span>
-          <Lock className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <span className="font-body font-bold text-sm md:text-base text-foreground break-words leading-snug block">
+              {folder.name}
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-primary mt-0.5 flex items-center gap-1">
+              <Crown className="w-3 h-3" />
+              Plano Completo
+            </span>
+          </div>
+          <Lock className="w-4 h-4 text-primary/50 shrink-0 group-hover:text-primary transition-colors" />
         </button>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mb-2">
-              <Lock className="w-7 h-7 text-muted-foreground" />
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-2">
+              <Lock className="w-7 h-7 text-primary" />
             </div>
             <DialogTitle className="text-center font-body">
               Conteúdo Exclusivo
