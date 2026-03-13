@@ -165,7 +165,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-background ${hasAudioPlaying ? "pb-36 md:pb-24" : ""}`}>
+    <div className={`min-h-screen bg-background ${hasAudioPlaying && !isPlayerMinimized ? "pb-40 md:pb-28" : hasAudioPlaying && isPlayerMinimized ? "pb-6" : ""}`}>
       {/* Skip Navigation */}
       <a
         href="#acervo-content"
