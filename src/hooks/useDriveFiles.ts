@@ -66,7 +66,7 @@ const FOLDER_NAME_MAP: Record<string, string> = {
   "REGGAE": "Reggae",
   "SAMBA": "Samba",
   "SCORE COLLECTION - COLETANIA DE PARTITURAS": "Coletânea de Partituras",
-  "VTS GOSPEL": "Vídeos Gospel",
+  "VTS GOSPEL": "Partituras Gospel",
   "WEDDING - CASAMENTO": "Músicas para Casamento",
   "INTERNATIONAL": "Músicas Internacionais",
   "BRASILEIRAS": "Músicas Brasileiras",
