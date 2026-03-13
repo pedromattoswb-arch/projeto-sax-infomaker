@@ -36,6 +36,32 @@ const premiumFeatures = [
 ];
 
 const PricingCards = () => {
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    // Set deadline to end of today (midnight)
+    const getDeadline = () => {
+      const now = new Date();
+      const end = new Date(now);
+      end.setHours(23, 59, 59, 999);
+      return end.getTime();
+    };
+
+    const update = () => {
+      const diff = Math.max(0, getDeadline() - Date.now());
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeLeft({ hours, minutes, seconds });
+    };
+
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
   const handleCheckout = (plan: "essential" | "premium") => {
     const link = plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK;
     const params = window.location.search;
@@ -54,6 +80,37 @@ const PricingCards = () => {
           <p className="text-foreground font-body text-base">
             Pagamento único. Acesso vitalício. Garantia de 7 dias.
           </p>
+        </div>
+
+        {/* Countdown Timer */}
+        <div className="max-w-lg mx-auto mb-8">
+          <div className="bg-destructive/10 border border-destructive/20 rounded-xl px-4 py-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Clock className="w-4 h-4 text-destructive animate-pulse" />
+              <span className="text-sm font-bold font-heading text-destructive uppercase tracking-wide">
+                Oferta por tempo limitado
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex flex-col items-center">
+                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.hours)}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Horas</span>
+              </div>
+              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.minutes)}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Min</span>
+              </div>
+              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.seconds)}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Seg</span>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground font-body mt-2">
+              Esse preço pode mudar a qualquer momento
+            </p>
+          </div>
         </div>
 
         <p className="text-center text-sm text-primary font-semibold font-body mb-10">
