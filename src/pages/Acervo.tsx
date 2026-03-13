@@ -311,7 +311,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
         {/* Filter Tabs - always visible when there are files */}
         {!loading && !error && hasFiles && (
-          <div className="sticky top-[73px] z-20 bg-background/95 backdrop-blur-md -mx-4 px-4 py-3 mb-4 border-b border-border/50">
+          <div className="sticky top-[73px] z-20 bg-background -mx-4 px-4 py-3 mb-4 border-b border-border/50">
             <div className="flex flex-wrap gap-2">
               <FilterTab
                 active={fileFilter === "all"}
