@@ -46,6 +46,7 @@ const modos = [
 ];
 
 const BonusTonalidades = () => {
+  useNoIndex();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {

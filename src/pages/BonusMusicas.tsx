@@ -126,6 +126,7 @@ const difficultyColor = {
 };
 
 const BonusMusicas = () => {
+  useNoIndex();
   const [loading, setLoading] = useState(false);
   const genres = [...new Set(songs.map((s) => s.genre))];
 

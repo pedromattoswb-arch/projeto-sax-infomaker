@@ -52,6 +52,7 @@ interface AcervoProps {
 
 const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const isBasic = plan === "basic";
+  useNoIndex();
   const {
     folders,
     files,

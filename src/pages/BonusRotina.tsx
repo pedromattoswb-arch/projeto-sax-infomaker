@@ -76,6 +76,7 @@ const weeklySchedule = [
 ];
 
 const BonusRotina = () => {
+  useNoIndex();
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {
