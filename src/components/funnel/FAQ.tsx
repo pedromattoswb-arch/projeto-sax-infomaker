@@ -29,27 +29,27 @@ const faqItems = [
   {
     question: "Posso acessar pelo celular?",
     answer:
-      "Sim! A plataforma SaxBrasil funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada.",
+      "Sim! A plataforma SaxPlay funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada.",
   },
   {
-    question: "Qual a diferença entre Essencial e Premium?",
+    question: "Qual a diferença entre Básico e Completo?",
     answer:
-      "O Essencial tem +5.000 partituras em PDF com busca inteligente na plataforma. O Premium tem +10.000 partituras e playbacks, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos (Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). Por R$ 10 a mais, é a escolha óbvia.",
+      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca inteligente na plataforma. O Completo (R$ 39,90) tem +10.000 partituras e playbacks, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos (Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). Por R$ 20 a mais, é a escolha mais inteligente.",
   },
   {
     question: "O que são os vídeos tutoriais?",
     answer:
-      "São vídeos integrados diretamente na plataforma SaxBrasil que ensinam como usar cada recurso: como buscar partituras, usar playbacks, organizar sua prática, entender tonalidades e muito mais. Exclusivo do plano Premium.",
+      "São vídeos integrados diretamente na plataforma SaxPlay que ensinam como usar cada recurso: como buscar partituras, usar playbacks, organizar sua prática, entender tonalidades e muito mais. Exclusivo do plano Completo.",
   },
   {
     question: "Como funciona a busca por voz?",
     answer:
-      "Na plataforma SaxBrasil (plano Premium), você pode clicar no ícone de microfone e falar o nome da música que quer tocar. A plataforma reconhece sua voz e encontra a partitura e o playback instantaneamente. Funciona em português e é super fácil de usar.",
+      "Na plataforma SaxPlay (plano Completo), você pode clicar no ícone de microfone e falar o nome da música que quer tocar. A plataforma reconhece sua voz e encontra a partitura e o playback instantaneamente. Funciona em português e é super fácil de usar.",
   },
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia incondicional. O reembolso é processado diretamente pela plataforma Cakto — devolvemos 100% do valor, sem perguntas. Risco zero.",
+      "Você tem 7 dias de garantia total. Teste a plataforma com tranquilidade — se não for o que você esperava, a gente resolve sem complicação.",
   },
   {
     question: "O acesso é realmente vitalício?",
@@ -59,7 +59,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Somos recomendados por escolas e professores de saxofone em todo o Brasil. Oferecemos garantia de 7 dias com reembolso automático via Cakto, e suporte ativo por e-mail e WhatsApp.",
+      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Somos recomendados por escolas e professores de saxofone em todo o Brasil. Oferecemos garantia de 7 dias e suporte ativo por e-mail e WhatsApp.",
   },
 ];
 

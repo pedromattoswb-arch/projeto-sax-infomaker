@@ -13,7 +13,7 @@ const essentialFeatures = [
 ];
 
 const premiumFeatures = [
-  "Tudo do Essencial +",
+  "Tudo do plano Básico +",
   "+10.000 partituras e playbacks profissionais",
   "Plataforma exclusiva estilo app",
   "Busca inteligente por voz",
@@ -51,35 +51,35 @@ const PricingCards = () => {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start max-w-4xl mx-auto">
-          {/* ESSENTIAL CARD */}
-          <div className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-8 relative">
+          {/* BASIC CARD */}
+          <div className="bg-[hsl(220,20%,18%)] rounded-2xl border border-[hsl(220,15%,25%)] shadow-lg p-6 md:p-8 relative">
             <div className="mb-6">
-              <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold font-heading mb-3">
+              <span className="inline-block bg-white/10 text-white/80 px-3 py-1 rounded-full text-xs font-bold font-heading mb-3">
                 Para começar
               </span>
-              <h3 className="text-xl font-bold font-heading mb-1">Essencial</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <h3 className="text-xl font-bold font-heading mb-1 text-white">Básico</h3>
+              <p className="text-white/50 text-sm font-body">
                 +5.000 partituras na plataforma exclusiva
               </p>
             </div>
 
             <div className="mb-6">
-              <span className="text-muted-foreground text-sm line-through font-body">De R$ 197,00</span>
+              <span className="text-white/40 text-sm line-through font-body">De R$ 197,00</span>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-4xl font-extrabold font-heading text-primary">R$ 9</span>
-                <span className="text-xl font-bold font-heading text-primary">,90</span>
+                <span className="text-4xl font-extrabold font-heading text-white">R$ 19</span>
+                <span className="text-xl font-bold font-heading text-white">,90</span>
               </div>
-              <span className="text-xs text-primary font-semibold font-body">Economia de 95% • Pagamento único</span>
+              <span className="text-xs text-primary font-semibold font-body">Economia de 90% • Pagamento único</span>
             </div>
 
-            <div className="flex items-center gap-2 bg-primary/5 border border-primary/15 rounded-lg px-3 py-2 mb-6">
+            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2 mb-6">
               <Zap className="w-4 h-4 text-primary shrink-0" />
-              <span className="text-xs font-semibold font-body text-primary">Acesso imediato após o pagamento</span>
+              <span className="text-xs font-semibold font-body text-white/70">Acesso imediato após o pagamento</span>
             </div>
 
             <ul className="space-y-3 mb-8">
               {essentialFeatures.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm font-body">
+                <li key={i} className="flex items-start gap-2.5 text-sm font-body text-white/80">
                   <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <span>{feature}</span>
                 </li>
@@ -88,14 +88,14 @@ const PricingCards = () => {
 
             <button
               onClick={() => handleCheckout("essential")}
-              className="w-full py-3.5 rounded-xl border-2 border-primary text-primary font-bold font-heading text-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              className="w-full py-3.5 rounded-xl bg-white/10 border border-white/20 text-white font-bold font-heading text-sm hover:bg-white/20 transition-all duration-300"
             >
-              GARANTIR ACESSO ESSENCIAL
+              GARANTIR ACESSO BÁSICO
             </button>
           </div>
 
           {/* PREMIUM CARD */}
-          <div className="bg-card rounded-2xl border-2 border-accent shadow-gold-lg p-6 md:p-8 relative md:scale-[1.02] origin-top">
+          <div className="bg-[hsl(220,25%,14%)] rounded-2xl border-2 border-accent shadow-gold-lg p-6 md:p-8 relative md:scale-[1.04] origin-top">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
               <span className="gradient-gold text-accent-foreground px-5 py-1.5 rounded-full text-xs font-bold font-heading flex items-center gap-1.5 shadow-gold whitespace-nowrap">
                 <Crown className="w-3.5 h-3.5" />
@@ -112,24 +112,24 @@ const PricingCards = () => {
                 <Sparkles className="w-3 h-3 inline mr-1" />
                 Melhor custo-benefício
               </span>
-              <h3 className="text-xl font-bold font-heading mb-1">Premium</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <h3 className="text-xl font-bold font-heading mb-1 text-white">Completo</h3>
+              <p className="text-white/50 text-sm font-body">
                 Acervo completo + playbacks + tutoriais + bônus
               </p>
             </div>
 
             <div className="mb-6">
-              <span className="text-muted-foreground text-sm line-through font-body">De R$ 497,00</span>
+              <span className="text-white/40 text-sm line-through font-body">De R$ 497,00</span>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-4xl font-extrabold font-heading text-gold">R$ 19</span>
+                <span className="text-4xl font-extrabold font-heading text-gold">R$ 39</span>
                 <span className="text-xl font-bold font-heading text-gold">,90</span>
               </div>
-              <span className="text-xs text-gold-dark font-semibold font-body">Economia de 96% • Pagamento único</span>
+              <span className="text-xs text-gold font-semibold font-body">Economia de 92% • Pagamento único</span>
             </div>
 
             <div className="flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-lg px-3 py-2 mb-6">
               <Zap className="w-4 h-4 text-gold shrink-0" />
-              <span className="text-xs font-semibold font-body text-gold-dark">Acesso imediato + bônus liberados na hora</span>
+              <span className="text-xs font-semibold font-body text-gold">Acesso imediato + bônus liberados na hora</span>
             </div>
 
             <ul className="space-y-3 mb-6">
@@ -139,7 +139,7 @@ const PricingCards = () => {
                 return (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-sm font-body ${isFirst ? "font-bold text-primary" : ""} ${isBonus ? "text-gold-dark font-semibold" : ""}`}
+                    className={`flex items-start gap-2.5 text-sm font-body ${isFirst ? "font-bold text-primary" : "text-white/80"} ${isBonus ? "text-gold font-semibold" : ""}`}
                   >
                     {isBonus ? (
                       <Star className="w-4 h-4 text-gold mt-0.5 shrink-0 fill-gold" />
@@ -152,22 +152,22 @@ const PricingCards = () => {
               })}
             </ul>
 
-            <div className="bg-primary/5 border border-primary/15 rounded-xl p-3 mb-6">
-              <p className="text-xs font-semibold font-body text-center">
-                💡 Por apenas <strong className="text-primary">R$ 10 a mais</strong>, você leva
+            <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-6">
+              <p className="text-xs font-semibold font-body text-center text-white/80">
+                💡 Por apenas <strong className="text-gold">R$ 20 a mais</strong>, você leva
                 playbacks, busca por voz, tutoriais e 3 bônus exclusivos.
               </p>
             </div>
 
             <button
               onClick={() => handleCheckout("premium")}
-              className="w-full py-4 rounded-xl gradient-cta text-primary-foreground font-bold font-heading text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] transition-all duration-300 animate-cta-pulse flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-xl gradient-cta text-white font-bold font-heading text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] transition-all duration-300 animate-cta-pulse flex items-center justify-center gap-2"
             >
-              GARANTIR ACESSO PREMIUM
+              GARANTIR ACESSO COMPLETO
               <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
             </button>
 
-            <p className="text-center text-xs text-muted-foreground mt-3 font-body">
+            <p className="text-center text-xs text-white/40 mt-3 font-body">
               🔒 Pagamento seguro • Acesso imediato
             </p>
           </div>
