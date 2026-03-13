@@ -16,11 +16,13 @@ import {
   BookOpen,
   Piano,
   Globe,
+  Crown,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
+import LockedFolderCard from "@/components/acervo/LockedFolderCard";
 import FileCard from "@/components/acervo/FileCard";
 import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
 import MobileNav from "@/components/acervo/MobileNav";
@@ -29,7 +31,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
 
-const Acervo = () => {
+const UPGRADE_URL = "https://melody-path-finder.lovable.app/";
+
+const LOCKED_FOLDER_NAMES = [
+  "playbacks",
+  "vídeos tutoriais",
+  "videos tutoriais",
+  "harpa cristã",
+  "harpa crista",
+  "bônus",
+  "bonus",
+  "material complementar",
+  "materiais complementares",
+];
+
+interface AcervoProps {
+  plan?: "basic" | "premium";
+}
+
+const Acervo = ({ plan = "premium" }: AcervoProps) => {
+  const isBasic = plan === "basic";
   const {
     folders,
     files,
