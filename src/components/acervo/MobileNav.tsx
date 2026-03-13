@@ -1,19 +1,24 @@
 import React from "react";
-import { Menu, X, Music, BookOpen, Piano, Globe, Gift } from "lucide-react";
+import { Menu, X, Music, BookOpen, Piano, Globe, Gift, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 
 interface MobileNavProps {
   open: boolean;
   onToggle: () => void;
+  plan?: "basic" | "premium";
 }
 
-const navItems = [
+const premiumNavItems = [
   { label: "Acervo", path: "/acervo", icon: Music },
   { label: "Bônus", path: "/acervo#bonus", icon: Gift },
   { label: "Rotina de Estudo", path: "/bonus/rotina-de-estudo", icon: BookOpen },
   { label: "Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades", icon: Piano },
   { label: "100 Músicas", path: "/bonus/100-musicas", icon: Globe },
+];
+
+const basicNavItems = [
+  { label: "Acervo", path: "/acervo-basico", icon: Music },
 ];
 
 const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle }) => {

@@ -23,7 +23,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/acervo" element={<Acervo />} />
+          <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
+          <Route path="/acervo" element={<Acervo plan="premium" />} />
           <Route path="/bonus/rotina-de-estudo" element={<BonusRotina />} />
           <Route path="/bonus/mapa-de-tonalidades" element={<BonusTonalidades />} />
           <Route path="/bonus/100-musicas" element={<BonusMusicas />} />
