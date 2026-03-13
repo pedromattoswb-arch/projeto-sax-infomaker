@@ -5,11 +5,9 @@ const V = [97,76,100,45,98,100,99,73,48,71,115];
 
 const SalesVideoPlayer = () => {
   const [playing, setPlaying] = useState(false);
-  const [thumbError, setThumbError] = useState(false);
   const vid = V.map(c => String.fromCharCode(c)).join("");
 
-  const thumbHQ = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-  const thumbMax = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+  const customThumb = "/thumbnail-vsl.webp";
 
   return (
     <div
@@ -24,8 +22,7 @@ const SalesVideoPlayer = () => {
         >
           {/* Thumbnail with fallback */}
           <img
-            src={thumbError ? thumbHQ : thumbMax}
-            onError={() => setThumbError(true)}
+            src={customThumb}
             alt="Vídeo de apresentação SaxPlay"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"
