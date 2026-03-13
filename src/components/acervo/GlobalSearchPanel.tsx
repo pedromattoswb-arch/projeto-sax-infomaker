@@ -132,15 +132,15 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-background/98 backdrop-blur-xl flex flex-col"
+      className="fixed inset-0 z-50 bg-background flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-label="Painel de busca"
     >
       {/* Header */}
-      <div className="shrink-0 border-b border-border bg-card/80 backdrop-blur-md">
+      <div className="shrink-0 border-b border-border bg-card">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Search className="w-5 h-5 text-primary shrink-0" />
+          <Search className="w-5 h-5 text-muted-foreground shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -156,7 +156,7 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
               className={`shrink-0 p-2.5 rounded-full transition-all min-h-[44px] min-w-[44px] flex items-center justify-center ${
                 isListening
                   ? "bg-destructive text-destructive-foreground animate-pulse"
-                  : "bg-primary/10 text-primary hover:bg-primary/20"
+                  : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground"
               }`}
               aria-label={isListening ? "Parar gravação de voz" : "Buscar por voz"}
             >
@@ -165,7 +165,7 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
           )}
           <button
             onClick={onClose}
-            className="shrink-0 p-2.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="shrink-0 p-2.5 rounded-xl bg-muted hover:bg-muted/70 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Fechar busca"
           >
             <X className="w-5 h-5" />
