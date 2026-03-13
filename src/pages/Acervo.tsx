@@ -12,7 +12,12 @@ import {
   Music,
   PlayCircle,
   ChevronDown,
+  Gift,
+  BookOpen,
+  Piano,
+  Globe,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
