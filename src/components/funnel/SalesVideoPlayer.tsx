@@ -35,7 +35,7 @@ const SalesVideoPlayer = () => {
             <Play className="w-7 h-7 md:w-9 md:h-9 text-white ml-1" fill="white" />
           </div>
           <span className="relative z-20 text-white text-xs md:text-sm font-heading font-bold tracking-wide drop-shadow-md">
-            ▶ ASSISTIR APRESENTAÇÃO
+            CLIQUE PARA DAR PLAY
           </span>
         </button>
       ) : (
