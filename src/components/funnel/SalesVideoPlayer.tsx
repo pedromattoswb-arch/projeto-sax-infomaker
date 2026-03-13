@@ -5,7 +5,6 @@ const V = [97,76,100,45,98,100,99,73,48,71,115];
 
 const SalesVideoPlayer = () => {
   const [playing, setPlaying] = useState(false);
-  const [thumbError, setThumbError] = useState(false);
   const vid = V.map(c => String.fromCharCode(c)).join("");
 
   const customThumb = "/thumbnail-vsl.webp";
