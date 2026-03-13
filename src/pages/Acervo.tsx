@@ -36,14 +36,22 @@ const UPGRADE_URL = "https://melody-path-finder.lovable.app/";
 
 const LOCKED_FOLDER_NAMES = [
   "playbacks",
-  "vídeos tutoriais",
-  "videos tutoriais",
   "harpa cristã",
   "harpa crista",
-  "bônus",
-  "bonus",
   "material complementar",
   "materiais complementares",
+  "livros e métodos de estudo",
+  "livros e metodos de estudo",
+  "estudos e exercícios",
+  "estudos e exercicios",
+  "coletânea de partituras",
+  "coletanea de partituras",
+];
+
+const BONUS_VIRTUAL_FOLDERS = [
+  { id: "bonus-rotina", name: "BÔNUS: Guia Rotina de Estudo", path: "/bonus/rotina-de-estudo" },
+  { id: "bonus-tonalidades", name: "BÔNUS: Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades" },
+  { id: "bonus-100musicas", name: "BÔNUS: 100 Músicas Essenciais", path: "/bonus/100-musicas" },
 ];
 
 interface AcervoProps {
