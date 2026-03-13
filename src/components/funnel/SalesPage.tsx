@@ -71,6 +71,10 @@ const SalesPage = () => {
       {/* HERO */}
       <section className="py-10 md:py-20 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
+          <p className="text-sm md:text-base text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
+            <strong className="text-foreground">+10.000 arquivos</strong> entre partituras em PDF, playbacks profissionais, livros, métodos de estudo e materiais complementares — tudo organizado na sua própria plataforma.
+          </p>
+
           <SalesVideoPlayer />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
