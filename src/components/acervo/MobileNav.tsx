@@ -21,7 +21,8 @@ const basicNavItems = [
   { label: "Acervo", path: "/acervo-basico", icon: Music },
 ];
 
-const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle }) => {
+const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" }) => {
+  const navItems = plan === "basic" ? basicNavItems : premiumNavItems;
   return (
     <>
       {/* Overlay */}
