@@ -555,17 +555,17 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
   const variantClasses = {
     default: active
       ? "bg-foreground text-background shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20",
+      : "bg-muted border border-border text-muted-foreground hover:text-foreground hover:bg-muted/70",
     pdf: active
       ? "bg-destructive text-destructive-foreground shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-destructive hover:border-destructive/30",
+      : "bg-muted border border-border text-muted-foreground hover:text-destructive hover:bg-destructive/5",
     audio: active
       ? "bg-primary text-primary-foreground shadow-md"
-      : "bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary/30",
+      : "bg-muted border border-border text-muted-foreground hover:text-primary hover:bg-primary/5",
   };
 
   const badgeClasses = {
-    default: active ? "bg-background/20 text-background" : "bg-muted text-muted-foreground",
+    default: active ? "bg-background/20 text-background" : "bg-background text-muted-foreground",
     pdf: active ? "bg-destructive-foreground/20 text-destructive-foreground" : "bg-destructive/10 text-destructive",
     audio: active ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary",
   };
