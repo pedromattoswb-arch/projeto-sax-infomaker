@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Search, X, Mic, MicOff, Folder, FileText, Music, ArrowRight, Sparkles } from "lucide-react";
+import { Search, X, Mic, MicOff, Folder, FileText, Music, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import type { DriveFolder, DriveFile } from "@/hooks/useDriveFiles";
 
 interface GlobalSearchPanelProps {
@@ -14,19 +14,19 @@ interface GlobalSearchPanelProps {
 
 const SUGGESTIONS = [
   "Careless Whisper",
+  "Dancing Queen",
   "Gospel",
   "Jazz",
   "Bossa Nova",
-  "Garota de Ipanema",
-  "Natal",
+  "Hallelujah",
   "Casamento",
 ];
+
+const SEARCH_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/search-drive`;
 
 const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   open,
   onClose,
-  folders,
-  files,
   onFolderOpen,
   onFileOpen,
   onPlayAudio,
@@ -35,9 +35,13 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [searchFolders, setSearchFolders] = useState<DriveFolder[]>([]);
+  const [searchFiles, setSearchFiles] = useState<DriveFile[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const abortRef = useRef<AbortController | null>(null);
 
   // Check voice support
   useEffect(() => {
@@ -50,6 +54,8 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
     if (open) {
       setQuery("");
       setDebouncedQuery("");
+      setSearchFolders([]);
+      setSearchFiles([]);
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       stopListening();
@@ -58,9 +64,50 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
 
   // Debounce
   useEffect(() => {
-    timerRef.current = setTimeout(() => setDebouncedQuery(query), 200);
+    timerRef.current = setTimeout(() => setDebouncedQuery(query), 400);
     return () => clearTimeout(timerRef.current);
   }, [query]);
+
+  // Recursive search via edge function
+  useEffect(() => {
+    const q = debouncedQuery.trim();
+    if (q.length < 2) {
+      setSearchFolders([]);
+      setSearchFiles([]);
+      setSearching(false);
+      return;
+    }
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setSearching(true);
+
+    fetch(`${SEARCH_URL}?q=${encodeURIComponent(q)}`, {
+      signal: controller.signal,
+      headers: {
+        'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+    })
+      .then(res => res.json())
+      .then((data: { folders?: DriveFolder[]; files?: DriveFile[] }) => {
+        if (!controller.signal.aborted) {
+          setSearchFolders(data.folders || []);
+          setSearchFiles(data.files || []);
+          setSearching(false);
+        }
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error('Search error:', err);
+          setSearching(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [debouncedQuery]);
 
   // ESC to close
   useEffect(() => {
@@ -114,21 +161,12 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   if (!open) return null;
 
   const q = debouncedQuery.toLowerCase().trim();
-
-  const matchedFolders = q
-    ? folders.filter((f) => f.name.toLowerCase().includes(q))
-    : [];
-
-  const matchedPdfs = q
-    ? files.filter((f) => f.type === "pdf" && f.name.toLowerCase().includes(q))
-    : [];
-
-  const matchedAudio = q
-    ? files.filter((f) => f.type === "audio" && f.name.toLowerCase().includes(q))
-    : [];
-
-  const totalResults = matchedFolders.length + matchedPdfs.length + matchedAudio.length;
   const hasQuery = q.length > 0;
+
+  const matchedFolders = searchFolders;
+  const matchedPdfs = searchFiles.filter((f) => f.type === "pdf");
+  const matchedAudio = searchFiles.filter((f) => f.type === "audio");
+  const totalResults = matchedFolders.length + matchedPdfs.length + matchedAudio.length;
 
   return (
     <div
@@ -217,8 +255,18 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
             </div>
           )}
 
+          {/* Loading */}
+          {hasQuery && searching && (
+            <div className="text-center py-12">
+              <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
+              <p className="text-sm text-muted-foreground font-body">
+                Buscando em todo o acervo...
+              </p>
+            </div>
+          )}
+
           {/* No results */}
-          {hasQuery && totalResults === 0 && (
+          {hasQuery && !searching && totalResults === 0 && (
             <div className="text-center py-12">
               <Search className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
               <p className="text-base font-body font-bold text-foreground mb-2">
