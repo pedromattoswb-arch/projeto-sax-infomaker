@@ -145,9 +145,9 @@ const BonusMusicas = () => {
     <div className="min-h-screen bg-background">
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/plano-premium-completo" className="flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Voltar
+            Voltar ao Acervo
           </Link>
           <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
         </div>

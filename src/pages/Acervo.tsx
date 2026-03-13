@@ -582,11 +582,39 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
 };
 
 /* Quick Tips collapsible banner */
-const QUICK_TIPS = [
-  { title: "Como navegar pelo acervo", description: "Aprenda a encontrar partituras e playbacks rapidamente" },
-  { title: "Como usar os playbacks", description: "Toque junto com o playback no seu ritmo" },
-  { title: "Como baixar partituras", description: "Salve as partituras no seu celular ou computador" },
-  { title: "Como organizar seus estudos", description: "Dicas para montar sua rotina de prática com o acervo" },
+const TUTORIAL_TIPS = [
+  {
+    title: "📂 Navegue pelas pastas",
+    description: "O acervo é organizado por pastas temáticas (gêneros, estilos). Toque em qualquer pasta para abrir e ver as partituras e playbacks dentro dela.",
+  },
+  {
+    title: "🔍 Use a busca",
+    description: "Clique no campo de busca no topo para encontrar qualquer música pelo nome. A busca procura em todas as pastas automaticamente.",
+  },
+  {
+    title: "🎵 Ouça os playbacks",
+    description: "Clique no botão ▶ ao lado de qualquer arquivo de áudio para tocar o playback. O player aparece na parte inferior da tela e você pode continuar navegando enquanto ouve.",
+  },
+  {
+    title: "📄 Visualize partituras",
+    description: "Clique em qualquer arquivo PDF para abrir a partitura em tela cheia. Você pode fazer zoom, rolar e baixar o arquivo.",
+  },
+  {
+    title: "⬇️ Baixe os arquivos",
+    description: "Todos os arquivos (partituras e playbacks) podem ser baixados. Clique no ícone de download para salvar no seu dispositivo.",
+  },
+  {
+    title: "🎁 Acesse seus Bônus",
+    description: "Na tela inicial do acervo, você encontra os bônus exclusivos: Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais.",
+  },
+  {
+    title: "🔊 Toque junto com o playback",
+    description: "Abra a partitura de uma música e toque o playback ao mesmo tempo. O player fica visível enquanto você visualiza a partitura!",
+  },
+  {
+    title: "📱 Funciona no celular",
+    description: "O acervo foi otimizado para funcionar perfeitamente no celular. Use o menu ☰ no canto superior para acessar todas as seções.",
+  },
 ];
 
 const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
@@ -596,7 +624,7 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
     return (
       <div className="mb-4">
         <LockedFolderCard
-          folder={{ id: "quick-tips", name: "Guias Rápidos", type: "folder" as const }}
+          folder={{ id: "quick-tips", name: "Tutoriais", type: "folder" as const }}
           upgradeUrl={upgradeUrl}
           icon={<BookOpen className="w-5 h-5 md:w-6 md:h-6 text-muted-foreground" />}
         />
@@ -605,31 +633,53 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
   }
 
   return (
-    <div className="mb-4">
+    <div className="mb-6">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
+        className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
       >
         <BookOpen className="w-5 h-5 text-primary shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-body font-bold text-foreground">Guias Rápidos</p>
-          <p className="text-xs text-muted-foreground">Dicas para aproveitar ao máximo o acervo</p>
+          <p className="text-sm font-body font-bold text-foreground">📚 Tutoriais — Como usar o SaxPlay</p>
+          <p className="text-xs text-muted-foreground">Vídeo tutorial + orientações completas para aproveitar ao máximo</p>
         </div>
         <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {QUICK_TIPS.map((t, i) => (
-            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
-              <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-primary" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
-                <p className="text-xs text-muted-foreground break-words">{t.description}</p>
-              </div>
+        <div className="mt-3 space-y-4">
+          {/* Video Tutorial */}
+          <div className="rounded-2xl overflow-hidden border border-border bg-card shadow-sm">
+            <div className="p-4 border-b border-border bg-primary/5">
+              <h3 className="text-sm font-body font-bold text-foreground flex items-center gap-2">
+                🎬 Vídeo Tutorial — Como Navegar pela SaxPlay
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">Assista o passo a passo completo para usar todas as funcionalidades</p>
             </div>
-          ))}
+            <div className="aspect-video">
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-full bg-black"
+                poster=""
+              >
+                <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeo.
+              </video>
+            </div>
+          </div>
+
+          {/* Text Instructions */}
+          <div className="grid gap-2 sm:grid-cols-2">
+            {TUTORIAL_TIPS.map((t, i) => (
+              <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border hover:border-primary/20 transition-colors">
+                <div className="min-w-0">
+                  <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>
+                  <p className="text-xs text-muted-foreground break-words mt-0.5 leading-relaxed">{t.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
