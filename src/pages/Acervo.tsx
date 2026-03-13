@@ -225,7 +225,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                 isBasic ? (
                   <LockedFolderCard
                     key={bonus.id}
-                    folder={{ id: bonus.id, name: bonus.name }}
+                    folder={{ id: bonus.id, name: bonus.name, type: "folder" as const }}
                     upgradeUrl={UPGRADE_URL}
                   />
                 ) : (
