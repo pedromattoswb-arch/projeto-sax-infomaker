@@ -203,11 +203,11 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} plan={plan} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
-        {/* Bonus Section */}
-        {isRoot && <BonusSection />}
+        {/* Bonus Section - only for premium */}
+        {isRoot && !isBasic && <BonusSection />}
 
-        {/* Tutorial Banner */}
-        <TutorialBanner />
+        {/* Tutorial Banner - only for premium */}
+        {!isBasic && <TutorialBanner />}
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
