@@ -639,8 +639,9 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
           <video
             controls={!locked}
             playsInline
-            preload="metadata"
-            className={`w-full h-full bg-black ${locked ? "pointer-events-none blur-[2px] opacity-60" : ""}`}
+            preload="none"
+            poster="/thumbnail-vsl.webp"
+            className={`w-full h-full object-cover bg-black ${locked ? "pointer-events-none blur-[2px] opacity-60" : ""}`}
           >
             <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
             Seu navegador não suporta vídeo.
