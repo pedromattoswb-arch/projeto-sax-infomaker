@@ -2,21 +2,21 @@ import { useState, useRef, useCallback } from "react";
 import { Play, Pause, Music2 } from "lucide-react";
 
 const tracks = [
-  { id: "careless-whisper", name: "Careless Whisper", genre: "Pop", file: "/playbacks/careless-whisper.mp3" },
-  { id: "sozinho", name: "Sozinho", genre: "MPB", file: "/playbacks/sozinho.mp3" },
-  { id: "your-latest-trick", name: "Your Latest Trick", genre: "Rock", file: "/playbacks/your-latest-trick.mp3" },
-  { id: "dancing-queen", name: "Dancing Queen", genre: "Pop", file: "/playbacks/dancing-queen.mp3" },
-  { id: "endless-love", name: "Endless Love", genre: "Romântico", file: "/playbacks/endless-love.mp3" },
-  { id: "boate-azul", name: "Boate Azul", genre: "Sertanejo", file: "/playbacks/boate-azul.mp3" },
-  { id: "amigo-de-deus", name: "Amigo de Deus", genre: "Gospel", file: "/playbacks/amigo-de-deus.mp3" },
-  { id: "estranha-loucura", name: "Estranha Loucura", genre: "MPB", file: "/playbacks/estranha-loucura.mp3" },
-  { id: "prince-ali", name: "Prince Ali", genre: "Trilha Sonora", file: "/playbacks/prince-ali.mp3" },
-  { id: "jingle-bells", name: "Jingle Bells", genre: "Natal", file: "/playbacks/jingle-bells.mp3" },
-  { id: "tudo-e-possivel", name: "Tudo É Possível ao Que Crê", genre: "Gospel", file: "/playbacks/tudo-e-possivel.mp3" },
-  { id: "tan-enamorados", name: "Tan Enamorados", genre: "Romântico", file: "/playbacks/tan-enamorados.mp3" },
-  { id: "espirito", name: "Espírito Espírito", genre: "Gospel", file: "/playbacks/espirito-espirito.mp3" },
-  { id: "alegria-coracao", name: "Alegria Está no Coração", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
-  { id: "alguem-me-disse", name: "Alguém Me Disse", genre: "MPB", file: "/playbacks/alguem-me-disse.mp3" },
+  { id: "careless-whisper", name: "Careless Whisper", artist: "George Michael", genre: "Pop", file: "/playbacks/careless-whisper.mp3" },
+  { id: "your-latest-trick", name: "Your Latest Trick", artist: "Dire Straits", genre: "Rock", file: "/playbacks/your-latest-trick.mp3" },
+  { id: "sozinho", name: "Sozinho", artist: "Caetano Veloso", genre: "MPB", file: "/playbacks/sozinho.mp3" },
+  { id: "dancing-queen", name: "Dancing Queen", artist: "ABBA", genre: "Pop", file: "/playbacks/dancing-queen.mp3" },
+  { id: "endless-love", name: "Endless Love", artist: "Lionel Richie", genre: "Romântico", file: "/playbacks/endless-love.mp3" },
+  { id: "estranha-loucura", name: "Estranha Loucura", artist: "Barão Vermelho", genre: "MPB", file: "/playbacks/estranha-loucura.mp3" },
+  { id: "boate-azul", name: "Boate Azul", artist: "Bruno & Marrone", genre: "Sertanejo", file: "/playbacks/boate-azul.mp3" },
+  { id: "tan-enamorados", name: "Tan Enamorados", artist: "Fernando Villalona", genre: "Romântico", file: "/playbacks/tan-enamorados.mp3" },
+  { id: "alguem-me-disse", name: "Alguém Me Disse", artist: "Alcione", genre: "MPB", file: "/playbacks/alguem-me-disse.mp3" },
+  { id: "amigo-de-deus", name: "Amigo de Deus", artist: "Trazendo a Arca", genre: "Gospel", file: "/playbacks/amigo-de-deus.mp3" },
+  { id: "tudo-e-possivel", name: "Tudo É Possível", artist: "Davi Sacer", genre: "Gospel", file: "/playbacks/tudo-e-possivel.mp3" },
+  { id: "espirito", name: "Espírito Espírito", artist: "Preto no Branco", genre: "Gospel", file: "/playbacks/espirito-espirito.mp3" },
+  { id: "alegria-coracao", name: "Alegria Está no Coração", artist: "Kleber Lucas", genre: "Gospel", file: "/playbacks/alegria-esta-no-coracao.mp3" },
+  { id: "prince-ali", name: "Prince Ali", artist: "Aladdin", genre: "Trilha Sonora", file: "/playbacks/prince-ali.mp3" },
+  { id: "jingle-bells", name: "Jingle Bells", artist: "Tradicional", genre: "Natal", file: "/playbacks/jingle-bells.mp3" },
 ];
 
 const genreColors: Record<string, string> = {
