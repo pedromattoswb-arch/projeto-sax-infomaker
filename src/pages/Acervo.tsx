@@ -285,7 +285,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           {/* Search trigger — opens full-screen panel */}
           <button
             onClick={() => setSearchPanelOpen(true)}
-            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-card border border-border rounded-xl text-base font-body text-muted-foreground hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
+            className="relative flex-1 flex items-center gap-3 pl-11 pr-4 py-3 bg-muted border border-border rounded-xl text-base font-body text-muted-foreground hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary transition-all min-h-[48px] text-left"
             aria-label="Abrir painel de busca"
           >
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
