@@ -11,7 +11,7 @@ import {
   Menu,
   FileText,
   Music,
-  PlayCircle,
+  
   ChevronDown,
   Gift,
   BookOpen,
@@ -36,14 +36,22 @@ const UPGRADE_URL = "https://melody-path-finder.lovable.app/";
 
 const LOCKED_FOLDER_NAMES = [
   "playbacks",
-  "vídeos tutoriais",
-  "videos tutoriais",
   "harpa cristã",
   "harpa crista",
-  "bônus",
-  "bonus",
   "material complementar",
   "materiais complementares",
+  "livros e métodos de estudo",
+  "livros e metodos de estudo",
+  "estudos e exercícios",
+  "estudos e exercicios",
+  "coletânea de partituras",
+  "coletanea de partituras",
+];
+
+const BONUS_VIRTUAL_FOLDERS = [
+  { id: "bonus-rotina", name: "BÔNUS: Guia Rotina de Estudo", path: "/bonus/rotina-de-estudo" },
+  { id: "bonus-tonalidades", name: "BÔNUS: Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades" },
+  { id: "bonus-100musicas", name: "BÔNUS: 100 Músicas Essenciais", path: "/bonus/100-musicas" },
 ];
 
 interface AcervoProps {
@@ -141,7 +149,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link to={isBasic ? "/acervo-basico" : "/acervo"} className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+            <Link to={isBasic ? "/acervo-basico" : "/plano-premium-completo"} className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
               Acervo
             </Link>
             {!isBasic && (
@@ -205,11 +213,43 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} plan={plan} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
-        {/* Bonus Section - only for premium */}
-        {isRoot && !isBasic && <BonusSection />}
+        {/* Bonus Virtual Folders - shown at root level */}
+        {isRoot && (
+          <div className="mb-6" role="region" aria-label="Bônus">
+            <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-body font-bold mb-3 flex items-center gap-2">
+              <Gift className="w-4 h-4" />
+              Bônus ({BONUS_VIRTUAL_FOLDERS.length})
+            </h2>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
+              {BONUS_VIRTUAL_FOLDERS.map((bonus) =>
+                isBasic ? (
+                  <LockedFolderCard
+                    key={bonus.id}
+                    folder={{ id: bonus.id, name: bonus.name, type: "folder" as const }}
+                    upgradeUrl={UPGRADE_URL}
+                  />
+                ) : (
+                  <Link
+                    key={bonus.id}
+                    to={bonus.path}
+                    role="listitem"
+                    className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-md transition-all w-full min-h-[60px]"
+                  >
+                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                    </div>
+                    <span className="font-body font-bold text-sm md:text-base text-foreground group-hover:text-primary break-words leading-snug flex-1 transition-colors">
+                      {bonus.name}
+                    </span>
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        )}
 
-        {/* Tutorial Banner - only for premium */}
-        {!isBasic && <TutorialBanner />}
+        {/* Quick Tips Banner - only for premium */}
+        {!isBasic && <QuickTipsBanner />}
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
@@ -540,15 +580,15 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
   );
 };
 
-/* Tutorial collapsible banner */
-const TUTORIALS = [
+/* Quick Tips collapsible banner */
+const QUICK_TIPS = [
   { title: "Como navegar pelo acervo", description: "Aprenda a encontrar partituras e playbacks rapidamente" },
   { title: "Como usar os playbacks", description: "Toque junto com o playback no seu ritmo" },
   { title: "Como baixar partituras", description: "Salve as partituras no seu celular ou computador" },
   { title: "Como organizar seus estudos", description: "Dicas para montar sua rotina de prática com o acervo" },
 ];
 
-const TutorialBanner = () => {
+const QuickTipsBanner = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -557,19 +597,19 @@ const TutorialBanner = () => {
         onClick={() => setOpen(!open)}
         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors text-left"
       >
-        <PlayCircle className="w-5 h-5 text-primary shrink-0" />
+        <BookOpen className="w-5 h-5 text-primary shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-body font-bold text-foreground">Vídeos Tutoriais</p>
-          <p className="text-xs text-muted-foreground">Aprenda a usar o acervo completo</p>
+          <p className="text-sm font-body font-bold text-foreground">Guias Rápidos</p>
+          <p className="text-xs text-muted-foreground">Dicas para aproveitar ao máximo o acervo</p>
         </div>
         <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {TUTORIALS.map((t, i) => (
+          {QUICK_TIPS.map((t, i) => (
             <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
               <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <PlayCircle className="w-5 h-5 text-primary" />
+                <BookOpen className="w-5 h-5 text-primary" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-body font-bold text-foreground break-words">{t.title}</p>

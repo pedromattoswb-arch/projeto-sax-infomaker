@@ -10,8 +10,8 @@ interface MobileNavProps {
 }
 
 const premiumNavItems = [
-  { label: "Acervo", path: "/acervo", icon: Music },
-  { label: "Bônus", path: "/acervo#bonus", icon: Gift },
+  { label: "Acervo", path: "/plano-premium-completo", icon: Music },
+  { label: "Bônus", path: "/plano-premium-completo#bonus", icon: Gift },
   { label: "Rotina de Estudo", path: "/bonus/rotina-de-estudo", icon: BookOpen },
   { label: "Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades", icon: Piano },
   { label: "100 Músicas", path: "/bonus/100-musicas", icon: Globe },
