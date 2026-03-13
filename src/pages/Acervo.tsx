@@ -191,18 +191,18 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         </div>
       </header>
 
-      {/* Upgrade Banner for Basic plan */}
+      {/* Upgrade Banner for Basic plan — non-sticky, subtle */}
       {isBasic && (
-        <div className="sticky top-[73px] z-25 bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-4">
+        <div className="bg-muted/60 border-b border-border py-2.5 px-4">
           <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
-            <p className="text-xs md:text-sm font-body font-bold flex-1">
-              ⚡ Você está no <span className="underline">Plano Básico</span> — Faça upgrade para ter acesso completo por apenas R$ 20 a mais!
+            <p className="text-xs md:text-sm font-body font-medium text-muted-foreground flex-1">
+              Você está no <span className="font-bold text-foreground">Plano Básico</span> — Alguns conteúdos são exclusivos do Plano Completo.
             </p>
             <a
               href={UPGRADE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-white text-amber-600 font-body font-bold text-xs hover:bg-amber-50 transition-colors min-h-[32px] flex items-center gap-1.5"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground font-body font-bold text-xs hover:bg-primary/90 transition-colors min-h-[32px] flex items-center gap-1.5"
             >
               <Crown className="w-3.5 h-3.5" />
               Upgrade
