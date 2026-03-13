@@ -115,13 +115,24 @@ const Acervo = () => {
       <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            <Link to="/acervo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Acervo
+            </Link>
+            <Link to="/bonus/rotina-de-estudo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Rotina de Estudo
+            </Link>
+            <Link to="/bonus/mapa-de-tonalidades" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Mapa de Tonalidades
+            </Link>
+            <Link to="/bonus/100-musicas" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              100 Músicas
+            </Link>
+          </nav>
+
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 text-muted-foreground">
-              <Folder className="w-4 h-4 text-primary" />
-              <span className="text-sm font-body font-medium">
-                {folders.length} pastas · {files.length} arquivos
-              </span>
-            </div>
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden p-2 rounded-xl hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
