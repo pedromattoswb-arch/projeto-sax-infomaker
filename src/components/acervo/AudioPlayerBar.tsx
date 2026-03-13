@@ -6,6 +6,7 @@ interface AudioPlayerBarProps {
   currentAudio: DriveFile | null;
   audioFiles: DriveFile[];
   onClose: () => void;
+  onStateChange?: (state: { activeId: string | null; isPlaying: boolean }) => void;
 }
 
 export interface AudioPlayerHandle {
@@ -23,7 +24,7 @@ const formatTime = (s: number) => {
 };
 
 const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
-  ({ currentAudio, audioFiles, onClose }, ref) => {
+  ({ currentAudio, audioFiles, onClose, onStateChange }, ref) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -32,6 +33,11 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
     const [internalFile, setInternalFile] = useState<DriveFile | null>(currentAudio);
 
     const activeFile = internalFile || currentAudio;
+
+    // Notify parent of state changes
+    useEffect(() => {
+      onStateChange?.({ activeId: activeFile?.id || null, isPlaying });
+    }, [activeFile?.id, isPlaying, onStateChange]);
 
     useEffect(() => {
       if (currentAudio) {
@@ -88,6 +94,19 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
       setIsPlaying(true);
     }, [activeFile, audioFiles]);
 
+    const handleClose = useCallback(() => {
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.src = "";
+      }
+      setIsPlaying(false);
+      setInternalFile(null);
+      setProgress(0);
+      setDuration(0);
+      onClose();
+    }, [onClose]);
+
     useImperativeHandle(ref, () => ({
       play: (file: DriveFile) => {
         if (activeFile?.id === file.id) {
@@ -107,7 +126,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
     const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
 
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
         <audio
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
@@ -125,7 +144,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
             className="h-full bg-primary transition-[width] duration-100 relative"
             style={{ width: `${progressPct}%` }}
           >
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-2 border-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-2 border-background shadow-md opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         </div>
 
@@ -187,7 +206,7 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
             </button>
           </div>
           <button
-            onClick={() => { setIsPlaying(false); onClose(); }}
+            onClick={handleClose}
             className="p-2 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted text-foreground/50 hover:text-foreground"
             aria-label="Fechar reprodutor"
           >
