@@ -16,11 +16,13 @@ import {
   BookOpen,
   Piano,
   Globe,
+  Crown,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
+import LockedFolderCard from "@/components/acervo/LockedFolderCard";
 import FileCard from "@/components/acervo/FileCard";
 import AudioPlayerBar, { type AudioPlayerHandle } from "@/components/acervo/AudioPlayerBar";
 import MobileNav from "@/components/acervo/MobileNav";
@@ -29,7 +31,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
 
-const Acervo = () => {
+const UPGRADE_URL = "https://melody-path-finder.lovable.app/";
+
+const LOCKED_FOLDER_NAMES = [
+  "playbacks",
+  "vídeos tutoriais",
+  "videos tutoriais",
+  "harpa cristã",
+  "harpa crista",
+  "bônus",
+  "bonus",
+  "material complementar",
+  "materiais complementares",
+];
+
+interface AcervoProps {
+  plan?: "basic" | "premium";
+}
+
+const Acervo = ({ plan = "premium" }: AcervoProps) => {
+  const isBasic = plan === "basic";
   const {
     folders,
     files,
@@ -118,18 +139,33 @@ const Acervo = () => {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link to="/acervo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+            <Link to={isBasic ? "/acervo-basico" : "/acervo"} className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
               Acervo
             </Link>
-            <Link to="/bonus/rotina-de-estudo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
-              Rotina de Estudo
-            </Link>
-            <Link to="/bonus/mapa-de-tonalidades" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
-              Mapa de Tonalidades
-            </Link>
-            <Link to="/bonus/100-musicas" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
-              100 Músicas
-            </Link>
+            {!isBasic && (
+              <>
+                <Link to="/bonus/rotina-de-estudo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+                  Rotina de Estudo
+                </Link>
+                <Link to="/bonus/mapa-de-tonalidades" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+                  Mapa de Tonalidades
+                </Link>
+                <Link to="/bonus/100-musicas" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+                  100 Músicas
+                </Link>
+              </>
+            )}
+            {isBasic && (
+              <a
+                href={UPGRADE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-body font-bold bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+              >
+                <Crown className="w-4 h-4" />
+                Fazer Upgrade
+              </a>
+            )}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -144,14 +180,34 @@ const Acervo = () => {
         </div>
       </header>
 
-      <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
+      {/* Upgrade Banner for Basic plan */}
+      {isBasic && (
+        <div className="sticky top-[73px] z-25 bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-4">
+          <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
+            <p className="text-xs md:text-sm font-body font-bold flex-1">
+              ⚡ Você está no <span className="underline">Plano Básico</span> — Faça upgrade para ter acesso completo por apenas R$ 20 a mais!
+            </p>
+            <a
+              href={UPGRADE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-white text-amber-600 font-body font-bold text-xs hover:bg-amber-50 transition-colors min-h-[32px] flex items-center gap-1.5"
+            >
+              <Crown className="w-3.5 h-3.5" />
+              Upgrade
+            </a>
+          </div>
+        </div>
+      )}
+
+      <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} plan={plan} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
-        {/* Bonus Section */}
-        {isRoot && <BonusSection />}
+        {/* Bonus Section - only for premium */}
+        {isRoot && !isBasic && <BonusSection />}
 
-        {/* Tutorial Banner */}
-        <TutorialBanner />
+        {/* Tutorial Banner - only for premium */}
+        {!isBasic && <TutorialBanner />}
 
         {/* Breadcrumbs - flex-wrap, no horizontal scroll */}
         <nav className="flex flex-wrap items-center gap-1 mb-4" role="navigation" aria-label="Navegação por pastas">
@@ -278,9 +334,14 @@ const Acervo = () => {
                   Pastas ({filteredFolders.length})
                 </h2>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
-                  {filteredFolders.map((folder) => (
-                    <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
-                  ))}
+                  {filteredFolders.map((folder) => {
+                    const isLocked = isBasic && LOCKED_FOLDER_NAMES.includes(folder.name.toLowerCase().trim());
+                    return isLocked ? (
+                      <LockedFolderCard key={folder.id} folder={folder} upgradeUrl={UPGRADE_URL} />
+                    ) : (
+                      <FolderCard key={folder.id} folder={folder} onOpen={handleFolderOpen} />
+                    );
+                  })}
                 </div>
               </div>
             )}

@@ -1,14 +1,15 @@
 import React from "react";
-import { Menu, X, Music, BookOpen, Piano, Globe, Gift } from "lucide-react";
+import { Menu, X, Music, BookOpen, Piano, Globe, Gift, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 
 interface MobileNavProps {
   open: boolean;
   onToggle: () => void;
+  plan?: "basic" | "premium";
 }
 
-const navItems = [
+const premiumNavItems = [
   { label: "Acervo", path: "/acervo", icon: Music },
   { label: "Bônus", path: "/acervo#bonus", icon: Gift },
   { label: "Rotina de Estudo", path: "/bonus/rotina-de-estudo", icon: BookOpen },
@@ -16,7 +17,12 @@ const navItems = [
   { label: "100 Músicas", path: "/bonus/100-musicas", icon: Globe },
 ];
 
-const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle }) => {
+const basicNavItems = [
+  { label: "Acervo", path: "/acervo-basico", icon: Music },
+];
+
+const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" }) => {
+  const navItems = plan === "basic" ? basicNavItems : premiumNavItems;
   return (
     <>
       {/* Overlay */}
@@ -55,6 +61,17 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle }) => {
               {item.label}
             </Link>
           ))}
+          {plan === "basic" && (
+            <a
+              href="https://melody-path-finder.lovable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 transition-colors font-body font-bold text-sm min-h-[48px] mt-2 border border-amber-500/20"
+            >
+              <Crown className="w-5 h-5" />
+              Fazer Upgrade — Plano Completo
+            </a>
+          )}
         </nav>
       </div>
     </>
