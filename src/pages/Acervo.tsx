@@ -12,7 +12,12 @@ import {
   Music,
   PlayCircle,
   ChevronDown,
+  Gift,
+  BookOpen,
+  Piano,
+  Globe,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoSaxplay from "@/assets/logo-saxplay.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
@@ -110,13 +115,24 @@ const Acervo = () => {
       <header className="sticky top-0 z-30 bg-card/95 backdrop-blur-xl border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            <Link to="/acervo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Acervo
+            </Link>
+            <Link to="/bonus/rotina-de-estudo" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Rotina de Estudo
+            </Link>
+            <Link to="/bonus/mapa-de-tonalidades" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              Mapa de Tonalidades
+            </Link>
+            <Link to="/bonus/100-musicas" className="px-3 py-2 rounded-lg text-sm font-body font-semibold text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              100 Músicas
+            </Link>
+          </nav>
+
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 text-muted-foreground">
-              <Folder className="w-4 h-4 text-primary" />
-              <span className="text-sm font-body font-medium">
-                {folders.length} pastas · {files.length} arquivos
-              </span>
-            </div>
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden p-2 rounded-xl hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -131,6 +147,9 @@ const Acervo = () => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
+        {/* Bonus Section */}
+        {isRoot && <BonusSection />}
+
         {/* Tutorial Banner */}
         <TutorialBanner />
 
@@ -500,5 +519,38 @@ const TutorialBanner = () => {
     </div>
   );
 };
+
+/* Bonus Section visible in acervo root */
+const BONUS_ITEMS = [
+  { label: "Rotina de Estudo", description: "Organize sua prática diária", path: "/bonus/rotina-de-estudo", icon: BookOpen, color: "bg-emerald-500/10 text-emerald-600" },
+  { label: "Mapa de Tonalidades", description: "Domine todas as tonalidades", path: "/bonus/mapa-de-tonalidades", icon: Piano, color: "bg-violet-500/10 text-violet-600" },
+  { label: "100 Músicas para Tocar", description: "Lista curada de repertório", path: "/bonus/100-musicas", icon: Globe, color: "bg-blue-500/10 text-blue-600" },
+];
+
+const BonusSection = () => (
+  <div id="bonus" className="mb-6">
+    <div className="flex items-center gap-2 mb-3">
+      <Gift className="w-5 h-5 text-primary" />
+      <h2 className="text-sm uppercase tracking-widest text-foreground font-body font-bold">Seus Bônus</h2>
+    </div>
+    <div className="grid gap-2 sm:grid-cols-3">
+      {BONUS_ITEMS.map((item) => (
+        <Link
+          key={item.path}
+          to={item.path}
+          className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-md transition-all group"
+        >
+          <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
+            <item.icon className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-body font-bold text-foreground group-hover:text-primary transition-colors">{item.label}</p>
+            <p className="text-xs text-muted-foreground">{item.description}</p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+);
 
 export default Acervo;

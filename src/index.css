@@ -49,9 +49,9 @@
     --gold-dark: 38 80% 40%;
 
     /* Player */
-    --player: 220 10% 25%;
-    --player-foreground: 0 0% 95%;
-    --player-muted: 220 8% 55%;
+    --player: 0 0% 100%;
+    --player-foreground: 220 30% 8%;
+    --player-muted: 220 10% 45%;
 
     /* Sections */
     --section-alt: 220 15% 96%;

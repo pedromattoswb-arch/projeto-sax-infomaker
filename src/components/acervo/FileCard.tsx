@@ -22,6 +22,15 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
   const isAudio = file.type === "audio";
   const isActive = isCurrentAudio && isPlaying;
 
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Download via our edge function, never expose Google Drive
+    const link = document.createElement('a');
+    link.href = file.downloadUrl;
+    link.download = file.name;
+    link.click();
+  };
+
   return (
     <div
       role="listitem"
@@ -110,16 +119,14 @@ const FileCard = React.memo(({ file, isCurrentAudio, isPlaying, onPlay, onViewPd
             <span>Ouvir Playback</span>
           </button>
         )}
-        <a
-          href={file.downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={handleDownload}
           className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted text-xs font-bold font-body transition-colors min-h-[44px] border border-border sm:border-0"
           aria-label={`Baixar ${file.name}`}
         >
           <Download className="w-4 h-4" />
           <span>Baixar</span>
-        </a>
+        </button>
       </div>
     </div>
   );
