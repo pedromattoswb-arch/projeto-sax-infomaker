@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck, Clock } from "lucide-react";
 
-const ESSENTIAL_LINK = "https://pay.cakto.com.br/tdt6ypb_738069";
-const PREMIUM_LINK = "https://pay.cakto.com.br/3djucaz";
+const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
+const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
 
 const essentialHas = [
   "+5.000 partituras em PDF",

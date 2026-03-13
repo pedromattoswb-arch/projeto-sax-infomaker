@@ -33,7 +33,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
 
-const UPGRADE_URL = "https://melody-path-finder.lovable.app/";
+const UPGRADE_URL = "https://pay.cakto.com.br/52pq694_804276";
 
 const LOCKED_FOLDER_NAMES = [
   "playbacks",
