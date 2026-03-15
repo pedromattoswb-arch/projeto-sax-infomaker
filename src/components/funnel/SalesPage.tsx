@@ -134,7 +134,7 @@ const SalesPage = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              🏆 PLATAFORMA COMPLETA PARA SAXOFONISTAS
+              🏆 PLATAFORMA COMPLETA PARA SAX ALTO E SAX TENOR
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
               Tudo Que Você Precisa Para Tocar Sax — Num Só Lugar
