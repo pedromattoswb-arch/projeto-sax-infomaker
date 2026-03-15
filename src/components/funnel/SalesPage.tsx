@@ -78,7 +78,7 @@ const SalesPage = () => {
           <SalesVideoPlayer />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
-            🎷 +847 Saxofonistas Já Estão Tocando • Recomendado por Escolas de Sax
+            🎷 Material exclusivo para Sax Alto e Sax Tenor • +847 Saxofonistas Já Estão Tocando
           </span>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-5 md:mb-6">
