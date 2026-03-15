@@ -89,7 +89,7 @@ const SalesPage = () => {
 
           <p className="text-[15px] md:text-lg text-foreground font-body mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto">
             Escolha a melhor opção e comece a tocar as suas melhores músicas.{" "}
-            <strong>+10.000 partituras e playbacks, busca por voz, tutoriais e material de estudo</strong> — tudo na sua própria plataforma.
+            <strong>+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong>, busca por voz, tutoriais e material de estudo — tudo na sua própria plataforma.
           </p>
 
           {/* Bullets em grid profissional */}
