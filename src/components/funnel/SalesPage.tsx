@@ -242,7 +242,7 @@ const SalesPage = () => {
             Enquanto Você Pensa, Outros Já Estão Tocando
           </h2>
           <p className="text-foreground font-body text-[15px] md:text-base mb-3 md:mb-4">
-            +10.000 partituras e playbacks. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            +10.000 partituras e playbacks para Sax Alto e Sax Tenor. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
           <p className="text-xs md:text-sm text-muted-foreground font-body mb-6 md:mb-8">
             ⚠️ Preço promocional — pode acabar a qualquer momento.
