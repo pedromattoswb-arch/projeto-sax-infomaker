@@ -35,7 +35,7 @@ import AppSimulation from "./AppSimulation";
 
 const features = [
   { icon: Smartphone, title: "Plataforma Exclusiva", description: "Sua própria plataforma estilo app — acesse de qualquer dispositivo", gradient: "from-violet-500 to-purple-700" },
-  { icon: Music, title: "+10.000 Arquivos", description: "Partituras em PDF + playbacks profissionais sincronizados", gradient: "from-amber-500 to-amber-700" },
+  { icon: Music, title: "+10.000 Arquivos", description: "Partituras e playbacks para Sax Alto e Sax Tenor", gradient: "from-amber-500 to-amber-700" },
   { icon: Search, title: "Busca Inteligente", description: "Encontre qualquer música em segundos — por nome, gênero ou artista", gradient: "from-blue-500 to-indigo-600" },
   { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música e a plataforma encontra pra você", gradient: "from-teal-500 to-cyan-600" },
   { icon: Video, title: "Vídeos Tutoriais", description: "Aprenda a usar cada recurso com tutoriais integrados na plataforma", gradient: "from-rose-500 to-pink-600" },
@@ -72,13 +72,13 @@ const SalesPage = () => {
       <section className="py-10 md:py-20 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm md:text-base text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
-            <strong className="text-foreground">+10.000 arquivos</strong> entre partituras em PDF, playbacks profissionais, livros, métodos de estudo e materiais complementares — tudo organizado na sua própria plataforma.
+            <strong className="text-foreground">+10.000 arquivos para Sax Alto e Sax Tenor</strong> — partituras em PDF, playbacks profissionais, livros, métodos de estudo e materiais complementares — tudo organizado na sua própria plataforma.
           </p>
 
           <SalesVideoPlayer />
 
           <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4 md:mb-5">
-            🎷 +847 Saxofonistas Já Estão Tocando • Recomendado por Escolas de Sax
+            🎷 Material exclusivo para Sax Alto e Sax Tenor • +847 Saxofonistas Já Estão Tocando
           </span>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-5 md:mb-6">
@@ -89,13 +89,13 @@ const SalesPage = () => {
 
           <p className="text-[15px] md:text-lg text-foreground font-body mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto">
             Escolha a melhor opção e comece a tocar as suas melhores músicas.{" "}
-            <strong>+10.000 partituras e playbacks, busca por voz, tutoriais e material de estudo</strong> — tudo na sua própria plataforma.
+            <strong>+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong>, busca por voz, tutoriais e material de estudo — tudo na sua própria plataforma.
           </p>
 
           {/* Bullets em grid profissional */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
             {[
-              { icon: Music, text: "+10.000 partituras e playbacks profissionais" },
+              { icon: Music, text: "+10.000 partituras e playbacks — Sax Alto e Tenor" },
               { icon: Smartphone, text: "Plataforma exclusiva — celular, tablet ou PC" },
               { icon: Mic, text: "Busca inteligente por voz integrada" },
               { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
@@ -134,7 +134,7 @@ const SalesPage = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              🏆 PLATAFORMA COMPLETA PARA SAXOFONISTAS
+              🏆 PLATAFORMA COMPLETA PARA SAX ALTO E SAX TENOR
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
               Tudo Que Você Precisa Para Tocar Sax — Num Só Lugar
@@ -242,7 +242,7 @@ const SalesPage = () => {
             Enquanto Você Pensa, Outros Já Estão Tocando
           </h2>
           <p className="text-foreground font-body text-[15px] md:text-base mb-3 md:mb-4">
-            +10.000 partituras e playbacks. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            +10.000 partituras e playbacks para Sax Alto e Sax Tenor. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
           <p className="text-xs md:text-sm text-muted-foreground font-body mb-6 md:mb-8">
             ⚠️ Preço promocional — pode acabar a qualquer momento.
