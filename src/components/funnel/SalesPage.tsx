@@ -35,7 +35,7 @@ import AppSimulation from "./AppSimulation";
 
 const features = [
   { icon: Smartphone, title: "Plataforma Exclusiva", description: "Sua própria plataforma estilo app — acesse de qualquer dispositivo", gradient: "from-violet-500 to-purple-700" },
-  { icon: Music, title: "+10.000 Arquivos", description: "Partituras em PDF + playbacks profissionais sincronizados", gradient: "from-amber-500 to-amber-700" },
+  { icon: Music, title: "+10.000 Arquivos", description: "Partituras e playbacks para Sax Alto e Sax Tenor", gradient: "from-amber-500 to-amber-700" },
   { icon: Search, title: "Busca Inteligente", description: "Encontre qualquer música em segundos — por nome, gênero ou artista", gradient: "from-blue-500 to-indigo-600" },
   { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música e a plataforma encontra pra você", gradient: "from-teal-500 to-cyan-600" },
   { icon: Video, title: "Vídeos Tutoriais", description: "Aprenda a usar cada recurso com tutoriais integrados na plataforma", gradient: "from-rose-500 to-pink-600" },
