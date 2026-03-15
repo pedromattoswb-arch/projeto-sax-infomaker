@@ -95,7 +95,7 @@ const SalesPage = () => {
           {/* Bullets em grid profissional */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
             {[
-              { icon: Music, text: "+10.000 partituras e playbacks profissionais" },
+              { icon: Music, text: "+10.000 partituras e playbacks — Sax Alto e Tenor" },
               { icon: Smartphone, text: "Plataforma exclusiva — celular, tablet ou PC" },
               { icon: Mic, text: "Busca inteligente por voz integrada" },
               { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
