@@ -189,7 +189,7 @@ const PricingCards = () => {
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
                 <p className="text-sm font-semibold font-body text-center text-foreground">
-                  💡 Por R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus. É a escolha de <strong className="text-gold">9 em cada 10 saxofonistas</strong>.
+                  💡 Por apenas R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus exclusivos.
                 </p>
               </div>
 
