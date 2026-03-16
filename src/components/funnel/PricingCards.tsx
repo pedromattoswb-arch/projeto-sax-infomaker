@@ -239,10 +239,10 @@ const PricingCards = () => {
                 {premiumFeatures.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-sm font-body ${
+                    className={`flex items-start gap-2.5 text-sm md:text-base font-body ${
                       feature.highlight ? "font-bold text-primary" : 
                       feature.bonus ? "text-gold font-semibold" : 
-                      "text-foreground/90"
+                      "text-foreground"
                     }`}
                   >
                     {feature.bonus ? (
