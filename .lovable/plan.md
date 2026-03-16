@@ -1,64 +1,65 @@
 
 
-## Plano: Blindagem de Confiança Anti-Golpe (Sutil)
+## Plano: Catalogo Real do Drive (max 30) + CTAs Verdes + Psicologia das Cores
 
-### Estrategia Principal
-A chave e **nunca usar a palavra "golpe"** nem linguagem defensiva. Em vez disso, construir confianca atraves de **autoridade institucional**, **transparencia no processo** e **prova social reforçada**. A pessoa deve sentir que esta comprando de uma empresa seria, nao de um site aleatorio.
-
----
-
-### 1. FAQ.tsx — Reescrever e adicionar perguntas estrategicas
-
-**Reescrever "Como recebo o acesso?"** com detalhes que transmitem processo profissional:
-- Mencionar que o acesso e entregue automaticamente pela **plataforma Cakto** (empresa de pagamentos digitais)
-- Orientar a verificar caixa de entrada, aba "Promocoes" e pasta de spam
-- Informar que o e-mail vem do remetente da Cakto com login e senha
-
-**Nova pergunta: "Quem processa o pagamento?"**
-- Explicar que o pagamento e processado pela Cakto, plataforma brasileira de pagamentos digitais usada por milhares de produtores
-- Criptografia SSL, dados protegidos, nenhuma informacao bancaria armazenada no site
-
-**Nova pergunta: "Posso confiar neste site?"**
-- Resposta focada em: +847 clientes ativos, empresa com CNPJ, garantia de 7 dias com reembolso via propria Cakto, suporte ativo por e-mail e WhatsApp
+### Resumo
+Tres mudancas principais: (1) puxar musicas reais do Google Drive para o catalogo na pagina de vendas (max 30, as mais populares), (2) trocar todos os botoes CTA para verde, (3) aplicar psicologia das cores para conversao.
 
 ---
 
-### 2. PricingCards.tsx — Trust Bar compacta abaixo dos cards
+### 1. SongCatalog.tsx — Musicas reais do Drive (max 30)
 
-Adicionar uma faixa horizontal com 3-4 icones (ShieldCheck, Lock, BadgeCheck) e textos curtos:
-- "Pagamento via Cakto" | "Dados protegidos" | "Garantia 7 dias" | "Acesso imediato"
-- Estilo discreto, fonte pequena, icones sutis — transmite profissionalismo sem gritar "seguranca"
+**Abordagem**: Chamar a edge function `search-drive` ou `list-drive-files` no carregamento para buscar nomes reais de pastas/arquivos do acervo. Selecionar no maximo 30 itens, priorizando nomes populares e reconheciveis.
 
----
+**Implementacao**:
+- Manter os 16 generos como categorias estaticas (nao mudar isso)
+- Para cada genero, buscar 2 nomes reais de musicas via `list-drive-files` (total ~30 musicas)
+- Exibir apenas os nomes, sem links ou acoes — e uma vitrine, nao um player
+- Reduzir o grid de 16 cards para ~8 generos mais populares (MPB, Gospel, Jazz, Pop, Rock, Flashback, Bossa Nova, Sertanejo)
+- Cada card mostra 3-4 musicas reais do Drive
+- Adicionar um CTA verde embaixo do catalogo direcionando para a secao de ofertas
+- Loading skeleton enquanto carrega
 
-### 3. SalesPage.tsx — Garantia section reforçada
-
-Adicionar uma linha extra na secao de garantia:
-- "O reembolso e processado diretamente pela plataforma Cakto — voce nao precisa falar com ninguem."
-
----
-
-### 4. SalesPage.tsx — Footer profissional com selos
-
-Expandir o footer com:
-- Linha de trust: "Pagamento processado por Cakto • Dados protegidos com SSL • Produto digital com entrega imediata"
-- Texto de entrega: "Apos a confirmacao, voce recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam."
-- Icones de ShieldCheck e Lock para reforço visual
+**Fallback**: Se a API falhar, usar os nomes hardcoded atuais (graceful degradation).
 
 ---
 
-### 5. SalesPage.tsx — Micro-copy no CTA final
+### 2. Botoes CTA — Todos verdes
 
-Abaixo do botao CTA final, adicionar:
-- "Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas ja compraram"
+**Arquivos afetados**: `src/index.css`, `SalesPage.tsx`, `PricingCards.tsx`
+
+- Alterar `.gradient-cta` de dourado/amber para verde:
+  ```css
+  .gradient-cta {
+    background: linear-gradient(135deg, hsl(142 70% 42%) 0%, hsl(142 65% 32%) 100%);
+  }
+  ```
+- Alterar `.shadow-cta` e `.shadow-cta-lg` para tom verde
+- Botao do plano Basico (atualmente cinza/transparente): trocar para verde solido mais sutil
+- Sticky CTA mobile: tambem verde
+- Manter o botao Premium com mais destaque (verde mais vibrante + borda dourada)
+
+---
+
+### 3. Psicologia das cores — Ajustes gerais
+
+- **Verde nos CTAs**: transmite seguranca, "ir em frente", acao positiva
+- **Manter dourado no card Premium**: exclusividade e valor percebido (border, badges, precos)
+- **Vermelho sutil no timer de urgencia**: ja esta correto (destructive)
+- **Garantia**: manter verde no selo para reforcar confianca
+- Nao alterar o esquema de cores geral da pagina (fundo escuro, cards neutros) — apenas os botoes de acao
+
+---
+
+### 4. FAQ.tsx — Nova pergunta sobre indice
+
+- Adicionar: "Posso ver quais musicas estao no acervo antes de comprar?" com resposta mencionando o catalogo na pagina e que o acervo cresce mensalmente
 
 ---
 
 ### Arquivos editados
-- `src/components/funnel/FAQ.tsx` — reescrever 1 pergunta + adicionar 2 novas
-- `src/components/funnel/PricingCards.tsx` — trust bar abaixo dos cards
-- `src/components/funnel/SalesPage.tsx` — garantia reforçada, footer expandido, micro-copy CTA
-
-### Principio guia
-Nunca mencionar golpe, fraude ou inseguranca. Toda a linguagem e **positiva e institucional**: "plataforma Cakto", "empresa brasileira", "+847 clientes", "reembolso automatico". A confianca vem da **normalidade e profissionalismo**, nao de se defender.
+1. `src/components/funnel/SongCatalog.tsx` — Fetch real do Drive, max 30, fallback hardcoded
+2. `src/index.css` — gradient-cta e shadows para verde
+3. `src/components/funnel/PricingCards.tsx` — Botao basico em verde
+4. `src/components/funnel/FAQ.tsx` — Nova pergunta
 
