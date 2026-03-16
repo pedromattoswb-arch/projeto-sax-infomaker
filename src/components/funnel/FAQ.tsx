@@ -49,7 +49,7 @@ const faqItems = [
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia total. Teste a plataforma com tranquilidade — se não for o que você esperava, a gente resolve sem complicação.",
+      "Você tem 7 dias de garantia total. Se em 7 dias você não sentir que valeu cada centavo, a gente devolve 100% do seu dinheiro. Sem perguntas. Sem complicação.",
   },
   {
     question: "O acesso é realmente vitalício?",
@@ -70,12 +70,12 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <section className="py-16 px-4 md:px-8" id="faq">
+    <section className="py-16 px-4 md:px-8 section-alt" id="faq">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading">
           Dúvidas? A Gente Responde
         </h2>
-        <p className="text-center text-foreground mb-10 font-body text-base">
+        <p className="text-center text-foreground/70 mb-10 font-body text-base">
           As perguntas mais comuns antes de garantir o acesso
         </p>
 
@@ -84,12 +84,12 @@ const FAQ = () => {
             <AccordionItem
               key={index}
               value={`faq-${index}`}
-              className="bg-card rounded-xl border border-border px-5 shadow-sm"
+              className="glass-card rounded-xl px-5 shadow-sm"
             >
               <AccordionTrigger className="text-left font-semibold font-body text-sm md:text-base py-4 hover:no-underline">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-foreground font-body text-sm pb-4">
+              <AccordionContent className="text-foreground/80 font-body text-sm pb-4">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

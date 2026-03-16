@@ -1,4 +1,4 @@
-import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones, X } from "lucide-react";
+import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones } from "lucide-react";
 
 const folders = [
   { name: "Música Popular Brasileira (MPB)", count: 850 },
@@ -33,11 +33,11 @@ const AppSimulation = () => {
     <section className="py-12 md:py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
+          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
             👀 VEJA POR DENTRO — ACERVO REAL
           </span>
           <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-            Conheça a Plataforma SaxBrasil Por Dentro
+            Conheça a Plataforma SaxPlay Por Dentro
           </h2>
           <p className="text-muted-foreground font-body text-sm md:text-base">
             Navegue visualmente pela nossa plataforma exclusiva — exatamente como você vai usar
@@ -46,34 +46,34 @@ const AppSimulation = () => {
 
         {/* Phone/Tablet mockup */}
         <div className="max-w-md mx-auto">
-          <div className="rounded-[2rem] border-[3px] border-border bg-card shadow-2xl overflow-hidden relative">
+          <div className="rounded-[2rem] border-[3px] border-border glass-card shadow-2xl overflow-hidden relative">
             {/* Simulation banner */}
             <div className="bg-primary/90 text-primary-foreground text-center py-2 px-3 text-[11px] font-bold font-heading tracking-wide flex items-center justify-center gap-1.5">
               🔒 SIMULAÇÃO DO ACERVO REAL — APENAS DEMONSTRAÇÃO
             </div>
 
             {/* App header */}
-            <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between">
+            <div className="bg-surface border-b border-border px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Music className="w-5 h-5 text-primary" />
-                <span className="font-heading font-bold text-sm">SaxBrasil</span>
+                <span className="font-heading font-bold text-sm">SaxPlay</span>
               </div>
               <span className="text-[10px] text-muted-foreground font-body">+10.000 arquivos</span>
             </div>
 
             {/* Search bar mock */}
-            <div className="px-4 py-3 border-b border-border">
+            <div className="px-4 py-3 border-b border-border bg-surface/50">
               <div className="flex items-center gap-2 bg-muted/50 rounded-xl px-3 py-2.5 border border-border">
                 <Search className="w-4 h-4 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground font-body flex-1">Buscar partituras, playbacks...</span>
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
                   <Mic className="w-3.5 h-3.5 text-primary" />
                 </div>
               </div>
             </div>
 
             {/* Folders list */}
-            <div className="px-4 py-3 max-h-[360px] overflow-hidden relative">
+            <div className="px-4 py-3 max-h-[360px] overflow-hidden relative bg-background/50">
               <p className="text-[11px] font-bold text-muted-foreground font-heading uppercase tracking-wider mb-2">
                 Gêneros Musicais ({folders.length} pastas)
               </p>
@@ -81,9 +81,9 @@ const AppSimulation = () => {
                 {folders.slice(0, 8).map((folder, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 p-2.5 bg-muted/30 rounded-xl border border-border"
+                    className="flex items-center gap-3 p-2.5 glass-card rounded-xl"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                       <Folder className="w-4 h-4 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -96,11 +96,11 @@ const AppSimulation = () => {
               </div>
 
               {/* Fade overlay */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" />
             </div>
 
             {/* Sample files preview */}
-            <div className="px-4 py-3 border-t border-border bg-muted/20">
+            <div className="px-4 py-3 border-t border-border bg-surface/50">
               <p className="text-[10px] font-bold text-muted-foreground font-heading uppercase tracking-wider mb-2">
                 Exemplo: dentro de uma pasta
               </p>
@@ -119,7 +119,7 @@ const AppSimulation = () => {
             </div>
 
             {/* Mini player bar */}
-            <div className="bg-card border-t border-border px-4 py-2.5 flex items-center gap-3">
+            <div className="bg-surface border-t border-border px-4 py-2.5 flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
                 <Play className="w-4 h-4 text-primary-foreground ml-0.5" fill="currentColor" />
               </div>
@@ -135,7 +135,7 @@ const AppSimulation = () => {
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6 font-body max-w-md mx-auto">
-          Essa é uma <strong>simulação visual</strong> da plataforma real. Ao garantir seu acesso, você navega livremente por todas as pastas, partituras e playbacks.
+          Essa é uma <strong className="text-foreground">simulação visual</strong> da plataforma real. Ao garantir seu acesso, você navega livremente por todas as pastas, partituras e playbacks.
         </p>
       </div>
     </section>
