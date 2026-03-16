@@ -358,7 +358,7 @@ const SalesPage = () => {
           <p className="text-lg md:text-xl font-bold font-heading text-primary mb-3">
             E você?
           </p>
-          <p className="text-foreground/70 font-body text-[15px] md:text-base mb-3 md:mb-4">
+          <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
             +10.000 partituras e playbacks para Sax Alto e Sax Tenor. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
