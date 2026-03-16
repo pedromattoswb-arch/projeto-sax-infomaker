@@ -26,5 +26,6 @@ Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
 Disallow: /tutorials/
+Disallow: /cx/
 
 Sitemap: https://melody-path-finder.lovable.app/sitemap.xml

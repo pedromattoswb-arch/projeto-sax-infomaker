@@ -7,6 +7,7 @@ const scrollToAccess = () => {
 };
 
 const ThankYouCompleto = () => {
+  useNoIndex();
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
