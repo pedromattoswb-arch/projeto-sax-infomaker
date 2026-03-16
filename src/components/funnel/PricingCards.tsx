@@ -58,48 +58,6 @@ const PricingCards = () => {
           </p>
         </div>
 
-        {/* Viewing now */}
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-          <span className="text-xs font-semibold font-body text-green-400">
-            {viewingNow} pessoas vendo esta oferta agora
-          </span>
-        </div>
-
-        {/* Countdown Timer */}
-        <div className="max-w-lg mx-auto mb-8">
-          <div className="glass-card rounded-xl px-4 py-4 text-center border border-destructive/20">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-destructive animate-pulse" />
-              <span className="text-sm font-bold font-heading text-destructive uppercase tracking-wide">
-                Oferta por tempo limitado
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.hours)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Horas</span>
-              </div>
-              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.minutes)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Min</span>
-              </div>
-              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.seconds)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Seg</span>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-body mt-2">
-              Esse preço pode mudar a qualquer momento
-            </p>
-          </div>
-        </div>
-
-        <p className="text-center text-sm text-primary font-semibold font-body mb-10">
-          ⚠️ Preço promocional por tempo limitado
-        </p>
 
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start max-w-4xl mx-auto">
           {/* BASIC CARD */}
