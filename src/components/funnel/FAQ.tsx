@@ -61,6 +61,11 @@ const faqItems = [
     answer:
       "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Somos recomendados por escolas e professores de saxofone em todo o Brasil. Oferecemos garantia de 7 dias e suporte ativo por e-mail e WhatsApp.",
   },
+  {
+    question: "Posso ver quais músicas estão no acervo antes de comprar?",
+    answer:
+      "Sim! Logo acima na página você encontra uma amostra real das músicas disponíveis na plataforma, organizadas por gênero. São exemplos reais puxados diretamente do nosso acervo. O acervo completo conta com mais de 10.000 partituras e playbacks para Sax Alto e Sax Tenor — e cresce todo mês com novas adições.",
+  },
 ];
 
 const FAQ = () => {
