@@ -24,7 +24,7 @@ const essentialMissing = [
 
 const premiumFeatures = [
   { text: "Tudo do plano Básico incluído", highlight: true },
-  { text: "+10.000 partituras e playbacks profissionais" },
+  { text: "+1.000 partituras com playback profissional" },
   { text: "Plataforma exclusiva estilo app" },
   { text: "Busca inteligente por voz" },
   { text: "Vídeos tutoriais integrados" },
@@ -134,7 +134,7 @@ const PricingCards = () => {
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Básico</h3>
               <p className="text-muted-foreground text-sm md:text-base font-body">
-                +5.000 partituras na plataforma
+                Partituras em PDF — sem playback
               </p>
             </div>
 
@@ -204,7 +204,7 @@ const PricingCards = () => {
                 </span>
                 <h3 className="text-xl font-bold font-heading mb-1">Completo</h3>
                 <p className="text-muted-foreground text-sm font-body">
-                  Acervo completo + playbacks + tutoriais + bônus
+                  Partituras + Playbacks + Tudo Incluso
                 </p>
               </div>
 
@@ -257,10 +257,13 @@ const PricingCards = () => {
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
                 <p className="text-sm font-semibold font-body text-center text-foreground">
-                  💡 Por apenas <strong className="text-gold">R$ 20 a mais</strong>, você desbloqueia
-                  playbacks, busca por voz, tutoriais e 3 bônus exclusivos.
+                  💡 Por R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus. É a escolha de <strong className="text-gold">9 em cada 10 saxofonistas</strong>.
                 </p>
               </div>
+
+              <p className="text-center text-xs text-muted-foreground mb-4 font-body">
+                Menos que o preço de uma palheta — e você leva <strong className="text-foreground">+1.000 partituras com playback</strong> pra vida toda
+              </p>
 
               <button
                 onClick={() => handleCheckout("premium")}

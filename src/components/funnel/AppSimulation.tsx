@@ -1,4 +1,4 @@
-import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones } from "lucide-react";
+import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones, ArrowRight } from "lucide-react";
 
 const folders = [
   { name: "Música Popular Brasileira (MPB)", count: 850 },
@@ -22,11 +22,15 @@ const folders = [
 ];
 
 const sampleFiles = [
-  { name: "Careless Whisper - George Michael", type: "pdf" },
-  { name: "Careless Whisper - Playback", type: "audio" },
-  { name: "Garota de Ipanema - Tom Jobim", type: "pdf" },
-  { name: "Garota de Ipanema - Playback", type: "audio" },
+  { name: "Careless Whisper.pdf", type: "pdf" },
+  { name: "Careless Whisper - Playback.mp3", type: "audio" },
+  { name: "Garota de Ipanema.pdf", type: "pdf" },
+  { name: "Garota de Ipanema - Playback.mp3", type: "audio" },
 ];
+
+const scrollToOffers = () => {
+  document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" });
+};
 
 const AppSimulation = () => {
   return (
@@ -37,10 +41,10 @@ const AppSimulation = () => {
             👀 VEJA POR DENTRO — ACERVO REAL
           </span>
           <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-            Conheça a Plataforma SaxPlay Por Dentro
+            Veja Como Funciona Por Dentro — É Simples Assim
           </h2>
           <p className="text-muted-foreground font-body text-sm md:text-base">
-            Navegue visualmente pela nossa plataforma exclusiva — exatamente como você vai usar
+            Você abre a pasta, escolhe a música, abre a partitura e dá play no playback. <strong className="text-foreground">Tudo na mesma tela, sem sair do app.</strong>
           </p>
         </div>
 
@@ -58,7 +62,7 @@ const AppSimulation = () => {
                 <Music className="w-5 h-5 text-primary" />
                 <span className="font-heading font-bold text-sm">SaxPlay</span>
               </div>
-              <span className="text-[10px] text-muted-foreground font-body">+10.000 arquivos</span>
+              <span className="text-[10px] text-muted-foreground font-body">+1.000 partituras com playback</span>
             </div>
 
             {/* Search bar mock */}
@@ -102,7 +106,7 @@ const AppSimulation = () => {
             {/* Sample files preview */}
             <div className="px-4 py-3 border-t border-border bg-surface/50">
               <p className="text-[10px] font-bold text-muted-foreground font-heading uppercase tracking-wider mb-2">
-                Exemplo: dentro de uma pasta
+                Dentro de cada pasta: partitura + playback juntos
               </p>
               <div className="space-y-1.5">
                 {sampleFiles.map((file, i) => (
@@ -124,7 +128,7 @@ const AppSimulation = () => {
                 <Play className="w-4 h-4 text-primary-foreground ml-0.5" fill="currentColor" />
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-[11px] font-bold font-body block truncate">Careless Whisper</span>
+                <span className="text-[11px] font-bold font-body block truncate">Careless Whisper - Playback</span>
                 <div className="w-full h-1 bg-muted rounded-full mt-1">
                   <div className="h-full w-[35%] bg-primary rounded-full" />
                 </div>
@@ -134,9 +138,19 @@ const AppSimulation = () => {
           </div>
         </div>
 
-        <p className="text-center text-xs text-muted-foreground mt-6 font-body max-w-md mx-auto">
+        <p className="text-center text-sm text-muted-foreground mt-6 font-body max-w-md mx-auto">
           Essa é uma <strong className="text-foreground">simulação visual</strong> da plataforma real. Ao garantir seu acesso, você navega livremente por todas as pastas, partituras e playbacks.
         </p>
+
+        <div className="text-center mt-5">
+          <button
+            onClick={scrollToOffers}
+            className="gradient-cta text-white font-bold font-heading py-3.5 px-8 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
+          >
+            QUERO ACESSAR A PLATAFORMA — ESCOLHER MEU PLANO
+            <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
+          </button>
+        </div>
       </div>
     </section>
   );

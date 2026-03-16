@@ -67,13 +67,13 @@ const PartituraCarousel = () => {
     <section className="pt-10 md:pt-14 pb-4 md:pb-6 px-0 bg-[hsl(240,20%,10%)] overflow-hidden">
       <div className="max-w-3xl mx-auto text-center px-4 mb-6 md:mb-8 relative">
         <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 text-white">
-          Veja Alguns Exemplos do Acervo
+          Veja a Qualidade das Partituras que Você Vai Receber
         </h2>
-        <p className="text-white/60 text-sm md:text-base font-body">
-          +2.000 partituras profissionais para sax alto e tenor — e o acervo cresce todo mês
+        <p className="text-white/70 text-sm md:text-base font-body">
+          Todas as partituras são profissionais, revisadas e vêm com playback para tocar junto
         </p>
 
-        {/* Admin toggle — small gear icon top-right */}
+        {/* Admin toggle */}
         <button
           onClick={() => setAdminMode(!adminMode)}
           className="absolute top-0 right-4 w-7 h-7 rounded-full flex items-center justify-center text-white/20 hover:text-white/60 transition-colors"
