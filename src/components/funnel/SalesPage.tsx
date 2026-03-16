@@ -365,7 +365,7 @@ const SalesPage = () => {
           {/* Social proof counter */}
           <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-xs font-semibold font-body text-foreground/80">
+            <span className="text-xs font-semibold font-body text-foreground">
               17 saxofonistas garantiram acesso hoje
             </span>
           </div>
