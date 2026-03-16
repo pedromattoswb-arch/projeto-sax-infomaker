@@ -170,7 +170,7 @@ const PricingCards = () => {
 
             <button
               onClick={() => handleCheckout("essential")}
-              className="w-full py-3.5 rounded-xl bg-white/8 border border-white/15 text-white/70 font-bold font-heading text-sm hover:bg-white/15 transition-all duration-300"
+              className="w-full py-3.5 rounded-xl bg-[hsl(142,55%,38%)] border border-[hsl(142,50%,45%)]/30 text-white font-bold font-heading text-sm hover:bg-[hsl(142,55%,42%)] transition-all duration-300"
             >
               GARANTIR ACESSO BÁSICO
             </button>

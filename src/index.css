@@ -161,8 +161,8 @@
 
   /* CTA Pulse */
   @keyframes cta-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(38 85% 50% / 0.4); }
-    50% { box-shadow: 0 0 0 12px hsl(38 85% 50% / 0); }
+    0%, 100% { box-shadow: 0 0 0 0 hsl(142 70% 45% / 0.4); }
+    50% { box-shadow: 0 0 0 12px hsl(142 70% 45% / 0); }
   }
 
   .animate-cta-pulse {
