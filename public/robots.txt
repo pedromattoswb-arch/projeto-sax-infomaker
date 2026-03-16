@@ -6,6 +6,7 @@ Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
 Disallow: /tutorials/
+Disallow: /cx/
 
 User-agent: Googlebot
 Allow: /$
