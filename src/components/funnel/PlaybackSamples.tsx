@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { Play, Pause, Music2 } from "lucide-react";
+import { Play, Pause, Music2, ArrowRight } from "lucide-react";
 
 const STREAM_BASE = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/stream-audio?id=`;
 
@@ -8,10 +8,9 @@ interface Track {
   name: string;
   artist: string;
   genre: string;
-  driveId: string; // Google Drive file ID for streaming
+  driveId: string;
 }
 
-// All tracks confirmed in the Google Drive acervo with real audio files
 const tracks: Track[] = [
   { id: "careless-whisper", name: "Careless Whisper", artist: "George Michael", genre: "Pop", driveId: "13n4UHAiwWAbBq3oxN27pyaUWI-mAaAmK" },
   { id: "sozinho", name: "Sozinho", artist: "Caetano Veloso", genre: "MPB", driveId: "1emyGuhMVPofGsDcCzmw9f0lvLRCX9YUF" },
@@ -40,6 +39,10 @@ const formatTime = (s: number) => {
   const m = Math.floor(s / 60);
   const sec = Math.floor(s % 60);
   return `${m}:${sec.toString().padStart(2, "0")}`;
+};
+
+const scrollToOffers = () => {
+  document.getElementById("ofertas")?.scrollIntoView({ behavior: "smooth" });
 };
 
 const PlaybackSamples = () => {
@@ -110,10 +113,10 @@ const PlaybackSamples = () => {
         <div className="text-center mb-5 md:mb-7">
           <h3 className="text-xl md:text-2xl font-bold font-heading text-white flex items-center justify-center gap-2 mb-2">
             <Music2 className="w-6 h-6 text-primary" />
-            Ouça Alguns dos +10.000 Playbacks do Acervo
+            Ouça os Playbacks — Cada Partitura Vem com o Acompanhamento
           </h3>
-          <p className="text-white/60 text-sm md:text-base font-body max-w-lg mx-auto">
-            Todos esses playbacks são do acervo real — toque junto com <strong className="text-white/80">milhares de partituras e playbacks</strong> em todos os estilos
+          <p className="text-white/70 text-sm md:text-base font-body max-w-lg mx-auto">
+            Na plataforma, você abre a partitura e dá play no playback na mesma tela. <strong className="text-white">É só tocar junto.</strong>
           </p>
         </div>
 
@@ -193,9 +196,18 @@ const PlaybackSamples = () => {
           })}
         </div>
 
-        <p className="text-center text-white/30 text-xs mt-3 font-body">
-          Clique em qualquer música para ouvir • A playlist avança automaticamente
-        </p>
+        <div className="text-center mt-5">
+          <button
+            onClick={scrollToOffers}
+            className="gradient-cta text-white font-bold font-heading py-3.5 px-8 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
+          >
+            QUERO TOCAR JUNTO — ESCOLHER MEU PLANO
+            <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
+          </button>
+          <p className="text-white/30 text-xs mt-3 font-body">
+            Clique em qualquer música para ouvir • A playlist avança automaticamente
+          </p>
+        </div>
       </div>
     </section>
   );

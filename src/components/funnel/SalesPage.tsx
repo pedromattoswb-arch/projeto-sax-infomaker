@@ -38,14 +38,14 @@ import PlaybackSamples from "./PlaybackSamples";
 import AppSimulation from "./AppSimulation";
 
 const features = [
-  { icon: Smartphone, title: "Plataforma Exclusiva", description: "Sua própria plataforma estilo app — acesse de qualquer dispositivo", metric: "24/7" },
-  { icon: Music, title: "+10.000 Arquivos", description: "Partituras e playbacks para Sax Alto e Sax Tenor", metric: "10K+" },
-  { icon: Search, title: "Busca Inteligente", description: "Encontre qualquer música em segundos — por nome, gênero ou artista", metric: "< 2s" },
-  { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música e a plataforma encontra pra você", metric: "🎤" },
-  { icon: Video, title: "Vídeos Tutoriais", description: "Aprenda a usar cada recurso com tutoriais integrados na plataforma", metric: "HD" },
-  { icon: BookOpen, title: "Material de Estudo", description: "Rotina de estudo, mapa de tonalidades e guias exclusivos", metric: "3 guias" },
-  { icon: FolderOpen, title: "+18 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz, Bossa Nova, Natal, Casamento…", metric: "18+" },
-  { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre. Atualizações incluídas", metric: "∞" },
+  { icon: Headphones, title: "+1.000 Partituras com Playback", description: "Cada partitura vem com o playback profissional para você tocar junto — Sax Alto e Sax Tenor", metric: "1K+" },
+  { icon: Smartphone, title: "Plataforma Estilo App", description: "Acesse pelo celular, tablet ou PC — sua biblioteca completa sempre no bolso", metric: "24/7" },
+  { icon: Search, title: "Encontre em 2 Segundos", description: "Digite o nome da música e a partitura + playback aparecem na hora. Sem perder tempo", metric: "< 2s" },
+  { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música no microfone e a plataforma encontra pra você automaticamente", metric: "🎤" },
+  { icon: Video, title: "Vídeos Tutoriais", description: "Aprenda a usar cada recurso com tutoriais em vídeo integrados na plataforma", metric: "HD" },
+  { icon: BookOpen, title: "Material de Estudo", description: "Rotina de estudo, mapa de tonalidades e guias exclusivos para evoluir mais rápido", metric: "3 guias" },
+  { icon: FolderOpen, title: "+18 Gêneros Musicais", description: "Pop, MPB, Rock, Gospel, Jazz, Bossa Nova, Natal, Casamento… tudo organizado por pasta", metric: "18+" },
+  { icon: Infinity, title: "Acesso Vitalício", description: "Pague uma vez. Acesse para sempre. Todas as atualizações futuras incluídas", metric: "∞" },
 ];
 
 const scrollToOffers = () => {
@@ -84,7 +84,7 @@ function useCounter(target: number, duration: number = 2000) {
 }
 
 const SalesPage = () => {
-  const counter1 = useCounter(10000, 2500);
+  const counter1 = useCounter(1000, 2500);
   const counter2 = useCounter(847, 2000);
   const counter3 = useCounter(18, 1500);
 
@@ -148,20 +148,19 @@ const SalesPage = () => {
             </span>
           </div>
 
-          <p className="text-base md:text-lg text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
-            <strong className="text-foreground">Você que toca Sax Alto ou Sax Tenor...</strong> imagina abrir o celular e ter <strong className="text-primary">QUALQUER música</strong> pronta pra tocar?
+          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
+            O Maior App de Partituras e Playbacks{" "}
+            <span className="text-primary">Para Saxofone do Brasil</span>
+          </h1>
+
+          <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
+            Mais de <strong className="text-primary">1.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
           </p>
 
           <SalesVideoPlayer />
 
-          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-5 md:mb-6">
-            Chega de procurar PDF ruim na internet.{" "}
-            <span className="text-primary">A SaxPlay tem tudo que você precisa.</span>
-          </h1>
-
-          <p className="text-base md:text-lg text-foreground font-body mb-4 md:mb-5 leading-relaxed max-w-2xl mx-auto">
-            Sem tonalidade errada. Sem playback desafinado. Sem perder tempo.{" "}
-            <strong className="text-foreground">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong>, busca por voz, tutoriais e material de estudo — tudo na sua própria plataforma.
+          <p className="text-base md:text-lg text-foreground font-body my-5 md:my-6 leading-relaxed max-w-2xl mx-auto">
+            Cada partitura vem com o <strong className="text-primary">playback profissional</strong> para você tocar junto. E tudo organizado por gênero, numa plataforma que funciona como app.
           </p>
 
           {/* Animated counters */}
@@ -170,7 +169,7 @@ const SalesPage = () => {
               <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
                 {counter1.count.toLocaleString("pt-BR")}+
               </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Arquivos</p>
+              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Partituras com Playback</p>
             </div>
             <div ref={counter2.ref} className="glass-card rounded-xl p-3 md:p-4 text-center">
               <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
@@ -189,9 +188,9 @@ const SalesPage = () => {
           {/* Bullets em grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
             {[
-              { icon: Music, text: "+10.000 partituras e playbacks — Sax Alto e Tenor" },
-              { icon: Smartphone, text: "Plataforma exclusiva — celular, tablet ou PC" },
-              { icon: Mic, text: "Busca inteligente por voz integrada" },
+              { icon: Headphones, text: "+1.000 partituras com playback — toque junto" },
+              { icon: Smartphone, text: "Plataforma estilo app — celular, tablet ou PC" },
+              { icon: Mic, text: "Busca por voz — fale e encontre na hora" },
               { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
               { icon: BookOpen, text: "Material de estudo: rotina e tonalidades" },
               { icon: Zap, text: "Acesso imediato — comece em 2 minutos" },
@@ -231,10 +230,10 @@ const SalesPage = () => {
               🏆 PLATAFORMA COMPLETA PARA SAX ALTO E SAX TENOR
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Tudo Que Você Precisa Para Tocar Sax — Num Só Lugar
+              Veja TUDO Que Você Recebe ao Garantir Seu Acesso
             </h2>
             <p className="text-foreground font-body text-base md:text-lg">
-              O maior acervo do Brasil, com tecnologia de ponta e material exclusivo
+              +1.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
             </p>
           </div>
 
@@ -341,6 +340,9 @@ const SalesPage = () => {
             <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
               Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
             </p>
+            <p className="text-foreground font-body text-sm md:text-base mt-3 leading-relaxed">
+              O reembolso é processado diretamente pela plataforma Cakto — você não precisa falar com ninguém.
+            </p>
           </div>
         </div>
       </section>
@@ -359,7 +361,7 @@ const SalesPage = () => {
             E você?
           </p>
           <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            +10.000 partituras e playbacks para Sax Alto e Sax Tenor. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            Mais de 1.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
           {/* Social proof counter */}
@@ -381,7 +383,7 @@ const SalesPage = () => {
           </div>
           <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
             <Lock className="w-3.5 h-3.5" />
-            Pagamento seguro via Cakto • Garantia de 7 dias • Recomendado por escolas de saxofone
+            Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas já compraram
           </p>
         </div>
       </section>
@@ -420,7 +422,7 @@ const SalesPage = () => {
           onClick={scrollToOffers}
           className="w-full gradient-cta text-white font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          QUERO COMEÇAR A TOCAR — R$ 19,90
+          GARANTIR MEU ACESSO — A PARTIR DE R$19,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
         </button>
       </div>

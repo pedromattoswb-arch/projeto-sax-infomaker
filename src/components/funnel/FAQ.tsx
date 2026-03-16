@@ -7,9 +7,14 @@ import {
 
 const faqItems = [
   {
+    question: "O que exatamente eu recebo ao comprar?",
+    answer:
+      "Ao garantir seu acesso, você recebe uma plataforma exclusiva estilo app com: +1.000 partituras profissionais com playback para tocar junto (Sax Alto e Sax Tenor), organizadas em +18 gêneros musicais. No plano Completo, você também recebe busca por voz, vídeos tutoriais integrados, atualizações mensais com músicas novas, Harpa Cristã completa e 3 bônus exclusivos (Guia de Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). O acesso é vitalício e imediato.",
+  },
+  {
     question: "Funciona para Sax Alto e Tenor?",
     answer:
-      "Sim! Todas as partituras estão disponíveis para Sax Alto e Sax Tenor. Você escolhe a tonalidade do seu instrumento.",
+      "Sim! Todas as partituras com playback estão disponíveis para Sax Alto e Sax Tenor. Você escolhe a tonalidade do seu instrumento.",
   },
   {
     question: "Como recebo o acesso?",
@@ -24,17 +29,17 @@ const faqItems = [
   {
     question: "As partituras são de qualidade profissional?",
     answer:
-      "Sim. Todas as +10.000 partituras foram revisadas por músicos profissionais — com melodia, harmonia e arranjos completos em PDF de alta resolução.",
+      "Sim. Todas as partituras foram revisadas por músicos profissionais — com melodia, harmonia e arranjos completos em PDF de alta resolução. E cada partitura vem com o playback profissional correspondente para você tocar junto.",
   },
   {
     question: "Posso acessar pelo celular?",
     answer:
-      "Sim! A plataforma SaxPlay funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada.",
+      "Sim! A plataforma SaxPlay funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada. Você abre a partitura e dá play no playback na mesma tela.",
   },
   {
     question: "Qual a diferença entre Básico e Completo?",
     answer:
-      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca inteligente na plataforma. O Completo (R$ 39,90) tem +10.000 partituras e playbacks, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos (Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). Por R$ 20 a mais, é a escolha mais inteligente.",
+      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 39,90) tem +1.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por R$ 20 a mais, é a escolha de 9 em cada 10 saxofonistas.",
   },
   {
     question: "O que são os vídeos tutoriais?",
@@ -49,12 +54,12 @@ const faqItems = [
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia total. Se em 7 dias você não sentir que valeu cada centavo, a gente devolve 100% do seu dinheiro. Sem perguntas. Sem complicação.",
+      "Você tem 7 dias de garantia total. Se em 7 dias você não sentir que valeu cada centavo, a gente devolve 100% do seu dinheiro. Sem perguntas. Sem complicação. O reembolso é processado diretamente pela plataforma Cakto.",
   },
   {
     question: "O acesso é realmente vitalício?",
     answer:
-      "Sim. Pague uma vez e acesse para sempre — nos dois planos. Inclui todas as atualizações futuras.",
+      "Sim. Pague uma vez e acesse para sempre — nos dois planos. Inclui todas as atualizações futuras com novas partituras e playbacks.",
   },
   {
     question: "Posso confiar neste site?",
@@ -64,7 +69,7 @@ const faqItems = [
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",
     answer:
-      "Sim! Logo acima na página você encontra uma amostra real das músicas disponíveis na plataforma, organizadas por gênero. São exemplos reais puxados diretamente do nosso acervo. O acervo completo conta com mais de 10.000 partituras e playbacks para Sax Alto e Sax Tenor — e cresce todo mês com novas adições.",
+      "Sim! Logo acima na página você encontra uma amostra real das músicas disponíveis na plataforma, organizadas por gênero. São exemplos reais puxados diretamente do nosso acervo. O acervo completo conta com mais de 1.000 partituras com playback profissional para Sax Alto e Sax Tenor — e cresce todo mês com novas adições.",
   },
 ];
 

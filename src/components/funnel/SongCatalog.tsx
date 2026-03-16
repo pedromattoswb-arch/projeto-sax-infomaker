@@ -43,7 +43,6 @@ const SongCatalog = () => {
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
-  // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -68,7 +67,6 @@ const SongCatalog = () => {
 
         if (matched.length === 0) throw new Error("No matching folders");
 
-        // Fetch ALL matched genre folders (not just 6)
         const results = await Promise.allSettled(
           matched.map(m =>
             fetch(`${EDGE_URL}?folderId=${m.folder.id}`)
@@ -122,7 +120,6 @@ const SongCatalog = () => {
     return () => { cancelled = true; };
   }, []);
 
-  // Debounced search
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
@@ -155,10 +152,8 @@ const SongCatalog = () => {
     }, 250);
   }, []);
 
-  // Count total songs
   const totalSongs = genres.reduce((sum, g) => sum + g.songs.length, 0);
 
-  // Show first 8 genres with limited songs initially, all when expanded
   const INITIAL_SONGS_PER_GENRE = 6;
   const visibleGenres = genres.map(g => ({
     ...g,
@@ -174,14 +169,14 @@ const SongCatalog = () => {
             🎵 ACERVO REAL — PARA SAX ALTO E SAX TENOR
           </span>
           <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-            Veja Algumas Músicas do Acervo
+            Procure Sua Música Favorita no Acervo
           </h2>
           <p className="text-muted-foreground font-body text-sm md:text-base">
-            Essas são <strong className="text-foreground">{totalVisible > 30 ? totalVisible : "dezenas de"} músicas reais</strong> disponíveis na plataforma — de um total de <strong className="text-primary">+10.000 arquivos</strong>
+            Se ela está aqui, você já pode tocar com <strong className="text-primary">partitura + playback profissional</strong>
           </p>
         </div>
 
-        {/* Subtle search bar */}
+        {/* Search bar */}
         <div className="max-w-md mx-auto mb-8">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -212,8 +207,8 @@ const SongCatalog = () => {
                 </div>
               ) : searchResults.length > 0 ? (
                 <div>
-                  <p className="text-xs text-muted-foreground font-body mb-3">
-                    ✅ Encontramos <strong className="text-primary">{searchResults.length} resultado{searchResults.length > 1 ? "s" : ""}</strong> para "{searchQuery}"
+                  <p className="text-xs text-foreground font-body mb-3 font-semibold">
+                    ✅ Essa música está no acervo! Garanta seu acesso e toque agora
                   </p>
                   <div className="space-y-1.5 mb-4">
                     {searchResults.map((r, i) => (
@@ -234,7 +229,7 @@ const SongCatalog = () => {
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground font-body text-center py-2">
-                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+10.000 arquivos</strong> e cresce toda semana!
+                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+1.000 partituras com playback</strong> e cresce toda semana!
                 </p>
               )}
             </div>
@@ -288,7 +283,7 @@ const SongCatalog = () => {
 
             <div className="text-center mt-8">
               <p className="text-xs text-muted-foreground mb-4 font-body">
-                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. No aplicativo você encontra <strong className="text-primary">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
+                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. Na plataforma você encontra <strong className="text-primary">+1.000 partituras com playback para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
               </p>
               <button
                 onClick={scrollToOffers}
