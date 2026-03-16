@@ -77,7 +77,7 @@ const PricingCards = () => {
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             Escolha Seu Plano e Comece a Tocar Agora
           </h2>
-          <p className="text-foreground/70 font-body text-base">
+          <p className="text-foreground font-body text-base md:text-lg">
             Pagamento único. Acesso vitalício. Garantia de 7 dias.
           </p>
         </div>
