@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { Music, ArrowRight, Loader2 } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { Music, ArrowRight, Loader2, Search, X, Lock } from "lucide-react";
 
 const EDGE_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/list-drive-files`;
+const SEARCH_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/search-drive`;
 
 const GENRE_CONFIG = [
   { emoji: "🇧🇷", keyword: "BRASILEIRA", fallback: ["Garota de Ipanema", "Evidências", "Águas de Março", "Carinhoso"] },
@@ -20,6 +21,11 @@ interface GenreData {
   songs: string[];
 }
 
+interface SearchResult {
+  name: string;
+  type: string;
+}
+
 function cleanSongName(filename: string): string {
   return filename
     .replace(/\.(pdf|mp3|wav|ogg|m4a)$/i, "")
@@ -35,6 +41,14 @@ const scrollToOffers = () => {
 const SongCatalog = () => {
   const [genres, setGenres] = useState<GenreData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     let cancelled = false;
@@ -54,9 +68,9 @@ const SongCatalog = () => {
 
         if (matched.length === 0) throw new Error("No matching folders");
 
-        const toFetch = matched.slice(0, 6);
+        // Fetch ALL matched genre folders (not just 6)
         const results = await Promise.allSettled(
-          toFetch.map(m =>
+          matched.map(m =>
             fetch(`${EDGE_URL}?folderId=${m.folder.id}`)
               .then(r => r.ok ? r.json() : Promise.reject())
           )
@@ -65,11 +79,10 @@ const SongCatalog = () => {
         if (cancelled) return;
 
         const genreResults: GenreData[] = [];
-        let totalSongs = 0;
 
         results.forEach((result, i) => {
-          const cfg = toFetch[i].config;
-          const folderName = toFetch[i].folder.name
+          const cfg = matched[i].config;
+          const folderName = matched[i].folder.name
             .toLowerCase()
             .replace(/(?:^|\s|[-/])\S/g, match => match.toUpperCase());
 
@@ -81,30 +94,15 @@ const SongCatalog = () => {
             ];
             const songs = allItems
               .map(cleanSongName)
-              .filter(s => s.length > 2 && s.length < 60)
-              .slice(0, 4);
+              .filter(s => s.length > 2 && s.length < 60);
 
             if (songs.length > 0) {
               genreResults.push({ emoji: cfg.emoji, name: folderName, songs });
-              totalSongs += songs.length;
             }
           } else {
-            genreResults.push({ emoji: cfg.emoji, name: folderName, songs: cfg.fallback.slice(0, 4) });
-            totalSongs += cfg.fallback.slice(0, 4).length;
+            genreResults.push({ emoji: cfg.emoji, name: folderName, songs: cfg.fallback });
           }
-
-          if (totalSongs >= 30) return;
         });
-
-        for (let i = toFetch.length; i < matched.length && totalSongs < 30; i++) {
-          const cfg = matched[i].config;
-          const folderName = matched[i].folder.name
-            .toLowerCase()
-            .replace(/(?:^|\s|[-/])\S/g, match => match.toUpperCase());
-          const songs = cfg.fallback.slice(0, 4);
-          genreResults.push({ emoji: cfg.emoji, name: folderName, songs });
-          totalSongs += songs.length;
-        }
 
         setGenres(genreResults);
       } catch {
@@ -124,6 +122,50 @@ const SongCatalog = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // Debounced search
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      setHasSearched(false);
+      setSearching(false);
+      return;
+    }
+
+    setSearching(true);
+    searchTimeout.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`${SEARCH_URL}?q=${encodeURIComponent(query.trim())}`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const combined: SearchResult[] = [
+          ...(data.folders || []).map((f: any) => ({ name: f.name, type: "folder" })),
+          ...(data.files || []).map((f: any) => ({ name: cleanSongName(f.name), type: f.type })),
+        ];
+        setSearchResults(combined.slice(0, 8));
+        setHasSearched(true);
+      } catch {
+        setSearchResults([]);
+        setHasSearched(true);
+      } finally {
+        setSearching(false);
+      }
+    }, 500);
+  }, []);
+
+  // Count total songs
+  const totalSongs = genres.reduce((sum, g) => sum + g.songs.length, 0);
+
+  // Show first 8 genres with limited songs initially, all when expanded
+  const INITIAL_SONGS_PER_GENRE = 6;
+  const visibleGenres = genres.map(g => ({
+    ...g,
+    songs: showAll ? g.songs : g.songs.slice(0, INITIAL_SONGS_PER_GENRE),
+  }));
+  const totalVisible = visibleGenres.reduce((sum, g) => sum + g.songs.length, 0);
+
   return (
     <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
       <div className="max-w-5xl mx-auto">
@@ -135,8 +177,68 @@ const SongCatalog = () => {
             Veja Algumas Músicas do Acervo
           </h2>
           <p className="text-muted-foreground font-body text-sm md:text-base">
-            Essas são músicas <strong className="text-foreground">reais</strong> disponíveis na plataforma — de um total de <strong className="text-primary">+10.000 arquivos</strong>
+            Essas são <strong className="text-foreground">{totalVisible > 30 ? totalVisible : "dezenas de"} músicas reais</strong> disponíveis na plataforma — de um total de <strong className="text-primary">+10.000 arquivos</strong>
           </p>
+        </div>
+
+        {/* Subtle search bar */}
+        <div className="max-w-md mx-auto mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => handleSearch(e.target.value)}
+              placeholder="Procure uma música no acervo..."
+              className="w-full bg-surface/60 border border-border rounded-xl pl-9 pr-9 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => { setSearchQuery(""); setSearchResults([]); setHasSearched(false); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Search results */}
+          {(searching || hasSearched) && searchQuery.length >= 2 && (
+            <div className="mt-3 glass-card rounded-xl p-4 animate-fade-in">
+              {searching ? (
+                <div className="flex items-center justify-center gap-2 py-2">
+                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                  <span className="text-xs text-muted-foreground font-body">Buscando no acervo...</span>
+                </div>
+              ) : searchResults.length > 0 ? (
+                <div>
+                  <p className="text-xs text-muted-foreground font-body mb-3">
+                    ✅ Encontramos <strong className="text-primary">{searchResults.length} resultado{searchResults.length > 1 ? "s" : ""}</strong> para "{searchQuery}"
+                  </p>
+                  <div className="space-y-1.5 mb-4">
+                    {searchResults.map((r, i) => (
+                      <div key={i} className="flex items-center gap-2 py-1">
+                        <Lock className="w-3 h-3 text-primary/50 shrink-0" />
+                        <span className="text-xs font-body text-muted-foreground truncate">{r.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={scrollToOffers}
+                    className="w-full gradient-cta text-white font-bold font-heading py-3 rounded-xl text-xs shadow-cta hover:shadow-cta-lg hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    DESBLOQUEAR ACESSO — ESCOLHER MEU PLANO
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground font-body text-center py-2">
+                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+10.000 arquivos</strong> e cresce toda semana!
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {loading ? (
@@ -147,7 +249,7 @@ const SongCatalog = () => {
         ) : (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              {genres.map((genre) => (
+              {visibleGenres.map((genre) => (
                 <div
                   key={genre.name}
                   className="glass-card rounded-xl p-4"
@@ -163,14 +265,30 @@ const SongCatalog = () => {
                         <span className="text-xs font-body text-muted-foreground break-words">{song}</span>
                       </div>
                     ))}
+                    {!showAll && genre.songs.length < genres.find(g => g.name === genre.name)!.songs.length && (
+                      <span className="text-[10px] text-primary/60 font-body">
+                        +{genres.find(g => g.name === genre.name)!.songs.length - genre.songs.length} mais...
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
 
+            {!showAll && totalSongs > totalVisible && (
+              <div className="text-center mt-5">
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="text-xs text-primary/80 hover:text-primary font-body underline underline-offset-2 transition-colors"
+                >
+                  Ver todas as {totalSongs} músicas desta amostra ↓
+                </button>
+              </div>
+            )}
+
             <div className="text-center mt-8">
               <p className="text-xs text-muted-foreground mb-4 font-body">
-                Isso é apenas uma <strong className="text-foreground">amostra</strong>. O acervo completo tem <strong className="text-primary">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong> — e cresce todo mês.
+                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. No aplicativo você encontra <strong className="text-primary">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
               </p>
               <button
                 onClick={scrollToOffers}
