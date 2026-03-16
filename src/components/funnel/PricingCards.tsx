@@ -24,7 +24,7 @@ const essentialMissing = [
 
 const premiumFeatures = [
   { text: "Tudo do plano Básico incluído", highlight: true },
-  { text: "+1.000 partituras com playback profissional" },
+  { text: "+10.000 partituras com playback profissional" },
   { text: "Plataforma exclusiva estilo app" },
   { text: "Busca inteligente por voz" },
   { text: "Vídeos tutoriais integrados" },
