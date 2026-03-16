@@ -142,12 +142,11 @@ const PricingCards = () => {
               </div>
 
               <div className="mb-6">
-                <span className="text-muted-foreground text-sm line-through font-body">De R$ 497,00</span>
-                <div className="flex items-baseline gap-1 mt-1">
+                <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold font-heading text-gold">R$ 39</span>
                   <span className="text-xl font-bold font-heading text-gold">,90</span>
                 </div>
-                <span className="text-xs text-gold font-semibold font-body">Economia de 92% • Pagamento único</span>
+                <span className="text-xs text-gold font-semibold font-body">Pagamento único • Acesso vitalício</span>
               </div>
 
               <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 mb-6">
