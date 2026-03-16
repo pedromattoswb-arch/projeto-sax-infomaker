@@ -84,12 +84,9 @@ function useCounter(target: number, duration: number = 2000) {
 }
 
 const SalesPage = () => {
-  const counter1 = useCounter(1000, 2500);
+  const counter1 = useCounter(10000, 2500);
   const counter2 = useCounter(847, 2000);
   const counter3 = useCounter(18, 1500);
-
-  // Random "viewing now" number
-  const [viewingNow] = useState(() => Math.floor(Math.random() * 25) + 18);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
