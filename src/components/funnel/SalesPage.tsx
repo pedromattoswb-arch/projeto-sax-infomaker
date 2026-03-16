@@ -292,7 +292,7 @@ const SalesPage = () => {
             ].map((badge, i) => (
               <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
                 <badge.icon className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground/80">{badge.text}</span>
+                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground">{badge.text}</span>
               </div>
             ))}
           </div>
