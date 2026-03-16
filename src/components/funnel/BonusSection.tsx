@@ -36,7 +36,7 @@ const BonusSection = () => {
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             3 Bônus que Vão Acelerar Sua Evolução
           </h2>
-          <p className="text-foreground/70 font-body text-base">
+          <p className="text-foreground font-body text-base md:text-lg">
             Guias práticos criados para saxofonistas de qualquer nível — todos integrados à plataforma
           </p>
         </div>
