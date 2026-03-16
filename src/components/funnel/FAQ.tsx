@@ -9,7 +9,7 @@ const faqItems = [
   {
     question: "O que exatamente eu recebo ao comprar?",
     answer:
-      "Ao garantir seu acesso, você recebe uma plataforma exclusiva estilo app com: +1.000 partituras profissionais com playback para tocar junto (Sax Alto e Sax Tenor), organizadas em +18 gêneros musicais. No plano Completo, você também recebe busca por voz, vídeos tutoriais integrados, atualizações mensais com músicas novas, Harpa Cristã completa e 3 bônus exclusivos (Guia de Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). O acesso é vitalício e imediato.",
+      "Ao garantir seu acesso, você recebe uma plataforma exclusiva estilo app com: +10.000 partituras profissionais com playback para tocar junto (Sax Alto e Sax Tenor), organizadas em +18 gêneros musicais. No plano Completo, você também recebe busca por voz, vídeos tutoriais integrados, atualizações mensais com músicas novas, Harpa Cristã completa e 3 bônus exclusivos (Guia de Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). O acesso é vitalício e imediato.",
   },
   {
     question: "Funciona para Sax Alto e Tenor?",
