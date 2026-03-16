@@ -154,7 +154,7 @@ const SalesPage = () => {
           </h1>
 
           <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            Mais de <strong className="text-primary">1.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
+            Mais de <strong className="text-primary">10.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
           </p>
 
           <SalesVideoPlayer />
