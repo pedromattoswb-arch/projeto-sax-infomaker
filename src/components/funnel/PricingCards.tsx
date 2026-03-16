@@ -229,7 +229,7 @@ const PricingCards = () => {
                     <Star key={i} className="w-3 h-3 fill-primary text-primary" />
                   ))}
                 </div>
-                <span className="text-[11px] text-foreground/70 font-body italic">
+                <span className="text-[11px] text-foreground font-body italic">
                   "Melhor investimento que fiz pro meu sax" — Júlio S., SP
                 </span>
               </div>
