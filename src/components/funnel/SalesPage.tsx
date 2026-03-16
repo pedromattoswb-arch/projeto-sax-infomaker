@@ -148,7 +148,7 @@ const SalesPage = () => {
             </span>
           </div>
 
-          <p className="text-sm md:text-base text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
             <strong className="text-foreground">Você que toca Sax Alto ou Sax Tenor...</strong> imagina abrir o celular e ter <strong className="text-primary">QUALQUER música</strong> pronta pra tocar?
           </p>
 
