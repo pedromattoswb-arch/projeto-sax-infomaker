@@ -59,7 +59,7 @@ const BonusSection = () => {
                 <h3 className="font-bold font-heading text-sm mb-2 leading-snug">
                   {bonus.title}
                 </h3>
-                <p className="text-muted-foreground font-body text-xs leading-relaxed">
+                <p className="text-muted-foreground font-body text-sm leading-relaxed">
                   {bonus.description}
                 </p>
               </div>

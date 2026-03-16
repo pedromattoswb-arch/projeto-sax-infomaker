@@ -256,7 +256,7 @@ const PricingCards = () => {
               </ul>
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
-                <p className="text-xs font-semibold font-body text-center text-foreground/90">
+                <p className="text-sm font-semibold font-body text-center text-foreground">
                   💡 Por apenas <strong className="text-gold">R$ 20 a mais</strong>, você desbloqueia
                   playbacks, busca por voz, tutoriais e 3 bônus exclusivos.
                 </p>
