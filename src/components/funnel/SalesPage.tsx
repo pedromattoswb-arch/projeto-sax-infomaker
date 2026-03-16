@@ -140,8 +140,8 @@ const SalesPage = () => {
           </div>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
-            O Maior App de Partituras e Playbacks{" "}
-            <span className="text-primary">Para Saxofone do Brasil</span>
+            +10.000 Partituras com Playback{" "}
+            <span className="text-primary">Para Sax Alto e Sax Tenor</span>
           </h1>
 
           <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
