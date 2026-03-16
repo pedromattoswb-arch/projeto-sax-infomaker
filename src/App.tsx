@@ -35,6 +35,8 @@ const App = () => (
           <Route path="/orderbump/digitacao" element={<OrderBumpDigitacao />} />
           <Route path="/orderbump/transposicao" element={<OrderBumpTransposicao />} />
           <Route path="/orderbump/manutencao" element={<OrderBumpManutencao />} />
+          <Route path="/obrigado/basico" element={<ThankYouBasico />} />
+          <Route path="/obrigado/completo" element={<ThankYouCompleto />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
