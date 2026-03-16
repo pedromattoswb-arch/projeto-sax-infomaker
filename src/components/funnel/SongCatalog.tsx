@@ -3,7 +3,6 @@ import { Music, ArrowRight, Loader2 } from "lucide-react";
 
 const EDGE_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/list-drive-files`;
 
-// 8 gêneros mais populares — IDs serão resolvidos dinamicamente
 const GENRE_CONFIG = [
   { emoji: "🇧🇷", keyword: "BRASILEIRA", fallback: ["Garota de Ipanema", "Evidências", "Águas de Março", "Carinhoso"] },
   { emoji: "🙏", keyword: "GOSPEL", fallback: ["Quão Grande É o Meu Deus", "Oceanos", "Bondade de Deus", "Harpa Cristã"] },
@@ -42,13 +41,11 @@ const SongCatalog = () => {
 
     async function fetchCatalog() {
       try {
-        // 1. Fetch root folders
         const rootRes = await fetch(EDGE_URL);
         if (!rootRes.ok) throw new Error("API error");
         const rootData = await rootRes.json();
         const folders: { id: string; name: string }[] = rootData.folders || [];
 
-        // 2. Match genres to real folders
         const matched: { config: typeof GENRE_CONFIG[0]; folder: { id: string; name: string } }[] = [];
         for (const cfg of GENRE_CONFIG) {
           const found = folders.find(f => f.name.toUpperCase().includes(cfg.keyword));
@@ -57,7 +54,6 @@ const SongCatalog = () => {
 
         if (matched.length === 0) throw new Error("No matching folders");
 
-        // 3. Fetch contents for up to 6 folders in parallel (limit API calls)
         const toFetch = matched.slice(0, 6);
         const results = await Promise.allSettled(
           toFetch.map(m =>
@@ -79,12 +75,10 @@ const SongCatalog = () => {
 
           if (result.status === "fulfilled" && result.value) {
             const data = result.value;
-            // Get file + subfolder names as song samples
             const allItems = [
               ...(data.folders || []).map((f: any) => f.name),
               ...(data.files || []).map((f: any) => f.name),
             ];
-            // Pick up to 4 recognizable names, clean them
             const songs = allItems
               .map(cleanSongName)
               .filter(s => s.length > 2 && s.length < 60)
@@ -95,16 +89,13 @@ const SongCatalog = () => {
               totalSongs += songs.length;
             }
           } else {
-            // Fallback for this genre
             genreResults.push({ emoji: cfg.emoji, name: folderName, songs: cfg.fallback.slice(0, 4) });
             totalSongs += cfg.fallback.slice(0, 4).length;
           }
 
-          // Stop at ~30 songs total
           if (totalSongs >= 30) return;
         });
 
-        // Add remaining genres that weren't fetched, using fallback
         for (let i = toFetch.length; i < matched.length && totalSongs < 30; i++) {
           const cfg = matched[i].config;
           const folderName = matched[i].folder.name
@@ -117,7 +108,6 @@ const SongCatalog = () => {
 
         setGenres(genreResults);
       } catch {
-        // Full fallback to hardcoded data
         if (!cancelled) {
           setGenres(GENRE_CONFIG.map(cfg => ({
             emoji: cfg.emoji,
@@ -138,14 +128,14 @@ const SongCatalog = () => {
     <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8">
-          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
+          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
             🎵 ACERVO REAL — PARA SAX ALTO E SAX TENOR
           </span>
           <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
             Veja Algumas Músicas do Acervo
           </h2>
           <p className="text-muted-foreground font-body text-sm md:text-base">
-            Essas são músicas <strong>reais</strong> disponíveis na plataforma — de um total de <strong className="text-primary">+10.000 arquivos</strong>
+            Essas são músicas <strong className="text-foreground">reais</strong> disponíveis na plataforma — de um total de <strong className="text-primary">+10.000 arquivos</strong>
           </p>
         </div>
 
@@ -160,7 +150,7 @@ const SongCatalog = () => {
               {genres.map((genre) => (
                 <div
                   key={genre.name}
-                  className="bg-card rounded-xl border border-border p-4 shadow-sm"
+                  className="glass-card rounded-xl p-4"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-2xl">{genre.emoji}</span>
@@ -180,7 +170,7 @@ const SongCatalog = () => {
 
             <div className="text-center mt-8">
               <p className="text-xs text-muted-foreground mb-4 font-body">
-                Isso é apenas uma <strong>amostra</strong>. O acervo completo tem <strong className="text-primary">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong> — e cresce todo mês.
+                Isso é apenas uma <strong className="text-foreground">amostra</strong>. O acervo completo tem <strong className="text-primary">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong> — e cresce todo mês.
               </p>
               <button
                 onClick={scrollToOffers}

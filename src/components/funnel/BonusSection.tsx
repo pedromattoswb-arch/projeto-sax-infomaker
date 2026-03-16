@@ -3,18 +3,16 @@ const bonuses = [
     emoji: "📖",
     title: "Guia: Rotina de Estudo para Saxofonistas",
     description:
-      "Monte uma rotina de prática eficiente com aquecimento, técnica, improvisação e repertório. Do iniciante ao avançado. Disponível dentro da plataforma SaxBrasil.",
+      "Monte uma rotina de prática eficiente com aquecimento, técnica, improvisação e repertório. Do iniciante ao avançado. Disponível dentro da plataforma SaxPlay.",
     tag: "BÔNUS 1",
-    gradient: "from-emerald-600 to-teal-700",
     accent: "🎯",
   },
   {
     emoji: "🗺️",
     title: "Guia: Mapa de Tonalidades para Sax",
     description:
-      "Referência visual completa de transposição, escalas maiores, menores e modos. Ferramenta de consulta rápida indispensável. Integrado à plataforma SaxBrasil.",
+      "Referência visual completa de transposição, escalas maiores, menores e modos. Ferramenta de consulta rápida indispensável. Integrado à plataforma SaxPlay.",
     tag: "BÔNUS 2",
-    gradient: "from-blue-600 to-indigo-700",
     accent: "🎼",
   },
   {
@@ -23,7 +21,6 @@ const bonuses = [
     description:
       "Lista curada com nível de dificuldade, gênero e dicas de interpretação. Do clássico ao contemporâneo, gospel ao jazz. Acessível direto na plataforma.",
     tag: "BÔNUS 3",
-    gradient: "from-amber-500 to-orange-600",
     accent: "🏆",
   },
 ];
@@ -33,13 +30,13 @@ const BonusSection = () => {
     <section className="py-16 px-4 md:px-8 section-alt">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
-          <span className="inline-block bg-accent/10 text-accent-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-accent/30">
+          <span className="inline-block glass-card text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
             🎁 EXCLUSIVO DO PREMIUM
           </span>
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             3 Bônus que Vão Acelerar Sua Evolução
           </h2>
-          <p className="text-foreground font-body text-base">
+          <p className="text-foreground/70 font-body text-base">
             Guias práticos criados para saxofonistas de qualquer nível — todos integrados à plataforma
           </p>
         </div>
@@ -48,13 +45,13 @@ const BonusSection = () => {
           {bonuses.map((bonus, index) => (
             <div
               key={index}
-              className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
+              className="glass-card rounded-2xl hover:bg-surface/80 hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
             >
-              <div className={`bg-gradient-to-br ${bonus.gradient} p-8 flex flex-col items-center justify-center relative`}>
+              <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-8 flex flex-col items-center justify-center relative border-b border-border">
                 <span className="text-5xl mb-2">{bonus.emoji}</span>
                 <span className="absolute top-3 right-3 text-2xl opacity-30">{bonus.accent}</span>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1 mt-2">
-                  <span className="text-white text-xs font-bold font-heading">{bonus.tag}</span>
+                <div className="glass-card rounded-lg px-3 py-1 mt-2">
+                  <span className="text-foreground text-xs font-bold font-heading">{bonus.tag}</span>
                 </div>
               </div>
               
@@ -71,7 +68,7 @@ const BonusSection = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
-          Esses 3 guias são <strong>exclusivos do plano Premium</strong> e estão disponíveis dentro da plataforma SaxBrasil.
+          Esses 3 guias são <strong className="text-foreground">exclusivos do plano Premium</strong> e estão disponíveis dentro da plataforma SaxPlay.
         </p>
       </div>
     </section>
