@@ -252,7 +252,7 @@ const SalesPage = () => {
                   <f.icon className="w-5 h-5 md:w-7 md:h-7 text-primary" />
                 </div>
                 <h3 className="font-bold font-heading text-[13px] md:text-base mb-0.5 md:mb-1">{f.title}</h3>
-                <p className="text-muted-foreground text-xs md:text-sm font-body leading-snug">{f.description}</p>
+                <p className="text-muted-foreground text-sm md:text-base font-body leading-snug">{f.description}</p>
               </div>
             ))}
           </div>
