@@ -6,6 +6,7 @@ Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
 Disallow: /tutorials/
+Disallow: /cx/
 
 User-agent: Googlebot
 Allow: /$
@@ -15,6 +16,7 @@ Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
 Disallow: /tutorials/
+Disallow: /cx/
 
 User-agent: Bingbot
 Allow: /$
@@ -24,5 +26,6 @@ Disallow: /plano-premium-completo
 Disallow: /bonus/
 Disallow: /orderbump/
 Disallow: /tutorials/
+Disallow: /cx/
 
 Sitemap: https://melody-path-finder.lovable.app/sitemap.xml

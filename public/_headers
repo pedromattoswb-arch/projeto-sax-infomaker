@@ -12,3 +12,6 @@
 
 /tutorials/*
   X-Robots-Tag: noindex, nofollow
+
+/cx/*
+  X-Robots-Tag: noindex, nofollow
