@@ -233,7 +233,7 @@ const SalesPage = () => {
               Veja TUDO Que Você Recebe ao Garantir Seu Acesso
             </h2>
             <p className="text-foreground font-body text-base md:text-lg">
-              +1.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
+              +10.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
             </p>
           </div>
 
