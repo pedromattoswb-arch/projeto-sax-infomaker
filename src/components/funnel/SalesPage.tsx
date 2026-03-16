@@ -131,11 +131,11 @@ const SalesPage = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
 
         <div className="max-w-3xl mx-auto text-center relative">
-          {/* Live badge */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-1.5 mb-5">
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-live-dot" />
+            <Headphones className="w-3.5 h-3.5 text-primary" />
             <span className="text-[11px] md:text-xs text-muted-foreground font-body">
-              <strong className="text-foreground">{viewingNow} saxofonistas</strong> vendo esta página agora
+              Plataforma exclusiva para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
