@@ -23,7 +23,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoSaxplay from "@/assets/logo-saxplay-dark.webp";
 import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
