@@ -233,7 +233,7 @@ const SalesPage = () => {
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
               Tudo Que Você Precisa Para Tocar Sax — Num Só Lugar
             </h2>
-            <p className="text-foreground/70 font-body text-[15px] md:text-base">
+            <p className="text-foreground font-body text-base md:text-lg">
               O maior acervo do Brasil, com tecnologia de ponta e material exclusivo
             </p>
           </div>
