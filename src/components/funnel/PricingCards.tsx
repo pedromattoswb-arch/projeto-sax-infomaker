@@ -37,28 +37,6 @@ const premiumFeatures = [
 
 const PricingCards = () => {
 
-  useEffect(() => {
-    const getDeadline = () => {
-      const now = new Date();
-      const end = new Date(now);
-      end.setHours(23, 59, 59, 999);
-      return end.getTime();
-    };
-
-    const update = () => {
-      const diff = Math.max(0, getDeadline() - Date.now());
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      setTimeLeft({ hours, minutes, seconds });
-    };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const pad = (n: number) => n.toString().padStart(2, "0");
 
   const handleCheckout = (plan: "essential" | "premium") => {
     const link = plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK;
