@@ -229,7 +229,7 @@ const SongCatalog = () => {
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground font-body text-center py-2">
-                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+1.000 partituras com playback</strong> e cresce toda semana!
+                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+10.000 partituras com playback</strong> e cresce toda semana!
                 </p>
               )}
             </div>
