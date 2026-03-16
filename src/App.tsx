@@ -12,6 +12,8 @@ import BonusMusicas from "./pages/BonusMusicas";
 import OrderBumpDigitacao from "./pages/OrderBumpDigitacao";
 import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
 import OrderBumpManutencao from "./pages/OrderBumpManutencao";
+import ThankYouBasico from "./pages/ThankYouBasico";
+import ThankYouCompleto from "./pages/ThankYouCompleto";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
