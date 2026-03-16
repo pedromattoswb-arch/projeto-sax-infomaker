@@ -349,26 +349,18 @@ const SalesPage = () => {
             Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
-          {/* Social proof counter */}
-          <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-xs font-semibold font-body text-foreground">
-              17 saxofonistas garantiram acesso hoje
-            </span>
-          </div>
-
           <div className="block">
             <button
               onClick={scrollToOffers}
               className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
             >
-              SIM! QUERO MEU ACESSO AGORA
+              QUERO MEU ACESSO AGORA
               <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
             </button>
           </div>
           <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
             <Lock className="w-3.5 h-3.5" />
-            Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas já compraram
+            Pagamento seguro via Cakto • Garantia de 7 dias
           </p>
         </div>
       </section>

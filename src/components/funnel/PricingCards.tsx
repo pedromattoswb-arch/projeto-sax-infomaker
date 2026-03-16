@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck, Clock, Users } from "lucide-react";
+import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck } from "lucide-react";
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
 const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
