@@ -136,11 +136,11 @@
   }
 
   .shadow-cta {
-    box-shadow: 0 4px 20px -4px hsl(38 85% 50% / 0.4);
+    box-shadow: 0 4px 20px -4px hsl(142 70% 45% / 0.4);
   }
 
   .shadow-cta-lg {
-    box-shadow: 0 8px 30px -4px hsl(38 85% 50% / 0.5);
+    box-shadow: 0 8px 30px -4px hsl(142 70% 45% / 0.5);
   }
 
   .shadow-gold {
