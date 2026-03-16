@@ -84,23 +84,20 @@ function useCounter(target: number, duration: number = 2000) {
 }
 
 const SalesPage = () => {
-  const counter1 = useCounter(1000, 2500);
+  const counter1 = useCounter(10000, 2500);
   const counter2 = useCounter(847, 2000);
   const counter3 = useCounter(18, 1500);
-
-  // Random "viewing now" number
-  const [viewingNow] = useState(() => Math.floor(Math.random() * 25) + 18);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-surface/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay — O Maior Acervo de Partituras Para Sax do Brasil" className="h-8 md:h-10 w-auto" />
+          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-8 md:h-10 w-auto" />
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-primary font-bold font-heading bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
               <Award className="w-3 h-3" />
-              Maior Acervo do Brasil
+              +10.000 Partituras
             </span>
             <div className="text-right">
               <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
@@ -114,22 +111,16 @@ const SalesPage = () => {
       <div className="bg-surface border-b border-border py-2.5 px-4">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-4 md:gap-8 flex-wrap">
           <div className="flex items-center gap-1.5">
-            <GraduationCap className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Recomendado por escolas de sax</span>
+            <Music className="w-3.5 h-3.5 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+10.000 partituras com playback</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 alunos ativos</span>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 saxofonistas já compraram</span>
           </div>
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-3 h-3 fill-primary text-primary" />
-            ))}
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body ml-1">4.9/5</span>
-          </div>
-          <div className="hidden md:flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-[11px] text-green-400 font-body font-semibold">{viewingNow} online agora</span>
+          <div className="flex items-center gap-1.5">
+            <Infinity className="w-3.5 h-3.5 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Acesso vitalício</span>
           </div>
         </div>
       </div>
@@ -140,17 +131,17 @@ const SalesPage = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
 
         <div className="max-w-3xl mx-auto text-center relative">
-          {/* Live badge */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-1.5 mb-5">
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-live-dot" />
+            <Headphones className="w-3.5 h-3.5 text-primary" />
             <span className="text-[11px] md:text-xs text-muted-foreground font-body">
-              <strong className="text-foreground">{viewingNow} saxofonistas</strong> vendo esta página agora
+              Plataforma exclusiva para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
           <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
-            O Maior App de Partituras e Playbacks{" "}
-            <span className="text-primary">Para Saxofone do Brasil</span>
+            +10.000 Partituras com Playback{" "}
+            <span className="text-primary">Para Sax Alto e Sax Tenor</span>
           </h1>
 
           <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
@@ -211,7 +202,7 @@ const SalesPage = () => {
           </button>
 
           <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 19,90</strong> — pagamento único • Junte-se a +847 saxofonistas
+            A partir de <strong className="text-primary">R$ 19,90</strong> — pagamento único • Garantia de 7 dias
           </p>
         </div>
       </section>
@@ -266,28 +257,22 @@ const SalesPage = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              ⭐ RECOMENDADO POR ESCOLAS E PROFESSORES DE SAXOFONE
+              ⭐ O QUE NOSSOS CLIENTES DIZEM
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Saxofonistas Reais, Resultados Reais
+              Veja o Que Dizem os Saxofonistas Que Já Usam
             </h2>
-            <div className="flex items-center justify-center gap-1 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-primary text-primary" />
-              ))}
-            </div>
             <p className="text-muted-foreground text-sm md:text-base font-body">
-              Avaliação <strong className="text-foreground">4.9/5</strong> • +847 saxofonistas satisfeitos em todo o Brasil
+              Depoimentos reais de clientes do SaxPlay
             </p>
           </div>
 
           {/* Authority badges */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             {[
-              { icon: GraduationCap, text: "Escolas de Música" },
-              { icon: Award, text: "Professores Certificados" },
-              { icon: TrendingUp, text: "Nota 4.9 ⭐" },
-              { icon: Users, text: "+847 Alunos Ativos" },
+              { icon: Headphones, text: "+10.000 Partituras" },
+              { icon: FolderOpen, text: "+18 Gêneros Musicais" },
+              { icon: Users, text: "+847 Clientes" },
             ].map((badge, i) => (
               <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
                 <badge.icon className="w-3.5 h-3.5 text-primary" />
@@ -364,26 +349,18 @@ const SalesPage = () => {
             Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
-          {/* Social proof counter */}
-          <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-xs font-semibold font-body text-foreground">
-              17 saxofonistas garantiram acesso hoje
-            </span>
-          </div>
-
           <div className="block">
             <button
               onClick={scrollToOffers}
               className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
             >
-              SIM! QUERO MEU ACESSO AGORA
+              QUERO MEU ACESSO AGORA
               <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
             </button>
           </div>
           <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
             <Lock className="w-3.5 h-3.5" />
-            Pagamento seguro via Cakto • Garantia de 7 dias • +847 saxofonistas já compraram
+            Pagamento seguro via Cakto • Garantia de 7 dias
           </p>
         </div>
       </section>

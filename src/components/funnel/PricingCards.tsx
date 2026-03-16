@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck, Clock, Users } from "lucide-react";
+import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck } from "lucide-react";
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
 const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
@@ -36,31 +35,7 @@ const premiumFeatures = [
 ];
 
 const PricingCards = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [viewingNow] = useState(() => Math.floor(Math.random() * 25) + 18);
 
-  useEffect(() => {
-    const getDeadline = () => {
-      const now = new Date();
-      const end = new Date(now);
-      end.setHours(23, 59, 59, 999);
-      return end.getTime();
-    };
-
-    const update = () => {
-      const diff = Math.max(0, getDeadline() - Date.now());
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      setTimeLeft({ hours, minutes, seconds });
-    };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const pad = (n: number) => n.toString().padStart(2, "0");
 
   const handleCheckout = (plan: "essential" | "premium") => {
     const link = plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK;
@@ -82,48 +57,6 @@ const PricingCards = () => {
           </p>
         </div>
 
-        {/* Viewing now */}
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-          <span className="text-xs font-semibold font-body text-green-400">
-            {viewingNow} pessoas vendo esta oferta agora
-          </span>
-        </div>
-
-        {/* Countdown Timer */}
-        <div className="max-w-lg mx-auto mb-8">
-          <div className="glass-card rounded-xl px-4 py-4 text-center border border-destructive/20">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-destructive animate-pulse" />
-              <span className="text-sm font-bold font-heading text-destructive uppercase tracking-wide">
-                Oferta por tempo limitado
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.hours)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Horas</span>
-              </div>
-              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.minutes)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Min</span>
-              </div>
-              <span className="text-2xl font-bold text-muted-foreground mb-3">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold font-heading text-foreground tabular-nums">{pad(timeLeft.seconds)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Seg</span>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground font-body mt-2">
-              Esse preço pode mudar a qualquer momento
-            </p>
-          </div>
-        </div>
-
-        <p className="text-center text-sm text-primary font-semibold font-body mb-10">
-          ⚠️ Preço promocional por tempo limitado
-        </p>
 
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start max-w-4xl mx-auto">
           {/* BASIC CARD */}
@@ -139,12 +72,11 @@ const PricingCards = () => {
             </div>
 
             <div className="mb-6">
-              <span className="text-muted-foreground text-sm line-through font-body">De R$ 197,00</span>
-              <div className="flex items-baseline gap-1 mt-1">
+              <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-extrabold font-heading">R$ 19</span>
                 <span className="text-xl font-bold font-heading">,90</span>
               </div>
-              <span className="text-xs text-muted-foreground font-semibold font-body">Pagamento único</span>
+              <span className="text-xs text-muted-foreground font-semibold font-body">Pagamento único • Acesso vitalício</span>
             </div>
 
             <div className="flex items-center gap-2 glass-card rounded-lg px-3 py-2 mb-6">
@@ -209,12 +141,11 @@ const PricingCards = () => {
               </div>
 
               <div className="mb-6">
-                <span className="text-muted-foreground text-sm line-through font-body">De R$ 497,00</span>
-                <div className="flex items-baseline gap-1 mt-1">
+                <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold font-heading text-gold">R$ 39</span>
                   <span className="text-xl font-bold font-heading text-gold">,90</span>
                 </div>
-                <span className="text-xs text-gold font-semibold font-body">Economia de 92% • Pagamento único</span>
+                <span className="text-xs text-gold font-semibold font-body">Pagamento único • Acesso vitalício</span>
               </div>
 
               <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 mb-6">
@@ -257,7 +188,7 @@ const PricingCards = () => {
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
                 <p className="text-sm font-semibold font-body text-center text-foreground">
-                  💡 Por R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus. É a escolha de <strong className="text-gold">9 em cada 10 saxofonistas</strong>.
+                  💡 Por apenas R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus exclusivos.
                 </p>
               </div>
 
@@ -281,7 +212,7 @@ const PricingCards = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
-          ⭐ Mais de <strong className="text-foreground">847 saxofonistas</strong> já garantiram seu acesso • Recomendado por escolas de sax
+          +847 saxofonistas já compraram • Pagamento seguro • Garantia de 7 dias
         </p>
 
         {/* Trust Bar */}

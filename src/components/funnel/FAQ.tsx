@@ -39,7 +39,7 @@ const faqItems = [
   {
     question: "Qual a diferença entre Básico e Completo?",
     answer:
-      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 39,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por R$ 20 a mais, é a escolha de 9 em cada 10 saxofonistas.",
+      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 39,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.",
   },
   {
     question: "O que são os vídeos tutoriais?",
@@ -64,7 +64,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Com certeza. O SaxPlay é uma empresa registrada com CNPJ, com mais de 847 clientes ativos. Somos recomendados por escolas e professores de saxofone em todo o Brasil. Oferecemos garantia de 7 dias e suporte ativo por e-mail e WhatsApp.",
+      "Sim. O SaxPlay é uma empresa registrada com CNPJ. O pagamento é processado pela Cakto com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
   },
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",
