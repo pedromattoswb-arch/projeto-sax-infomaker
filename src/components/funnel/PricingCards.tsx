@@ -213,7 +213,7 @@ const PricingCards = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
-          ⭐ Mais de <strong className="text-foreground">847 saxofonistas</strong> já garantiram seu acesso • Recomendado por escolas de sax
+          +847 saxofonistas já compraram • Pagamento seguro • Garantia de 7 dias
         </p>
 
         {/* Trust Bar */}
