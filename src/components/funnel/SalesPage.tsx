@@ -38,7 +38,7 @@ import PlaybackSamples from "./PlaybackSamples";
 import AppSimulation from "./AppSimulation";
 
 const features = [
-  { icon: Headphones, title: "+1.000 Partituras com Playback", description: "Cada partitura vem com o playback profissional para você tocar junto — Sax Alto e Sax Tenor", metric: "1K+" },
+  { icon: Headphones, title: "+10.000 Partituras com Playback", description: "Cada partitura vem com o playback profissional para você tocar junto — Sax Alto e Sax Tenor", metric: "10K+" },
   { icon: Smartphone, title: "Plataforma Estilo App", description: "Acesse pelo celular, tablet ou PC — sua biblioteca completa sempre no bolso", metric: "24/7" },
   { icon: Search, title: "Encontre em 2 Segundos", description: "Digite o nome da música e a partitura + playback aparecem na hora. Sem perder tempo", metric: "< 2s" },
   { icon: Mic, title: "Busca por Voz", description: "Fale o nome da música no microfone e a plataforma encontra pra você automaticamente", metric: "🎤" },
@@ -154,7 +154,7 @@ const SalesPage = () => {
           </h1>
 
           <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            Mais de <strong className="text-primary">1.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
+            Mais de <strong className="text-primary">10.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
           </p>
 
           <SalesVideoPlayer />
@@ -188,7 +188,7 @@ const SalesPage = () => {
           {/* Bullets em grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
             {[
-              { icon: Headphones, text: "+1.000 partituras com playback — toque junto" },
+              { icon: Headphones, text: "+10.000 partituras com playback — toque junto" },
               { icon: Smartphone, text: "Plataforma estilo app — celular, tablet ou PC" },
               { icon: Mic, text: "Busca por voz — fale e encontre na hora" },
               { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
@@ -233,7 +233,7 @@ const SalesPage = () => {
               Veja TUDO Que Você Recebe ao Garantir Seu Acesso
             </h2>
             <p className="text-foreground font-body text-base md:text-lg">
-              +1.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
+              +10.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
             </p>
           </div>
 
@@ -361,7 +361,7 @@ const SalesPage = () => {
             E você?
           </p>
           <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            Mais de 1.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
           {/* Social proof counter */}

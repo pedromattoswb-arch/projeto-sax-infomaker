@@ -229,7 +229,7 @@ const SongCatalog = () => {
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground font-body text-center py-2">
-                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+1.000 partituras com playback</strong> e cresce toda semana!
+                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+10.000 partituras com playback</strong> e cresce toda semana!
                 </p>
               )}
             </div>
@@ -283,7 +283,7 @@ const SongCatalog = () => {
 
             <div className="text-center mt-8">
               <p className="text-xs text-muted-foreground mb-4 font-body">
-                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. Na plataforma você encontra <strong className="text-primary">+1.000 partituras com playback para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
+                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. Na plataforma você encontra <strong className="text-primary">+10.000 partituras com playback para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
               </p>
               <button
                 onClick={scrollToOffers}
