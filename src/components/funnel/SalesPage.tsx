@@ -111,22 +111,16 @@ const SalesPage = () => {
       <div className="bg-surface border-b border-border py-2.5 px-4">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-4 md:gap-8 flex-wrap">
           <div className="flex items-center gap-1.5">
-            <GraduationCap className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Recomendado por escolas de sax</span>
+            <Music className="w-3.5 h-3.5 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+10.000 partituras com playback</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 alunos ativos</span>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 saxofonistas já compraram</span>
           </div>
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-3 h-3 fill-primary text-primary" />
-            ))}
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body ml-1">4.9/5</span>
-          </div>
-          <div className="hidden md:flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-[11px] text-green-400 font-body font-semibold">{viewingNow} online agora</span>
+          <div className="flex items-center gap-1.5">
+            <Infinity className="w-3.5 h-3.5 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Acesso vitalício</span>
           </div>
         </div>
       </div>
