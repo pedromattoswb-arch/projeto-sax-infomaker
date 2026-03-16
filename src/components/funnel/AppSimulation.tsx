@@ -62,7 +62,7 @@ const AppSimulation = () => {
                 <Music className="w-5 h-5 text-primary" />
                 <span className="font-heading font-bold text-sm">SaxPlay</span>
               </div>
-              <span className="text-[10px] text-muted-foreground font-body">+1.000 partituras com playback</span>
+              <span className="text-[10px] text-muted-foreground font-body">+10.000 partituras com playback</span>
             </div>
 
             {/* Search bar mock */}

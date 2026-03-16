@@ -262,7 +262,7 @@ const PricingCards = () => {
               </div>
 
               <p className="text-center text-xs text-muted-foreground mb-4 font-body">
-                Menos que o preço de uma palheta — e você leva <strong className="text-foreground">+1.000 partituras com playback</strong> pra vida toda
+                Menos que o preço de uma palheta — e você leva <strong className="text-foreground">+10.000 partituras com playback</strong> pra vida toda
               </p>
 
               <button

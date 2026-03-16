@@ -37,7 +37,7 @@ const BonusSection = () => {
             3 Bônus que Vão Acelerar Sua Evolução
           </h2>
           <p className="text-foreground font-body text-base md:text-lg">
-            Além das +1.000 partituras com playback, você ainda recebe 3 guias exclusivos para acelerar sua evolução
+            Além das +10.000 partituras com playback, você ainda recebe 3 guias exclusivos para acelerar sua evolução
           </p>
         </div>
 

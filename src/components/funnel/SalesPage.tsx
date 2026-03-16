@@ -361,7 +361,7 @@ const SalesPage = () => {
             E você?
           </p>
           <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            Mais de 1.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
           {/* Social proof counter */}

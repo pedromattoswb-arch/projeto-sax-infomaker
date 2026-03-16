@@ -69,7 +69,7 @@ const faqItems = [
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",
     answer:
-      "Sim! Logo acima na página você encontra uma amostra real das músicas disponíveis na plataforma, organizadas por gênero. São exemplos reais puxados diretamente do nosso acervo. O acervo completo conta com mais de 1.000 partituras com playback profissional para Sax Alto e Sax Tenor — e cresce todo mês com novas adições.",
+      "Sim! Logo acima na página você encontra uma amostra real das músicas disponíveis na plataforma, organizadas por gênero. São exemplos reais puxados diretamente do nosso acervo. O acervo completo conta com mais de 10.000 partituras com playback profissional para Sax Alto e Sax Tenor — e cresce todo mês com novas adições.",
   },
 ];
 
