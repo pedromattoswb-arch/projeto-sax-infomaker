@@ -93,11 +93,11 @@ const SalesPage = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-surface/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay — O Maior Acervo de Partituras Para Sax do Brasil" className="h-8 md:h-10 w-auto" />
+          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-8 md:h-10 w-auto" />
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-primary font-bold font-heading bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
               <Award className="w-3 h-3" />
-              Maior Acervo do Brasil
+              +10.000 Partituras
             </span>
             <div className="text-right">
               <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
