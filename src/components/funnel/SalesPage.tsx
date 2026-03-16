@@ -325,9 +325,6 @@ const SalesPage = () => {
             <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
               Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
             </p>
-            <p className="text-foreground font-body text-sm md:text-base mt-3 leading-relaxed">
-              O reembolso é processado diretamente pela plataforma Cakto — você não precisa falar com ninguém.
-            </p>
           </div>
         </div>
       </section>
