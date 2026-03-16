@@ -7,10 +7,10 @@
 @layer base {
   :root {
     --background: 220 25% 8%;
-    --foreground: 0 0% 95%;
+    --foreground: 0 0% 100%;
 
     --surface: 220 20% 14%;
-    --surface-foreground: 0 0% 92%;
+    --surface-foreground: 0 0% 96%;
 
     --section-dark: 220 30% 6%;
     --section-dark-foreground: 0 0% 95%;
