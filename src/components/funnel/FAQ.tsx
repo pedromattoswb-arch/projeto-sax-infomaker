@@ -75,7 +75,7 @@ const FAQ = () => {
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading">
           Dúvidas? A Gente Responde
         </h2>
-        <p className="text-center text-foreground/70 mb-10 font-body text-base">
+        <p className="text-center text-foreground mb-10 font-body text-base md:text-lg">
           As perguntas mais comuns antes de garantir o acesso
         </p>
 
@@ -89,7 +89,7 @@ const FAQ = () => {
               <AccordionTrigger className="text-left font-semibold font-body text-sm md:text-base py-4 hover:no-underline">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-foreground/80 font-body text-sm pb-4">
+              <AccordionContent className="text-foreground font-body text-sm md:text-base pb-4">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

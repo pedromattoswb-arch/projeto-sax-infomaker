@@ -152,7 +152,7 @@ const SongCatalog = () => {
       } finally {
         setSearching(false);
       }
-    }, 500);
+    }, 250);
   }, []);
 
   // Count total songs

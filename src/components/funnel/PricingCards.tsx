@@ -77,7 +77,7 @@ const PricingCards = () => {
           <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
             Escolha Seu Plano e Comece a Tocar Agora
           </h2>
-          <p className="text-foreground/70 font-body text-base">
+          <p className="text-foreground font-body text-base md:text-lg">
             Pagamento único. Acesso vitalício. Garantia de 7 dias.
           </p>
         </div>
@@ -133,7 +133,7 @@ const PricingCards = () => {
                 Para começar
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Básico</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <p className="text-muted-foreground text-sm md:text-base font-body">
                 +5.000 partituras na plataforma
               </p>
             </div>
@@ -155,7 +155,7 @@ const PricingCards = () => {
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 font-heading">Incluso</p>
             <ul className="space-y-2.5 mb-6">
               {essentialHas.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm font-body text-foreground/70">
+                <li key={i} className="flex items-start gap-2.5 text-sm md:text-base font-body text-foreground">
                   <Check className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                   <span>{feature}</span>
                 </li>
@@ -229,7 +229,7 @@ const PricingCards = () => {
                     <Star key={i} className="w-3 h-3 fill-primary text-primary" />
                   ))}
                 </div>
-                <span className="text-[11px] text-foreground/70 font-body italic">
+                <span className="text-[11px] text-foreground font-body italic">
                   "Melhor investimento que fiz pro meu sax" — Júlio S., SP
                 </span>
               </div>
@@ -239,10 +239,10 @@ const PricingCards = () => {
                 {premiumFeatures.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-sm font-body ${
+                    className={`flex items-start gap-2.5 text-sm md:text-base font-body ${
                       feature.highlight ? "font-bold text-primary" : 
                       feature.bonus ? "text-gold font-semibold" : 
-                      "text-foreground/90"
+                      "text-foreground"
                     }`}
                   >
                     {feature.bonus ? (
@@ -256,7 +256,7 @@ const PricingCards = () => {
               </ul>
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
-                <p className="text-xs font-semibold font-body text-center text-foreground/90">
+                <p className="text-sm font-semibold font-body text-center text-foreground">
                   💡 Por apenas <strong className="text-gold">R$ 20 a mais</strong>, você desbloqueia
                   playbacks, busca por voz, tutoriais e 3 bônus exclusivos.
                 </p>

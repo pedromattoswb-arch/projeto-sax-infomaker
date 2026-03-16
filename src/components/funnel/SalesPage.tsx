@@ -148,7 +148,7 @@ const SalesPage = () => {
             </span>
           </div>
 
-          <p className="text-sm md:text-base text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground font-body mb-4 max-w-xl mx-auto leading-relaxed">
             <strong className="text-foreground">Você que toca Sax Alto ou Sax Tenor...</strong> imagina abrir o celular e ter <strong className="text-primary">QUALQUER música</strong> pronta pra tocar?
           </p>
 
@@ -159,7 +159,7 @@ const SalesPage = () => {
             <span className="text-primary">A SaxPlay tem tudo que você precisa.</span>
           </h1>
 
-          <p className="text-[15px] md:text-lg text-foreground/80 font-body mb-4 md:mb-5 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-foreground font-body mb-4 md:mb-5 leading-relaxed max-w-2xl mx-auto">
             Sem tonalidade errada. Sem playback desafinado. Sem perder tempo.{" "}
             <strong className="text-foreground">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong>, busca por voz, tutoriais e material de estudo — tudo na sua própria plataforma.
           </p>
@@ -233,7 +233,7 @@ const SalesPage = () => {
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
               Tudo Que Você Precisa Para Tocar Sax — Num Só Lugar
             </h2>
-            <p className="text-foreground/70 font-body text-[15px] md:text-base">
+            <p className="text-foreground font-body text-base md:text-lg">
               O maior acervo do Brasil, com tecnologia de ponta e material exclusivo
             </p>
           </div>
@@ -252,7 +252,7 @@ const SalesPage = () => {
                   <f.icon className="w-5 h-5 md:w-7 md:h-7 text-primary" />
                 </div>
                 <h3 className="font-bold font-heading text-[13px] md:text-base mb-0.5 md:mb-1">{f.title}</h3>
-                <p className="text-muted-foreground text-xs md:text-sm font-body leading-snug">{f.description}</p>
+                <p className="text-muted-foreground text-sm md:text-base font-body leading-snug">{f.description}</p>
               </div>
             ))}
           </div>
@@ -266,7 +266,7 @@ const SalesPage = () => {
       <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,25%,6%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block glass-card text-foreground/80 px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
+            <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
               ⭐ RECOMENDADO POR ESCOLAS E PROFESSORES DE SAXOFONE
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
@@ -277,7 +277,7 @@ const SalesPage = () => {
                 <Star key={i} className="w-5 h-5 fill-primary text-primary" />
               ))}
             </div>
-            <p className="text-muted-foreground text-sm font-body">
+            <p className="text-muted-foreground text-sm md:text-base font-body">
               Avaliação <strong className="text-foreground">4.9/5</strong> • +847 saxofonistas satisfeitos em todo o Brasil
             </p>
           </div>
@@ -292,7 +292,7 @@ const SalesPage = () => {
             ].map((badge, i) => (
               <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
                 <badge.icon className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground/80">{badge.text}</span>
+                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground">{badge.text}</span>
               </div>
             ))}
           </div>
@@ -338,7 +338,7 @@ const SalesPage = () => {
             <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3">
               7 Dias de Garantia Total
             </h2>
-            <p className="text-foreground/80 font-body text-[15px] md:text-base leading-relaxed">
+            <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
               Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
             </p>
           </div>
@@ -358,14 +358,14 @@ const SalesPage = () => {
           <p className="text-lg md:text-xl font-bold font-heading text-primary mb-3">
             E você?
           </p>
-          <p className="text-foreground/70 font-body text-[15px] md:text-base mb-3 md:mb-4">
+          <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
             +10.000 partituras e playbacks para Sax Alto e Sax Tenor. Plataforma exclusiva. Busca por voz. Tutoriais. Material de estudo. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
           </p>
 
           {/* Social proof counter */}
           <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-live-dot" />
-            <span className="text-xs font-semibold font-body text-foreground/80">
+            <span className="text-xs font-semibold font-body text-foreground">
               17 saxofonistas garantiram acesso hoje
             </span>
           </div>
