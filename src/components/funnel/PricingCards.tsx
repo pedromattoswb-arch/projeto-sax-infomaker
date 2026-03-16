@@ -155,7 +155,7 @@ const PricingCards = () => {
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 font-heading">Incluso</p>
             <ul className="space-y-2.5 mb-6">
               {essentialHas.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm font-body text-foreground/70">
+                <li key={i} className="flex items-start gap-2.5 text-sm md:text-base font-body text-foreground">
                   <Check className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                   <span>{feature}</span>
                 </li>
