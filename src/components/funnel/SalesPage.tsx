@@ -270,10 +270,9 @@ const SalesPage = () => {
           {/* Authority badges */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             {[
-              { icon: GraduationCap, text: "Escolas de Música" },
-              { icon: Award, text: "Professores Certificados" },
-              { icon: TrendingUp, text: "Nota 4.9 ⭐" },
-              { icon: Users, text: "+847 Alunos Ativos" },
+              { icon: Headphones, text: "+10.000 Partituras" },
+              { icon: FolderOpen, text: "+18 Gêneros Musicais" },
+              { icon: Users, text: "+847 Clientes" },
             ].map((badge, i) => (
               <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
                 <badge.icon className="w-3.5 h-3.5 text-primary" />
