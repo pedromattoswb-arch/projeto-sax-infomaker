@@ -36,8 +36,6 @@ const premiumFeatures = [
 ];
 
 const PricingCards = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [viewingNow] = useState(() => Math.floor(Math.random() * 25) + 18);
 
   useEffect(() => {
     const getDeadline = () => {
