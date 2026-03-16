@@ -39,7 +39,7 @@ const faqItems = [
   {
     question: "Qual a diferença entre Básico e Completo?",
     answer:
-      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 39,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos. Por R$ 20 a mais, é a escolha de 9 em cada 10 saxofonistas.",
+      "O Básico (R$ 19,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 39,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.",
   },
   {
     question: "O que são os vídeos tutoriais?",
