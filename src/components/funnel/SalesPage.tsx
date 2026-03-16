@@ -266,7 +266,7 @@ const SalesPage = () => {
       <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,25%,6%)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block glass-card text-foreground/80 px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
+            <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
               ⭐ RECOMENDADO POR ESCOLAS E PROFESSORES DE SAXOFONE
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
