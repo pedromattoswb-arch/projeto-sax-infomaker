@@ -12,6 +12,8 @@ import BonusMusicas from "./pages/BonusMusicas";
 import OrderBumpDigitacao from "./pages/OrderBumpDigitacao";
 import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
 import OrderBumpManutencao from "./pages/OrderBumpManutencao";
+import ThankYouBasico from "./pages/ThankYouBasico";
+import ThankYouCompleto from "./pages/ThankYouCompleto";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -33,6 +35,8 @@ const App = () => (
           <Route path="/orderbump/digitacao" element={<OrderBumpDigitacao />} />
           <Route path="/orderbump/transposicao" element={<OrderBumpTransposicao />} />
           <Route path="/orderbump/manutencao" element={<OrderBumpManutencao />} />
+          <Route path="/obrigado/basico" element={<ThankYouBasico />} />
+          <Route path="/obrigado/completo" element={<ThankYouCompleto />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
