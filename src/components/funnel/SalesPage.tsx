@@ -159,7 +159,7 @@ const SalesPage = () => {
             <span className="text-primary">A SaxPlay tem tudo que você precisa.</span>
           </h1>
 
-          <p className="text-[15px] md:text-lg text-foreground/80 font-body mb-4 md:mb-5 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-foreground font-body mb-4 md:mb-5 leading-relaxed max-w-2xl mx-auto">
             Sem tonalidade errada. Sem playback desafinado. Sem perder tempo.{" "}
             <strong className="text-foreground">+10.000 partituras e playbacks para Sax Alto e Sax Tenor</strong>, busca por voz, tutoriais e material de estudo — tudo na sua própria plataforma.
           </p>
