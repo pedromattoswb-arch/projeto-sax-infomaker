@@ -338,7 +338,7 @@ const SalesPage = () => {
             <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3">
               7 Dias de Garantia Total
             </h2>
-            <p className="text-foreground/80 font-body text-[15px] md:text-base leading-relaxed">
+            <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
               Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
             </p>
           </div>
