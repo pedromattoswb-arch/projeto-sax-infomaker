@@ -133,7 +133,7 @@ const PricingCards = () => {
                 Para começar
               </span>
               <h3 className="text-xl font-bold font-heading mb-1">Básico</h3>
-              <p className="text-muted-foreground text-sm font-body">
+              <p className="text-muted-foreground text-sm md:text-base font-body">
                 +5.000 partituras na plataforma
               </p>
             </div>
