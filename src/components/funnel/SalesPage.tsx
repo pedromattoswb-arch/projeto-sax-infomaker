@@ -257,18 +257,13 @@ const SalesPage = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-10">
             <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              ⭐ RECOMENDADO POR ESCOLAS E PROFESSORES DE SAXOFONE
+              ⭐ O QUE NOSSOS CLIENTES DIZEM
             </span>
             <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Saxofonistas Reais, Resultados Reais
+              Veja o Que Dizem os Saxofonistas Que Já Usam
             </h2>
-            <div className="flex items-center justify-center gap-1 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-primary text-primary" />
-              ))}
-            </div>
             <p className="text-muted-foreground text-sm md:text-base font-body">
-              Avaliação <strong className="text-foreground">4.9/5</strong> • +847 saxofonistas satisfeitos em todo o Brasil
+              Depoimentos reais de clientes do SaxPlay
             </p>
           </div>
 
