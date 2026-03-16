@@ -277,7 +277,7 @@ const SalesPage = () => {
                 <Star key={i} className="w-5 h-5 fill-primary text-primary" />
               ))}
             </div>
-            <p className="text-muted-foreground text-sm font-body">
+            <p className="text-muted-foreground text-sm md:text-base font-body">
               Avaliação <strong className="text-foreground">4.9/5</strong> • +847 saxofonistas satisfeitos em todo o Brasil
             </p>
           </div>
