@@ -101,7 +101,7 @@ const SalesPage = () => {
             </span>
             <div className="text-right">
               <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 19,90</span>
+              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ const SalesPage = () => {
           </button>
 
           <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 19,90</strong> — pagamento único • Garantia de 7 dias
+            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único • Garantia de 7 dias
           </p>
         </div>
       </section>
@@ -343,7 +343,7 @@ const SalesPage = () => {
             E você?
           </p>
           <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 19,90.
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 9,90.
           </p>
 
           <div className="block">
@@ -396,7 +396,7 @@ const SalesPage = () => {
           onClick={scrollToOffers}
           className="w-full gradient-cta text-white font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          GARANTIR MEU ACESSO — A PARTIR DE R$19,90
+          GARANTIR MEU ACESSO — A PARTIR DE R$9,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
         </button>
       </div>

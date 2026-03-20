@@ -73,7 +73,7 @@ const PricingCards = () => {
 
             <div className="mb-6">
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold font-heading">R$ 19</span>
+                <span className="text-4xl font-extrabold font-heading">R$ 9</span>
                 <span className="text-xl font-bold font-heading">,90</span>
               </div>
               <span className="text-xs text-muted-foreground font-semibold font-body">Pagamento único • Acesso vitalício</span>
@@ -142,7 +142,7 @@ const PricingCards = () => {
 
               <div className="mb-6">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold font-heading text-gold">R$ 39</span>
+                  <span className="text-4xl font-extrabold font-heading text-gold">R$ 19</span>
                   <span className="text-xl font-bold font-heading text-gold">,90</span>
                 </div>
                 <span className="text-xs text-gold font-semibold font-body">Pagamento único • Acesso vitalício</span>
@@ -188,7 +188,7 @@ const PricingCards = () => {
 
               <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
                 <p className="text-sm font-semibold font-body text-center text-foreground">
-                  💡 Por apenas R$ 20 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus exclusivos.
+                  💡 Por apenas R$ 10 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus exclusivos.
                 </p>
               </div>
 
