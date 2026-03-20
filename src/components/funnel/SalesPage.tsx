@@ -101,7 +101,7 @@ const SalesPage = () => {
             </span>
             <div className="text-right">
               <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 19,90</span>
+              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
             </div>
           </div>
         </div>
