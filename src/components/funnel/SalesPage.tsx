@@ -202,7 +202,7 @@ const SalesPage = () => {
           </button>
 
           <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 19,90</strong> — pagamento único • Garantia de 7 dias
+            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único • Garantia de 7 dias
           </p>
         </div>
       </section>
