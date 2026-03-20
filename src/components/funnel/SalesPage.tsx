@@ -396,7 +396,7 @@ const SalesPage = () => {
           onClick={scrollToOffers}
           className="w-full gradient-cta text-white font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          GARANTIR MEU ACESSO — A PARTIR DE R$19,90
+          GARANTIR MEU ACESSO — A PARTIR DE R$9,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
         </button>
       </div>

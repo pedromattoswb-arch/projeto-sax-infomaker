@@ -76,9 +76,8 @@ const ThankYouBasico = () => {
           </div>
 
           <div className="mb-6">
-            <span className="text-white/40 text-sm line-through font-body">De R$ 497,00</span>
             <div className="flex items-baseline gap-1 justify-center mt-1">
-              <span className="text-3xl md:text-4xl font-extrabold font-heading text-gold">R$ 39</span>
+              <span className="text-3xl md:text-4xl font-extrabold font-heading text-gold">R$ 6</span>
               <span className="text-lg font-bold font-heading text-gold">,90</span>
             </div>
             <span className="text-xs text-gold/80 font-semibold font-body">Pagamento único • Upgrade imediato</span>
