@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Search, X, Mic, MicOff, Folder, FileText, Music, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import type { DriveFolder, DriveFile } from "@/hooks/useDriveFiles";
 
@@ -158,15 +158,15 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
     setIsListening(false);
   }, []);
 
-  if (!open) return null;
-
   const q = debouncedQuery.toLowerCase().trim();
   const hasQuery = q.length > 0;
 
   const matchedFolders = searchFolders;
-  const matchedPdfs = searchFiles.filter((f) => f.type === "pdf");
-  const matchedAudio = searchFiles.filter((f) => f.type === "audio");
-  const totalResults = matchedFolders.length + matchedPdfs.length + matchedAudio.length;
+  const matchedPdfs = useMemo(() => searchFiles.filter((f) => f.type === "pdf"), [searchFiles]);
+  const matchedAudio = useMemo(() => searchFiles.filter((f) => f.type === "audio"), [searchFiles]);
+  const totalResults = useMemo(() => matchedFolders.length + matchedPdfs.length + matchedAudio.length, [matchedFolders.length, matchedPdfs.length, matchedAudio.length]);
+
+  if (!open) return null;
 
   return (
     <div

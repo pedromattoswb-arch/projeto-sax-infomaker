@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Music, ArrowRight, Loader2, Search, X, Lock } from "lucide-react";
 
 const EDGE_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/list-drive-files`;
@@ -152,14 +152,15 @@ const SongCatalog = () => {
     }, 250);
   }, []);
 
-  const totalSongs = genres.reduce((sum, g) => sum + g.songs.length, 0);
+  const totalSongs = useMemo(() => genres.reduce((sum, g) => sum + g.songs.length, 0), [genres]);
 
   const INITIAL_SONGS_PER_GENRE = 6;
-  const visibleGenres = genres.map(g => ({
+  const visibleGenres = useMemo(() => genres.map(g => ({
     ...g,
     songs: showAll ? g.songs : g.songs.slice(0, INITIAL_SONGS_PER_GENRE),
-  }));
-  const totalVisible = visibleGenres.reduce((sum, g) => sum + g.songs.length, 0);
+  })), [genres, showAll]);
+
+  const totalVisible = useMemo(() => visibleGenres.reduce((sum, g) => sum + g.songs.length, 0), [visibleGenres]);
 
   return (
     <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden">

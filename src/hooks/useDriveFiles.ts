@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 
 export interface DriveFolder {
   id: string;
@@ -212,7 +212,7 @@ export function useDriveFiles() {
     });
   }, [fetchFolder]);
 
-  return {
+  return useMemo(() => ({
     folders,
     files,
     loading,
@@ -223,5 +223,5 @@ export function useDriveFiles() {
     navigateToFolder,
     navigateToBreadcrumb,
     goBack,
-  };
+  }), [folders, files, loading, error, breadcrumbs, isRoot, fetchFolder, navigateToFolder, navigateToBreadcrumb, goBack]);
 }

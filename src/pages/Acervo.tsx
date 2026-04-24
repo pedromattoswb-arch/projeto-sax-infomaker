@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
@@ -110,17 +110,23 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
     return () => clearTimeout(searchTimerRef.current);
   }, [search]);
 
-  const filteredFolders = searchDebounced.trim()
-    ? folders.filter((f) => f.name.toLowerCase().includes(searchDebounced.toLowerCase()))
-    : folders;
+  const filteredFolders = useMemo(() => {
+    const term = searchDebounced.trim().toLowerCase();
+    return term
+      ? folders.filter((f) => f.name.toLowerCase().includes(term))
+      : folders;
+  }, [folders, searchDebounced]);
 
-  const allFiles = searchDebounced.trim()
-    ? files.filter((f) => f.name.toLowerCase().includes(searchDebounced.toLowerCase()))
-    : files;
+  const allFiles = useMemo(() => {
+    const term = searchDebounced.trim().toLowerCase();
+    return term
+      ? files.filter((f) => f.name.toLowerCase().includes(term))
+      : files;
+  }, [files, searchDebounced]);
 
-  const pdfFiles = allFiles.filter((f) => f.type === "pdf");
-  const audioFiles = allFiles.filter((f) => f.type === "audio");
-  const otherFiles = allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio");
+  const pdfFiles = useMemo(() => allFiles.filter((f) => f.type === "pdf"), [allFiles]);
+  const audioFiles = useMemo(() => allFiles.filter((f) => f.type === "audio"), [allFiles]);
+  const otherFiles = useMemo(() => allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio"), [allFiles]);
 
   // Apply filter
   const showPdfs = fileFilter === "all" || fileFilter === "pdf";

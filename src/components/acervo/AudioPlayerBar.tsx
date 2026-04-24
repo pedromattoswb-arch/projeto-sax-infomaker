@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef } from "react";
+import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef, useMemo } from "react";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2, ChevronDown, ChevronUp, Minimize2 } from "lucide-react";
 import type { DriveFile } from "@/hooks/useDriveFiles";
 
@@ -125,9 +125,9 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
       currentId: activeFile?.id || null,
     }), [activeFile?.id, isPlaying]);
 
-    if (!activeFile) return null;
+    const progressPct = useMemo(() => duration > 0 ? (progress / duration) * 100 : 0, [progress, duration]);
 
-    const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
+    if (!activeFile) return null;
 
     // ── Minimized floating pill ──
     if (minimized) {
@@ -290,4 +290,4 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
 );
 
 AudioPlayerBar.displayName = "AudioPlayerBar";
-export default AudioPlayerBar;
+export default React.memo(AudioPlayerBar);
