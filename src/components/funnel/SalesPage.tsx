@@ -341,23 +341,27 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-12 md:py-16 px-4 md:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(142_70%_45%/0.08)_0%,transparent_70%)] pointer-events-none" />
-        <div className="max-w-2xl mx-auto text-center relative">
-          <div className="glow-border rounded-2xl p-8 md:p-12">
-            <img
-              src="/selo-garantia.png"
-              alt="Selo de Garantia de 7 Dias"
-              className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 md:mb-5 drop-shadow-lg"
-              loading="lazy"
-              width={144}
-              height={144}
-            />
-            <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3">
-              7 Dias de Garantia Total
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-section-dark">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
+            <div className="relative inline-block mb-10 md:mb-14">
+              <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
+              <img
+                src="/selo-garantia.png"
+                alt="Selo de Garantia de 7 Dias"
+                className="w-32 h-32 md:w-44 md:h-44 relative z-10 drop-shadow-2xl animate-glow-pulse"
+                loading="lazy"
+                width={176}
+                height={176}
+              />
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              Sua Satisfação ou <br className="hidden md:block" />
+              <span className="text-primary italic">100% do Dinheiro de Volta</span>
             </h2>
-            <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
-              Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
+            <p className="text-muted-foreground font-medium text-lg md:text-xl leading-relaxed mb-0">
+              Você tem 7 dias para testar todo o nosso acervo. Se não gostar de qualquer coisa, basta nos enviar um e-mail e devolveremos cada centavo. <strong className="text-foreground">Sem burocracia, sem perguntas.</strong> O risco é todo nosso.
             </p>
           </div>
         </div>
