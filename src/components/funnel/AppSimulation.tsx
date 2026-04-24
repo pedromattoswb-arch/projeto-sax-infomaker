@@ -34,121 +34,136 @@ const scrollToOffers = () => {
 
 const AppSimulation = () => {
   return (
-    <section className="py-12 md:py-16 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
-            👀 VEJA POR DENTRO — ACERVO REAL
+    <section className="py-24 md:py-40 px-6 md:px-12 bg-section-dark relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-24">
+          <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+            Interface do Aluno
           </span>
-          <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-            Veja Como Funciona Por Dentro — É Simples Assim
+          <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+            Navegue pela plataforma <br className="hidden md:block" />
+            <span className="text-primary italic">como se fosse um App</span>
           </h2>
-          <p className="text-muted-foreground font-body text-sm md:text-base">
-            Você abre a pasta, escolhe a música, abre a partitura e dá play no playback. <strong className="text-foreground">Tudo na mesma tela, sem sair do app.</strong>
+          <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+            Uma experiência limpa, intuitiva e pensada para facilitar o seu estudo. Encontre, abra e toque — simples assim.
           </p>
         </div>
 
-        {/* Phone/Tablet mockup */}
-        <div className="max-w-md mx-auto">
-          <div className="rounded-[2rem] border-[3px] border-border glass-card shadow-2xl overflow-hidden relative">
-            {/* Simulation banner */}
-            <div className="bg-primary/90 text-primary-foreground text-center py-2 px-3 text-[11px] font-bold font-heading tracking-wide flex items-center justify-center gap-1.5">
-              🔒 SIMULAÇÃO DO ACERVO REAL — APENAS DEMONSTRAÇÃO
+        {/* Phone/Tablet mockup refined */}
+        <div className="max-w-md mx-auto relative">
+          {/* Outer glow */}
+          <div className="absolute -inset-4 bg-primary/10 blur-[40px] rounded-[3rem] pointer-events-none opacity-50" />
+          
+          <div className="rounded-[2.5rem] border-[4px] border-white/5 glass-card shadow-elite overflow-hidden relative">
+            {/* Simulation banner refined */}
+            <div className="bg-primary text-white text-center py-2.5 px-4 text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 relative z-20">
+              <Lock className="w-3.5 h-3.5" />
+              Simulação do Acervo Real
             </div>
 
-            {/* App header */}
-            <div className="bg-surface border-b border-border px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Music className="w-5 h-5 text-primary" />
-                <span className="font-heading font-bold text-sm">SaxPlay</span>
+            {/* App header refined */}
+            <div className="bg-background/80 backdrop-blur-md border-b border-white/5 px-6 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <Music className="w-5 h-5 text-primary" />
+                </div>
+                <span className="font-heading font-black text-sm tracking-tight">SaxPlay</span>
               </div>
-              <span className="text-[10px] text-muted-foreground font-body">+10.000 partituras com playback</span>
+              <div className="flex items-center gap-1.5 opacity-40">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary">Live</span>
+              </div>
             </div>
 
-            {/* Search bar mock */}
-            <div className="px-4 py-3 border-b border-border bg-surface/50">
-              <div className="flex items-center gap-2 bg-muted/50 rounded-xl px-3 py-2.5 border border-border">
+            {/* Search bar mock refined */}
+            <div className="px-6 py-5 border-b border-white/5 bg-white/5">
+              <div className="flex items-center gap-3 bg-background/50 rounded-2xl px-4 py-3 border border-white/10 shadow-soft">
                 <Search className="w-4 h-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground font-body flex-1">Buscar partituras, playbacks...</span>
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
-                  <Mic className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs text-muted-foreground/50 font-semibold tracking-wide flex-1 italic">Busque por música...</span>
+                <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/30 shadow-medium">
+                  <Mic className="w-4 h-4 text-primary" />
                 </div>
               </div>
             </div>
 
-            {/* Folders list */}
-            <div className="px-4 py-3 max-h-[360px] overflow-hidden relative bg-background/50">
-              <p className="text-[11px] font-bold text-muted-foreground font-heading uppercase tracking-wider mb-2">
-                Gêneros Musicais ({folders.length} pastas)
+            {/* Folders list refined */}
+            <div className="px-6 py-5 max-h-[380px] overflow-hidden relative">
+              <p className="text-[10px] font-black text-muted-foreground/60 font-heading uppercase tracking-[0.3em] mb-4">
+                Bibliotecas ({folders.length})
               </p>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {folders.slice(0, 8).map((folder, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 p-2.5 glass-card rounded-xl"
+                    className="flex items-center gap-4 p-3.5 glass-card rounded-2xl border-white/5 shadow-soft hover:bg-white/10 hover:border-white/10 transition-elite group cursor-default"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                      <Folder className="w-4 h-4 text-primary" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-elite">
+                      <Folder className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className="text-xs font-bold font-body block truncate">{folder.name}</span>
-                      <span className="text-[10px] text-primary font-semibold">{folder.count}+ arquivos</span>
+                      <span className="text-xs font-black font-body block truncate tracking-tight">{folder.name}</span>
+                      <span className="text-[10px] text-primary/80 font-bold uppercase tracking-widest">{folder.count}+ arquivos</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-40 group-hover:translate-x-1 transition-elite" />
                   </div>
                 ))}
               </div>
 
-              {/* Fade overlay */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+              {/* Fade overlay refined */}
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
             </div>
 
-            {/* Sample files preview */}
-            <div className="px-4 py-3 border-t border-border bg-surface/50">
-              <p className="text-[10px] font-bold text-muted-foreground font-heading uppercase tracking-wider mb-2">
-                Dentro de cada pasta: partitura + playback juntos
+            {/* Sample files preview refined */}
+            <div className="px-6 py-5 border-t border-white/5 bg-white/5">
+              <p className="text-[10px] font-black text-muted-foreground/60 font-heading uppercase tracking-[0.2em] mb-4">
+                Conteúdo da Pasta
               </p>
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 {sampleFiles.map((file, i) => (
-                  <div key={i} className="flex items-center gap-2 py-1.5">
-                    {file.type === "pdf" ? (
-                      <FileText className="w-3.5 h-3.5 text-red-400 shrink-0" />
-                    ) : (
-                      <Headphones className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                    )}
-                    <span className="text-[11px] font-body text-foreground">{file.name}</span>
+                  <div key={i} className="flex items-center gap-3 py-1 group cursor-default">
+                    <div className="p-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
+                      {file.type === "pdf" ? (
+                        <FileText className="w-4 h-4 text-red-400 shrink-0" />
+                      ) : (
+                        <Headphones className="w-4 h-4 text-blue-400 shrink-0" />
+                      )}
+                    </div>
+                    <span className="text-xs font-semibold text-foreground/80 group-hover:text-foreground transition-colors tracking-tight">{file.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Mini player bar */}
-            <div className="bg-surface border-t border-border px-4 py-2.5 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                <Play className="w-4 h-4 text-primary-foreground ml-0.5" fill="currentColor" />
+            {/* Mini player bar refined */}
+            <div className="bg-background/95 backdrop-blur-xl border-t border-white/10 px-6 py-6 flex items-center gap-4 shadow-elite">
+              <div className="w-12 h-12 rounded-[14px] bg-primary flex items-center justify-center shrink-0 shadow-gold group cursor-pointer hover:scale-110 active:scale-95 transition-elite">
+                <Play className="w-5 h-5 text-white ml-1 shadow-sm" fill="currentColor" />
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-[11px] font-bold font-body block truncate">Careless Whisper - Playback</span>
-                <div className="w-full h-1 bg-muted rounded-full mt-1">
-                  <div className="h-full w-[35%] bg-primary rounded-full" />
+                <span className="text-xs font-black font-heading block truncate tracking-tight mb-2 uppercase">Careless Whisper</span>
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-[35%] bg-primary rounded-full relative overflow-hidden">
+                    <div className="absolute inset-0 bg-white/20 animate-shimmer" />
+                  </div>
                 </div>
               </div>
-              <span className="text-[10px] text-muted-foreground">1:24</span>
+              <span className="text-[10px] font-black text-muted-foreground tabular-nums opacity-60">01:24</span>
             </div>
           </div>
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-6 font-body max-w-md mx-auto">
-          Essa é uma <strong className="text-foreground">simulação visual</strong> da plataforma real. Ao garantir seu acesso, você navega livremente por todas as pastas, partituras e playbacks.
-        </p>
-
-        <div className="text-center mt-5">
+        <div className="mt-20 text-center max-w-2xl mx-auto">
+          <p className="text-muted-foreground font-medium text-lg mb-10 leading-relaxed">
+            Tenha a biblioteca completa de um saxofonista profissional no seu bolso. Acesse de qualquer lugar, a qualquer hora.
+          </p>
           <button
             onClick={scrollToOffers}
-            className="gradient-cta text-white font-bold font-heading py-3.5 px-8 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
+            className="gradient-cta text-white font-black uppercase tracking-widest py-5 px-10 md:px-14 rounded-2xl text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-elite inline-flex items-center gap-3 animate-cta-pulse"
           >
-            QUERO ACESSAR A PLATAFORMA — ESCOLHER MEU PLANO
-            <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
+            QUERO MEU ACESSO AGORA
+            <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
           </button>
         </div>
       </div>
