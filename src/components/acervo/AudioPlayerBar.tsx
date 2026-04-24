@@ -125,9 +125,9 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
       currentId: activeFile?.id || null,
     }), [activeFile?.id, isPlaying]);
 
-    if (!activeFile) return null;
-
     const progressPct = useMemo(() => duration > 0 ? (progress / duration) * 100 : 0, [progress, duration]);
+
+    if (!activeFile) return null;
 
     // ── Minimized floating pill ──
     if (minimized) {
