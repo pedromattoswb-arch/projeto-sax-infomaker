@@ -91,90 +91,99 @@ const SalesPage = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
-      <header className="py-3 px-4 md:px-8 border-b border-border bg-surface/80 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-8 md:h-10 w-auto" />
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-primary font-bold font-heading bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
-              <Award className="w-3 h-3" />
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
+              <Award className="w-3.5 h-3.5" />
               +10.000 Partituras
             </span>
-            <div className="text-right">
-              <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
+            <div className="text-right flex flex-col items-end">
+              <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest leading-none mb-1">A partir de</span>
+              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 9,90</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* AUTHORITY BAR */}
-      <div className="bg-surface border-b border-border py-2.5 px-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-center gap-4 md:gap-8 flex-wrap">
-          <div className="flex items-center gap-1.5">
-            <Music className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+10.000 partituras com playback</span>
+      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Music className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+10.000 partituras</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 saxofonistas já compraram</span>
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Users className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+847 saxofonistas</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Infinity className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Acesso vitalício</span>
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Infinity className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">Acesso vitalício</span>
           </div>
         </div>
       </div>
 
       {/* HERO */}
-      <section className="py-10 md:py-20 px-4 md:px-8 relative">
-        {/* Subtle radial glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
-
-        <div className="max-w-3xl mx-auto text-center relative">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-1.5 mb-5">
-            <Headphones className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">
-              Plataforma exclusiva para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>
+      <section className="py-16 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        {/* Advanced radial glow */}
+        <div className="absolute top-[-10%] left-[50%] translate-x-[-50%] w-[1000px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Elite Badge */}
+          <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-5 py-2 mb-8 shadow-elite animate-fade-in-up">
+            <Headphones className="w-4 h-4 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium tracking-wide uppercase">
+              Plataforma exclusiva para <strong className="text-foreground font-bold underline decoration-primary/40 underline-offset-4">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
-          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
-            +10.000 Partituras com Playback{" "}
-            <span className="text-primary">Para Sax Alto e Sax Tenor</span>
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black font-heading leading-[1.05] mb-6 md:mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms]">
+            O Maior Acervo de Partituras <br className="hidden md:block" />
+            <span className="text-primary italic">com Playback do Brasil</span>
           </h1>
 
-          <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            Mais de <strong className="text-primary">10.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
+          <p className="text-lg md:text-xl text-muted-foreground font-medium mb-8 md:mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in-up [animation-delay:200ms]">
+            Acesse instantaneamente mais de <strong className="text-foreground">10.000 partituras profissionais</strong> com playbacks de alta fidelidade para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>.
           </p>
 
-          <SalesVideoPlayer />
-
-          <p className="text-base md:text-lg text-foreground font-body my-5 md:my-6 leading-relaxed max-w-2xl mx-auto">
-            Cada partitura vem com o <strong className="text-primary">playback profissional</strong> para você tocar junto. E tudo organizado por gênero, numa plataforma que funciona como app.
-          </p>
-
-          {/* Animated counters */}
-          <div ref={counter1.ref} className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 max-w-lg mx-auto">
-            <div className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter1.count.toLocaleString("pt-BR")}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Partituras com Playback</p>
-            </div>
-            <div ref={counter2.ref} className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter2.count}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Saxofonistas</p>
-            </div>
-            <div ref={counter3.ref} className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter3.count}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Gêneros</p>
-            </div>
+          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 shadow-elite rounded-2xl md:rounded-3xl overflow-hidden border border-white/5 p-1 md:p-2 bg-white/5">
+            <SalesVideoPlayer />
           </div>
+
+          <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
+            <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 leading-relaxed">
+              Desenvolvemos uma experiência <strong className="text-primary">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos, ouça o playback e comece a tocar imediatamente.
+            </p>
+
+            {/* Animated counters - Refined */}
+            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-14">
+              <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter1.count.toLocaleString("pt-BR")}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Partituras</p>
+              </div>
+              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter2.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Saxofonistas</p>
+              </div>
+              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter3.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Gêneros</p>
+              </div>
+            </div>
 
           {/* Bullets em grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
