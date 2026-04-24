@@ -312,8 +312,6 @@ const SongCatalog = () => {
         )}
       </div>
     </section>
-      </div>
-    </section>
   );
 };
 
