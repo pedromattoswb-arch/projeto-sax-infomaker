@@ -278,44 +278,53 @@ const SalesPage = () => {
       <AppSimulation />
 
       {/* PROVA SOCIAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,25%,6%)]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              ⭐ O QUE NOSSOS CLIENTES DIZEM
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-background relative overflow-hidden">
+        {/* Glow for section */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="inline-block glass-card text-foreground px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border-white/10 shadow-medium">
+              Comunidade SaxPlay
             </span>
-            <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Veja o Que Dizem os Saxofonistas Que Já Usam
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              O que dizem os <br className="hidden md:block" />
+              <span className="text-primary italic">nossos alunos</span>
             </h2>
-            <p className="text-muted-foreground text-sm md:text-base font-body">
-              Depoimentos reais de clientes do SaxPlay
+            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+              Junte-se a centenas de saxofonistas que transformaram sua forma de estudar e tocar.
             </p>
           </div>
 
-          {/* Authority badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          {/* Authority badges refined */}
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-20">
             {[
               { icon: Headphones, text: "+10.000 Partituras" },
-              { icon: FolderOpen, text: "+18 Gêneros Musicais" },
+              { icon: FolderOpen, text: "+18 Gêneros" },
               { icon: Users, text: "+847 Clientes" },
             ].map((badge, i) => (
-              <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
-                <badge.icon className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground">{badge.text}</span>
+              <div key={i} className="glass-card rounded-2xl px-6 py-4 flex items-center gap-3 border-white/10 shadow-medium group cursor-default">
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <badge.icon className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-sm md:text-base font-bold uppercase tracking-wider text-foreground/90">{badge.text}</span>
               </div>
             ))}
           </div>
 
-          <div className="mb-10 md:mb-12">
-            <h3 className="text-base md:text-lg font-bold text-center mb-5 md:mb-6 font-heading flex items-center justify-center gap-2">
-              🎥 Depoimentos em Vídeo
+          <div className="mb-24">
+            <h3 className="text-xl md:text-2xl font-black text-center mb-10 font-heading flex items-center justify-center gap-3">
+              <Video className="w-6 h-6 text-primary" />
+              Depoimentos em Vídeo
             </h3>
-            <VideoTestimonialCarousel />
+            <div className="shadow-elite rounded-[32px] overflow-hidden p-2 bg-white/5 border border-white/5">
+              <VideoTestimonialCarousel />
+            </div>
           </div>
 
           <div>
-            <h3 className="text-xs md:text-sm font-semibold text-center mb-3 md:mb-4 font-heading text-muted-foreground uppercase tracking-wide">
-              Mais depoimentos
+            <h3 className="text-[11px] font-black text-center mb-10 font-heading text-muted-foreground uppercase tracking-[0.3em]">
+              Feedbacks da Comunidade
             </h3>
             <TestimonialCarousel />
           </div>
