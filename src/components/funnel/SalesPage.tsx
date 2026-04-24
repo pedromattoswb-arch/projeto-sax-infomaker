@@ -371,32 +371,42 @@ const SalesPage = () => {
       <FAQ />
 
       {/* CTA FINAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_85%_50%/0.05)_0%,transparent_60%)] pointer-events-none" />
-        <div className="max-w-2xl mx-auto text-center relative">
-          <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 md:mb-3">
-            Neste exato momento, alguém está abrindo a plataforma e tocando a música que ama.
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_85%_50%/0.08)_0%,transparent_60%)] pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black font-heading mb-10 tracking-tighter leading-[1.1]">
+            Transforme sua forma de tocar saxofone <br className="hidden md:block" />
+            <span className="text-primary italic">ainda hoje.</span>
           </h2>
-          <p className="text-lg md:text-xl font-bold font-heading text-primary mb-3">
-            E você?
+          
+          <p className="text-xl md:text-2xl font-bold font-heading text-primary mb-8 tracking-wide uppercase">
+            A decisão está em suas mãos.
           </p>
-          <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 9,90.
+          
+          <p className="text-muted-foreground font-medium text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma estilo Netflix. Acesso vitalício por apenas <strong className="text-foreground">R$ 9,90</strong>.
           </p>
 
-          <div className="block">
+          <div className="flex flex-col items-center gap-8">
             <button
               onClick={scrollToOffers}
-              className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
             >
               QUERO MEU ACESSO AGORA
-              <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
+              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
             </button>
+            
+            <p className="text-sm text-muted-foreground font-medium tracking-wide flex items-center justify-center gap-3 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+                <Lock className="w-4 h-4 text-primary" />
+                <span>Pagamento 100% Seguro</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+                <BadgeCheck className="w-4 h-4 text-primary" />
+                <span>Garantia de 7 Dias</span>
+              </div>
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
-            <Lock className="w-3.5 h-3.5" />
-            Pagamento seguro via Cakto • Garantia de 7 dias
-          </p>
         </div>
       </section>
 
