@@ -185,34 +185,41 @@ const SalesPage = () => {
               </div>
             </div>
 
-          {/* Bullets em grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
+          </div>
+
+          {/* Bullets em grid - Refined */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 md:mb-14 max-w-2xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
             {[
-              { icon: Headphones, text: "+10.000 partituras com playback — toque junto" },
-              { icon: Smartphone, text: "Plataforma estilo app — celular, tablet ou PC" },
-              { icon: Mic, text: "Busca por voz — fale e encontre na hora" },
-              { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
-              { icon: BookOpen, text: "Material de estudo: rotina e tonalidades" },
-              { icon: Zap, text: "Acesso imediato — comece em 2 minutos" },
+              { icon: Headphones, text: "+10.000 partituras com playback" },
+              { icon: Smartphone, text: "Plataforma estilo app (Web App)" },
+              { icon: Mic, text: "Busca por voz inteligente" },
+              { icon: Video, text: "Vídeos tutoriais integrados" },
+              { icon: BookOpen, text: "Material de estudo exclusivo" },
+              { icon: Zap, text: "Acesso vitalício e imediato" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3 glass-card rounded-lg px-3 py-2.5">
-                <item.icon className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-[13px] md:text-sm font-medium font-body text-foreground">{item.text}</span>
+              <div key={i} className="flex items-center gap-4 glass-card rounded-2xl px-5 py-4 hover:border-primary/30 group">
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <item.icon className="w-5 h-5 text-primary shrink-0" />
+                </div>
+                <span className="text-[14px] md:text-base font-semibold text-foreground/90">{item.text}</span>
               </div>
             ))}
           </div>
 
-          <button
-            onClick={scrollToOffers}
-            className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
-          >
-            QUERO COMEÇAR A TOCAR AGORA
-            <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
-          </button>
+          <div className="animate-fade-in-up [animation-delay:600ms]">
+            <button
+              onClick={scrollToOffers}
+              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
+            >
+              QUERO MEU ACESSO AGORA
+              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
+            </button>
 
-          <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único • Garantia de 7 dias
-          </p>
+            <p className="text-sm text-muted-foreground mt-6 font-medium tracking-wide flex items-center justify-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-primary" />
+              Pagamento único • 7 dias de garantia incondicional
+            </p>
+          </div>
         </div>
       </section>
 
