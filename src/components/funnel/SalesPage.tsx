@@ -32,7 +32,7 @@ import PricingCards from "./PricingCards";
 import BonusSection from "./BonusSection";
 import SongCatalog from "./SongCatalog";
 import FAQ from "./FAQ";
-import WhatsAppButton from "./WhatsAppButton";
+
 import PartituraCarousel from "./PartituraCarousel";
 import PlaybackSamples from "./PlaybackSamples";
 import AppSimulation from "./AppSimulation";
@@ -402,7 +402,6 @@ const SalesPage = () => {
       </div>
 
       <div className="h-14 md:hidden" />
-      <WhatsAppButton />
     </div>
   );
 };
