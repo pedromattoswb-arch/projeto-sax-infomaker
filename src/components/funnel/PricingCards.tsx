@@ -46,60 +46,64 @@ const PricingCards = () => {
   };
 
   return (
-    <section className="py-16 px-4 md:px-8" id="ofertas">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-4">
-          <h2 className="text-2xl md:text-3xl font-bold font-heading mb-2">
-            Escolha Seu Plano e Comece a Tocar Agora
+    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden" id="ofertas">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-24">
+          <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+            Investimento
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+            Escolha o plano ideal para <br className="hidden md:block" />
+            <span className="text-primary italic">sua evolução</span>
           </h2>
-          <p className="text-foreground font-body text-base md:text-lg">
-            Pagamento único. Acesso vitalício. Garantia de 7 dias.
+          <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+            Pagamento único, acesso vitalício e garantia total de 7 dias. Comece a tocar agora mesmo.
           </p>
         </div>
 
-
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl mx-auto">
           {/* BASIC CARD */}
-          <div className="glass-card rounded-2xl shadow-lg p-6 md:p-8 relative">
-            <div className="mb-6">
-              <span className="inline-block bg-foreground/5 text-muted-foreground px-3 py-1 rounded-full text-xs font-bold font-heading mb-3 border border-border">
-                Para começar
+          <div className="glass-card rounded-[32px] shadow-medium p-8 md:p-12 relative border-white/5 hover:border-white/10">
+            <div className="mb-10">
+              <span className="inline-block bg-white/5 text-muted-foreground px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 border border-white/10">
+                Essencial
               </span>
-              <h3 className="text-xl font-bold font-heading mb-1">Básico</h3>
-              <p className="text-muted-foreground text-sm md:text-base font-body">
-                Partituras em PDF — sem playback
+              <h3 className="text-2xl font-black font-heading mb-2 tracking-tight">Plano Básico</h3>
+              <p className="text-muted-foreground text-base font-medium">
+                Ideal para quem busca apenas o repertório em PDF.
               </p>
             </div>
 
-            <div className="mb-6">
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold font-heading">R$ 9</span>
-                <span className="text-xl font-bold font-heading">,90</span>
+            <div className="mb-10">
+              <div className="flex items-baseline gap-1.5 mb-1">
+                <span className="text-5xl font-black font-heading tracking-tighter">R$ 9,90</span>
               </div>
-              <span className="text-xs text-muted-foreground font-semibold font-body">Pagamento único • Acesso vitalício</span>
+              <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
             </div>
 
-            <div className="flex items-center gap-2 glass-card rounded-lg px-3 py-2 mb-6">
-              <Zap className="w-4 h-4 text-muted-foreground shrink-0" />
-              <span className="text-xs font-semibold font-body text-muted-foreground">Acesso imediato após o pagamento</span>
+            <div className="flex items-center gap-3 glass-card rounded-2xl px-5 py-3 mb-10 border-white/5 shadow-soft">
+              <Zap className="w-5 h-5 text-muted-foreground shrink-0" />
+              <span className="text-[13px] font-bold text-muted-foreground/80">Acesso imediato liberado</span>
             </div>
 
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 font-heading">Incluso</p>
-            <ul className="space-y-2.5 mb-6">
+            <p className="text-[11px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-6">O que está incluso</p>
+            <ul className="space-y-4 mb-10">
               {essentialHas.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm md:text-base font-body text-foreground">
-                  <Check className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <li key={i} className="flex items-start gap-4 text-base font-semibold text-foreground/90 group">
+                  <div className="p-1 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                    <Check className="w-4 h-4 text-muted-foreground" />
+                  </div>
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="border-t border-border pt-4 mb-8">
-              <p className="text-xs font-bold text-muted-foreground/50 uppercase tracking-wider mb-3 font-heading">Não incluso neste plano</p>
-              <ul className="space-y-2.5">
+            <div className="border-t border-white/5 pt-8 mb-10">
+              <p className="text-[11px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] mb-6 font-heading">Não incluso</p>
+              <ul className="space-y-4">
                 {essentialMissing.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm font-body text-muted-foreground/60">
-                    <X className="w-4 h-4 text-destructive/60 mt-0.5 shrink-0" />
+                  <li key={i} className="flex items-start gap-4 text-sm font-medium text-muted-foreground/40">
+                    <X className="w-4 h-4 text-destructive/40 mt-0.5 shrink-0" />
                     <span className="line-through">{feature}</span>
                   </li>
                 ))}
@@ -108,7 +112,7 @@ const PricingCards = () => {
 
             <button
               onClick={() => handleCheckout("essential")}
-              className="w-full py-3.5 rounded-xl bg-[hsl(142,55%,38%)] border border-[hsl(142,50%,45%)]/30 text-white font-bold font-heading text-sm hover:bg-[hsl(142,55%,42%)] transition-all duration-300"
+              className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-sm hover:bg-white/10 hover:border-white/20 transition-elite"
             >
               GARANTIR ACESSO BÁSICO
             </button>
@@ -116,96 +120,85 @@ const PricingCards = () => {
 
           {/* PREMIUM CARD */}
           <div className="relative md:scale-[1.05] origin-top">
-            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-primary via-accent to-gold opacity-30 blur-sm" />
-            <div className="glass-card rounded-2xl border border-primary/30 shadow-gold-lg p-6 md:p-8 relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                <span className="gradient-gold text-accent-foreground px-5 py-1.5 rounded-full text-xs font-bold font-heading flex items-center gap-1.5 shadow-gold whitespace-nowrap animate-glow-pulse">
-                  <Crown className="w-3.5 h-3.5" />
-                  MAIS ESCOLHIDO
+            {/* Elite Glow Effect */}
+            <div className="absolute -inset-[2px] rounded-[34px] bg-gradient-to-br from-primary via-gold to-primary opacity-40 blur-md animate-glow-pulse" />
+            
+            <div className="glass-card rounded-[32px] border-primary/30 shadow-elite p-8 md:p-12 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] rounded-full pointer-events-none" />
+              
+              <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                <span className="gradient-gold text-white px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] flex items-center gap-2 shadow-gold whitespace-nowrap animate-glow-pulse border border-white/20">
+                  <Crown className="w-4 h-4" />
+                  Mais Completo
                 </span>
               </div>
 
-              <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 animate-shimmer rounded-2xl" />
+              <div className="absolute inset-0 rounded-[32px] overflow-hidden pointer-events-none">
+                <div className="absolute inset-0 animate-shimmer rounded-[32px]" />
               </div>
 
-              <div className="mb-6 relative pt-2">
-                <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full text-xs font-bold font-heading mb-3 border border-primary/30">
-                  <Sparkles className="w-3 h-3 inline mr-1" />
-                  Melhor custo-benefício
+              <div className="mb-10 relative pt-12">
+                <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 border border-primary/30">
+                  <Sparkles className="w-3.5 h-3.5 inline mr-1.5" />
+                  Premium Experience
                 </span>
-                <h3 className="text-xl font-bold font-heading mb-1">Completo</h3>
-                <p className="text-muted-foreground text-sm font-body">
-                  Partituras + Playbacks + Tudo Incluso
+                <h3 className="text-2xl md:text-3xl font-black font-heading mb-2 tracking-tight">Plano Completo</h3>
+                <p className="text-muted-foreground text-base font-medium">
+                  A experiência definitiva para saxofonistas.
                 </p>
               </div>
 
-              <div className="mb-6">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold font-heading text-gold">R$ 19</span>
-                  <span className="text-xl font-bold font-heading text-gold">,90</span>
+              <div className="mb-10 relative">
+                <div className="flex items-baseline gap-1.5 mb-1">
+                  <span className="text-5xl md:text-6xl font-black font-heading text-gold tracking-tighter">R$ 19,90</span>
                 </div>
-                <span className="text-xs text-gold font-semibold font-body">Pagamento único • Acesso vitalício</span>
+                <span className="text-xs text-gold font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
               </div>
 
-              <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 mb-6">
-                <Zap className="w-4 h-4 text-gold shrink-0" />
-                <span className="text-xs font-semibold font-body text-gold">Acesso imediato + bônus liberados na hora</span>
+              <div className="flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-2xl px-5 py-4 mb-10 shadow-soft">
+                <Zap className="w-5 h-5 text-gold shrink-0 animate-pulse" />
+                <span className="text-[13px] font-bold text-gold">Acesso imediato + Todos os bônus</span>
               </div>
 
-              {/* Micro testimonial */}
-              <div className="glass-card rounded-lg px-3 py-2 mb-5 flex items-center gap-2">
-                <div className="flex -space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-primary text-primary" />
-                  ))}
-                </div>
-                <span className="text-[11px] text-foreground font-body italic">
-                  "Melhor investimento que fiz pro meu sax" — Júlio S., SP
-                </span>
-              </div>
-
-              <p className="text-xs font-bold text-gold/60 uppercase tracking-wider mb-3 font-heading">Tudo incluído</p>
-              <ul className="space-y-2.5 mb-6">
+              <p className="text-[11px] font-black text-gold/60 uppercase tracking-[0.2em] mb-6">Incluso no Premium</p>
+              <ul className="space-y-4 mb-10">
                 {premiumFeatures.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-sm md:text-base font-body ${
-                      feature.highlight ? "font-bold text-primary" : 
-                      feature.bonus ? "text-gold font-semibold" : 
-                      "text-foreground"
+                    className={`flex items-start gap-4 text-base font-bold transition-elite group ${
+                      feature.highlight ? "text-primary scale-[1.02]" : 
+                      feature.bonus ? "text-gold" : 
+                      "text-foreground/90"
                     }`}
                   >
-                    {feature.bonus ? (
-                      <Star className="w-4 h-4 text-gold mt-0.5 shrink-0 fill-gold" />
-                    ) : (
-                      <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                    )}
+                    <div className={`p-1 rounded-full ${feature.highlight || feature.bonus ? "bg-primary/20" : "bg-white/5"} group-hover:bg-primary/30 transition-colors`}>
+                      {feature.bonus ? (
+                        <Star className="w-4 h-4 text-gold fill-gold" />
+                      ) : (
+                        <Check className="w-4 h-4 text-primary" />
+                      )}
+                    </div>
                     <span>{feature.text}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="bg-gold/10 border border-gold/20 rounded-xl p-3 mb-6">
-                <p className="text-sm font-semibold font-body text-center text-foreground">
-                  💡 Por apenas R$ 10 a mais você recebe os <strong className="text-gold">playbacks profissionais</strong>, busca por voz, tutoriais e 3 bônus exclusivos.
+              <div className="bg-gold/5 border border-gold/10 rounded-2xl p-5 mb-10 backdrop-blur-sm">
+                <p className="text-sm font-bold leading-relaxed text-center text-foreground/80">
+                  💡 Por apenas R$ 10 a mais você desbloqueia <strong className="text-gold">tudo</strong>: playbacks profissionais, busca por voz e bônus.
                 </p>
               </div>
 
-              <p className="text-center text-xs text-muted-foreground mb-4 font-body">
-                Menos que o preço de uma palheta — e você leva <strong className="text-foreground">+10.000 partituras com playback</strong> pra vida toda
-              </p>
-
               <button
                 onClick={() => handleCheckout("premium")}
-                className="w-full py-4 rounded-xl gradient-cta text-white font-bold font-heading text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.02] transition-all duration-300 animate-cta-pulse flex items-center justify-center gap-2"
+                className="w-full py-5 rounded-2xl gradient-cta text-white font-black uppercase tracking-widest text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-elite animate-cta-pulse flex items-center justify-center gap-3"
               >
-                SIM! QUERO MEU ACESSO AGORA
-                <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
+                QUERO O PLANO COMPLETO
+                <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
               </button>
 
-              <p className="text-center text-xs text-muted-foreground mt-3 font-body">
-                🔒 Pagamento seguro • Acesso imediato
+              <p className="text-center text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-6 opacity-60">
+                🔒 Checkout 100% Criptografado
               </p>
             </div>
           </div>

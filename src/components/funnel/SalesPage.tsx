@@ -91,119 +91,135 @@ const SalesPage = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
-      <header className="py-3 px-4 md:px-8 border-b border-border bg-surface/80 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-8 md:h-10 w-auto" />
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-primary font-bold font-heading bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
-              <Award className="w-3 h-3" />
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
+              <Award className="w-3.5 h-3.5" />
               +10.000 Partituras
             </span>
-            <div className="text-right">
-              <span className="text-xs text-muted-foreground font-body block leading-tight">A partir de</span>
-              <span className="text-lg md:text-xl font-extrabold text-primary font-heading">R$ 9,90</span>
+            <div className="text-right flex flex-col items-end">
+              <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest leading-none mb-1">A partir de</span>
+              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 9,90</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* AUTHORITY BAR */}
-      <div className="bg-surface border-b border-border py-2.5 px-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-center gap-4 md:gap-8 flex-wrap">
-          <div className="flex items-center gap-1.5">
-            <Music className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+10.000 partituras com playback</span>
+      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Music className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+10.000 partituras</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">+847 saxofonistas já compraram</span>
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Users className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+847 saxofonistas</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Infinity className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">Acesso vitalício</span>
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Infinity className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">Acesso vitalício</span>
           </div>
         </div>
       </div>
 
       {/* HERO */}
-      <section className="py-10 md:py-20 px-4 md:px-8 relative">
-        {/* Subtle radial glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
-
-        <div className="max-w-3xl mx-auto text-center relative">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-1.5 mb-5">
-            <Headphones className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-body">
-              Plataforma exclusiva para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>
+      <section className="py-16 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        {/* Advanced radial glow */}
+        <div className="absolute top-[-10%] left-[50%] translate-x-[-50%] w-[1000px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Elite Badge */}
+          <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-5 py-2 mb-8 shadow-elite animate-fade-in-up">
+            <Headphones className="w-4 h-4 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium tracking-wide uppercase">
+              Plataforma exclusiva para <strong className="text-foreground font-bold underline decoration-primary/40 underline-offset-4">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
-          <h1 className="text-[26px] md:text-4xl lg:text-5xl font-extrabold font-heading leading-[1.2] mb-4 md:mb-5">
-            +10.000 Partituras com Playback{" "}
-            <span className="text-primary">Para Sax Alto e Sax Tenor</span>
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black font-heading leading-[1.05] mb-6 md:mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms]">
+            O Maior Acervo de Partituras <br className="hidden md:block" />
+            <span className="text-primary italic">com Playback do Brasil</span>
           </h1>
 
-          <p className="text-base md:text-lg text-foreground font-body mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
-            Mais de <strong className="text-primary">10.000 partituras com playback acompanhando</strong>, organizadas por gênero, para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>. Acesse pelo celular, tablet ou PC.
+          <p className="text-lg md:text-xl text-muted-foreground font-medium mb-8 md:mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in-up [animation-delay:200ms]">
+            Acesse instantaneamente mais de <strong className="text-foreground">10.000 partituras profissionais</strong> com playbacks de alta fidelidade para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>.
           </p>
 
-          <SalesVideoPlayer />
-
-          <p className="text-base md:text-lg text-foreground font-body my-5 md:my-6 leading-relaxed max-w-2xl mx-auto">
-            Cada partitura vem com o <strong className="text-primary">playback profissional</strong> para você tocar junto. E tudo organizado por gênero, numa plataforma que funciona como app.
-          </p>
-
-          {/* Animated counters */}
-          <div ref={counter1.ref} className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 max-w-lg mx-auto">
-            <div className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter1.count.toLocaleString("pt-BR")}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Partituras com Playback</p>
-            </div>
-            <div ref={counter2.ref} className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter2.count}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Saxofonistas</p>
-            </div>
-            <div ref={counter3.ref} className="glass-card rounded-xl p-3 md:p-4 text-center">
-              <span className="text-xl md:text-3xl font-extrabold font-heading text-primary tabular-nums">
-                {counter3.count}+
-              </span>
-              <p className="text-[10px] md:text-xs text-muted-foreground font-body mt-0.5">Gêneros</p>
-            </div>
+          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 shadow-elite rounded-2xl md:rounded-3xl overflow-hidden border border-white/5 p-1 md:p-2 bg-white/5">
+            <SalesVideoPlayer />
           </div>
 
-          {/* Bullets em grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mb-8 md:mb-10 max-w-xl mx-auto text-left">
+          <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
+            <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 leading-relaxed">
+              Desenvolvemos uma experiência <strong className="text-primary">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos, ouça o playback e comece a tocar imediatamente.
+            </p>
+
+            {/* Animated counters - Refined */}
+            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-14">
+              <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter1.count.toLocaleString("pt-BR")}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Partituras</p>
+              </div>
+              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter2.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Saxofonistas</p>
+              </div>
+              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter3.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Gêneros</p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bullets em grid - Refined */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 md:mb-14 max-w-2xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
             {[
-              { icon: Headphones, text: "+10.000 partituras com playback — toque junto" },
-              { icon: Smartphone, text: "Plataforma estilo app — celular, tablet ou PC" },
-              { icon: Mic, text: "Busca por voz — fale e encontre na hora" },
-              { icon: Video, text: "Vídeos tutoriais dentro da plataforma" },
-              { icon: BookOpen, text: "Material de estudo: rotina e tonalidades" },
-              { icon: Zap, text: "Acesso imediato — comece em 2 minutos" },
+              { icon: Headphones, text: "+10.000 partituras com playback" },
+              { icon: Smartphone, text: "Plataforma estilo app (Web App)" },
+              { icon: Mic, text: "Busca por voz inteligente" },
+              { icon: Video, text: "Vídeos tutoriais integrados" },
+              { icon: BookOpen, text: "Material de estudo exclusivo" },
+              { icon: Zap, text: "Acesso vitalício e imediato" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3 glass-card rounded-lg px-3 py-2.5">
-                <item.icon className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-[13px] md:text-sm font-medium font-body text-foreground">{item.text}</span>
+              <div key={i} className="flex items-center gap-4 glass-card rounded-2xl px-5 py-4 hover:border-primary/30 group">
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <item.icon className="w-5 h-5 text-primary shrink-0" />
+                </div>
+                <span className="text-[14px] md:text-base font-semibold text-foreground/90">{item.text}</span>
               </div>
             ))}
           </div>
 
-          <button
-            onClick={scrollToOffers}
-            className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
-          >
-            QUERO COMEÇAR A TOCAR AGORA
-            <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
-          </button>
+          <div className="animate-fade-in-up [animation-delay:600ms]">
+            <button
+              onClick={scrollToOffers}
+              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
+            >
+              QUERO MEU ACESSO AGORA
+              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
+            </button>
 
-          <p className="text-xs text-muted-foreground mt-3 md:mt-4 font-body">
-            A partir de <strong className="text-primary">R$ 9,90</strong> — pagamento único • Garantia de 7 dias
-          </p>
+            <p className="text-sm text-muted-foreground mt-6 font-medium tracking-wide flex items-center justify-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-primary" />
+              Pagamento único • 7 dias de garantia incondicional
+            </p>
+          </div>
         </div>
       </section>
 
@@ -214,35 +230,44 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
-              🏆 PLATAFORMA COMPLETA PARA SAX ALTO E SAX TENOR
+      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+              Ecossistema Completo
             </span>
-            <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Veja TUDO Que Você Recebe ao Garantir Seu Acesso
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              Tudo o que você precisa em <br className="hidden md:block" />
+              <span className="text-primary italic">um único lugar</span>
             </h2>
-            <p className="text-foreground font-body text-base md:text-lg">
-              +10.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
+            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O SaxPlay é a sua nova estação de estudos.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {features.map((f, i) => (
               <div
                 key={i}
-                className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 hover:bg-surface/80 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+                className="glass-card rounded-[24px] p-8 hover:-translate-y-2 transition-elite group relative overflow-hidden shadow-medium hover:shadow-elite border-white/5 hover:border-white/10"
               >
-                {/* Metric badge */}
-                <span className="absolute top-3 right-3 text-[10px] font-bold font-heading text-primary/60 bg-primary/5 px-2 py-0.5 rounded-full border border-primary/10">
-                  {f.metric}
-                </span>
-                <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
-                  <f.icon className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+                {/* Metric badge refined */}
+                <div className="absolute top-6 right-6 flex items-center gap-1.5 opacity-40 group-hover:opacity-100 transition-opacity">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[10px] font-black font-heading text-primary uppercase tracking-widest">
+                    {f.metric}
+                  </span>
                 </div>
-                <h3 className="font-bold font-heading text-[13px] md:text-base mb-0.5 md:mb-1">{f.title}</h3>
-                <p className="text-muted-foreground text-sm md:text-base font-body leading-snug">{f.description}</p>
+                
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-3 transition-elite">
+                  <f.icon className="w-7 h-7 text-primary" />
+                </div>
+                
+                <h3 className="font-black font-heading text-lg md:text-xl mb-3 tracking-tight">{f.title}</h3>
+                <p className="text-muted-foreground text-base font-medium leading-relaxed">{f.description}</p>
               </div>
             ))}
           </div>
@@ -253,44 +278,53 @@ const SalesPage = () => {
       <AppSimulation />
 
       {/* PROVA SOCIAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 bg-[hsl(220,25%,6%)]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block glass-card text-foreground px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3">
-              ⭐ O QUE NOSSOS CLIENTES DIZEM
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-background relative overflow-hidden">
+        {/* Glow for section */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="inline-block glass-card text-foreground px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border-white/10 shadow-medium">
+              Comunidade SaxPlay
             </span>
-            <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Veja o Que Dizem os Saxofonistas Que Já Usam
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              O que dizem os <br className="hidden md:block" />
+              <span className="text-primary italic">nossos alunos</span>
             </h2>
-            <p className="text-muted-foreground text-sm md:text-base font-body">
-              Depoimentos reais de clientes do SaxPlay
+            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+              Junte-se a centenas de saxofonistas que transformaram sua forma de estudar e tocar.
             </p>
           </div>
 
-          {/* Authority badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          {/* Authority badges refined */}
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-20">
             {[
               { icon: Headphones, text: "+10.000 Partituras" },
-              { icon: FolderOpen, text: "+18 Gêneros Musicais" },
+              { icon: FolderOpen, text: "+18 Gêneros" },
               { icon: Users, text: "+847 Clientes" },
             ].map((badge, i) => (
-              <div key={i} className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
-                <badge.icon className="w-3.5 h-3.5 text-primary" />
-                <span className="text-[11px] md:text-xs font-semibold font-body text-foreground">{badge.text}</span>
+              <div key={i} className="glass-card rounded-2xl px-6 py-4 flex items-center gap-3 border-white/10 shadow-medium group cursor-default">
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <badge.icon className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-sm md:text-base font-bold uppercase tracking-wider text-foreground/90">{badge.text}</span>
               </div>
             ))}
           </div>
 
-          <div className="mb-10 md:mb-12">
-            <h3 className="text-base md:text-lg font-bold text-center mb-5 md:mb-6 font-heading flex items-center justify-center gap-2">
-              🎥 Depoimentos em Vídeo
+          <div className="mb-24">
+            <h3 className="text-xl md:text-2xl font-black text-center mb-10 font-heading flex items-center justify-center gap-3">
+              <Video className="w-6 h-6 text-primary" />
+              Depoimentos em Vídeo
             </h3>
-            <VideoTestimonialCarousel />
+            <div className="shadow-elite rounded-[32px] overflow-hidden p-2 bg-white/5 border border-white/5">
+              <VideoTestimonialCarousel />
+            </div>
           </div>
 
           <div>
-            <h3 className="text-xs md:text-sm font-semibold text-center mb-3 md:mb-4 font-heading text-muted-foreground uppercase tracking-wide">
-              Mais depoimentos
+            <h3 className="text-[11px] font-black text-center mb-10 font-heading text-muted-foreground uppercase tracking-[0.3em]">
+              Feedbacks da Comunidade
             </h3>
             <TestimonialCarousel />
           </div>
@@ -307,23 +341,27 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-12 md:py-16 px-4 md:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(142_70%_45%/0.08)_0%,transparent_70%)] pointer-events-none" />
-        <div className="max-w-2xl mx-auto text-center relative">
-          <div className="glow-border rounded-2xl p-8 md:p-12">
-            <img
-              src="/selo-garantia.png"
-              alt="Selo de Garantia de 7 Dias"
-              className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4 md:mb-5 drop-shadow-lg"
-              loading="lazy"
-              width={144}
-              height={144}
-            />
-            <h2 className="text-[22px] md:text-2xl font-bold font-heading mb-2 md:mb-3">
-              7 Dias de Garantia Total
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-section-dark">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
+            <div className="relative inline-block mb-10 md:mb-14">
+              <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
+              <img
+                src="/selo-garantia.png"
+                alt="Selo de Garantia de 7 Dias"
+                className="w-32 h-32 md:w-44 md:h-44 relative z-10 drop-shadow-2xl animate-glow-pulse"
+                loading="lazy"
+                width={176}
+                height={176}
+              />
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              Sua Satisfação ou <br className="hidden md:block" />
+              <span className="text-primary italic">100% do Dinheiro de Volta</span>
             </h2>
-            <p className="text-foreground font-body text-base md:text-lg leading-relaxed">
-              Se em 7 dias você não sentir que valeu cada centavo, a gente devolve <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas. Sem complicação. O risco é todo nosso.
+            <p className="text-muted-foreground font-medium text-lg md:text-xl leading-relaxed mb-0">
+              Você tem 7 dias para testar todo o nosso acervo. Se não gostar de qualquer coisa, basta nos enviar um e-mail e devolveremos cada centavo. <strong className="text-foreground">Sem burocracia, sem perguntas.</strong> O risco é todo nosso.
             </p>
           </div>
         </div>
@@ -333,32 +371,42 @@ const SalesPage = () => {
       <FAQ />
 
       {/* CTA FINAL */}
-      <section className="py-12 md:py-16 px-4 md:px-8 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_85%_50%/0.05)_0%,transparent_60%)] pointer-events-none" />
-        <div className="max-w-2xl mx-auto text-center relative">
-          <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2 md:mb-3">
-            Neste exato momento, alguém está abrindo a plataforma e tocando a música que ama.
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_85%_50%/0.08)_0%,transparent_60%)] pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black font-heading mb-10 tracking-tighter leading-[1.1]">
+            Transforme sua forma de tocar saxofone <br className="hidden md:block" />
+            <span className="text-primary italic">ainda hoje.</span>
           </h2>
-          <p className="text-lg md:text-xl font-bold font-heading text-primary mb-3">
-            E você?
+          
+          <p className="text-xl md:text-2xl font-bold font-heading text-primary mb-8 tracking-wide uppercase">
+            A decisão está em suas mãos.
           </p>
-          <p className="text-foreground font-body text-base md:text-lg mb-3 md:mb-4">
-            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma que funciona como app. Para Sax Alto e Sax Tenor. Acesso vitalício. Garantia de 7 dias. A partir de R$ 9,90.
+          
+          <p className="text-muted-foreground font-medium text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma estilo Netflix. Acesso vitalício por apenas <strong className="text-foreground">R$ 9,90</strong>.
           </p>
 
-          <div className="block">
+          <div className="flex flex-col items-center gap-8">
             <button
               onClick={scrollToOffers}
-              className="gradient-cta text-white font-bold font-heading py-4 px-8 md:px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
+              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
             >
               QUERO MEU ACESSO AGORA
-              <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
+              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
             </button>
+            
+            <p className="text-sm text-muted-foreground font-medium tracking-wide flex items-center justify-center gap-3 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+                <Lock className="w-4 h-4 text-primary" />
+                <span>Pagamento 100% Seguro</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+                <BadgeCheck className="w-4 h-4 text-primary" />
+                <span>Garantia de 7 Dias</span>
+              </div>
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground mt-3 font-body flex items-center justify-center gap-1.5 flex-wrap">
-            <Lock className="w-3.5 h-3.5" />
-            Pagamento seguro via Cakto • Garantia de 7 dias
-          </p>
         </div>
       </section>
 
