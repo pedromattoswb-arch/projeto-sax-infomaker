@@ -290,4 +290,4 @@ const AudioPlayerBar = forwardRef<AudioPlayerHandle, AudioPlayerBarProps>(
 );
 
 AudioPlayerBar.displayName = "AudioPlayerBar";
-export default AudioPlayerBar;
+export default React.memo(AudioPlayerBar);
