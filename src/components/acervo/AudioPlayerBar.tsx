@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef } from "react";
+import React, { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef, useMemo } from "react";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2, ChevronDown, ChevronUp, Minimize2 } from "lucide-react";
 import type { DriveFile } from "@/hooks/useDriveFiles";
 
