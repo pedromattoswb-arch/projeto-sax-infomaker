@@ -162,108 +162,122 @@ const SongCatalog = () => {
   const totalVisible = visibleGenres.reduce((sum, g) => sum + g.songs.length, 0);
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-8">
-          <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
-            🎵 ACERVO REAL — PARA SAX ALTO E SAX TENOR
+    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-24">
+          <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+            Transparência Total
           </span>
-          <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-            Procure Sua Música Favorita no Acervo
+          <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+            Explore o nosso <br className="hidden md:block" />
+            <span className="text-primary italic">acervo real</span>
           </h2>
-          <p className="text-muted-foreground font-body text-sm md:text-base">
-            Se ela está aqui, você já pode tocar com <strong className="text-primary">partitura + playback profissional</strong>
+          <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+            Não vendemos promessas. Pesquise sua música favorita e comprove que ela está esperando por você.
           </p>
         </div>
 
-        {/* Search bar */}
-        <div className="max-w-md mx-auto mb-8">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => handleSearch(e.target.value)}
-              placeholder="Procure uma música no acervo..."
-              className="w-full bg-surface/60 border border-border rounded-xl pl-9 pr-9 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 transition-all"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => { setSearchQuery(""); setSearchResults([]); setHasSearched(false); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+        {/* Search bar refined */}
+        <div className="max-w-xl mx-auto mb-20">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-gold/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-elite" />
+            <div className="relative">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => handleSearch(e.target.value)}
+                placeholder="Pesquise por música, artista ou gênero..."
+                className="w-full bg-background/80 border border-white/10 rounded-2xl pl-14 pr-14 py-5 text-base font-semibold text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 backdrop-blur-xl transition-elite shadow-medium"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => { setSearchQuery(""); setSearchResults([]); setHasSearched(false); }}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Search results */}
+          {/* Search results refined */}
           {(searching || hasSearched) && searchQuery.length >= 2 && (
-            <div className="mt-3 glass-card rounded-xl p-4 animate-fade-in">
+            <div className="mt-6 glass-card rounded-[24px] p-6 shadow-elite border-primary/20 animate-fade-in-up">
               {searching ? (
-                <div className="flex items-center justify-center gap-2 py-2">
-                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
-                  <span className="text-xs text-muted-foreground font-body">Buscando no acervo...</span>
+                <div className="flex items-center justify-center gap-3 py-8">
+                  <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                  <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Consultando acervo...</span>
                 </div>
               ) : searchResults.length > 0 ? (
                 <div>
-                  <p className="text-xs text-foreground font-body mb-3 font-semibold">
-                    ✅ Essa música está no acervo! Garanta seu acesso e toque agora
-                  </p>
-                  <div className="space-y-1.5 mb-4">
+                  <div className="flex items-center gap-3 mb-6 p-4 bg-primary/10 rounded-xl border border-primary/20">
+                    <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                    <p className="text-sm text-foreground font-bold">
+                      Encontrada! Esta música está disponível para você tocar agora.
+                    </p>
+                  </div>
+                  <div className="grid gap-2 mb-8">
                     {searchResults.map((r, i) => (
-                      <div key={i} className="flex items-center gap-2 py-1">
-                        <Lock className="w-3 h-3 text-primary/50 shrink-0" />
-                        <span className="text-xs font-body text-muted-foreground truncate">{r.name}</span>
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                        <Music className="w-4 h-4 text-primary shrink-0 opacity-60" />
+                        <span className="text-sm font-semibold text-muted-foreground truncate uppercase tracking-wide">{r.name}</span>
                       </div>
                     ))}
                   </div>
                   <button
                     onClick={scrollToOffers}
-                    className="w-full gradient-cta text-white font-bold font-heading py-3 rounded-xl text-xs shadow-cta hover:shadow-cta-lg hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2"
+                    className="w-full gradient-cta text-white font-black uppercase tracking-[0.1em] py-5 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-elite flex items-center justify-center gap-3"
                   >
-                    <Lock className="w-3.5 h-3.5" />
-                    DESBLOQUEAR ACESSO — ESCOLHER MEU PLANO
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <Lock className="w-4 h-4" />
+                    DESBLOQUEAR ACESSO IMEDIATO
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground font-body text-center py-2">
-                  Não encontramos essa música ainda — mas nosso acervo tem <strong className="text-primary">+10.000 partituras com playback</strong> e cresce toda semana!
-                </p>
+                <div className="text-center py-8">
+                  <p className="text-sm text-muted-foreground font-semibold leading-relaxed">
+                    Não encontramos essa música específica nesta prévia, <br />
+                    mas nosso acervo conta com <strong className="text-primary">+10.000 títulos</strong> atualizados semanalmente.
+                  </p>
+                </div>
               )}
             </div>
           )}
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 text-primary animate-spin" />
-            <span className="ml-2 text-sm text-muted-foreground font-body">Carregando acervo real…</span>
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+            <span className="text-sm font-black text-muted-foreground uppercase tracking-[0.2em]">Sincronizando biblioteca...</span>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {visibleGenres.map((genre) => (
                 <div
                   key={genre.name}
-                  className="glass-card rounded-xl p-4"
+                  className="glass-card rounded-[24px] p-6 hover:border-primary/20 group"
                 >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-2xl">{genre.emoji}</span>
-                    <h3 className="font-bold font-heading text-sm leading-tight">{genre.name}</h3>
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="text-3xl filter drop-shadow-md group-hover:scale-110 transition-elite">{genre.emoji}</span>
+                    <h3 className="font-black font-heading text-base tracking-tight uppercase">{genre.name}</h3>
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="space-y-3">
                     {genre.songs.map((song, i) => (
-                      <div key={i} className="flex items-center gap-1.5">
-                        <Music className="w-3 h-3 text-primary shrink-0" />
-                        <span className="text-xs font-body text-muted-foreground break-words">{song}</span>
+                      <div key={i} className="flex items-center gap-3 group/song">
+                        <Music className="w-3.5 h-3.5 text-primary/40 group-hover/song:text-primary transition-colors shrink-0" />
+                        <span className="text-[13px] font-semibold text-muted-foreground/80 truncate group-hover/song:text-foreground transition-colors">{song}</span>
                       </div>
                     ))}
                     {!showAll && genre.songs.length < genres.find(g => g.name === genre.name)!.songs.length && (
-                      <span className="text-[10px] text-primary/60 font-body">
-                        +{genres.find(g => g.name === genre.name)!.songs.length - genre.songs.length} mais...
-                      </span>
+                      <div className="pt-2">
+                        <span className="text-[10px] font-black text-primary uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded-md border border-primary/10">
+                          +{genres.find(g => g.name === genre.name)!.songs.length - genre.songs.length} músicas
+                        </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -271,30 +285,33 @@ const SongCatalog = () => {
             </div>
 
             {!showAll && totalSongs > totalVisible && (
-              <div className="text-center mt-5">
+              <div className="text-center mt-12">
                 <button
                   onClick={() => setShowAll(true)}
-                  className="text-xs text-primary/80 hover:text-primary font-body underline underline-offset-2 transition-colors"
+                  className="text-xs font-black text-primary uppercase tracking-[0.2em] hover:text-gold transition-elite border-b border-primary/20 pb-1"
                 >
-                  Ver todas as {totalSongs} músicas desta amostra ↓
+                  Ver amostra completa de {totalSongs} músicas ↓
                 </button>
               </div>
             )}
 
-            <div className="text-center mt-8">
-              <p className="text-xs text-muted-foreground mb-4 font-body">
-                Isso é apenas uma <strong className="text-foreground">pequena amostra</strong>. Na plataforma você encontra <strong className="text-primary">+10.000 partituras com playback para Sax Alto e Sax Tenor</strong> — e o acervo cresce toda semana.
+            <div className="text-center mt-20 p-8 md:p-12 glass-card rounded-[32px] border-white/5 shadow-medium max-w-3xl mx-auto">
+              <p className="text-base md:text-lg text-muted-foreground mb-8 font-medium leading-relaxed">
+                Este é apenas o conteúdo de demonstração. <br className="hidden md:block" />
+                Ao garantir seu acesso, você libera <strong className="text-foreground">mais de 10.000 partituras profissionais</strong> organizadas em uma plataforma inteligente.
               </p>
               <button
                 onClick={scrollToOffers}
-                className="gradient-cta text-white font-bold font-heading py-3.5 px-8 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
+                className="gradient-cta text-white font-black uppercase tracking-widest py-5 px-10 md:px-14 rounded-2xl text-sm md:text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-elite inline-flex items-center gap-3"
               >
                 QUERO ACESSAR O ACERVO COMPLETO
-                <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
+                <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
               </button>
             </div>
           </>
         )}
+      </div>
+    </section>
       </div>
     </section>
   );
