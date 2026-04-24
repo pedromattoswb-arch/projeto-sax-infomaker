@@ -164,9 +164,9 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   const hasQuery = q.length > 0;
 
   const matchedFolders = searchFolders;
-  const matchedPdfs = searchFiles.filter((f) => f.type === "pdf");
-  const matchedAudio = searchFiles.filter((f) => f.type === "audio");
-  const totalResults = matchedFolders.length + matchedPdfs.length + matchedAudio.length;
+  const matchedPdfs = useMemo(() => searchFiles.filter((f) => f.type === "pdf"), [searchFiles]);
+  const matchedAudio = useMemo(() => searchFiles.filter((f) => f.type === "audio"), [searchFiles]);
+  const totalResults = useMemo(() => matchedFolders.length + matchedPdfs.length + matchedAudio.length, [matchedFolders.length, matchedPdfs.length, matchedAudio.length]);
 
   return (
     <div
