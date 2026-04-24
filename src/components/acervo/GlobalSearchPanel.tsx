@@ -158,8 +158,6 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
     setIsListening(false);
   }, []);
 
-  if (!open) return null;
-
   const q = debouncedQuery.toLowerCase().trim();
   const hasQuery = q.length > 0;
 
@@ -167,6 +165,8 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   const matchedPdfs = useMemo(() => searchFiles.filter((f) => f.type === "pdf"), [searchFiles]);
   const matchedAudio = useMemo(() => searchFiles.filter((f) => f.type === "audio"), [searchFiles]);
   const totalResults = useMemo(() => matchedFolders.length + matchedPdfs.length + matchedAudio.length, [matchedFolders.length, matchedPdfs.length, matchedAudio.length]);
+
+  if (!open) return null;
 
   return (
     <div
