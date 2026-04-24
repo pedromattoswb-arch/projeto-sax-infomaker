@@ -1,4 +1,4 @@
-import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones, ArrowRight } from "lucide-react";
+import { Folder, Search, Play, Mic, ChevronRight, Music, FileText, Headphones, ArrowRight, Lock } from "lucide-react";
 
 const folders = [
   { name: "Música Popular Brasileira (MPB)", count: 850 },
