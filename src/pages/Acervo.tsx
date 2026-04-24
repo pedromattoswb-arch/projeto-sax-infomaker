@@ -126,6 +126,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
   const pdfFiles = useMemo(() => allFiles.filter((f) => f.type === "pdf"), [allFiles]);
   const audioFiles = useMemo(() => allFiles.filter((f) => f.type === "audio"), [allFiles]);
+  const otherFiles = useMemo(() => allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio"), [allFiles]);
 
   // Apply filter
   const showPdfs = fileFilter === "all" || fileFilter === "pdf";
