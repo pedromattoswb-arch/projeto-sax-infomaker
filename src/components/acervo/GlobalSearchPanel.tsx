@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Search, X, Mic, MicOff, Folder, FileText, Music, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import type { DriveFolder, DriveFile } from "@/hooks/useDriveFiles";
 
