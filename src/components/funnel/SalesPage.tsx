@@ -230,35 +230,44 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-12 md:py-16 px-4 md:px-8 section-alt">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-8 md:mb-10">
-            <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">
-              🏆 PLATAFORMA COMPLETA PARA SAX ALTO E SAX TENOR
+      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+              Ecossistema Completo
             </span>
-            <h2 className="text-[22px] md:text-3xl font-bold font-heading mb-2">
-              Veja TUDO Que Você Recebe ao Garantir Seu Acesso
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+              Tudo o que você precisa em <br className="hidden md:block" />
+              <span className="text-primary italic">um único lugar</span>
             </h2>
-            <p className="text-foreground font-body text-base md:text-lg">
-              +10.000 partituras com playback, organizadas por gênero, numa plataforma exclusiva
+            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O SaxPlay é a sua nova estação de estudos.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {features.map((f, i) => (
               <div
                 key={i}
-                className="glass-card rounded-xl md:rounded-2xl p-4 md:p-6 hover:bg-surface/80 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+                className="glass-card rounded-[24px] p-8 hover:-translate-y-2 transition-elite group relative overflow-hidden shadow-medium hover:shadow-elite border-white/5 hover:border-white/10"
               >
-                {/* Metric badge */}
-                <span className="absolute top-3 right-3 text-[10px] font-bold font-heading text-primary/60 bg-primary/5 px-2 py-0.5 rounded-full border border-primary/10">
-                  {f.metric}
-                </span>
-                <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
-                  <f.icon className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+                {/* Metric badge refined */}
+                <div className="absolute top-6 right-6 flex items-center gap-1.5 opacity-40 group-hover:opacity-100 transition-opacity">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[10px] font-black font-heading text-primary uppercase tracking-widest">
+                    {f.metric}
+                  </span>
                 </div>
-                <h3 className="font-bold font-heading text-[13px] md:text-base mb-0.5 md:mb-1">{f.title}</h3>
-                <p className="text-muted-foreground text-sm md:text-base font-body leading-snug">{f.description}</p>
+                
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-3 transition-elite">
+                  <f.icon className="w-7 h-7 text-primary" />
+                </div>
+                
+                <h3 className="font-black font-heading text-lg md:text-xl mb-3 tracking-tight">{f.title}</h3>
+                <p className="text-muted-foreground text-base font-medium leading-relaxed">{f.description}</p>
               </div>
             ))}
           </div>
