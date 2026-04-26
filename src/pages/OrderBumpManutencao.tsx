@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Wrench, AlertTriangle, CalendarCheck, Music, Printer, BookOpen, Shield, ChevronDown, ChevronUp, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import { generateManutencaoPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -234,7 +234,7 @@ const OrderBumpManutencao = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 w-auto" />
         </div>
       </header>
 
