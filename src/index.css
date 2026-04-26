@@ -178,7 +178,30 @@
   }
 
   .section-alt {
-    background-color: hsl(var(--section-alt));
+    background-color: transparent;
+  }
+
+  /* Smooth blend between sections — sutil gradient overlay nas bordas */
+  .section-blend {
+    position: relative;
+  }
+  .section-blend::before,
+  .section-blend::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .section-blend::before {
+    top: 0;
+    background: linear-gradient(to bottom, hsl(220 25% 8% / 0.6), transparent);
+  }
+  .section-blend::after {
+    bottom: 0;
+    background: linear-gradient(to top, hsl(220 25% 8% / 0.6), transparent);
   }
 
   /* Glass card refined */
