@@ -170,37 +170,31 @@ const SalesPage = () => {
             </div>
           </div>
 
-          <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
-            <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 leading-relaxed">
-              Desenvolvemos uma experiência <strong className="text-primary">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos, ouça o playback e comece a tocar imediatamente.
+          <div className="max-w-4xl mx-auto animate-fade-in-up [animation-delay:400ms]">
+            <p className="text-lg md:text-xl text-muted-foreground mb-12 leading-relaxed font-medium">
+              Desenvolvemos uma experiência <strong className="text-primary font-black italic underline decoration-primary/30 underline-offset-8">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos e comece a tocar imediatamente.
             </p>
 
-            {/* Animated counters - Refined */}
-            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-14">
-              <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
-                  {counter1.count.toLocaleString("pt-BR")}+
-                </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Partituras</p>
-              </div>
-              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
-                  {counter2.count}+
-                </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Saxofonistas</p>
-              </div>
-              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
-                  {counter3.count}+
-                </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Gêneros</p>
-              </div>
+            {/* Animated counters - Deep 3D Cards */}
+            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-10 mb-16 md:mb-24">
+              {[
+                { count: counter1.count, label: "Partituras", suffix: "+" },
+                { count: counter2.count, label: "Saxofonistas", suffix: "+" },
+                { count: counter3.count, label: "Gêneros", suffix: "+" },
+              ].map((item, i) => (
+                <div key={i} className="glass-card rounded-[24px] md:rounded-[40px] p-6 md:p-10 text-center shadow-3d-premium border-white/[0.05] relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="text-3xl md:text-6xl font-black font-heading text-primary tabular-nums block mb-2 drop-shadow-glow">
+                    {item.count.toLocaleString("pt-BR")}{item.suffix}
+                  </span>
+                  <p className="text-[9px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.2em] opacity-80">{item.label}</p>
+                </div>
+              ))}
             </div>
-
           </div>
 
-          {/* Bullets em grid - Refined */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 md:mb-14 max-w-2xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
+          {/* Bullets em grid - Refined & Personalized */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16 md:mb-24 max-w-3xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
             {[
               { icon: Headphones, text: "+10.000 partituras com playback" },
               { icon: Smartphone, text: "Plataforma estilo app (Web App)" },
@@ -209,11 +203,11 @@ const SalesPage = () => {
               { icon: BookOpen, text: "Material de estudo exclusivo" },
               { icon: Zap, text: "Acesso vitalício e imediato" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 glass-card rounded-2xl px-5 py-4 hover:border-primary/30 group">
-                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <div key={i} className="flex items-center gap-5 glass-card rounded-[20px] px-6 py-5 hover:border-primary/50 group bg-white/[0.02] border-white/[0.05] shadow-medium">
+                <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
                   <item.icon className="w-5 h-5 text-primary shrink-0" />
                 </div>
-                <span className="text-[14px] md:text-base font-semibold text-foreground/90">{item.text}</span>
+                <span className="text-base md:text-lg font-bold text-white/90 group-hover:text-white transition-colors">{item.text}</span>
               </div>
             ))}
           </div>
