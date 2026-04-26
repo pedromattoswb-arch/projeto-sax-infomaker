@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import logoSrc from "@/assets/logo-clubedosax.png";
+import logoSrc from "@/assets/logo-clube-do-sax.png";
 
 /* ═══════════════════════════════════════════════════════════
    UTILIDADES COMPARTILHADAS

@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, X, Music, BookOpen, Piano, Globe, Gift, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logoClubeSax from "@/assets/logo-clubedosax.png";
+import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
 interface MobileNavProps {
   open: boolean;
