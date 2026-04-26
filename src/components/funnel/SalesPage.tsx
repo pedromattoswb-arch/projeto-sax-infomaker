@@ -414,7 +414,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <img src={logoClubeSax} alt="Clube do Sax" className="h-8 mx-auto mb-3 md:mb-4" />
+        <img src={logoClubeSax} alt="Clube do Sax" className="h-14 md:h-16 mx-auto mb-3 md:mb-4 drop-shadow-[0_0_20px_hsl(var(--primary)/0.3)]" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
