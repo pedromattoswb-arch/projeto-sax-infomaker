@@ -134,31 +134,40 @@ const SalesPage = () => {
         </div>
       </div>
 
-      {/* HERO */}
-      <section className="py-16 md:py-28 px-6 md:px-12 relative overflow-hidden">
-        {/* Advanced radial glow */}
-        <div className="absolute top-[-10%] left-[50%] translate-x-[-50%] w-[1000px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+      {/* HERO SECTION - Deep 3D Space */}
+      <section className="py-20 md:py-36 px-6 md:px-12 relative overflow-hidden">
+        {/* Cinematic Background Elements */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
+          <div className="absolute top-[-10%] left-[10%] w-[600px] h-[600px] bg-primary/10 blur-[140px] rounded-full mix-blend-screen animate-glow-pulse" />
+          <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-gold/5 blur-[120px] rounded-full mix-blend-screen" />
+        </div>
         
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Elite Badge */}
-          <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-5 py-2 mb-8 shadow-elite animate-fade-in-up">
-            <Headphones className="w-4 h-4 text-primary" />
-            <span className="text-[11px] md:text-xs text-muted-foreground font-medium tracking-wide uppercase">
-              Plataforma exclusiva para <strong className="text-foreground font-bold underline decoration-primary/40 underline-offset-4">Sax Alto e Sax Tenor</strong>
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          {/* Refined Elite Badge */}
+          <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl rounded-full px-6 py-2.5 mb-10 shadow-elite animate-fade-in-up">
+            <div className="relative">
+              <Headphones className="w-4 h-4 text-primary relative z-10" />
+              <div className="absolute inset-0 bg-primary/50 blur-md scale-150 rounded-full" />
+            </div>
+            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black tracking-[0.15em] uppercase">
+              Plataforma para <strong className="text-white font-black underline decoration-primary/50 underline-offset-4">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black font-heading leading-[1.05] mb-6 md:mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms]">
-            O Maior Acervo de Partituras <br className="hidden md:block" />
-            <span className="text-primary italic">com Playback do Brasil</span>
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-black font-heading leading-[0.95] mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms] text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60">
+            O Maior Acervo <br className="hidden md:block" />
+            <span className="text-primary italic drop-shadow-glow">com Playback do Brasil</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground font-medium mb-8 md:mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in-up [animation-delay:200ms]">
-            Acesse instantaneamente mais de <strong className="text-foreground">10.000 partituras profissionais</strong> com playbacks de alta fidelidade para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>.
+          <p className="text-lg md:text-2xl text-muted-foreground font-medium mb-12 md:mb-16 leading-relaxed max-w-3xl mx-auto animate-fade-in-up [animation-delay:200ms]">
+            Acesse instantaneamente mais de <strong className="text-white font-black">10.000 partituras profissionais</strong> com playbacks de alta fidelidade desenvolvidos para <strong className="text-white font-black">Saxofonistas</strong>.
           </p>
 
-          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 shadow-elite rounded-2xl md:rounded-3xl overflow-hidden border border-white/5 p-1 md:p-2 bg-white/5">
-            <SalesVideoPlayer />
+          <div className="animate-fade-in-up [animation-delay:300ms] mb-16 relative">
+            <div className="absolute -inset-1 bg-gradient-to-b from-primary/20 to-transparent blur-2xl opacity-50 -z-10" />
+            <div className="shadow-3d-premium rounded-2xl md:rounded-[40px] overflow-hidden border border-white/10 p-1.5 md:p-3 bg-white/[0.02] backdrop-blur-sm">
+              <SalesVideoPlayer />
+            </div>
           </div>
 
           <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
