@@ -1,6 +1,6 @@
 import { CheckCircle2, ArrowRight, Smartphone, Music, Headphones, BookOpen, Crown, Mail, MessageCircle, Star, ShieldCheck, Zap } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoClubeSax from "@/assets/logo-clubedosax.png";
 
 const scrollToAccess = () => {
   document.getElementById("acesso")?.scrollIntoView({ behavior: "smooth" });
@@ -13,7 +13,7 @@ const ThankYouBasico = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card">
         <div className="max-w-3xl mx-auto flex items-center justify-center">
-          <img src={logoSaxplay} alt="SaxPlay" className="h-8 md:h-10 w-auto" />
+          <img src={logoClubeSax} alt="Clube do Sax" className="h-8 md:h-10 w-auto" />
         </div>
       </header>
 
@@ -31,7 +31,7 @@ const ThankYouBasico = () => {
           </h1>
 
           <p className="text-foreground font-body text-[15px] md:text-lg mb-6 leading-relaxed max-w-xl mx-auto">
-            Você agora tem acesso a <strong>+5.000 partituras para Sax Alto e Sax Tenor</strong> na plataforma SaxPlay. Siga as instruções abaixo para começar a tocar.
+            Você agora tem acesso a <strong>+5.000 partituras para Sax Alto e Sax Tenor</strong> na plataforma Clube do Sax. Siga as instruções abaixo para começar a tocar.
           </p>
 
           <button
@@ -119,7 +119,7 @@ const ThankYouBasico = () => {
                 step: "2",
                 icon: Smartphone,
                 title: "Acesse a plataforma",
-                description: "Clique no botão abaixo para entrar na plataforma SaxPlay. Funciona em celular, tablet ou computador — como um app.",
+                description: "Clique no botão abaixo para entrar na plataforma Clube do Sax. Funciona em celular, tablet ou computador — como um app.",
               },
               {
                 step: "3",
@@ -181,9 +181,9 @@ const ThankYouBasico = () => {
 
       {/* FOOTER */}
       <footer className="py-6 px-4 border-t border-border text-center">
-        <img src={logoSaxplay} alt="SaxPlay" className="h-7 mx-auto mb-3" />
+        <img src={logoClubeSax} alt="Clube do Sax" className="h-7 mx-auto mb-3" />
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
+          © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
         </p>
       </footer>
     </div>

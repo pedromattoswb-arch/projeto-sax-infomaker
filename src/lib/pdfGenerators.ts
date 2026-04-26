@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import logoSrc from "@/assets/logo-saxplay.png";
+import logoSrc from "@/assets/logo-clubedosax.png";
 
 /* ═══════════════════════════════════════════════════════════
    UTILIDADES COMPARTILHADAS
@@ -139,7 +139,7 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   });
   
   // Footer
-  addText(doc, `\u00A9 ${new Date().getFullYear()} SaxPlay \u2014 Todos os direitos reservados`, PAGE_W / 2, PAGE_H - 20, { size: 7, color: COLORS.muted, align: "center" });
+  addText(doc, `\u00A9 ${new Date().getFullYear()} Clube do Sax \u2014 Todos os direitos reservados`, PAGE_W / 2, PAGE_H - 20, { size: 7, color: COLORS.muted, align: "center" });
   addText(doc, "Material exclusivo para membros. Proibida a reproducao.", PAGE_W / 2, PAGE_H - 14, { size: 7, color: COLORS.muted, align: "center" });
 }
 
@@ -200,7 +200,7 @@ function addPageNumber(doc: jsPDF, logoBase64: string) {
       doc.addImage(logoBase64, "PNG", PAGE_W - MARGIN - 28, 5, 28, 8);
     } catch { /* ignore */ }
     addText(doc, `${i} / ${pageCount}`, PAGE_W - MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted, align: "right" });
-    addText(doc, "SaxPlay", MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted });
+    addText(doc, "Clube do Sax", MARGIN, PAGE_H - 10, { size: 7, color: COLORS.muted });
   }
 }
 
@@ -396,7 +396,7 @@ export async function generateDigitacaoPDF() {
   y = addWrappedText(doc, "Escolha 1 registro por dia. Toque cada nota 4 tempos (q = 60), foco em timbre e afinacao. Em 4 dias, voce cobriu todo o sax.", MARGIN + 8, y + 7, CONTENT_W - 16, { size: 11, color: COLORS.white });
 
   addPageNumber(doc, logoBase64);
-  doc.save("Tabela-Digitacao-Completa-SaxPlay.pdf");
+  doc.save("Tabela-Digitacao-Completa-Clube do Sax.pdf");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -658,7 +658,7 @@ export async function generateTransposicaoPDF() {
   addText(doc, "Soprano = coluna Tenor  |  Baritono = coluna Alto", PAGE_W / 2, y, { size: 10, color: COLORS.muted, align: "center" });
 
   addPageNumber(doc, logoBase64);
-  doc.save("Kit-Transposicao-Instantanea-SaxPlay.pdf");
+  doc.save("Kit-Transposicao-Instantanea-Clube do Sax.pdf");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -917,7 +917,7 @@ export async function generateManutencaoPDF() {
   addText(doc, "centenas de reais por ano.", MARGIN + 8, y + 39, { size: 13, color: COLORS.white });
 
   addPageNumber(doc, logoBase64);
-  doc.save("Checklist-Manutencao-Sax-SaxPlay.pdf");
+  doc.save("Checklist-Manutencao-Sax-Clube do Sax.pdf");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -958,7 +958,7 @@ export async function generateRotinaPDF() {
       color: COLORS.amber,
       icon: "REPERTOIRE",
       items: [
-        "Escolha 2-3 musicas do acervo SaxPlay por semana",
+        "Escolha 2-3 musicas do acervo Clube do Sax por semana",
         "Dia 1: Leitura lenta, identificando passagens dificeis",
         "Dia 2: Trabalhe os trechos dificeis isoladamente, em loop",
         "Dia 3: Toque a musica inteira com o playback em andamento lento",
@@ -1110,7 +1110,7 @@ export async function generateRotinaPDF() {
   y = drawHighlightBox(doc, y, "Lembre-se:", "A pratica consistente e o segredo de todo grande saxofonista.", COLORS.emerald);
 
   addPageNumber(doc, logoBase64);
-  doc.save("Rotina-de-Estudo-Saxofonistas-SaxPlay.pdf");
+  doc.save("Rotina-de-Estudo-Saxofonistas-Clube do Sax.pdf");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1278,7 +1278,7 @@ export async function generateTonalidadesPDF() {
   y = drawHighlightBox(doc, y, "Este mapa e sua bussola musical.", "Consulte sempre que precisar e internalize as tonalidades aos poucos.", COLORS.blue);
 
   addPageNumber(doc, logoBase64);
-  doc.save("Mapa-de-Tonalidades-Sax-SaxPlay.pdf");
+  doc.save("Mapa-de-Tonalidades-Sax-Clube do Sax.pdf");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1425,5 +1425,5 @@ export async function generateMusicasPDF() {
   });
 
   addPageNumber(doc, logoBase64);
-  doc.save("100-Musicas-Saxofonista-SaxPlay.pdf");
+  doc.save("100-Musicas-Saxofonista-Clube do Sax.pdf");
 }

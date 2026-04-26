@@ -69,7 +69,7 @@ const AppSimulation = () => {
                 <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
                   <Music className="w-5 h-5 text-primary" />
                 </div>
-                <span className="font-heading font-black text-sm tracking-tight">SaxPlay</span>
+                <span className="font-heading font-black text-sm tracking-tight">Clube do Sax</span>
               </div>
               <div className="flex items-center gap-1.5 opacity-40">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
