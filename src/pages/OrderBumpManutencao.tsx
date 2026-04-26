@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Wrench, AlertTriangle, CalendarCheck, Music, Printer, BookOpen, Shield, ChevronDown, ChevronUp, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoClubeSax from "@/assets/logo-clubedosax.png";
+import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import { generateManutencaoPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
