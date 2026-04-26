@@ -46,7 +46,7 @@ const PricingCards = () => {
   };
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden" id="ofertas">
+    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-transparent" id="ofertas">
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 md:mb-24">
           <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
