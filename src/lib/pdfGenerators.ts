@@ -113,8 +113,8 @@ function drawCoverPage(doc: jsPDF, title: string, subtitle: string, badge: strin
   
   // Logo image
   try {
-    const logoW = 50;
-    const logoH = 14;
+    const logoW = 70;
+    const logoH = 20;
     doc.addImage(logoBase64, "PNG", PAGE_W / 2 - logoW / 2, 18, logoW, logoH);
   } catch {
     // fallback text if image fails

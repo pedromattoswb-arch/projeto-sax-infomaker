@@ -1,6 +1,6 @@
 import { CheckCircle2, ArrowRight, Smartphone, Music, Headphones, BookOpen, Crown, Mail, MessageCircle, Star, ShieldCheck, Zap } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 
 const scrollToAccess = () => {
   document.getElementById("acesso")?.scrollIntoView({ behavior: "smooth" });
@@ -13,7 +13,7 @@ const ThankYouBasico = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card">
         <div className="max-w-3xl mx-auto flex items-center justify-center">
-          <img src={logoSaxplay} alt="ClubedoSax" className="h-8 md:h-10 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-12 md:h-16 w-auto" />
         </div>
       </header>
 
@@ -181,7 +181,7 @@ const ThankYouBasico = () => {
 
       {/* FOOTER */}
       <footer className="py-6 px-4 border-t border-border text-center">
-        <img src={logoSaxplay} alt="ClubedoSax" className="h-7 mx-auto mb-3" />
+        <img src={logoClubedoSax} alt="ClubedoSax" className="h-16 mx-auto mb-3" />
         <p className="text-xs text-muted-foreground font-body">
           © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
         </p>
