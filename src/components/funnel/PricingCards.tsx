@@ -120,60 +120,60 @@ const PricingCards = () => {
 
           {/* PREMIUM CARD */}
           <div className="relative md:scale-[1.05] origin-top">
-            {/* Elite Glow Effect */}
-            <div className="absolute -inset-[2px] rounded-[34px] bg-gradient-to-br from-primary via-gold to-primary opacity-40 blur-md animate-glow-pulse" />
+            {/* Elite Glow Effect - Now in striking blue */}
+            <div className="absolute -inset-[3px] rounded-[34px] bg-gradient-to-br from-blue-600 via-primary to-blue-400 opacity-60 blur-md animate-glow-pulse" />
             
-            <div className="glass-card rounded-[32px] border-primary/30 shadow-elite p-8 md:p-12 relative overflow-hidden">
+            <div className="bg-[#050a15] rounded-[32px] border-2 border-primary/50 shadow-elite p-8 md:p-12 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] rounded-full pointer-events-none" />
               
               <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
-                <span className="gradient-gold text-white px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] flex items-center gap-2 shadow-gold whitespace-nowrap animate-glow-pulse border border-white/20">
+                <span className="bg-primary text-white px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] flex items-center gap-2 shadow-lg whitespace-nowrap border border-white/20">
                   <Crown className="w-4 h-4" />
                   Mais Completo
                 </span>
               </div>
 
               <div className="absolute inset-0 rounded-[32px] overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 animate-shimmer rounded-[32px]" />
+                <div className="absolute inset-0 animate-shimmer rounded-[32px] opacity-20" />
               </div>
 
               <div className="mb-10 relative pt-12">
-                <span className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 border border-primary/30">
+                <span className="inline-block bg-primary/20 text-blue-400 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 border border-primary/30">
                   <Sparkles className="w-3.5 h-3.5 inline mr-1.5" />
                   Premium Experience
                 </span>
-                <h3 className="text-2xl md:text-3xl font-black font-heading mb-2 tracking-tight">Plano Completo</h3>
-                <p className="text-muted-foreground text-base font-medium">
+                <h3 className="text-2xl md:text-3xl font-black font-heading mb-2 tracking-tight text-white">Plano Completo</h3>
+                <p className="text-blue-200/60 text-base font-medium">
                   A experiência definitiva para saxofonistas.
                 </p>
               </div>
 
               <div className="mb-10 relative">
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="text-5xl md:text-6xl font-black font-heading text-gold tracking-tighter">R$ 19,90</span>
+                  <span className="text-5xl md:text-6xl font-black font-heading text-white tracking-tighter">R$ 19,90</span>
                 </div>
-                <span className="text-xs text-gold font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
+                <span className="text-xs text-blue-400 font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
               </div>
 
-              <div className="flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-2xl px-5 py-4 mb-10 shadow-soft">
-                <Zap className="w-5 h-5 text-gold shrink-0 animate-pulse" />
-                <span className="text-[13px] font-bold text-gold">Acesso imediato + Todos os bônus</span>
+              <div className="flex items-center gap-3 bg-primary/20 border border-primary/40 rounded-2xl px-5 py-4 mb-10 shadow-soft">
+                <Zap className="w-5 h-5 text-primary shrink-0 animate-pulse" />
+                <span className="text-[13px] font-bold text-blue-100">Acesso imediato + Todos os bônus</span>
               </div>
 
-              <p className="text-[11px] font-black text-gold/60 uppercase tracking-[0.2em] mb-6">Incluso no Premium</p>
+              <p className="text-[11px] font-black text-blue-400/80 uppercase tracking-[0.2em] mb-6">Incluso no Premium</p>
               <ul className="space-y-4 mb-10">
                 {premiumFeatures.map((feature, i) => (
                   <li
                     key={i}
                     className={`flex items-start gap-4 text-base font-bold transition-elite group ${
                       feature.highlight ? "text-primary scale-[1.02]" : 
-                      feature.bonus ? "text-gold" : 
-                      "text-foreground/90"
+                      feature.bonus ? "text-blue-300" : 
+                      "text-blue-100/90"
                     }`}
                   >
                     <div className={`p-1 rounded-full ${feature.highlight || feature.bonus ? "bg-primary/20" : "bg-white/5"} group-hover:bg-primary/30 transition-colors`}>
                       {feature.bonus ? (
-                        <Star className="w-4 h-4 text-gold fill-gold" />
+                        <Star className="w-4 h-4 text-primary fill-primary" />
                       ) : (
                         <Check className="w-4 h-4 text-primary" />
                       )}
@@ -183,15 +183,15 @@ const PricingCards = () => {
                 ))}
               </ul>
 
-              <div className="bg-gold/5 border border-gold/10 rounded-2xl p-5 mb-10 backdrop-blur-sm">
-                <p className="text-sm font-bold leading-relaxed text-center text-foreground/80">
-                  💡 Por apenas R$ 10 a mais você desbloqueia <strong className="text-gold">tudo</strong>: playbacks profissionais, busca por voz e bônus.
+              <div className="bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-10 backdrop-blur-sm">
+                <p className="text-sm font-bold leading-relaxed text-center text-blue-100/80">
+                  💡 Por apenas R$ 10 a mais você desbloqueia <strong className="text-primary font-black">tudo</strong>: playbacks profissionais, busca por voz e bônus.
                 </p>
               </div>
 
               <button
                 onClick={() => handleCheckout("premium")}
-                className="w-full py-5 rounded-2xl gradient-cta text-white font-black uppercase tracking-widest text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-elite animate-cta-pulse flex items-center justify-center gap-3"
+                className="w-full py-5 rounded-2xl gradient-cta text-white font-black uppercase tracking-widest text-base shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-elite flex items-center justify-center gap-3"
               >
                 QUERO O PLANO COMPLETO
                 <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
