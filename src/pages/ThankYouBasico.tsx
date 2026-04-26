@@ -1,6 +1,6 @@
 import { CheckCircle2, ArrowRight, Smartphone, Music, Headphones, BookOpen, Crown, Mail, MessageCircle, Star, ShieldCheck, Zap } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
-import logoClubedoSax from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.png";
 
 const scrollToAccess = () => {
   document.getElementById("acesso")?.scrollIntoView({ behavior: "smooth" });

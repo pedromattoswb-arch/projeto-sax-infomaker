@@ -22,7 +22,7 @@ import {
   Play,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoClubedoSax from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.png";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
 import LockedFolderCard from "@/components/acervo/LockedFolderCard";
