@@ -252,7 +252,7 @@ const BonusMusicas = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR LISTA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para mClube do SaxPlaybe do Sax
+              Conteúdo exclusivo para membros do Clube do Sax
             </p>
           </div>
         </div>
