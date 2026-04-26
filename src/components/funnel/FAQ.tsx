@@ -75,33 +75,39 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden" id="faq">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
+    <section className="py-24 md:py-48 px-6 md:px-12 section-alt relative overflow-hidden" id="faq">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(38_85%_50%/0.05)_0%,transparent_50%)] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[160px] rounded-full opacity-50 pointer-events-none" />
       
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-16 md:mb-24">
-          <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+        <div className="text-center mb-20 md:mb-32">
+          <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 shadow-glow">
             Suporte & Ajuda
           </span>
-          <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-black font-heading mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
             Dúvidas Frequentes
           </h2>
-          <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
-            Tudo o que você precisa saber antes de se juntar ao ClubedoSax.
+          <p className="text-muted-foreground font-medium text-lg md:text-2xl max-w-2xl mx-auto leading-relaxed">
+            Tudo o que você precisa saber antes de se juntar à maior comunidade de saxofonistas do Brasil.
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="space-y-4">
+        <Accordion type="single" collapsible className="space-y-6">
           {faqItems.map((item, index) => (
             <AccordionItem
               key={index}
               value={`faq-${index}`}
-              className="glass-card rounded-[24px] px-8 shadow-medium border-white/5 hover:border-white/10 transition-elite overflow-hidden"
+              className="glass-card rounded-[32px] px-8 md:px-12 shadow-3d-premium border-white/[0.03] hover:border-primary/20 transition-all duration-500 overflow-hidden bg-white/[0.01]"
             >
-              <AccordionTrigger className="text-left font-bold font-heading text-base md:text-lg py-6 hover:no-underline hover:text-primary transition-colors">
-                {item.question}
+              <AccordionTrigger className="text-left font-black font-heading text-lg md:text-xl py-8 hover:no-underline group transition-all">
+                <span className="group-hover:text-primary transition-colors flex items-center gap-4">
+                  <span className="hidden md:flex w-8 h-8 rounded-full bg-primary/10 border border-primary/20 items-center justify-center text-[10px] font-black text-primary">
+                    Q
+                  </span>
+                  {item.question}
+                </span>
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground font-medium text-base md:text-lg pb-8 leading-relaxed">
+              <AccordionContent className="text-muted-foreground font-medium text-base md:text-xl pb-10 leading-relaxed max-w-3xl">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>
