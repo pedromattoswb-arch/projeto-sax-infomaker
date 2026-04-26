@@ -68,7 +68,7 @@ const BonusTonalidades = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
           </Link>
-          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
+          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
         </div>
       </header>
 
@@ -224,7 +224,7 @@ const BonusTonalidades = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR MAPA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para mSaxPlayPlaybe do Sax
+              Conteúdo exclusivo para mClubedoSaxPlaybe do Sax
             </p>
           </div>
         </div>
@@ -232,7 +232,7 @@ const BonusTonalidades = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
+          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
         </p>
       </footer>
     </div>

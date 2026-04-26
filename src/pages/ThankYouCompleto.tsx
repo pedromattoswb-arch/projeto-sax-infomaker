@@ -13,7 +13,7 @@ const ThankYouCompleto = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card">
         <div className="max-w-3xl mx-auto flex items-center justify-center">
-          <img src={logoSaxplay} alt="SaxPlay" className="h-8 md:h-10 w-auto" />
+          <img src={logoSaxplay} alt="ClubedoSax" className="h-8 md:h-10 w-auto" />
         </div>
       </header>
 
@@ -117,7 +117,7 @@ const ThankYouCompleto = () => {
                 step: "2",
                 icon: Smartphone,
                 title: "Acesse a plataforma",
-                description: "Clique no botão abaixo para entrar na plataforma SaxPlay. Funciona em celular, tablet ou computador — como um app, sem instalar nada.",
+                description: "Clique no botão abaixo para entrar na plataforma ClubedoSax. Funciona em celular, tablet ou computador — como um app, sem instalar nada.",
               },
               {
                 step: "3",
@@ -179,9 +179,9 @@ const ThankYouCompleto = () => {
 
       {/* FOOTER */}
       <footer className="py-6 px-4 border-t border-border text-center">
-        <img src={logoSaxplay} alt="SaxPlay" className="h-7 mx-auto mb-3" />
+        <img src={logoSaxplay} alt="ClubedoSax" className="h-7 mx-auto mb-3" />
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
+          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
         </p>
       </footer>
     </div>

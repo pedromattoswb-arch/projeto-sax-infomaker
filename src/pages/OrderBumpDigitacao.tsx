@@ -272,7 +272,7 @@ const OrderBumpDigitacao = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
+          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
         </div>
       </header>
 
@@ -467,7 +467,7 @@ const OrderBumpDigitacao = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
+          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
         </p>
       </footer>
     </div>
