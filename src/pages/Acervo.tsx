@@ -629,7 +629,7 @@ const FilterTab = React.memo(({ active, onClick, count, icon, variant, children 
       </span>
     </button>
   );
-};
+});
 
 /* Quick Tips collapsible banner */
 const TUTORIAL_TIPS = [
