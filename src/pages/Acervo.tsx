@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo, memo } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
