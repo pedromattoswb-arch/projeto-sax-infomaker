@@ -3,7 +3,7 @@ const bonuses = [
     emoji: "📖",
     title: "Guia: Rotina de Estudo para Saxofonistas",
     description:
-      "Monte uma rotina de prática eficiente com aquecimento, técnica, improvisação e repertório. Do iniciante ao avançado. Disponível dentro da plataforma ClubedoSax.",
+      "Monte uma rotina de prática eficiente com aquecimento, técnica, improvisação e repertório. Do iniciante ao avançado. Disponível dentro da plataforma SaxPlay.",
     tag: "BÔNUS 1",
     accent: "🎯",
   },
@@ -11,7 +11,7 @@ const bonuses = [
     emoji: "🗺️",
     title: "Guia: Mapa de Tonalidades para Sax",
     description:
-      "Referência visual completa de transposição, escalas maiores, menores e modos. Ferramenta de consulta rápida indispensável. Integrado à plataforma ClubedoSax.",
+      "Referência visual completa de transposição, escalas maiores, menores e modos. Ferramenta de consulta rápida indispensável. Integrado à plataforma SaxPlay.",
     tag: "BÔNUS 2",
     accent: "🎼",
   },
@@ -68,7 +68,7 @@ const BonusSection = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8 font-body">
-          Esses 3 guias são <strong className="text-foreground">exclusivos do plano Premium</strong> e estão disponíveis dentro da plataforma ClubedoSax.
+          Esses 3 guias são <strong className="text-foreground">exclusivos do plano Premium</strong> e estão disponíveis dentro da plataforma SaxPlay.
         </p>
       </div>
     </section>

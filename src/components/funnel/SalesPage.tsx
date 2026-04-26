@@ -23,7 +23,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import logoClubedoSax from "@/assets/logo-clube-sax.png";
+import logoSaxplay from "@/assets/logo-saxplay-dark.webp";
 import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
@@ -89,112 +89,106 @@ const SalesPage = () => {
   const counter3 = useCounter(18, 1500);
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
-      <header className="py-4 px-6 md:px-12 border-b border-white/[0.03] bg-background/40 backdrop-blur-2xl sticky top-0 z-50 transition-all duration-500">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
-            <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 md:h-16 w-auto hover:opacity-80 transition-opacity filter drop-shadow-md" />
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="hidden lg:flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.05] shadow-inner">
-              <div className="w-2 h-2 rounded-full bg-primary animate-live-dot" />
-              <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">+847 Membros Ativos</span>
-            </div>
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
+              <Award className="w-3.5 h-3.5" />
+              +10.000 Partituras
+            </span>
             <div className="text-right flex flex-col items-end">
-              <span className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1 opacity-60">A partir de</span>
-              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tighter drop-shadow-glow">R$ 9,90</span>
+              <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest leading-none mb-1">A partir de</span>
+              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 9,90</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* AUTHORITY BAR - Refined */}
-      <div className="bg-gradient-to-r from-background via-white/[0.02] to-background border-b border-white/[0.03] py-4 px-4 overflow-hidden relative">
-        <div className="absolute inset-0 bg-primary/5 blur-3xl opacity-20" />
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-8 md:gap-16 flex-wrap relative z-10">
-          <div className="flex items-center gap-3 group cursor-default">
-            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
+      {/* AUTHORITY BAR */}
+      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
               <Music className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">+10.000 partituras</span>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+10.000 partituras</span>
           </div>
-          <div className="flex items-center gap-3 group cursor-default">
-            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
               <Users className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">+847 saxofonistas</span>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+847 saxofonistas</span>
           </div>
-          <div className="flex items-center gap-3 group cursor-default">
-            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
+          <div className="flex items-center gap-2 group cursor-default">
+            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
               <Infinity className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">Acesso vitalício</span>
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">Acesso vitalício</span>
           </div>
         </div>
       </div>
 
-      {/* HERO SECTION - Deep 3D Space */}
-      <section className="py-20 md:py-36 px-6 md:px-12 relative overflow-hidden">
-        {/* Cinematic Background Elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
-          <div className="absolute top-[-10%] left-[10%] w-[600px] h-[600px] bg-primary/10 blur-[140px] rounded-full mix-blend-screen animate-glow-pulse" />
-          <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-gold/5 blur-[120px] rounded-full mix-blend-screen" />
-        </div>
+      {/* HERO */}
+      <section className="py-16 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        {/* Advanced radial glow */}
+        <div className="absolute top-[-10%] left-[50%] translate-x-[-50%] w-[1000px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
         
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          {/* Refined Elite Badge */}
-          <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl rounded-full px-6 py-2.5 mb-10 shadow-elite animate-fade-in-up">
-            <div className="relative">
-              <Headphones className="w-4 h-4 text-primary relative z-10" />
-              <div className="absolute inset-0 bg-primary/50 blur-md scale-150 rounded-full" />
-            </div>
-            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black tracking-[0.15em] uppercase">
-              Plataforma para <strong className="text-white font-black underline decoration-primary/50 underline-offset-4">Sax Alto e Sax Tenor</strong>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Elite Badge */}
+          <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-5 py-2 mb-8 shadow-elite animate-fade-in-up">
+            <Headphones className="w-4 h-4 text-primary" />
+            <span className="text-[11px] md:text-xs text-muted-foreground font-medium tracking-wide uppercase">
+              Plataforma exclusiva para <strong className="text-foreground font-bold underline decoration-primary/40 underline-offset-4">Sax Alto e Sax Tenor</strong>
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-black font-heading leading-[0.95] mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms] text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60">
-            O Maior Acervo <br className="hidden md:block" />
-            <span className="text-primary italic drop-shadow-glow">com Playback do Brasil</span>
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black font-heading leading-[1.05] mb-6 md:mb-8 tracking-tighter animate-fade-in-up [animation-delay:100ms]">
+            O Maior Acervo de Partituras <br className="hidden md:block" />
+            <span className="text-primary italic">com Playback do Brasil</span>
           </h1>
 
-          <p className="text-lg md:text-2xl text-muted-foreground font-medium mb-12 md:mb-16 leading-relaxed max-w-3xl mx-auto animate-fade-in-up [animation-delay:200ms]">
-            Acesse instantaneamente mais de <strong className="text-white font-black">10.000 partituras profissionais</strong> com playbacks de alta fidelidade desenvolvidos para <strong className="text-white font-black">Saxofonistas</strong>.
+          <p className="text-lg md:text-xl text-muted-foreground font-medium mb-8 md:mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in-up [animation-delay:200ms]">
+            Acesse instantaneamente mais de <strong className="text-foreground">10.000 partituras profissionais</strong> com playbacks de alta fidelidade para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>.
           </p>
 
-          <div className="animate-fade-in-up [animation-delay:300ms] mb-16 relative">
-            <div className="absolute -inset-1 bg-gradient-to-b from-primary/20 to-transparent blur-2xl opacity-50 -z-10" />
-            <div className="shadow-3d-premium rounded-2xl md:rounded-[40px] overflow-hidden border border-white/10 p-1.5 md:p-3 bg-white/[0.02] backdrop-blur-sm">
-              <SalesVideoPlayer />
-            </div>
+          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 shadow-elite rounded-2xl md:rounded-3xl overflow-hidden border border-white/5 p-1 md:p-2 bg-white/5">
+            <SalesVideoPlayer />
           </div>
 
-          <div className="max-w-4xl mx-auto animate-fade-in-up [animation-delay:400ms]">
-            <p className="text-lg md:text-xl text-muted-foreground mb-12 leading-relaxed font-medium">
-              Desenvolvemos uma experiência <strong className="text-primary font-black italic underline decoration-primary/30 underline-offset-8">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos e comece a tocar imediatamente.
+          <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
+            <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 leading-relaxed">
+              Desenvolvemos uma experiência <strong className="text-primary">estilo Netflix</strong> para seus estudos. Encontre qualquer música em segundos, ouça o playback e comece a tocar imediatamente.
             </p>
 
-            {/* Animated counters - Deep 3D Cards */}
-            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-10 mb-16 md:mb-24">
-              {[
-                { count: counter1.count, label: "Partituras", suffix: "+" },
-                { count: counter2.count, label: "Saxofonistas", suffix: "+" },
-                { count: counter3.count, label: "Gêneros", suffix: "+" },
-              ].map((item, i) => (
-                <div key={i} className="glass-card rounded-[24px] md:rounded-[40px] p-6 md:p-10 text-center shadow-3d-premium border-white/[0.05] relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="text-3xl md:text-6xl font-black font-heading text-primary tabular-nums block mb-2 drop-shadow-glow">
-                    {item.count.toLocaleString("pt-BR")}{item.suffix}
-                  </span>
-                  <p className="text-[9px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.2em] opacity-80">{item.label}</p>
-                </div>
-              ))}
+            {/* Animated counters - Refined */}
+            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-14">
+              <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter1.count.toLocaleString("pt-BR")}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Partituras</p>
+              </div>
+              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter2.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Saxofonistas</p>
+              </div>
+              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
+                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+                  {counter3.count}+
+                </span>
+                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Gêneros</p>
+              </div>
             </div>
+
           </div>
 
-          {/* Bullets em grid - Refined & Personalized */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16 md:mb-24 max-w-3xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
+          {/* Bullets em grid - Refined */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 md:mb-14 max-w-2xl mx-auto text-left animate-fade-in-up [animation-delay:500ms]">
             {[
               { icon: Headphones, text: "+10.000 partituras com playback" },
               { icon: Smartphone, text: "Plataforma estilo app (Web App)" },
@@ -203,11 +197,11 @@ const SalesPage = () => {
               { icon: BookOpen, text: "Material de estudo exclusivo" },
               { icon: Zap, text: "Acesso vitalício e imediato" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-5 glass-card rounded-[20px] px-6 py-5 hover:border-primary/50 group bg-white/[0.02] border-white/[0.05] shadow-medium">
-                <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+              <div key={i} className="flex items-center gap-4 glass-card rounded-2xl px-5 py-4 hover:border-primary/30 group">
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <item.icon className="w-5 h-5 text-primary shrink-0" />
                 </div>
-                <span className="text-base md:text-lg font-bold text-white/90 group-hover:text-white transition-colors">{item.text}</span>
+                <span className="text-[14px] md:text-base font-semibold text-foreground/90">{item.text}</span>
               </div>
             ))}
           </div>
@@ -215,28 +209,16 @@ const SalesPage = () => {
           <div className="animate-fade-in-up [animation-delay:600ms]">
             <button
               onClick={scrollToOffers}
-              className="gradient-cta text-white font-black uppercase tracking-[0.15em] py-6 px-12 md:px-20 rounded-[24px] text-lg md:text-2xl shadow-cta hover:shadow-cta-lg hover:scale-[1.05] active:scale-[0.95] transition-all duration-500 animate-cta-pulse inline-flex items-center gap-4 group"
+              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
             >
               QUERO MEU ACESSO AGORA
-              <ArrowRight className="w-8 h-8 group-hover:translate-x-3 transition-transform duration-300" />
+              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
             </button>
 
-            <div className="flex flex-col items-center gap-4 mt-10">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-background bg-surface flex items-center justify-center overflow-hidden">
-                    <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" className="w-full h-full object-cover" />
-                  </div>
-                ))}
-                <div className="w-10 h-10 rounded-full border-2 border-background bg-primary flex items-center justify-center text-[10px] font-black text-white">
-                  +847
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground font-bold tracking-wide flex items-center justify-center gap-3">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                Pagamento Único • Acesso Vitalício • 7 dias de garantia
-              </p>
-            </div>
+            <p className="text-sm text-muted-foreground mt-6 font-medium tracking-wide flex items-center justify-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-primary" />
+              Pagamento único • 7 dias de garantia incondicional
+            </p>
           </div>
         </div>
       </section>
@@ -247,48 +229,45 @@ const SalesPage = () => {
       {/* PLAYBACKS DE AMOSTRA */}
       <PlaybackSamples />
 
-      {/* O QUE VOCÊ RECEBE - Refined & Personalized */}
-      <section className="py-24 md:py-48 px-6 md:px-12 section-alt relative overflow-hidden">
-        {/* Deep background effects */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[160px] rounded-full" />
+      {/* O QUE VOCÊ RECEBE */}
+      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-20 md:mb-32">
-            <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 shadow-glow">
-              Ecossistema Premium
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
+              Ecossistema Completo
             </span>
-            <h2 className="text-4xl md:text-6xl font-black font-heading mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
+            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
               Tudo o que você precisa em <br className="hidden md:block" />
               <span className="text-primary italic">um único lugar</span>
             </h2>
-            <p className="text-muted-foreground font-medium text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed">
-              Diga adeus às pastas bagunçadas e partituras ilegíveis. O ClubedoSax é a sua estação definitiva de estudos e performance.
+            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O SaxPlay é a sua nova estação de estudos.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {features.map((f, i) => (
               <div
                 key={i}
-                className="glass-card rounded-[32px] p-10 hover:-translate-y-4 transition-all duration-500 group relative overflow-hidden shadow-3d-premium border-white/[0.03] hover:border-primary/20 bg-white/[0.01]"
+                className="glass-card rounded-[24px] p-8 hover:-translate-y-2 transition-elite group relative overflow-hidden shadow-medium hover:shadow-elite border-white/5 hover:border-white/10"
               >
-                {/* Visual depth background */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[50px] rounded-full group-hover:bg-primary/10 transition-colors" />
-                
-                <div className="absolute top-8 right-8 flex items-center gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
+                {/* Metric badge refined */}
+                <div className="absolute top-6 right-6 flex items-center gap-1.5 opacity-40 group-hover:opacity-100 transition-opacity">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                   <span className="text-[10px] font-black font-heading text-primary uppercase tracking-widest">
                     {f.metric}
                   </span>
                 </div>
                 
-                <div className="w-16 h-16 rounded-[24px] bg-primary/10 border border-primary/10 flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-6 transition-all duration-500 shadow-glow">
-                  <f.icon className="w-8 h-8 text-primary" />
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-3 transition-elite">
+                  <f.icon className="w-7 h-7 text-primary" />
                 </div>
                 
-                <h3 className="font-black font-heading text-xl md:text-2xl mb-4 tracking-tight text-white group-hover:text-primary transition-colors">{f.title}</h3>
-                <p className="text-muted-foreground text-[15px] font-medium leading-relaxed group-hover:text-white/80 transition-colors">{f.description}</p>
+                <h3 className="font-black font-heading text-lg md:text-xl mb-3 tracking-tight">{f.title}</h3>
+                <p className="text-muted-foreground text-base font-medium leading-relaxed">{f.description}</p>
               </div>
             ))}
           </div>
@@ -306,7 +285,7 @@ const SalesPage = () => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16 md:mb-24">
             <span className="inline-block glass-card text-foreground px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border-white/10 shadow-medium">
-              Comunidade ClubedoSax
+              Comunidade SaxPlay
             </span>
             <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
               O que dizem os <br className="hidden md:block" />
@@ -433,7 +412,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <img src={logoClubedoSax} alt="ClubedoSax" className="h-24 mx-auto mb-6 md:mb-8" />
+        <img src={logoSaxplay} alt="SaxPlay" className="h-8 mx-auto mb-3 md:mb-4" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -455,7 +434,7 @@ const SalesPage = () => {
         </p>
 
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
 

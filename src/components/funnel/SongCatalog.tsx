@@ -163,43 +163,42 @@ const SongCatalog = () => {
   const totalVisible = useMemo(() => visibleGenres.reduce((sum, g) => sum + g.songs.length, 0), [visibleGenres]);
 
   return (
-    <section className="py-24 md:py-48 px-6 md:px-12 section-alt relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsl(38_85%_50%/0.05)_0%,transparent_50%)] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full opacity-30 pointer-events-none" />
+    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-20 md:mb-32">
-          <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 shadow-glow">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-24">
+          <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
             Transparência Total
           </span>
-          <h2 className="text-4xl md:text-6xl font-black font-heading mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
+          <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
             Explore o nosso <br className="hidden md:block" />
             <span className="text-primary italic">acervo real</span>
           </h2>
-          <p className="text-muted-foreground font-medium text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed">
-            Não vendemos promessas. Pesquise sua música favorita e comprove que ela está esperando por você no ClubedoSax.
+          <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
+            Não vendemos promessas. Pesquise sua música favorita e comprove que ela está esperando por você.
           </p>
         </div>
 
-        {/* Search bar refined - 3D Look */}
-        <div className="max-w-2xl mx-auto mb-24">
+        {/* Search bar refined */}
+        <div className="max-w-xl mx-auto mb-20">
           <div className="relative group">
-            <div className="absolute -inset-[1px] bg-gradient-to-r from-primary via-gold to-primary rounded-[24px] blur-sm opacity-20 group-hover:opacity-100 transition-all duration-500" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-gold/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-elite" />
             <div className="relative">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => handleSearch(e.target.value)}
-                placeholder="Qual música você quer tocar hoje?"
-                className="w-full bg-background/60 border border-white/10 rounded-[24px] pl-16 pr-16 py-7 text-lg font-bold text-white placeholder:text-muted-foreground/30 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/40 backdrop-blur-2xl transition-all duration-300 shadow-3d-premium"
+                placeholder="Pesquise por música, artista ou gênero..."
+                className="w-full bg-background/80 border border-white/10 rounded-2xl pl-14 pr-14 py-5 text-base font-semibold text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 backdrop-blur-xl transition-elite shadow-medium"
               />
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(""); setSearchResults([]); setHasSearched(false); }}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white p-2 transition-colors"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               )}
             </div>

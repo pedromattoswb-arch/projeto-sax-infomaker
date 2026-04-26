@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Wrench, AlertTriangle, CalendarCheck, Music, Printer, BookOpen, Shield, ChevronDown, ChevronUp, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoClubedoSax from "@/assets/logo-clube-sax.png";
+import logoSaxplay from "@/assets/logo-saxplay.png";
 import { generateManutencaoPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -234,7 +234,7 @@ const OrderBumpManutencao = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Link>
-          <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 w-auto" />
+          <img src={logoSaxplay} alt="SaxPlay" className="h-6 w-auto" />
         </div>
       </header>
 
@@ -486,7 +486,7 @@ const OrderBumpManutencao = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
+          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
         </p>
       </footer>
     </div>

@@ -46,7 +46,7 @@ export const trackCustomEvent = (event: string, params?: EventParams) => {
 
 export const trackLandingView = () => {
   trackEvent("ViewContent", {
-    content_name: "Sales Page - ClubedoSax",
+    content_name: "Sales Page - SaxPlay",
     content_category: "sales_page",
     content_type: "landing_page",
   });
