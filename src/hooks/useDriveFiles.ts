@@ -88,13 +88,26 @@ const FOLDER_NAME_MAP: Record<string, string> = {
   "SCORES": "Partituras",
 };
 
+const formatCache: Record<string, string> = {};
+
 function formatFolderName(raw: string): string {
-  if (FOLDER_NAME_MAP[raw.toUpperCase()]) return FOLDER_NAME_MAP[raw.toUpperCase()];
-  if (FOLDER_NAME_MAP[raw]) return FOLDER_NAME_MAP[raw];
-  // Auto-capitalize: "SOME FOLDER NAME" → "Some Folder Name"
-  return raw
-    .toLowerCase()
-    .replace(/(?:^|\s|[-/])\S/g, (match) => match.toUpperCase());
+  if (formatCache[raw]) return formatCache[raw];
+  
+  let result: string;
+  const upper = raw.toUpperCase();
+  if (FOLDER_NAME_MAP[upper]) {
+    result = FOLDER_NAME_MAP[upper];
+  } else if (FOLDER_NAME_MAP[raw]) {
+    result = FOLDER_NAME_MAP[raw];
+  } else {
+    // Auto-capitalize: "SOME FOLDER NAME" → "Some Folder Name"
+    result = raw
+      .toLowerCase()
+      .replace(/(?:^|\s|[-/])\S/g, (match) => match.toUpperCase());
+  }
+  
+  formatCache[raw] = result;
+  return result;
 }
 
 function getCacheKey(folderId?: string): string {
