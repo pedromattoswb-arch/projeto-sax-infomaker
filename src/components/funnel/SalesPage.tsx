@@ -95,7 +95,7 @@ const SalesPage = () => {
         {/* HEADER */}
       <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-[#030303]/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <img src={logoClubeSax} alt="Clube do Sax — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
+          <img src={logoClubeSax} alt="Clube do Sax — Acervo de Partituras e Playbacks Para Saxofone" className="h-12 md:h-16 w-auto hover:opacity-80 transition-opacity drop-shadow-[0_0_20px_hsl(var(--primary)/0.35)]" />
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
               <Award className="w-3.5 h-3.5" />
