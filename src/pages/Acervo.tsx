@@ -667,7 +667,7 @@ const TUTORIAL_TIPS = [
   },
 ];
 
-const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
+const QuickTipsBanner = memo(({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
   const [open, setOpen] = useState(false);
   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
