@@ -592,7 +592,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 };
 
 /* Filter Tab component */
-const FilterTab = ({ active, onClick, count, icon, variant, children }: {
+const FilterTab = React.memo(({ active, onClick, count, icon, variant, children }: {
   active: boolean;
   onClick: () => void;
   count: number;
