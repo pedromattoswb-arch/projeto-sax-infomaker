@@ -122,7 +122,7 @@ const SalesVideoPlayer = () => {
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-black">
           <img
             src="/thumbnail-vsl.webp"
-            alt="Vídeo de apresentação SaxPlay"
+            alt="Vídeo de apresentação ClubedoSax"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"
           />

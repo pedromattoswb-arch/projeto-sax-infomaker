@@ -22,7 +22,7 @@ import {
   Play,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import { useDriveFiles, type DriveFile, type DriveFolder } from "@/hooks/useDriveFiles";
 import FolderCard from "@/components/acervo/FolderCard";
 import LockedFolderCard from "@/components/acervo/LockedFolderCard";
@@ -195,7 +195,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       {/* Header */}
       <header className="sticky top-0 z-30 bg-card border-b border-border" role="banner">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay" className="h-12 md:h-14 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-20 md:h-24 w-auto" />
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
@@ -689,7 +689,7 @@ const QuickTipsBanner = memo(({ locked = false, upgradeUrl = "" }: { locked?: bo
       <div className="rounded-2xl overflow-hidden border-2 border-primary/30 bg-card shadow-lg mb-4 relative">
         <div className="p-4 bg-primary/10 border-b border-primary/20">
           <h3 className="text-base font-body font-bold text-foreground flex items-center gap-2">
-            🎬 Tutorial — Como Navegar pela SaxPlay
+            🎬 Tutorial — Como Navegar pela ClubedoSax
             {locked && <Lock className="w-4 h-4 text-muted-foreground" />}
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
