@@ -92,7 +92,7 @@ function HeroGeometric({
         ease: [0.25, 0.4, 0.25, 1],
       },
     }),
-  };
+  } as const;
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]">
