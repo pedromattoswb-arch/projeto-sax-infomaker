@@ -36,6 +36,7 @@ import FAQ from "./FAQ";
 import PartituraCarousel from "./PartituraCarousel";
 import PlaybackSamples from "./PlaybackSamples";
 import AppSimulation from "./AppSimulation";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 
 const features = [
   { icon: Headphones, title: "+10.000 Partituras com Playback", description: "Cada partitura vem com o playback profissional para você tocar junto — Sax Alto e Sax Tenor", metric: "10K+" },
