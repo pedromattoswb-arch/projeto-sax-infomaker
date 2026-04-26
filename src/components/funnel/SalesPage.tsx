@@ -280,7 +280,7 @@ const SalesPage = () => {
       <AppSimulation />
 
       {/* PROVA SOCIAL */}
-      <section className="py-20 md:py-32 px-6 md:px-12 bg-background relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-transparent relative overflow-hidden">
         {/* Glow for section */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
         
