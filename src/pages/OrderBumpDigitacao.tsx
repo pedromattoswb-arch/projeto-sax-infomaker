@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Star, Lightbulb, Printer, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoClubedoSax from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.png";
 import { generateDigitacaoPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 

@@ -2,7 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headph
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
-import logoClubedoSax from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.png";
 import useNoIndex from "@/hooks/useNoIndex";
 
 const sections = [

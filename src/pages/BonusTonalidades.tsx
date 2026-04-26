@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoClubedoSax from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.png";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
