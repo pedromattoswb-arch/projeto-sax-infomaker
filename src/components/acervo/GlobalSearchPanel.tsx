@@ -390,4 +390,4 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   );
 };
 
-export default GlobalSearchPanel;
+export default React.memo(GlobalSearchPanel);
