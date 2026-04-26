@@ -36,6 +36,7 @@ import FAQ from "./FAQ";
 import PartituraCarousel from "./PartituraCarousel";
 import PlaybackSamples from "./PlaybackSamples";
 import AppSimulation from "./AppSimulation";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 
 const features = [
   { icon: Headphones, title: "+10.000 Partituras com Playback", description: "Cada partitura vem com o playback profissional para você tocar junto — Sax Alto e Sax Tenor", metric: "10K+" },
@@ -89,9 +90,10 @@ const SalesPage = () => {
   const counter3 = useCounter(18, 1500);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* HEADER */}
-      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+    <HeroGeometric>
+      <div className="relative min-h-screen overflow-x-hidden">
+        {/* HEADER */}
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-black/20 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
@@ -108,7 +110,7 @@ const SalesPage = () => {
       </header>
 
       {/* AUTHORITY BAR */}
-      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
+      <div className="bg-white/5 border-b border-white/5 py-3 px-4">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
           <div className="flex items-center gap-2 group cursor-default">
             <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
@@ -230,7 +232,7 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-black/40 relative overflow-hidden">
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         
@@ -278,7 +280,7 @@ const SalesPage = () => {
       <AppSimulation />
 
       {/* PROVA SOCIAL */}
-      <section className="py-20 md:py-32 px-6 md:px-12 bg-background relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-transparent relative overflow-hidden">
         {/* Glow for section */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
         
@@ -341,7 +343,7 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-section-dark">
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-black/60">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
@@ -450,7 +452,8 @@ const SalesPage = () => {
       </div>
 
       <div className="h-14 md:hidden" />
-    </div>
+      </div>
+    </HeroGeometric>
   );
 };
 

@@ -21,7 +21,7 @@
     --popover: 220 20% 14%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 38 85% 50%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 15% 20%;
@@ -38,7 +38,7 @@
 
     --border: 220 15% 20%;
     --input: 220 15% 20%;
-    --ring: 38 85% 50%;
+    --ring: 217 91% 60%;
 
     --radius: 14px;
 
@@ -47,9 +47,9 @@
     --cta-light: 142 65% 55%;
 
     /* Gold for Premium */
-    --gold: 42 92% 50%;
-    --gold-light: 42 80% 65%;
-    --gold-dark: 38 80% 40%;
+    --gold: 217 91% 60%;
+    --gold-light: 217 91% 75%;
+    --gold-dark: 217 91% 40%;
 
     /* Player */
     --player: 220 20% 14%;
@@ -76,7 +76,7 @@
     --card-foreground: 0 0% 98%;
     --popover: 220 20% 14%;
     --popover-foreground: 0 0% 98%;
-    --primary: 38 85% 50%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 15% 20%;
     --secondary-foreground: 0 0% 95%;
@@ -88,7 +88,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 220 15% 20%;
     --input: 220 15% 20%;
-    --ring: 38 85% 50%;
+    --ring: 217 91% 60%;
   }
 }
 
