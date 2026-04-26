@@ -91,9 +91,9 @@ const SalesPage = () => {
 
   return (
     <HeroGeometric>
-      <div className="relative min-h-screen overflow-x-hidden">
+      <div className="relative min-h-screen overflow-x-hidden seamless-sections">
         {/* HEADER */}
-      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-black/20 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-[#030303]/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <img src={logoClubeSax} alt="Clube do Sax — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
@@ -110,7 +110,7 @@ const SalesPage = () => {
       </header>
 
       {/* AUTHORITY BAR */}
-      <div className="bg-white/5 border-b border-white/5 py-3 px-4">
+      <div className="border-b border-white/5 py-3 px-4 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
           <div className="flex items-center gap-2 group cursor-default">
             <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
@@ -343,8 +343,8 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden ">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.10)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
             <div className="relative inline-block mb-10 md:mb-14">
@@ -374,7 +374,7 @@ const SalesPage = () => {
 
       {/* CTA FINAL */}
       <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_85%_50%/0.08)_0%,transparent_60%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.10)_0%,transparent_60%)] pointer-events-none" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black font-heading mb-10 tracking-tighter leading-[1.1]">
             Transforme sua forma de tocar saxofone <br className="hidden md:block" />

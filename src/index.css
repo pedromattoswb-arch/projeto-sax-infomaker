@@ -181,27 +181,48 @@
     background-color: transparent;
   }
 
-  /* Smooth blend between sections — sutil gradient overlay nas bordas */
-  .section-blend {
+  /* Smooth seamless transitions between sections — divisor sutil em gradiente azul */
+  .seamless-sections > section + section,
+  .seamless-sections > section + div,
+  .seamless-sections > div + section {
     position: relative;
   }
-  .section-blend::before,
-  .section-blend::after {
+  .seamless-sections > section + section::before,
+  .seamless-sections > div + section::before,
+  .seamless-sections > section + div::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 720px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      hsl(var(--primary) / 0.25) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Soft fade halo entre seções para profundidade sem cortes */
+  .seamless-sections > section::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
+    bottom: -60px;
     height: 120px;
+    background: radial-gradient(
+      ellipse at center,
+      hsl(var(--primary) / 0.04) 0%,
+      transparent 70%
+    );
     pointer-events: none;
     z-index: 1;
-  }
-  .section-blend::before {
-    top: 0;
-    background: linear-gradient(to bottom, hsl(220 25% 8% / 0.6), transparent);
-  }
-  .section-blend::after {
-    bottom: 0;
-    background: linear-gradient(to top, hsl(220 25% 8% / 0.6), transparent);
   }
 
   /* Glass card refined */
