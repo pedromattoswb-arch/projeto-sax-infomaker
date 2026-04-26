@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, Star, Music, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import { generateMusicasPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -149,7 +149,7 @@ const BonusMusicas = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
           </Link>
-          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 w-auto" />
         </div>
       </header>
 
@@ -252,7 +252,7 @@ const BonusMusicas = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR LISTA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para mClubedoSaxPlaybe do Sax
+              Conteúdo exclusivo para membros do ClubedoSax
             </p>
           </div>
         </div>

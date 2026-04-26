@@ -2,7 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Clock, Target, Repeat, Music, Headph
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { generateRotinaPDF } from "@/lib/pdfGenerators";
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import useNoIndex from "@/hooks/useNoIndex";
 
 const sections = [
@@ -99,7 +99,7 @@ const BonusRotina = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
           </Link>
-          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 w-auto" />
         </div>
       </header>
 
@@ -195,7 +195,7 @@ const BonusRotina = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR GUIA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para membros PreClubedoSaxSax
+              Conteúdo exclusivo para membros do ClubedoSax
             </p>
           </div>
         </div>
@@ -203,7 +203,7 @@ const BonusRotina = () => {
 
       <footer className="py-5 px-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} CClubedoSax Todos os direitos reservados.
+          © {new Date().getFullYear()} ClubedoSax. Todos os direitos reservados.
         </p>
       </footer>
     </div>

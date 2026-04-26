@@ -1,7 +1,7 @@
 import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -68,7 +68,7 @@ const BonusTonalidades = () => {
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
           </Link>
-          <img src={logoSaxplay} alt="ClubedoSax" className="h-6 w-auto" />
+          <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 w-auto" />
         </div>
       </header>
 
@@ -224,7 +224,7 @@ const BonusTonalidades = () => {
               {loading ? "GERANDO PDF..." : "BAIXAR MAPA EM PDF"}
             </button>
             <p className="text-xs text-muted-foreground mt-3 font-body">
-              Conteúdo exclusivo para mClubedoSaxPlaybe do Sax
+              Conteúdo exclusivo para membros do ClubedoSax
             </p>
           </div>
         </div>
