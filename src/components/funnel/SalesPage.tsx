@@ -93,7 +93,7 @@ const SalesPage = () => {
     <HeroGeometric>
       <div className="relative min-h-screen overflow-x-hidden">
         {/* HEADER */}
-      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
+      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-black/20 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
