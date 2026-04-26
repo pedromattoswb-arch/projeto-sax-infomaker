@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, X, Music, BookOpen, Piano, Globe, Gift, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoSaxplay from "@/assets/logo-clube-sax.webp";
 
 interface MobileNavProps {
   open: boolean;
