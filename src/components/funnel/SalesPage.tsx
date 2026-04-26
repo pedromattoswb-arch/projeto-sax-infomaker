@@ -89,44 +89,47 @@ const SalesPage = () => {
   const counter3 = useCounter(18, 1500);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white overflow-x-hidden">
       {/* HEADER */}
-      <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <img src={logoClubedoSax} alt="ClubedoSax — Acervo de Partituras e Playbacks Para Saxofone" className="h-12 md:h-20 w-auto hover:opacity-80 transition-opacity" />
+      <header className="py-4 px-6 md:px-12 border-b border-white/[0.03] bg-background/40 backdrop-blur-2xl sticky top-0 z-50 transition-all duration-500">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
-              <Award className="w-3.5 h-3.5" />
-              +10.000 Partituras
-            </span>
+            <img src={logoClubedoSax} alt="ClubedoSax" className="h-10 md:h-16 w-auto hover:opacity-80 transition-opacity filter drop-shadow-md" />
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.05] shadow-inner">
+              <div className="w-2 h-2 rounded-full bg-primary animate-live-dot" />
+              <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">+847 Membros Ativos</span>
+            </div>
             <div className="text-right flex flex-col items-end">
-              <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest leading-none mb-1">A partir de</span>
-              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 9,90</span>
+              <span className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1 opacity-60">A partir de</span>
+              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tighter drop-shadow-glow">R$ 9,90</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* AUTHORITY BAR */}
-      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
-          <div className="flex items-center gap-2 group cursor-default">
-            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+      {/* AUTHORITY BAR - Refined */}
+      <div className="bg-gradient-to-r from-background via-white/[0.02] to-background border-b border-white/[0.03] py-4 px-4 overflow-hidden relative">
+        <div className="absolute inset-0 bg-primary/5 blur-3xl opacity-20" />
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-8 md:gap-16 flex-wrap relative z-10">
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
               <Music className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+10.000 partituras</span>
+            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">+10.000 partituras</span>
           </div>
-          <div className="flex items-center gap-2 group cursor-default">
-            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
               <Users className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">+847 saxofonistas</span>
+            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">+847 saxofonistas</span>
           </div>
-          <div className="flex items-center gap-2 group cursor-default">
-            <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-all">
               <Infinity className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wide">Acesso vitalício</span>
+            <span className="text-[10px] md:text-[11px] text-muted-foreground font-black uppercase tracking-[0.15em]">Acesso vitalício</span>
           </div>
         </div>
       </div>
