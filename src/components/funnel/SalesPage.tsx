@@ -23,7 +23,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import logoSaxplay from "@/assets/logo-saxplay-dark.webp";
+import logoClubeSax from "@/assets/logo-clubedosax-dark.webp";
 import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
@@ -95,7 +95,7 @@ const SalesPage = () => {
         {/* HEADER */}
       <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-black/20 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
+          <img src={logoClubeSax} alt="Clube do Sax — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
               <Award className="w-3.5 h-3.5" />
@@ -232,7 +232,7 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-20 md:py-32 px-6 md:px-12 bg-black/40 relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 relative overflow-hidden">
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         
@@ -246,7 +246,7 @@ const SalesPage = () => {
               <span className="text-primary italic">um único lugar</span>
             </h2>
             <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
-              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O SaxPlay é a sua nova estação de estudos.
+              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O Clube do Sax é a sua nova estação de estudos.
             </p>
           </div>
 
@@ -287,7 +287,7 @@ const SalesPage = () => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16 md:mb-24">
             <span className="inline-block glass-card text-foreground px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border-white/10 shadow-medium">
-              Comunidade SaxPlay
+              Comunidade Clube do Sax
             </span>
             <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
               O que dizem os <br className="hidden md:block" />
@@ -343,7 +343,7 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-black/60">
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden ">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
@@ -414,7 +414,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <img src={logoSaxplay} alt="SaxPlay" className="h-8 mx-auto mb-3 md:mb-4" />
+        <img src={logoClubeSax} alt="Clube do Sax" className="h-8 mx-auto mb-3 md:mb-4" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -436,7 +436,7 @@ const SalesPage = () => {
         </p>
 
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} SaxPlay. Todos os direitos reservados.
+          © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
         </p>
       </footer>
 

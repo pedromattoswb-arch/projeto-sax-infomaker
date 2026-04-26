@@ -34,7 +34,7 @@ const faqItems = [
   {
     question: "Posso acessar pelo celular?",
     answer:
-      "Sim! A plataforma SaxPlay funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada. Você abre a partitura e dá play no playback na mesma tela.",
+      "Sim! A plataforma Clube do Sax funciona perfeitamente em celular, tablet ou computador. É 100% responsiva e funciona como um app — sem precisar instalar nada. Você abre a partitura e dá play no playback na mesma tela.",
   },
   {
     question: "Qual a diferença entre Básico e Completo?",
@@ -44,12 +44,12 @@ const faqItems = [
   {
     question: "O que são os vídeos tutoriais?",
     answer:
-      "São vídeos integrados diretamente na plataforma SaxPlay que ensinam como usar cada recurso: como buscar partituras, usar playbacks, organizar sua prática, entender tonalidades e muito mais. Exclusivo do plano Completo.",
+      "São vídeos integrados diretamente na plataforma Clube do Sax que ensinam como usar cada recurso: como buscar partituras, usar playbacks, organizar sua prática, entender tonalidades e muito mais. Exclusivo do plano Completo.",
   },
   {
     question: "Como funciona a busca por voz?",
     answer:
-      "Na plataforma SaxPlay (plano Completo), você pode clicar no ícone de microfone e falar o nome da música que quer tocar. A plataforma reconhece sua voz e encontra a partitura e o playback instantaneamente. Funciona em português e é super fácil de usar.",
+      "Na plataforma Clube do Sax (plano Completo), você pode clicar no ícone de microfone e falar o nome da música que quer tocar. A plataforma reconhece sua voz e encontra a partitura e o playback instantaneamente. Funciona em português e é super fácil de usar.",
   },
   {
     question: "E se eu não gostar?",
@@ -64,7 +64,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Sim. O SaxPlay é uma empresa registrada com CNPJ. O pagamento é processado pela Cakto com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
+      "Sim. O Clube do Sax é uma empresa registrada com CNPJ. O pagamento é processado pela Cakto com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
   },
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",
@@ -75,7 +75,7 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden" id="faq">
+    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden" id="faq">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
       
       <div className="max-w-4xl mx-auto relative z-10">
@@ -87,7 +87,7 @@ const FAQ = () => {
             Dúvidas Frequentes
           </h2>
           <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
-            Tudo o que você precisa saber antes de se juntar ao SaxPlay.
+            Tudo o que você precisa saber antes de se juntar ao Clube do Sax.
           </p>
         </div>
 

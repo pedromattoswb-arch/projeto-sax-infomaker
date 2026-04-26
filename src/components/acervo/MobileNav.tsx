@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, X, Music, BookOpen, Piano, Globe, Gift, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logoSaxplay from "@/assets/logo-saxplay.png";
+import logoClubeSax from "@/assets/logo-clubedosax.png";
 
 interface MobileNavProps {
   open: boolean;
@@ -40,7 +40,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" 
         }`}
       >
         <div className="flex items-center justify-between p-5 border-b border-border">
-          <img src={logoSaxplay} alt="SaxPlay" className="h-10 w-auto" />
+          <img src={logoClubeSax} alt="Clube do Sax" className="h-10 w-auto" />
           <button
             onClick={onToggle}
             className="p-2 rounded-xl hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"

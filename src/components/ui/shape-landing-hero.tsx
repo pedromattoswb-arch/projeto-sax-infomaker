@@ -92,10 +92,11 @@ function HeroGeometric({
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#030303]">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.05] via-transparent to-primary/[0.05] blur-3xl" />
+    <div className="relative min-h-screen w-full bg-[#030303]">
+      {/* Fundo fixo — acompanha o scroll para manter o efeito em toda a página */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.05] via-transparent to-primary/[0.05] blur-3xl" />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <ElegantShape
           delay={0.3}
           width={600}
@@ -111,7 +112,7 @@ function HeroGeometric({
           height={120}
           rotate={-15}
           gradient="from-blue-500/[0.15]"
-          className="right-[-5%] top-[70%] md:right-[0%] md:top-[75%]"
+          className="right-[-5%] top-[60%] md:right-[0%] md:top-[65%]"
         />
 
         <ElegantShape
@@ -120,7 +121,7 @@ function HeroGeometric({
           height={80}
           rotate={-8}
           gradient="from-primary/[0.1]"
-          className="left-[5%] bottom-[5%] md:left-[10%] md:bottom-[10%]"
+          className="left-[5%] bottom-[10%] md:left-[10%] md:bottom-[15%]"
         />
 
         <ElegantShape
@@ -138,15 +139,16 @@ function HeroGeometric({
           height={40}
           rotate={-25}
           gradient="from-primary/[0.05]"
-          className="left-[20%] top-[5%] md:left-[25%] md:top-[10%]"
+          className="left-[20%] top-[40%] md:left-[25%] md:top-[45%]"
         />
+
+        {/* Vinheta sutil para profundidade */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
       </div>
 
-      <div className="relative z-10 w-full h-full">
+      <div className="relative z-10 w-full">
         {children}
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
     </div>
   );
 }
