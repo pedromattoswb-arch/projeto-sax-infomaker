@@ -75,7 +75,7 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden" id="faq">
+    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden" id="faq">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
       
       <div className="max-w-4xl mx-auto relative z-10">

@@ -163,7 +163,7 @@ const SongCatalog = () => {
   const totalVisible = useMemo(() => visibleGenres.reduce((sum, g) => sum + g.songs.length, 0), [visibleGenres]);
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 section-alt relative overflow-hidden">
+    <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsl(38_85%_50%/0.03)_0%,transparent_50%)] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto relative z-10">

@@ -27,7 +27,7 @@ const bonuses = [
 
 const BonusSection = () => {
   return (
-    <section className="py-16 px-4 md:px-8 section-alt">
+    <section className="py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
           <span className="inline-block glass-card text-primary px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-3 border border-primary/20">

@@ -232,7 +232,7 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-20 md:py-32 px-6 md:px-12 bg-black/40 relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 relative overflow-hidden">
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         
@@ -343,7 +343,7 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-black/60">
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden ">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">

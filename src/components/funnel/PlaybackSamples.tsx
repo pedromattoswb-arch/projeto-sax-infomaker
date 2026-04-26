@@ -108,7 +108,7 @@ const PlaybackSamples = () => {
   }, [durations]);
 
   return (
-    <section className="pb-10 md:pb-14 pt-6 md:pt-8 px-4 md:px-8 bg-[hsl(220,30%,12%)]">
+    <section className="pb-10 md:pb-14 pt-6 md:pt-8 px-4 md:px-8 bg-transparent">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-5 md:mb-7">
           <h3 className="text-xl md:text-2xl font-bold font-heading text-white flex items-center justify-center gap-2 mb-2">
