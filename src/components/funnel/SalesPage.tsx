@@ -23,7 +23,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import logoClubeSax from "@/assets/logo-clubedosax-dark.webp";
+import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
