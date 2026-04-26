@@ -144,6 +144,9 @@ function HeroGeometric({
 
         {/* Vinheta sutil para profundidade */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+
+        {/* Overlay extra no MOBILE — escurece o efeito e aumenta o contraste/legibilidade */}
+        <div className="absolute inset-0 bg-[#030303]/70 md:hidden" />
       </div>
 
       <div className="relative z-10 w-full">
