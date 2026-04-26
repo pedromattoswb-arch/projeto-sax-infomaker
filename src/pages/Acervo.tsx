@@ -110,7 +110,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
     return () => clearTimeout(searchTimerRef.current);
   }, [search]);
 
-  const { filteredFolders, pdfFiles, audioFiles } = useMemo(() => {
+  const { filteredFolders, pdfFiles, audioFiles, otherFiles, allFiles } = useMemo(() => {
     const term = searchDebounced.trim().toLowerCase();
     
     const filteredFolders = term
@@ -123,16 +123,20 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
     const pdfs: DriveFile[] = [];
     const audios: DriveFile[] = [];
+    const others: DriveFile[] = [];
 
     for (const f of filteredFiles) {
       if (f.type === "pdf") pdfs.push(f);
       else if (f.type === "audio") audios.push(f);
+      else others.push(f);
     }
 
     return {
       filteredFolders,
       pdfFiles: pdfs,
       audioFiles: audios,
+      otherFiles: others,
+      allFiles: filteredFiles,
     };
   }, [folders, files, searchDebounced]);
 
