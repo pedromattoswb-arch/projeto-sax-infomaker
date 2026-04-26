@@ -215,16 +215,28 @@ const SalesPage = () => {
           <div className="animate-fade-in-up [animation-delay:600ms]">
             <button
               onClick={scrollToOffers}
-              className="gradient-cta text-white font-black uppercase tracking-wider py-5 px-10 md:px-14 rounded-2xl text-base md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3"
+              className="gradient-cta text-white font-black uppercase tracking-[0.15em] py-6 px-12 md:px-20 rounded-[24px] text-lg md:text-2xl shadow-cta hover:shadow-cta-lg hover:scale-[1.05] active:scale-[0.95] transition-all duration-500 animate-cta-pulse inline-flex items-center gap-4 group"
             >
               QUERO MEU ACESSO AGORA
-              <ArrowRight className="w-6 h-6 animate-arrow-bounce" />
+              <ArrowRight className="w-8 h-8 group-hover:translate-x-3 transition-transform duration-300" />
             </button>
 
-            <p className="text-sm text-muted-foreground mt-6 font-medium tracking-wide flex items-center justify-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-primary" />
-              Pagamento único • 7 dias de garantia incondicional
-            </p>
+            <div className="flex flex-col items-center gap-4 mt-10">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-background bg-surface flex items-center justify-center overflow-hidden">
+                    <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full border-2 border-background bg-primary flex items-center justify-center text-[10px] font-black text-white">
+                  +847
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground font-bold tracking-wide flex items-center justify-center gap-3">
+                <ShieldCheck className="w-5 h-5 text-primary" />
+                Pagamento Único • Acesso Vitalício • 7 dias de garantia
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -235,45 +247,48 @@ const SalesPage = () => {
       {/* PLAYBACKS DE AMOSTRA */}
       <PlaybackSamples />
 
-      {/* O QUE VOCÊ RECEBE */}
-      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      {/* O QUE VOCÊ RECEBE - Refined & Personalized */}
+      <section className="py-24 md:py-48 px-6 md:px-12 section-alt relative overflow-hidden">
+        {/* Deep background effects */}
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[160px] rounded-full" />
         
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16 md:mb-24">
-            <span className="inline-block bg-primary/10 text-primary px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-6 border border-primary/20">
-              Ecossistema Completo
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-20 md:mb-32">
+            <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 shadow-glow">
+              Ecossistema Premium
             </span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-6xl font-black font-heading mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
               Tudo o que você precisa em <br className="hidden md:block" />
               <span className="text-primary italic">um único lugar</span>
             </h2>
-            <p className="text-muted-foreground font-medium text-lg md:text-xl max-w-2xl mx-auto">
-              Esqueça pastas bagunçadas no Drive ou partituras de baixa qualidade. O ClubedoSax é a sua nova estação de estudos.
+            <p className="text-muted-foreground font-medium text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed">
+              Diga adeus às pastas bagunçadas e partituras ilegíveis. O ClubedoSax é a sua estação definitiva de estudos e performance.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
             {features.map((f, i) => (
               <div
                 key={i}
-                className="glass-card rounded-[24px] p-8 hover:-translate-y-2 transition-elite group relative overflow-hidden shadow-medium hover:shadow-elite border-white/5 hover:border-white/10"
+                className="glass-card rounded-[32px] p-10 hover:-translate-y-4 transition-all duration-500 group relative overflow-hidden shadow-3d-premium border-white/[0.03] hover:border-primary/20 bg-white/[0.01]"
               >
-                {/* Metric badge refined */}
-                <div className="absolute top-6 right-6 flex items-center gap-1.5 opacity-40 group-hover:opacity-100 transition-opacity">
+                {/* Visual depth background */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[50px] rounded-full group-hover:bg-primary/10 transition-colors" />
+                
+                <div className="absolute top-8 right-8 flex items-center gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                   <span className="text-[10px] font-black font-heading text-primary uppercase tracking-widest">
                     {f.metric}
                   </span>
                 </div>
                 
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-3 transition-elite">
-                  <f.icon className="w-7 h-7 text-primary" />
+                <div className="w-16 h-16 rounded-[24px] bg-primary/10 border border-primary/10 flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-6 transition-all duration-500 shadow-glow">
+                  <f.icon className="w-8 h-8 text-primary" />
                 </div>
                 
-                <h3 className="font-black font-heading text-lg md:text-xl mb-3 tracking-tight">{f.title}</h3>
-                <p className="text-muted-foreground text-base font-medium leading-relaxed">{f.description}</p>
+                <h3 className="font-black font-heading text-xl md:text-2xl mb-4 tracking-tight text-white group-hover:text-primary transition-colors">{f.title}</h3>
+                <p className="text-muted-foreground text-[15px] font-medium leading-relaxed group-hover:text-white/80 transition-colors">{f.description}</p>
               </div>
             ))}
           </div>
