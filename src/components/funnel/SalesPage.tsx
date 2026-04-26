@@ -23,7 +23,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import logoSaxplay from "@/assets/logo-clube-sax.webp";
+import logoClubedoSax from "@/assets/logo-clube-sax.webp";
 import SalesVideoPlayer from "./SalesVideoPlayer";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
@@ -93,7 +93,7 @@ const SalesPage = () => {
       {/* HEADER */}
       <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <img src={logoSaxplay} alt="ClubedoSax — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
+          <img src={logoClubedoSax} alt="ClubedoSax — Acervo de Partituras e Playbacks Para Saxofone" className="h-12 md:h-20 w-auto hover:opacity-80 transition-opacity" />
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-primary font-bold tracking-wider uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 animate-glow-pulse">
               <Award className="w-3.5 h-3.5" />
@@ -412,7 +412,7 @@ const SalesPage = () => {
 
       {/* FOOTER */}
       <footer className="py-6 md:py-8 px-4 border-t border-border text-center">
-        <img src={logoSaxplay} alt="ClubedoSax" className="h-8 mx-auto mb-3 md:mb-4" />
+        <img src={logoClubedoSax} alt="ClubedoSax" className="h-24 mx-auto mb-6 md:mb-8" />
 
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-5 mb-4">
           <div className="flex items-center gap-1.5 text-muted-foreground">
