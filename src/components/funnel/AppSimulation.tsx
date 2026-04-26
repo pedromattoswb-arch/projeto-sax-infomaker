@@ -34,8 +34,8 @@ const scrollToOffers = () => {
 
 const AppSimulation = () => {
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 bg-section-dark relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsl(38_85%_50%/0.04)_0%,transparent_70%)] pointer-events-none" />
+    <section className="py-24 md:py-40 px-6 md:px-12 bg-transparent relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsl(217_91%_60%/0.04)_0%,transparent_70%)] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 md:mb-24">
