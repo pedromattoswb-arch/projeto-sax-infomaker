@@ -779,7 +779,7 @@ const QuickTipsBanner = memo(({ locked = false, upgradeUrl = "" }: { locked?: bo
       )}
     </div>
   );
-};
+});
 
 /* Bonus Section visible in acervo root */
 const BONUS_ITEMS = [
