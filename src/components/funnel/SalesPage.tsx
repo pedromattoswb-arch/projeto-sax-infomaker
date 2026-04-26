@@ -110,7 +110,7 @@ const SalesPage = () => {
       </header>
 
       {/* AUTHORITY BAR */}
-      <div className="bg-surface/30 border-b border-white/5 py-3 px-4">
+      <div className="bg-white/5 border-b border-white/5 py-3 px-4">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 md:gap-12 flex-wrap">
           <div className="flex items-center gap-2 group cursor-default">
             <div className="p-1 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
