@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo, memo } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
@@ -110,23 +110,35 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
     return () => clearTimeout(searchTimerRef.current);
   }, [search]);
 
-  const filteredFolders = useMemo(() => {
+  const { filteredFolders, pdfFiles, audioFiles, otherFiles, allFiles } = useMemo(() => {
     const term = searchDebounced.trim().toLowerCase();
-    return term
+    
+    const filteredFolders = term
       ? folders.filter((f) => f.name.toLowerCase().includes(term))
       : folders;
-  }, [folders, searchDebounced]);
 
-  const allFiles = useMemo(() => {
-    const term = searchDebounced.trim().toLowerCase();
-    return term
+    const filteredFiles = term
       ? files.filter((f) => f.name.toLowerCase().includes(term))
       : files;
-  }, [files, searchDebounced]);
 
-  const pdfFiles = useMemo(() => allFiles.filter((f) => f.type === "pdf"), [allFiles]);
-  const audioFiles = useMemo(() => allFiles.filter((f) => f.type === "audio"), [allFiles]);
-  const otherFiles = useMemo(() => allFiles.filter((f) => f.type !== "pdf" && f.type !== "audio"), [allFiles]);
+    const pdfs: DriveFile[] = [];
+    const audios: DriveFile[] = [];
+    const others: DriveFile[] = [];
+
+    for (const f of filteredFiles) {
+      if (f.type === "pdf") pdfs.push(f);
+      else if (f.type === "audio") audios.push(f);
+      else others.push(f);
+    }
+
+    return {
+      filteredFolders,
+      pdfFiles: pdfs,
+      audioFiles: audios,
+      otherFiles: others,
+      allFiles: filteredFiles,
+    };
+  }, [folders, files, searchDebounced]);
 
   // Apply filter
   const showPdfs = fileFilter === "all" || fileFilter === "pdf";
@@ -580,7 +592,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 };
 
 /* Filter Tab component */
-const FilterTab = ({ active, onClick, count, icon, variant, children }: {
+const FilterTab = memo(({ active, onClick, count, icon, variant, children }: {
   active: boolean;
   onClick: () => void;
   count: number;
@@ -617,7 +629,7 @@ const FilterTab = ({ active, onClick, count, icon, variant, children }: {
       </span>
     </button>
   );
-};
+});
 
 /* Quick Tips collapsible banner */
 const TUTORIAL_TIPS = [
@@ -655,7 +667,7 @@ const TUTORIAL_TIPS = [
   },
 ];
 
-const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
+const QuickTipsBanner = memo(({ locked = false, upgradeUrl = "" }: { locked?: boolean; upgradeUrl?: string }) => {
   const [open, setOpen] = useState(false);
   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -767,7 +779,7 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
       )}
     </div>
   );
-};
+});
 
 /* Bonus Section visible in acervo root */
 const BONUS_ITEMS = [
