@@ -452,7 +452,8 @@ const SalesPage = () => {
       </div>
 
       <div className="h-14 md:hidden" />
-    </div>
+      </div>
+    </HeroGeometric>
   );
 };
 
