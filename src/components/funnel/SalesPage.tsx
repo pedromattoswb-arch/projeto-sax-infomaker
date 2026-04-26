@@ -90,8 +90,9 @@ const SalesPage = () => {
   const counter3 = useCounter(18, 1500);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* HEADER */}
+    <HeroGeometric>
+      <div className="relative min-h-screen overflow-x-hidden">
+        {/* HEADER */}
       <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-background/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <img src={logoSaxplay} alt="SaxPlay — Acervo de Partituras e Playbacks Para Saxofone" className="h-7 md:h-9 w-auto hover:opacity-80 transition-opacity" />
