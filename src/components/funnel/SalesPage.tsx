@@ -232,7 +232,7 @@ const SalesPage = () => {
       <PlaybackSamples />
 
       {/* O QUE VOCÊ RECEBE */}
-      <section className="py-20 md:py-32 px-6 md:px-12 section-alt relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-black/40 relative overflow-hidden">
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         
