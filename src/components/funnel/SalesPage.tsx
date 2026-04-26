@@ -91,7 +91,7 @@ const SalesPage = () => {
 
   return (
     <HeroGeometric>
-      <div className="relative min-h-screen overflow-x-hidden">
+      <div className="relative min-h-screen overflow-x-hidden seamless-sections">
         {/* HEADER */}
       <header className="py-4 px-6 md:px-12 border-b border-white/5 bg-[#030303]/60 backdrop-blur-xl sticky top-0 z-50 transition-elite">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
