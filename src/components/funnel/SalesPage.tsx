@@ -343,7 +343,7 @@ const SalesPage = () => {
       <BonusSection />
 
       {/* GARANTIA */}
-      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-section-dark">
+      <section className="py-24 md:py-40 px-6 md:px-12 relative overflow-hidden bg-black/60">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(142_70%_45%/0.1)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <div className="glow-border rounded-[32px] p-10 md:p-20 shadow-elite">
