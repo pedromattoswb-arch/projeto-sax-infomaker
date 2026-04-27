@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
-import SalesVideoPlayer from "./SalesVideoPlayer";
+import heroMockup from "@/assets/hero-mockup.png";
 
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
 import TestimonialCarousel from "./TestimonialCarousel";
@@ -156,8 +156,14 @@ const SalesPage = () => {
             Acesse instantaneamente mais de <strong className="text-foreground">10.000 partituras profissionais</strong> com playbacks de alta fidelidade para <strong className="text-foreground">Sax Alto e Sax Tenor</strong>.
           </p>
 
-          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 shadow-elite rounded-2xl md:rounded-3xl overflow-hidden border border-white/5 p-1 md:p-2 bg-white/5">
-            <SalesVideoPlayer />
+          <div className="animate-fade-in-up [animation-delay:300ms] mb-12 flex justify-center">
+            <img
+              src={heroMockup}
+              alt="Plataforma Clube do Sax — App com partituras e playbacks para Sax Alto e Tenor"
+              className="w-full max-w-[560px] h-auto object-contain drop-shadow-2xl"
+              loading="eager"
+              fetchPriority="high"
+            />
           </div>
 
           <div className="max-w-3xl mx-auto animate-fade-in-up [animation-delay:400ms]">
