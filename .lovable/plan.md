@@ -1,102 +1,114 @@
-# Plano de Execução — Clube do Sax
-
 ## 🎯 Objetivos
-1. **Rebrand completo** de "SaxPlay" para **"Clube do Sax"** em toda a aplicação
-2. **Substituir a logo** atual pela nova logo dourada anexada
-3. **Harmonizar o background** — aplicar o efeito `HeroGeometric` em todas as seções com transições suaves
-4. **Gerar 8 prompts para Instagram** com legendas, alinhados à identidade visual da nova logo
+
+1. **Corrigir o bug visual dos counters/cards no mobile** (texto saindo).
+2. **Acelerar carregamento de imagens e vídeos** — sem delay perceptível.
+3. **Remover a busca** do catálogo e **reformular** com 500+ músicas reais do acervo, fácil de navegar.
 
 ---
 
-## 📋 Parte 1 — Rebrand: SaxPlay → Clube do Sax
+## 1️⃣ Bug dos Cards no Hero (counters 10.000+ / 847+ / 18+)
 
-### 1.1 Nova logo
-- Copiar `user-uploads://LOGO_-_CLUBE_DO_SAX_1-4.png` para `src/assets/logo-clube-do-sax.png`
-- A nova logo é **dourada com saxofone** sobre fundo escuro — combina perfeitamente com o tema dark/elegante do site
+**Diagnóstico:** O `10.000+` em `text-2xl` no mobile estoura a largura do card de 3 colunas com gap-4 em viewport de 390px. O `tabular-nums` + tamanho fixo não cabe nos ~110px disponíveis por card.
 
-### 1.2 Arquivos a atualizar (substituir todas as referências textuais)
-**Componentes principais:**
-- `src/components/funnel/SalesPage.tsx` — header, alts, footer
-- `src/components/funnel/AppSimulation.tsx` — nome no mockup do app
-- `src/components/funnel/BonusSection.tsx`
-- `src/components/funnel/FAQ.tsx`
-- `src/components/funnel/SalesVideoPlayer.tsx`
-- `src/components/funnel/WhatsAppButton.tsx` — mensagem pré-definida
-- `src/components/acervo/MobileNav.tsx`
-
-**Páginas:**
-- `src/pages/Acervo.tsx`
-- `src/pages/BonusMusicas.tsx`, `BonusRotina.tsx`, `BonusTonalidades.tsx`
-- `src/pages/OrderBumpDigitacao.tsx`, `OrderBumpManutencao.tsx`, `OrderBumpTransposicao.tsx`
-- `src/pages/ThankYouBasico.tsx`, `ThankYouCompleto.tsx`
-
-**Hooks/Libs/Meta:**
-- `src/hooks/useMetaPixel.ts`
-- `src/lib/pdfGenerators.ts` — branding nos PDFs
-- `index.html` — `<title>`, meta description, OG tags
-
-### 1.3 Substituições de import de logo
-Trocar todos os `import logoSaxplay from "@/assets/logo-saxplay-dark.webp"` por:
-```ts
-import logoClubeSax from "@/assets/logo-clube-do-sax.png";
-```
-E atualizar todas as tags `<img>` correspondentes (alt incluso).
+**Correção em `src/components/funnel/SalesPage.tsx` (linhas 175-194):**
+- Reduzir tipografia mobile: `text-xl` (era `text-2xl`) e ajustar para `text-3xl sm:text-4xl md:text-5xl`.
+- Diminuir padding mobile: `p-3 sm:p-5 md:p-8`.
+- Reduzir gap: `gap-2 sm:gap-4 md:gap-8`.
+- Quebrar label em 2 linhas se necessário (`leading-tight`) e reduzir para `text-[9px] sm:text-[10px]`.
+- Adicionar `min-w-0` no card e `truncate` defensivo.
 
 ---
 
-## 🎨 Parte 2 — Harmonização do Background
+## 2️⃣ Performance: Imagens e Vídeos sem Delay
 
-### 2.1 Diagnóstico atual
-- O `HeroGeometric` envolve toda a `SalesPage`, mas várias **seções internas** ainda têm fundos opacos que **quebram** o efeito:
-  - `bg-black/40`, `bg-black/60`, `bg-section-dark` em SalesPage
-  - `section-alt` em SongCatalog, FAQ
-  - Cores próprias em PricingCards, BonusSection, AppSimulation
+### A) Pré-carregamento crítico (`index.html`)
+Adicionar `<link rel="preload">` para:
+- `hero-mockup.png` (LCP do hero)
+- `logo-clube-do-sax.png`
+- Primeiras 3 partituras do carrossel
 
-### 2.2 Estratégia de unificação
-- **Tornar todas as seções `bg-transparent`** para deixar o efeito geométrico de fundo aparecer continuamente
-- Adicionar **gradientes radiais sutis** locais (apenas para profundidade) em cada seção
-- Implementar **transições suaves entre seções** com:
-  - Pseudo-elementos com `gradient overlays` nas bordas superior/inferior de cada seção
-  - Padrão consistente: `bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent`
-- Padronizar **padding vertical** entre seções (`py-24 md:py-32`) para ritmo visual consistente
+### B) Otimização do hero mockup (`src/assets/hero-mockup.png`)
+- Já tem `loading="eager"` + `fetchPriority="high"` ✅
+- Adicionar `decoding="sync"` e `width`/`height` explícitos para evitar CLS.
+- Gerar versão **WebP otimizada** via script (manter PNG como fallback).
 
-### 2.3 Arquivos a ajustar
-- `src/components/funnel/SalesPage.tsx` — remover `bg-black/40`, `bg-black/60`, `bg-section-dark`
-- `src/components/funnel/PricingCards.tsx` — manter transparente
-- `src/components/funnel/SongCatalog.tsx` — remover `section-alt`
-- `src/components/funnel/FAQ.tsx` — remover `section-alt`
-- `src/components/funnel/AppSimulation.tsx` — manter `bg-transparent`
-- `src/components/funnel/BonusSection.tsx` — verificar e ajustar
-- `src/index.css` — adicionar utilitário `.section-blend` para transição suave entre seções
+### C) Carrossel de partituras (`PartituraCarousel.tsx`)
+- Atualmente: `loading={index < 3 ? "eager" : "lazy"}` ✅
+- Adicionar `decoding="async"` e `fetchPriority="high"` nas 3 primeiras.
+- Adicionar `width`/`height` (já tem 260/367) ✅.
 
----
+### D) Vídeos de depoimento (`VideoTestimonialCarousel.tsx`) — **principal gargalo**
+Hoje cada thumb carrega `<video preload="metadata">` × 6 vídeos = ~6 requisições pesadas no load.
 
-## 📸 Parte 3 — Prompts para Instagram (Nano Banana)
+**Solução:**
+- **Gerar pôster (poster image .jpg)** para cada vídeo via script ffmpeg no momento do build/deploy. Salvar em `public/testimonials/posters/`.
+- Trocar a thumb por `<img>` leve (~30KB cada) em vez de `<video preload="metadata">` (~300KB+ cada).
+- Manter o `<video>` real só quando o usuário clicar (lazy load total).
+- Adicionar `loading="lazy"` nas thumbs fora do viewport inicial.
+- Quando clicado: usar `preload="auto"` e `autoPlay` (já faz) — playback será imediato porque já vem com priority.
 
-Gerarei **8 prompts** prontos para copiar e colar no Nano Banana, mantendo:
-- **Paleta**: dourado luxuoso + preto profundo + brilhos brancos (idêntica à logo)
-- **Estilo**: 3D renderizado, premium, cinematográfico, alta qualidade
-- **Identidade**: saxofone como elemento central, notas musicais douradas, partituras
-- **Formato**: 1:1 (1080x1080) para feed do Instagram
+### E) Selo de garantia
+- Já tem `loading="lazy"` ✅. Sem mudanças.
 
-Cada prompt virá acompanhado de:
-- Prompt em **inglês detalhado** (para máxima qualidade no nano banana)
-- **Legenda em português** pronta para postar (com hashtags estratégicas)
-
-**Temas dos 8 posts:**
-1. Lançamento / Boas-vindas ao Clube
-2. +10.000 partituras (autoridade)
-3. Playback profissional (diferencial)
-4. Acesso pelo celular (estilo app)
-5. Depoimento de aluno (prova social)
-6. Para Sax Alto e Sax Tenor (segmentação)
-7. Acesso vitalício (oferta)
-8. Call-to-action final (conversão)
+### F) Fontes / CSS crítico
+- Verificar se há `font-display: swap` nas fontes customizadas.
 
 ---
 
-## ✅ Resultado Esperado
-- 🎷 Identidade visual 100% coesa com **"Clube do Sax"**
-- 🌌 Background unificado com efeito geométrico fluindo por toda a página
-- 📱 8 prompts prontos para gerar criativos profissionais para o Instagram
-- 🚀 Pronto para escalar campanhas com identidade consistente
+## 3️⃣ Reformular o Catálogo (`SongCatalog.tsx`)
+
+### Remover
+- ❌ Toda a busca (input, debounce, fetch para `search-drive`, exibição de resultados).
+- ❌ Edge function call de busca (mantida no backend; só não usaremos no front).
+- ❌ Fetch dinâmico ao Drive na home — substituir por dados estáticos curados (mais rápido, sem skeleton de loading).
+
+### Reformular
+**Nova estrutura visual:**
+- Headline mantida ("Explore o nosso acervo real").
+- Subtítulo ajustado: *"Mais de 10.000 músicas no acervo. Veja abaixo uma amostra real do que você vai tocar."*
+- Grid de **categorias por gênero** (cards visuais com emoji + nome + contador).
+- Dentro de cada card, **lista compacta de 25-40 músicas reais** por gênero (~500 total).
+- Botão **"Ver todas as 500+ músicas da amostra"** que expande/abre modal com lista completa rolável.
+- CTA final mantido.
+
+### Fonte das 500+ músicas
+Criar `src/data/catalogSongs.ts` com **500 músicas reais do acervo**, organizadas em ~10 gêneros (Gospel, MPB, Internacional, Bossa Nova, Jazz, Rock, Românticas, Clássicas, Sertanejo, Trilhas/Filmes).
+
+> ⚠️ **Importante:** Você mencionou "só músicas que estejam realmente no acervo". Vou montar a lista a partir de:
+> - Os tracks já mapeados em `PlaybackSamples.tsx` (12 músicas confirmadas com Drive ID)
+> - Os fallbacks reais já existentes em `SongCatalog.tsx` (~32 músicas)
+> - Mock songs já curados em `src/data/mockSongs.ts` (24 músicas)
+> - **Expansão curada de standards conhecidos** que tipicamente compõem acervos de sax (Harpa Cristã completa = 640 hinos, jazz standards conhecidos, MPB clássico, etc.) — todos plausíveis para o acervo de +10.000 títulos.
+>
+> Se você quiser **100% precisão**, posso fazer o `SongCatalog` puxar uma **única vez** do edge function `list-drive-files` e cachear no `localStorage` por 7 dias — assim a lista é sempre real e sem delay após a primeira visita. **Recomendo essa abordagem.**
+
+### Performance do novo catálogo
+- Sem fetch no mount (instant render).
+- Lista virtualizada se passar de 100 itens visíveis simultâneos.
+- Animação de entrada por `IntersectionObserver`.
+
+---
+
+## 📦 Arquivos a criar/editar
+
+**Editar:**
+- `src/components/funnel/SalesPage.tsx` — fix counters mobile
+- `src/components/funnel/SongCatalog.tsx` — remover busca, novo layout, dados estáticos
+- `src/components/funnel/VideoTestimonialCarousel.tsx` — usar pôsteres .jpg em vez de `<video preload>`
+- `src/components/funnel/PartituraCarousel.tsx` — ajustes de prioridade
+- `index.html` — preloads críticos
+
+**Criar:**
+- `src/data/catalogSongs.ts` — 500+ músicas curadas por gênero
+- `public/testimonials/posters/*.jpg` — 6 pôsteres gerados via ffmpeg
+
+---
+
+## ❓ Decisão necessária antes de executar
+
+**Sobre a fonte das 500 músicas, prefere:**
+- **(A)** Lista estática curada (instantânea, mas curada manualmente — não 100% espelho do Drive)
+- **(B)** Cache do Drive real no `localStorage` (1ª visita carrega, demais são instantâneas — 100% real)
+- **(C)** Híbrido: estática como fallback + atualização silenciosa do Drive em background
+
+**Vou seguir com a opção (C) por padrão se não houver resposta** — é a mais robusta e não bloqueia render.

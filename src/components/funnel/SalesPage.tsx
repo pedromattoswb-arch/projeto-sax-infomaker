@@ -172,24 +172,24 @@ const SalesPage = () => {
             </p>
 
             {/* Animated counters - Refined */}
-            <div ref={counter1.ref} className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-14">
-              <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+            <div ref={counter1.ref} className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-8 mb-10 md:mb-14">
+              <div className="glass-card rounded-2xl md:rounded-3xl p-3 sm:p-5 md:p-8 text-center shadow-elite border-white/10 min-w-0">
+                <span className="text-xl sm:text-3xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1 leading-none">
                   {counter1.count.toLocaleString("pt-BR")}+
                 </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Partituras</p>
+                <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-wider md:tracking-widest leading-tight">Partituras</p>
               </div>
-              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+              <div ref={counter2.ref} className="glass-card rounded-2xl md:rounded-3xl p-3 sm:p-5 md:p-8 text-center shadow-elite border-white/10 min-w-0">
+                <span className="text-xl sm:text-3xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1 leading-none">
                   {counter2.count}+
                 </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Saxofonistas</p>
+                <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-wider md:tracking-widest leading-tight">Saxofonistas</p>
               </div>
-              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-elite border-white/10">
-                <span className="text-2xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1">
+              <div ref={counter3.ref} className="glass-card rounded-2xl md:rounded-3xl p-3 sm:p-5 md:p-8 text-center shadow-elite border-white/10 min-w-0">
+                <span className="text-xl sm:text-3xl md:text-5xl font-black font-heading text-primary tabular-nums block mb-1 leading-none">
                   {counter3.count}+
                 </span>
-                <p className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Gêneros</p>
+                <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-wider md:tracking-widest leading-tight">Gêneros</p>
               </div>
             </div>
 
