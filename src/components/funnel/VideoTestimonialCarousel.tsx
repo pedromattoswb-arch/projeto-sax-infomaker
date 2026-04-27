@@ -3,12 +3,12 @@ import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
 const videoTestimonials = [
-  { src: "/testimonials/julio-sampaio-sp.mp4", name: "Júlio Sampaio", city: "São Paulo", initials: "JS" },
-  { src: "/testimonials/marcelo-cristian-rj.mp4", name: "Marcelo Cristian", city: "Rio de Janeiro", initials: "MC" },
-  { src: "/testimonials/marcos-mattos-bsb.mp4", name: "Marcos Mattos", city: "Brasília", initials: "MM" },
-  { src: "/testimonials/julia-costa-sp.mp4", name: "Júlia Costa", city: "São Paulo", initials: "JC" },
-  { src: "/testimonials/barbara-oliveira-floripa.mp4", name: "Bárbara Oliveira", city: "Florianópolis", initials: "BO" },
-  { src: "/testimonials/gabriela-santana-sp.mp4", name: "Gabriela Santana", city: "São Paulo", initials: "GS" },
+  { src: "/testimonials/julio-sampaio-sp.mp4", poster: "/testimonials/posters/julio-sampaio-sp.jpg", name: "Júlio Sampaio", city: "São Paulo", initials: "JS" },
+  { src: "/testimonials/marcelo-cristian-rj.mp4", poster: "/testimonials/posters/marcelo-cristian-rj.jpg", name: "Marcelo Cristian", city: "Rio de Janeiro", initials: "MC" },
+  { src: "/testimonials/marcos-mattos-bsb.mp4", poster: "/testimonials/posters/marcos-mattos-bsb.jpg", name: "Marcos Mattos", city: "Brasília", initials: "MM" },
+  { src: "/testimonials/julia-costa-sp.mp4", poster: "/testimonials/posters/julia-costa-sp.jpg", name: "Júlia Costa", city: "São Paulo", initials: "JC" },
+  { src: "/testimonials/barbara-oliveira-floripa.mp4", poster: "/testimonials/posters/barbara-oliveira-floripa.jpg", name: "Bárbara Oliveira", city: "Florianópolis", initials: "BO" },
+  { src: "/testimonials/gabriela-santana-sp.mp4", poster: "/testimonials/posters/gabriela-santana-sp.jpg", name: "Gabriela Santana", city: "São Paulo", initials: "GS" },
 ];
 
 const VideoTestimonialCarousel = () => {
@@ -59,6 +59,7 @@ const VideoTestimonialCarousel = () => {
                       <video
                         ref={(el) => { videoRefs.current[i] = el; }}
                         src={t.src}
+                        poster={t.poster}
                         controls
                         autoPlay
                         preload="auto"
@@ -72,13 +73,15 @@ const VideoTestimonialCarousel = () => {
                         className="relative w-full aspect-[9/16] flex flex-col items-center justify-center cursor-pointer group overflow-hidden"
                         aria-label={`Assistir depoimento de ${t.name}`}
                       >
-                        {/* Silent video as thumbnail — preload="metadata" loads only first frames */}
-                        <video
-                          src={t.src}
-                          preload="metadata"
-                          muted
-                          playsInline
+                        {/* Lightweight poster image instead of preloaded video — ~30KB vs ~300KB+ */}
+                        <img
+                          src={t.poster}
+                          alt={`Depoimento de ${t.name}`}
                           className="absolute inset-0 w-full h-full object-cover"
+                          loading={i < 2 ? "eager" : "lazy"}
+                          decoding="async"
+                          width={540}
+                          height={960}
                         />
 
                         {/* Play overlay */}
