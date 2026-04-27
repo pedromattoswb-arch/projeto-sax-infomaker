@@ -163,6 +163,9 @@ const SalesPage = () => {
               className="w-full max-w-[560px] h-auto object-contain drop-shadow-2xl"
               loading="eager"
               fetchPriority="high"
+              decoding="sync"
+              width={920}
+              height={840}
             />
           </div>
 
