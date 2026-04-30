@@ -737,7 +737,7 @@ const QuickTipsBanner = ({ locked = false, upgradeUrl = "" }: { locked?: boolean
               preload="auto"
               className="w-full h-full object-contain bg-black"
             >
-              <source src="/tutorials/como-navegar-clubedosax.mp4" type="video/mp4" />
+              <source src="/tutorials/como-navegar-saxplay.mp4" type="video/mp4" />
               Seu navegador não suporta vídeo.
             </video>
           )}
