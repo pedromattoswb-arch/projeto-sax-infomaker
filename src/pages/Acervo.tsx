@@ -603,6 +603,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
               className="w-full h-full"
               title={viewingPdf.name}
               allow="autoplay"
+              loading="lazy"
             />
           </div>
         </div>
