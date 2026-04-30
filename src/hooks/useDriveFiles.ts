@@ -34,7 +34,6 @@ const EDGE_FUNCTION_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.s
 
 // Folder name mapping for user-friendly labels
 const FOLDER_NAME_MAP: Record<string, string> = {
-  // Nomes exatos do Google Drive (uppercase) → Nome amigável em português
   "BOOKS": "Livros e Métodos de Estudo",
   "CHRISTMAS - NATAL": "Músicas de Natal",
   "CHRISTMAS": "Músicas de Natal",
@@ -91,7 +90,6 @@ const FOLDER_NAME_MAP: Record<string, string> = {
 function formatFolderName(raw: string): string {
   if (FOLDER_NAME_MAP[raw.toUpperCase()]) return FOLDER_NAME_MAP[raw.toUpperCase()];
   if (FOLDER_NAME_MAP[raw]) return FOLDER_NAME_MAP[raw];
-  // Auto-capitalize: "SOME FOLDER NAME" → "Some Folder Name"
   return raw
     .toLowerCase()
     .replace(/(?:^|\s|[-/])\S/g, (match) => match.toUpperCase());
@@ -106,8 +104,8 @@ function getCached(folderId?: string): DriveResponse | null {
     const raw = sessionStorage.getItem(getCacheKey(folderId));
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    // Cache valid for 5 minutes
-    if (Date.now() - parsed._ts > 5 * 60 * 1000) return null;
+    // Cache valid for 10 minutes (aligned with server)
+    if (Date.now() - parsed._ts > 10 * 60 * 1000) return null;
     return parsed.data;
   } catch {
     return null;
@@ -152,6 +150,8 @@ export function useDriveFiles() {
       setFolders(applyFolderNames(cached.folders));
       setFiles(cached.files);
       setIsRoot(cached.isRoot);
+      setLoading(false);
+      setError(null);
       // Still fetch in background to update
     }
 
@@ -166,14 +166,18 @@ export function useDriveFiles() {
       if (!res.ok) throw new Error("Erro ao carregar arquivos");
       const data: DriveResponse = await res.json();
       setCache(folderId, data);
-      setFolders(applyFolderNames(data.folders));
-      setFiles(data.files);
-      setIsRoot(data.isRoot);
+      if (!controller.signal.aborted) {
+        setFolders(applyFolderNames(data.folders));
+        setFiles(data.files);
+        setIsRoot(data.isRoot);
+      }
     } catch (err: any) {
       if (err.name === "AbortError") return;
       if (!cached) setError(err.message || "Erro desconhecido");
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   }, []);
 

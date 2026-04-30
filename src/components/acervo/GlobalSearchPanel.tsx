@@ -64,7 +64,7 @@ const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
 
   // Debounce
   useEffect(() => {
-    timerRef.current = setTimeout(() => setDebouncedQuery(query), 400);
+    timerRef.current = setTimeout(() => setDebouncedQuery(query), 500);
     return () => clearTimeout(timerRef.current);
   }, [query]);
 

@@ -18,7 +18,25 @@ interface DriveListResponse {
   nextPageToken?: string;
 }
 
-// List all items in a folder (single level)
+// ── Full index cache ──
+interface IndexEntry {
+  id: string;
+  name: string;
+  nameNorm: string; // pre-normalized for search
+  mimeType: string;
+  size?: string;
+  isFolder: boolean;
+}
+
+let indexCache: IndexEntry[] | null = null;
+let indexBuiltAt = 0;
+let indexBuildPromise: Promise<IndexEntry[]> | null = null;
+const INDEX_TTL = 15 * 60 * 1000; // 15 minutes
+
+function normalize(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 async function listFolder(folderId: string): Promise<DriveItem[]> {
   const allItems: DriveItem[] = [];
   let pageToken = '';
@@ -43,15 +61,109 @@ async function listFolder(folderId: string): Promise<DriveItem[]> {
   return allItems;
 }
 
-// Normalize string for accent-insensitive matching
-function normalize(str: string): string {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+async function buildIndex(): Promise<IndexEntry[]> {
+  const entries: IndexEntry[] = [];
+
+  // Level 1: root
+  const rootItems = await listFolder(ROOT_FOLDER_ID);
+  const rootFolders: DriveItem[] = [];
+
+  for (const item of rootItems) {
+    const isFolder = item.mimeType === 'application/vnd.google-apps.folder';
+    entries.push({
+      id: item.id,
+      name: item.name,
+      nameNorm: normalize(item.name),
+      mimeType: item.mimeType,
+      size: item.size,
+      isFolder,
+    });
+    if (isFolder) rootFolders.push(item);
+  }
+
+  // Level 2: parallel scan of all root subfolders
+  const level2Results = await Promise.all(
+    rootFolders.map(async (folder) => {
+      try {
+        return { items: await listFolder(folder.id), parentId: folder.id };
+      } catch {
+        return { items: [], parentId: folder.id };
+      }
+    })
+  );
+
+  const level3Folders: DriveItem[] = [];
+
+  for (const { items } of level2Results) {
+    for (const item of items) {
+      const isFolder = item.mimeType === 'application/vnd.google-apps.folder';
+      entries.push({
+        id: item.id,
+        name: item.name,
+        nameNorm: normalize(item.name),
+        mimeType: item.mimeType,
+        size: item.size,
+        isFolder,
+      });
+      if (isFolder) level3Folders.push(item);
+    }
+  }
+
+  // Level 3: parallel with concurrency limit
+  const CONCURRENCY = 15;
+  for (let i = 0; i < level3Folders.length; i += CONCURRENCY) {
+    const batch = level3Folders.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.all(
+      batch.map(async (folder) => {
+        try {
+          return await listFolder(folder.id);
+        } catch {
+          return [];
+        }
+      })
+    );
+
+    for (const items of batchResults) {
+      for (const item of items) {
+        entries.push({
+          id: item.id,
+          name: item.name,
+          nameNorm: normalize(item.name),
+          mimeType: item.mimeType,
+          size: item.size,
+          isFolder: item.mimeType === 'application/vnd.google-apps.folder',
+        });
+      }
+    }
+  }
+
+  console.log(`Index built: ${entries.length} entries (${level3Folders.length} deep folders scanned)`);
+  return entries;
 }
 
-// Check if item name matches query (supports partial, accent-insensitive)
-function nameMatches(name: string, queryTerms: string[]): boolean {
-  const normalized = normalize(name);
-  return queryTerms.every(term => normalized.includes(term));
+async function getIndex(): Promise<IndexEntry[]> {
+  // Return cached if fresh
+  if (indexCache && Date.now() - indexBuiltAt < INDEX_TTL) {
+    return indexCache;
+  }
+
+  // If already building, wait for it
+  if (indexBuildPromise) {
+    return indexBuildPromise;
+  }
+
+  // Build new index
+  indexBuildPromise = buildIndex().then((entries) => {
+    indexCache = entries;
+    indexBuiltAt = Date.now();
+    indexBuildPromise = null;
+    return entries;
+  }).catch((err) => {
+    indexBuildPromise = null;
+    throw err;
+  });
+
+  return indexBuildPromise;
 }
 
 Deno.serve(async (req) => {
@@ -72,87 +184,28 @@ Deno.serve(async (req) => {
     const q = query.trim();
     const queryTerms = normalize(q).split(/\s+/).filter(Boolean);
 
-    const matchedFolders: { id: string; name: string }[] = [];
-    const matchedFiles: DriveItem[] = [];
-    const MAX_RESULTS = 60;
+    const index = await getIndex();
 
-    // Phase 1: List root-level folders
-    const rootItems = await listFolder(ROOT_FOLDER_ID);
-    const rootFolders = rootItems.filter(i => i.mimeType === 'application/vnd.google-apps.folder');
-    const rootFiles = rootItems.filter(i => i.mimeType !== 'application/vnd.google-apps.folder');
+    // Filter in memory — instant
+    const matchedFolders: IndexEntry[] = [];
+    const matchedFiles: IndexEntry[] = [];
+    const MAX_FOLDERS = 30;
+    const MAX_FILES = 60;
 
-    // Check root-level files
-    for (const f of rootFiles) {
-      if (nameMatches(f.name, queryTerms)) matchedFiles.push(f);
-    }
+    for (const entry of index) {
+      if (matchedFolders.length >= MAX_FOLDERS && matchedFiles.length >= MAX_FILES) break;
 
-    // Check root-level folders
-    for (const f of rootFolders) {
-      if (nameMatches(f.name, queryTerms)) {
-        matchedFolders.push({ id: f.id, name: f.name });
+      const matches = queryTerms.every(term => entry.nameNorm.includes(term));
+      if (!matches) continue;
+
+      if (entry.isFolder && matchedFolders.length < MAX_FOLDERS) {
+        matchedFolders.push(entry);
+      } else if (!entry.isFolder && matchedFiles.length < MAX_FILES) {
+        matchedFiles.push(entry);
       }
     }
 
-    // Phase 2: Search inside each root subfolder (level 2) - parallel
-    const level2Results = await Promise.all(
-      rootFolders.map(async (folder) => {
-        try {
-          const items = await listFolder(folder.id);
-          const subFolders = items.filter(i => i.mimeType === 'application/vnd.google-apps.folder');
-          const subFiles = items.filter(i => i.mimeType !== 'application/vnd.google-apps.folder');
-          return { subFolders, subFiles, parentName: folder.name };
-        } catch {
-          return { subFolders: [], subFiles: [], parentName: folder.name };
-        }
-      })
-    );
-
-    // Collect level 2 matches and gather level 3 folder IDs
-    const level3Folders: DriveItem[] = [];
-    for (const { subFolders, subFiles } of level2Results) {
-      for (const f of subFiles) {
-        if (nameMatches(f.name, queryTerms) && matchedFiles.length < MAX_RESULTS) {
-          matchedFiles.push(f);
-        }
-      }
-      for (const f of subFolders) {
-        if (nameMatches(f.name, queryTerms) && matchedFolders.length < 30) {
-          matchedFolders.push({ id: f.id, name: f.name });
-        }
-        level3Folders.push(f);
-      }
-    }
-
-    // Phase 3: Search inside level 3 folders (deepest common level: artist folders) - parallel with concurrency limit
-    const CONCURRENCY = 10;
-    for (let i = 0; i < level3Folders.length && matchedFiles.length < MAX_RESULTS; i += CONCURRENCY) {
-      const batch = level3Folders.slice(i, i + CONCURRENCY);
-      const batchResults = await Promise.all(
-        batch.map(async (folder) => {
-          try {
-            return await listFolder(folder.id);
-          } catch {
-            return [];
-          }
-        })
-      );
-
-      for (const items of batchResults) {
-        for (const item of items) {
-          if (item.mimeType === 'application/vnd.google-apps.folder') {
-            if (nameMatches(item.name, queryTerms) && matchedFolders.length < 30) {
-              matchedFolders.push({ id: item.id, name: item.name });
-            }
-          } else {
-            if (nameMatches(item.name, queryTerms) && matchedFiles.length < MAX_RESULTS) {
-              matchedFiles.push(item);
-            }
-          }
-        }
-      }
-    }
-
-    console.log(`Search "${q}": ${matchedFolders.length} folders, ${matchedFiles.length} files (scanned ${level3Folders.length} deep folders)`);
+    console.log(`Search "${q}": ${matchedFolders.length} folders, ${matchedFiles.length} files (index: ${index.length} entries)`);
 
     const projectRef = Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr';
 
@@ -184,7 +237,11 @@ Deno.serve(async (req) => {
     });
 
     return new Response(JSON.stringify({ folders, files }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=60, stale-while-revalidate=120',
+      },
     });
   } catch (error) {
     console.error('Search error:', error);

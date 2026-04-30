@@ -85,6 +85,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const [fileFilter, setFileFilter] = useState<FileFilter>("all");
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const [visiblePdfCount, setVisiblePdfCount] = useState(50);
+  const [visibleAudioCount, setVisibleAudioCount] = useState(50);
 
   // Reactive player state synced from AudioPlayerBar
   const [playerState, setPlayerState] = useState<{ activeId: string | null; isPlaying: boolean; minimized: boolean }>({
@@ -147,6 +149,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       setSearch("");
       setSearchDebounced("");
       setFileFilter("all");
+      setVisiblePdfCount(50);
+      setVisibleAudioCount(50);
       navigateToFolder(folder);
       window.scrollTo(0, 0);
     },
@@ -169,6 +173,17 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const handlePlayerClose = useCallback(() => {
     setCurrentAudio(null);
   }, []);
+
+  const handleCloseSearch = useCallback(() => setSearchPanelOpen(false), []);
+
+  const handleSearchFolderOpen = useCallback((folder: DriveFolder) => {
+    handleFolderOpen(folder);
+  }, [handleFolderOpen]);
+
+  const handleSearchFileOpen = useCallback((file: DriveFile) => {
+    if (file.type === "pdf") setViewingPdf(file);
+    else if (file.type === "audio") playAudio(file);
+  }, [playAudio]);
 
   return (
     <div className={`min-h-screen bg-background ${hasAudioPlaying && !isPlayerMinimized ? "pb-40 md:pb-28" : hasAudioPlaying && isPlayerMinimized ? "pb-6" : ""}`}>
@@ -333,16 +348,11 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         {/* Global Search Panel */}
         <GlobalSearchPanel
           open={searchPanelOpen}
-          onClose={() => setSearchPanelOpen(false)}
+          onClose={handleCloseSearch}
           folders={folders}
           files={files}
-          onFolderOpen={(folder) => {
-            handleFolderOpen(folder);
-          }}
-          onFileOpen={(file) => {
-            if (file.type === "pdf") setViewingPdf(file);
-            else if (file.type === "audio") playAudio(file);
-          }}
+          onFolderOpen={handleSearchFolderOpen}
+          onFileOpen={handleSearchFileOpen}
           onPlayAudio={playAudio}
         />
 
@@ -382,9 +392,15 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
 
         {/* Loading Skeletons */}
         {loading && (
-          <div className="space-y-3">
+          <div className="space-y-3" aria-label="Carregando conteúdo">
             {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-16 rounded-2xl" />
+              <div key={i} className="flex items-center gap-3 p-3 md:p-5 rounded-2xl bg-card border border-border">
+                <Skeleton className="w-10 h-10 md:w-12 md:h-12 rounded-xl shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-3/4 rounded" />
+                  <Skeleton className="h-3 w-1/3 rounded" />
+                </div>
+              </div>
             ))}
           </div>
         )}
@@ -434,7 +450,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                   Partituras ({pdfFiles.length})
                 </h2>
                 <div className="flex flex-col gap-2" role="list" aria-live="polite">
-                  {pdfFiles.map((file) => (
+                  {pdfFiles.slice(0, visiblePdfCount).map((file) => (
                     <FileCard
                       key={file.id}
                       file={file}
@@ -445,6 +461,14 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     />
                   ))}
                 </div>
+                {pdfFiles.length > visiblePdfCount && (
+                  <button
+                    onClick={() => setVisiblePdfCount((c) => c + 50)}
+                    className="mt-3 w-full py-3 rounded-xl bg-muted border border-border text-sm font-body font-bold text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors min-h-[44px]"
+                  >
+                    Mostrar mais ({pdfFiles.length - visiblePdfCount} restantes)
+                  </button>
+                )}
               </div>
             )}
 
@@ -456,7 +480,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                   Playbacks ({audioFiles.length})
                 </h2>
                 <div className="flex flex-col gap-2" role="list" aria-live="polite">
-                  {audioFiles.map((file) => (
+                  {audioFiles.slice(0, visibleAudioCount).map((file) => (
                     <FileCard
                       key={file.id}
                       file={file}
@@ -467,6 +491,14 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     />
                   ))}
                 </div>
+                {audioFiles.length > visibleAudioCount && (
+                  <button
+                    onClick={() => setVisibleAudioCount((c) => c + 50)}
+                    className="mt-3 w-full py-3 rounded-xl bg-muted border border-border text-sm font-body font-bold text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors min-h-[44px]"
+                  >
+                    Mostrar mais ({audioFiles.length - visibleAudioCount} restantes)
+                  </button>
+                )}
               </div>
             )}
 
@@ -571,6 +603,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
               className="w-full h-full"
               title={viewingPdf.name}
               allow="autoplay"
+              loading="lazy"
             />
           </div>
         </div>
