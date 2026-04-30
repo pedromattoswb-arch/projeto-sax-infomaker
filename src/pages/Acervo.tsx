@@ -333,16 +333,11 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
         {/* Global Search Panel */}
         <GlobalSearchPanel
           open={searchPanelOpen}
-          onClose={() => setSearchPanelOpen(false)}
+          onClose={handleCloseSearch}
           folders={folders}
           files={files}
-          onFolderOpen={(folder) => {
-            handleFolderOpen(folder);
-          }}
-          onFileOpen={(file) => {
-            if (file.type === "pdf") setViewingPdf(file);
-            else if (file.type === "audio") playAudio(file);
-          }}
+          onFolderOpen={handleSearchFolderOpen}
+          onFileOpen={handleSearchFileOpen}
           onPlayAudio={playAudio}
         />
 
