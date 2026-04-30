@@ -85,6 +85,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
   const [fileFilter, setFileFilter] = useState<FileFilter>("all");
   const playerRef = useRef<AudioPlayerHandle>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const [visiblePdfCount, setVisiblePdfCount] = useState(50);
+  const [visibleAudioCount, setVisibleAudioCount] = useState(50);
 
   // Reactive player state synced from AudioPlayerBar
   const [playerState, setPlayerState] = useState<{ activeId: string | null; isPlaying: boolean; minimized: boolean }>({
