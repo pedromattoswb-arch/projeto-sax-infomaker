@@ -149,6 +149,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       setSearch("");
       setSearchDebounced("");
       setFileFilter("all");
+      setVisiblePdfCount(50);
+      setVisibleAudioCount(50);
       navigateToFolder(folder);
       window.scrollTo(0, 0);
     },
