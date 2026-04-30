@@ -1,114 +1,64 @@
-## 🎯 Objetivos
 
-1. **Corrigir o bug visual dos counters/cards no mobile** (texto saindo).
-2. **Acelerar carregamento de imagens e vídeos** — sem delay perceptível.
-3. **Remover a busca** do catálogo e **reformular** com 500+ músicas reais do acervo, fácil de navegar.
+# Plano de Otimização de Performance do Acervo
 
----
+## Diagnóstico
 
-## 1️⃣ Bug dos Cards no Hero (counters 10.000+ / 847+ / 18+)
-
-**Diagnóstico:** O `10.000+` em `text-2xl` no mobile estoura a largura do card de 3 colunas com gap-4 em viewport de 390px. O `tabular-nums` + tamanho fixo não cabe nos ~110px disponíveis por card.
-
-**Correção em `src/components/funnel/SalesPage.tsx` (linhas 175-194):**
-- Reduzir tipografia mobile: `text-xl` (era `text-2xl`) e ajustar para `text-3xl sm:text-4xl md:text-5xl`.
-- Diminuir padding mobile: `p-3 sm:p-5 md:p-8`.
-- Reduzir gap: `gap-2 sm:gap-4 md:gap-8`.
-- Quebrar label em 2 linhas se necessário (`leading-tight`) e reduzir para `text-[9px] sm:text-[10px]`.
-- Adicionar `min-w-0` no card e `truncate` defensivo.
+O principal gargalo está na **busca (search-drive)**: cada busca faz chamadas recursivas à API do Google Drive, varrendo ~303 pastas em 3 níveis. Isso é lento e consome muitas requisições. O segundo problema é que o **list-drive-files** também bate no Google Drive a cada request, sem cache no servidor.
 
 ---
 
-## 2️⃣ Performance: Imagens e Vídeos sem Delay
+## Fase 1 — Cache no servidor (Edge Functions)
 
-### A) Pré-carregamento crítico (`index.html`)
-Adicionar `<link rel="preload">` para:
-- `hero-mockup.png` (LCP do hero)
-- `logo-clube-do-sax.png`
-- Primeiras 3 partituras do carrossel
+### 1.1 Adicionar cache em memória no `list-drive-files`
+- Cache em memória (Map) com TTL de 10 minutos por folderId
+- Resultado: pastas já visitadas carregam instantaneamente no servidor
 
-### B) Otimização do hero mockup (`src/assets/hero-mockup.png`)
-- Já tem `loading="eager"` + `fetchPriority="high"` ✅
-- Adicionar `decoding="sync"` e `width`/`height` explícitos para evitar CLS.
-- Gerar versão **WebP otimizada** via script (manter PNG como fallback).
-
-### C) Carrossel de partituras (`PartituraCarousel.tsx`)
-- Atualmente: `loading={index < 3 ? "eager" : "lazy"}` ✅
-- Adicionar `decoding="async"` e `fetchPriority="high"` nas 3 primeiras.
-- Adicionar `width`/`height` (já tem 260/367) ✅.
-
-### D) Vídeos de depoimento (`VideoTestimonialCarousel.tsx`) — **principal gargalo**
-Hoje cada thumb carrega `<video preload="metadata">` × 6 vídeos = ~6 requisições pesadas no load.
-
-**Solução:**
-- **Gerar pôster (poster image .jpg)** para cada vídeo via script ffmpeg no momento do build/deploy. Salvar em `public/testimonials/posters/`.
-- Trocar a thumb por `<img>` leve (~30KB cada) em vez de `<video preload="metadata">` (~300KB+ cada).
-- Manter o `<video>` real só quando o usuário clicar (lazy load total).
-- Adicionar `loading="lazy"` nas thumbs fora do viewport inicial.
-- Quando clicado: usar `preload="auto"` e `autoPlay` (já faz) — playback será imediato porque já vem com priority.
-
-### E) Selo de garantia
-- Já tem `loading="lazy"` ✅. Sem mudanças.
-
-### F) Fontes / CSS crítico
-- Verificar se há `font-display: swap` nas fontes customizadas.
+### 1.2 Reescrever `search-drive` com índice em cache
+- Na primeira busca (ou cold start), construir um índice completo de todas as pastas e arquivos (3 níveis) e mantê-lo em memória com TTL de 15 minutos
+- Buscas subsequentes fazem apenas filter no índice em memória — resposta em <50ms
+- Adicionar header `Cache-Control` para que o browser também cache resultados de busca por 60 segundos
 
 ---
 
-## 3️⃣ Reformular o Catálogo (`SongCatalog.tsx`)
+## Fase 2 — Otimizações no Frontend
 
-### Remover
-- ❌ Toda a busca (input, debounce, fetch para `search-drive`, exibição de resultados).
-- ❌ Edge function call de busca (mantida no backend; só não usaremos no front).
-- ❌ Fetch dinâmico ao Drive na home — substituir por dados estáticos curados (mais rápido, sem skeleton de loading).
+### 2.1 Cache mais inteligente no `useDriveFiles`
+- Aumentar TTL do sessionStorage de 5min para 10min (alinhado com servidor)
+- Mostrar dados do cache imediatamente (já faz stale-while-revalidate, manter)
 
-### Reformular
-**Nova estrutura visual:**
-- Headline mantida ("Explore o nosso acervo real").
-- Subtítulo ajustado: *"Mais de 10.000 músicas no acervo. Veja abaixo uma amostra real do que você vai tocar."*
-- Grid de **categorias por gênero** (cards visuais com emoji + nome + contador).
-- Dentro de cada card, **lista compacta de 25-40 músicas reais** por gênero (~500 total).
-- Botão **"Ver todas as 500+ músicas da amostra"** que expande/abre modal com lista completa rolável.
-- CTA final mantido.
+### 2.2 Debounce da busca global
+- Aumentar debounce de 400ms para 500ms para reduzir requests durante digitação rápida
 
-### Fonte das 500+ músicas
-Criar `src/data/catalogSongs.ts` com **500 músicas reais do acervo**, organizadas em ~10 gêneros (Gospel, MPB, Internacional, Bossa Nova, Jazz, Rock, Românticas, Clássicas, Sertanejo, Trilhas/Filmes).
+### 2.3 Virtualização de listas longas
+- Quando uma pasta tem muitos arquivos (>50), renderizar apenas os visíveis usando windowing simples (limitar a 50 itens iniciais com botão "Mostrar mais")
+- Evita renderizar centenas de FileCards de uma vez
 
-> ⚠️ **Importante:** Você mencionou "só músicas que estejam realmente no acervo". Vou montar a lista a partir de:
-> - Os tracks já mapeados em `PlaybackSamples.tsx` (12 músicas confirmadas com Drive ID)
-> - Os fallbacks reais já existentes em `SongCatalog.tsx` (~32 músicas)
-> - Mock songs já curados em `src/data/mockSongs.ts` (24 músicas)
-> - **Expansão curada de standards conhecidos** que tipicamente compõem acervos de sax (Harpa Cristã completa = 640 hinos, jazz standards conhecidos, MPB clássico, etc.) — todos plausíveis para o acervo de +10.000 títulos.
->
-> Se você quiser **100% precisão**, posso fazer o `SongCatalog` puxar uma **única vez** do edge function `list-drive-files` e cachear no `localStorage` por 7 dias — assim a lista é sempre real e sem delay após a primeira visita. **Recomendo essa abordagem.**
+### 2.4 Prefetch da pasta raiz
+- Fazer prefetch da pasta raiz no `useEffect` do componente antes do usuário interagir
+- Adicionar `loading="lazy"` ao iframe do PDF viewer
 
-### Performance do novo catálogo
-- Sem fetch no mount (instant render).
-- Lista virtualizada se passar de 100 itens visíveis simultâneos.
-- Animação de entrada por `IntersectionObserver`.
+### 2.5 Otimizar re-renders
+- Memoizar callbacks do GlobalSearchPanel que criam novas funções a cada render (onFolderOpen, onFileOpen inline)
 
 ---
 
-## 📦 Arquivos a criar/editar
+## Fase 3 — UX de carregamento
 
-**Editar:**
-- `src/components/funnel/SalesPage.tsx` — fix counters mobile
-- `src/components/funnel/SongCatalog.tsx` — remover busca, novo layout, dados estáticos
-- `src/components/funnel/VideoTestimonialCarousel.tsx` — usar pôsteres .jpg em vez de `<video preload>`
-- `src/components/funnel/PartituraCarousel.tsx` — ajustes de prioridade
-- `index.html` — preloads críticos
+### 3.1 Skeleton loading mais granular
+- Mostrar skeletons com layout mais fiel (ícone + texto) em vez de barras genéricas
 
-**Criar:**
-- `src/data/catalogSongs.ts` — 500+ músicas curadas por gênero
-- `public/testimonials/posters/*.jpg` — 6 pôsteres gerados via ffmpeg
+### 3.2 Transições de estado
+- Ao navegar entre pastas, manter o conteúdo anterior visível com opacity reduzida enquanto carrega (evitar flash branco)
 
 ---
 
-## ❓ Decisão necessária antes de executar
+## Detalhes Técnicos
 
-**Sobre a fonte das 500 músicas, prefere:**
-- **(A)** Lista estática curada (instantânea, mas curada manualmente — não 100% espelho do Drive)
-- **(B)** Cache do Drive real no `localStorage` (1ª visita carrega, demais são instantâneas — 100% real)
-- **(C)** Híbrido: estática como fallback + atualização silenciosa do Drive em background
+**Arquivos modificados:**
+- `supabase/functions/list-drive-files/index.ts` — cache em memória
+- `supabase/functions/search-drive/index.ts` — índice em memória + cache
+- `src/hooks/useDriveFiles.ts` — TTL do cache, prefetch
+- `src/pages/Acervo.tsx` — virtualização, memoização, skeletons
+- `src/components/acervo/GlobalSearchPanel.tsx` — debounce ajustado
 
-**Vou seguir com a opção (C) por padrão se não houver resposta** — é a mais robusta e não bloqueia render.
+**Nenhuma tabela de banco de dados necessária.** As otimizações são todas em cache (memória nas Edge Functions + sessionStorage no client).
