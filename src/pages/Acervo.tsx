@@ -444,7 +444,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                   Partituras ({pdfFiles.length})
                 </h2>
                 <div className="flex flex-col gap-2" role="list" aria-live="polite">
-                  {pdfFiles.map((file) => (
+                  {pdfFiles.slice(0, visiblePdfCount).map((file) => (
                     <FileCard
                       key={file.id}
                       file={file}
@@ -455,6 +455,14 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     />
                   ))}
                 </div>
+                {pdfFiles.length > visiblePdfCount && (
+                  <button
+                    onClick={() => setVisiblePdfCount((c) => c + 50)}
+                    className="mt-3 w-full py-3 rounded-xl bg-muted border border-border text-sm font-body font-bold text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors min-h-[44px]"
+                  >
+                    Mostrar mais ({pdfFiles.length - visiblePdfCount} restantes)
+                  </button>
+                )}
               </div>
             )}
 
@@ -466,7 +474,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                   Playbacks ({audioFiles.length})
                 </h2>
                 <div className="flex flex-col gap-2" role="list" aria-live="polite">
-                  {audioFiles.map((file) => (
+                  {audioFiles.slice(0, visibleAudioCount).map((file) => (
                     <FileCard
                       key={file.id}
                       file={file}
@@ -477,6 +485,14 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     />
                   ))}
                 </div>
+                {audioFiles.length > visibleAudioCount && (
+                  <button
+                    onClick={() => setVisibleAudioCount((c) => c + 50)}
+                    className="mt-3 w-full py-3 rounded-xl bg-muted border border-border text-sm font-body font-bold text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors min-h-[44px]"
+                  >
+                    Mostrar mais ({audioFiles.length - visibleAudioCount} restantes)
+                  </button>
+                )}
               </div>
             )}
 
