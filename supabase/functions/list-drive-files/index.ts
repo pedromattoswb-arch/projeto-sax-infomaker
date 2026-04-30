@@ -20,7 +20,34 @@ interface DriveListResponse {
   nextPageToken?: string;
 }
 
+// ── In-memory cache ──
+const cache = new Map<string, { data: DriveFile[]; ts: number }>();
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+function getCached(folderId: string): DriveFile[] | null {
+  const entry = cache.get(folderId);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > CACHE_TTL) {
+    cache.delete(folderId);
+    return null;
+  }
+  return entry.data;
+}
+
+function setCache(folderId: string, data: DriveFile[]) {
+  // Limit cache size to prevent memory issues
+  if (cache.size > 500) {
+    const oldest = [...cache.entries()].sort((a, b) => a[1].ts - b[1].ts);
+    for (let i = 0; i < 100; i++) cache.delete(oldest[i][0]);
+  }
+  cache.set(folderId, { data, ts: Date.now() });
+}
+
 async function listFilesInFolder(folderId: string): Promise<DriveFile[]> {
+  // Check cache first
+  const cached = getCached(folderId);
+  if (cached) return cached;
+
   const allFiles: DriveFile[] = [];
   let pageToken = '';
 
@@ -45,8 +72,11 @@ async function listFilesInFolder(folderId: string): Promise<DriveFile[]> {
     pageToken = data.nextPageToken || '';
   } while (pageToken);
 
+  setCache(folderId, allFiles);
   return allFiles;
 }
+
+const projectRef = Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -86,8 +116,8 @@ Deno.serve(async (req) => {
           mimeType: f.mimeType,
           size: f.size ? parseInt(f.size) : null,
           viewUrl: isPdf ? `https://drive.google.com/file/d/${f.id}/preview` : null,
-          downloadUrl: `https://${Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr'}.supabase.co/functions/v1/download-file?id=${f.id}`,
-          streamUrl: isAudio ? `https://${Deno.env.get('SUPABASE_PROJECT_REF') || 'yjvupzfstxywdmdkwhlr'}.supabase.co/functions/v1/stream-audio?id=${f.id}` : null,
+          downloadUrl: `https://${projectRef}.supabase.co/functions/v1/download-file?id=${f.id}`,
+          streamUrl: isAudio ? `https://${projectRef}.supabase.co/functions/v1/stream-audio?id=${f.id}` : null,
           thumbnailUrl: isImage ? `https://drive.google.com/thumbnail?id=${f.id}&sz=w400` : null,
         };
       });
@@ -98,7 +128,11 @@ Deno.serve(async (req) => {
       folders,
       files,
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=120, stale-while-revalidate=300',
+      },
     });
   } catch (error) {
     console.error('Error listing Drive files:', error);
