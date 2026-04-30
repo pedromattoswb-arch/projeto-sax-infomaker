@@ -170,6 +170,17 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
     setCurrentAudio(null);
   }, []);
 
+  const handleCloseSearch = useCallback(() => setSearchPanelOpen(false), []);
+
+  const handleSearchFolderOpen = useCallback((folder: DriveFolder) => {
+    handleFolderOpen(folder);
+  }, [handleFolderOpen]);
+
+  const handleSearchFileOpen = useCallback((file: DriveFile) => {
+    if (file.type === "pdf") setViewingPdf(file);
+    else if (file.type === "audio") playAudio(file);
+  }, [playAudio]);
+
   return (
     <div className={`min-h-screen bg-background ${hasAudioPlaying && !isPlayerMinimized ? "pb-40 md:pb-28" : hasAudioPlaying && isPlayerMinimized ? "pb-6" : ""}`}>
       {/* Skip Navigation */}
