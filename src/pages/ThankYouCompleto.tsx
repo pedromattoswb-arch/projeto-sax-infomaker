@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Headphones, BookOpen, Crown, Mail, MessageCircle, Star, ShieldCheck, Zap, Gift } from "lucide-react";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Crown, Star } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
@@ -50,53 +50,8 @@ const ThankYouCompleto = () => {
         </div>
       </section>
 
-      {/* O QUE VOCÊ DESBLOQUEOU */}
-      <section className="py-10 md:py-14 px-4 md:px-8 section-alt">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-lg md:text-xl font-bold font-heading text-center mb-6">
-            Tudo Que Você Tem Acesso Agora
-          </h2>
-
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { icon: Music, text: "+10.000 partituras e playbacks", highlight: true },
-              { icon: Smartphone, text: "Plataforma exclusiva estilo app" },
-              { icon: Headphones, text: "Playbacks profissionais" },
-              { icon: Zap, text: "Busca inteligente por voz" },
-              { icon: BookOpen, text: "Vídeos tutoriais integrados" },
-              { icon: Star, text: "Atualizações mensais incluídas" },
-            ].map((item, i) => (
-              <div key={i} className={`flex items-center gap-2.5 rounded-xl px-4 py-3 border ${item.highlight ? 'bg-gold/10 border-gold/20' : 'bg-card border-border'}`}>
-                <item.icon className={`w-4 h-4 shrink-0 ${item.highlight ? 'text-gold' : 'text-primary'}`} />
-                <span className={`text-xs md:text-sm font-body font-medium ${item.highlight ? 'text-gold font-semibold' : 'text-foreground'}`}>{item.text}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Bônus */}
-          <div className="mt-6 bg-card rounded-xl border border-gold/20 p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Gift className="w-5 h-5 text-gold" />
-              <h3 className="font-bold font-heading text-base">Seus 3 Bônus Exclusivos</h3>
-            </div>
-            <div className="space-y-2">
-              {[
-                "📘 Guia Rotina de Estudo — Organize sua prática diária",
-                "🗺️ Mapa de Tonalidades — Domine todas as tonalidades",
-                "🎵 100 Músicas Essenciais — As mais pedidas em apresentações",
-              ].map((bonus, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-gold mt-0.5 shrink-0" />
-                  <span className="text-sm font-body text-foreground">{bonus}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* INSTRUÇÕES DE ACESSO */}
-      <section className="py-12 md:py-16 px-4 md:px-8" id="acesso">
+      <section className="py-12 md:py-16 px-4 md:px-8 section-alt" id="acesso">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-xl md:text-2xl font-bold font-heading text-center mb-2">
             Como Acessar Sua Plataforma
@@ -149,30 +104,6 @@ const ThankYouCompleto = () => {
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Plano Completo • +10.000 partituras e playbacks para Sax Alto e Sax Tenor
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* SUPORTE */}
-      <section className="py-10 md:py-12 px-4 md:px-8 section-alt">
-        <div className="max-w-lg mx-auto text-center">
-          <h3 className="font-bold font-heading text-lg mb-2">Precisa de Ajuda?</h3>
-          <p className="text-muted-foreground font-body text-sm mb-4">
-            Nossa equipe está pronta para ajudar você a começar
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <MessageCircle className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">WhatsApp</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Mail className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">E-mail</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <ShieldCheck className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">Garantia 7 dias</span>
-            </div>
           </div>
         </div>
       </section>
