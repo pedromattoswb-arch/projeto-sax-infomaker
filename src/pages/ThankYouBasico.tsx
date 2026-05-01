@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Headphones, BookOpen, Crown, Mail, MessageCircle, Star, ShieldCheck, Zap } from "lucide-react";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
@@ -41,59 +41,6 @@ const ThankYouBasico = () => {
             VER COMO ACESSAR
             <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
           </button>
-        </div>
-      </section>
-
-      {/* UPGRADE BANNER */}
-      <section className="py-10 md:py-14 px-4 md:px-8 bg-[hsl(225,30%,12%)]">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-1.5 bg-gold/15 text-gold px-4 py-1.5 rounded-full text-xs font-bold font-heading mb-4">
-            <Crown className="w-3.5 h-3.5" />
-            OFERTA EXCLUSIVA — SÓ PARA NOVOS ALUNOS
-          </div>
-
-          <h2 className="text-xl md:text-2xl font-bold font-heading text-white mb-3">
-            Quer Dobrar Seu Acervo por Apenas <span className="text-gold">R$ 20 a Mais</span>?
-          </h2>
-
-          <p className="text-white/70 font-body text-sm md:text-base mb-6 max-w-lg mx-auto leading-relaxed">
-            Faça upgrade para o <strong className="text-white">Plano Completo</strong> e desbloqueie{" "}
-            <strong className="text-gold">+10.000 partituras e playbacks</strong>, busca por voz, vídeos tutoriais, Harpa Cristã completa e 3 bônus exclusivos.
-          </p>
-
-          <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6 text-left">
-            {[
-              { icon: Headphones, text: "Playbacks profissionais" },
-              { icon: Music, text: "+10.000 arquivos totais" },
-              { icon: BookOpen, text: "3 bônus exclusivos" },
-              { icon: Star, text: "Atualizações mensais" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
-                <item.icon className="w-4 h-4 text-gold shrink-0" />
-                <span className="text-xs font-body text-white/80">{item.text}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mb-6">
-            <div className="flex items-baseline gap-1 justify-center mt-1">
-              <span className="text-3xl md:text-4xl font-extrabold font-heading text-gold">R$ 6</span>
-              <span className="text-lg font-bold font-heading text-gold">,90</span>
-            </div>
-            <span className="text-xs text-gold/80 font-semibold font-body">Pagamento único • Upgrade imediato</span>
-          </div>
-
-          <a
-            href="https://pay.cakto.com.br/52pq694_804276"
-            className="gradient-gold text-white font-bold font-heading py-4 px-8 rounded-xl text-[15px] md:text-lg shadow-gold hover:shadow-gold-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
-          >
-            FAZER UPGRADE AGORA
-            <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
-          </a>
-
-          <p className="text-center text-xs text-white/30 mt-3 font-body">
-            🔒 Pagamento seguro • Garantia de 7 dias • Acesso imediato ao upgrade
-          </p>
         </div>
       </section>
 
@@ -151,30 +98,6 @@ const ThankYouBasico = () => {
             <p className="text-xs text-muted-foreground mt-3 font-body">
               Plano Básico • +5.000 partituras para Sax Alto e Sax Tenor
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* SUPORTE */}
-      <section className="py-10 md:py-12 px-4 md:px-8">
-        <div className="max-w-lg mx-auto text-center">
-          <h3 className="font-bold font-heading text-lg mb-2">Precisa de Ajuda?</h3>
-          <p className="text-muted-foreground font-body text-sm mb-4">
-            Nossa equipe está pronta para ajudar você a começar
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <MessageCircle className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">WhatsApp</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Mail className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">E-mail</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <ShieldCheck className="w-4 h-4 text-[hsl(142,70%,45%)]" />
-              <span className="text-xs font-body">Garantia 7 dias</span>
-            </div>
           </div>
         </div>
       </section>

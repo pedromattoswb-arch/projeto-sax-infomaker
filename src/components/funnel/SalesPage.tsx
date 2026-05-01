@@ -29,6 +29,7 @@ import heroMockup from "@/assets/hero-mockup.png";
 import VideoTestimonialCarousel from "./VideoTestimonialCarousel";
 import TestimonialCarousel from "./TestimonialCarousel";
 import PricingCards from "./PricingCards";
+import PricingCardsNovaOferta from "./PricingCardsNovaOferta";
 import BonusSection from "./BonusSection";
 import SongCatalog from "./SongCatalog";
 import FAQ from "./FAQ";
@@ -84,7 +85,11 @@ function useCounter(target: number, duration: number = 2000) {
   return { count, ref };
 }
 
-const SalesPage = () => {
+interface SalesPageProps {
+  pricingVariant?: "default" | "nova-oferta";
+}
+
+const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
   const counter1 = useCounter(10000, 2500);
   const counter2 = useCounter(847, 2000);
   const counter3 = useCounter(18, 1500);
@@ -346,7 +351,7 @@ const SalesPage = () => {
       <SongCatalog />
 
       {/* PRICING */}
-      <PricingCards />
+      {pricingVariant === "nova-oferta" ? <PricingCardsNovaOferta /> : <PricingCards />}
 
       {/* BONUS */}
       <BonusSection />
