@@ -1,64 +1,48 @@
+## Plano de Execução
 
-# Plano de Otimização de Performance do Acervo
+### 1. Duplicar página de vendas em `/nova-oferta`
 
-## Diagnóstico
+- Criar um novo componente `PricingCardsNovaOferta.tsx` baseado no `PricingCards.tsx` com as seguintes mudanças:
+  - Preço do Plano Completo: **R$ 29,90** (em vez de R$ 19,90)
+  - Link de checkout do Completo: `https://pay.cakto.com.br/rbva2ch_869767`
+  - Texto de comparação ajustado ("Por apenas R$ 20 a mais" em vez de "R$ 10 a mais")
+- Criar página `src/pages/NovaOferta.tsx` que renderiza o `SalesPage` mas usa o `PricingCardsNovaOferta`
+  - Para isso, o `SalesPage` receberá uma prop opcional para alternar qual PricingCards usar
+- Adicionar rota `/nova-oferta` no `App.tsx`
 
-O principal gargalo está na **busca (search-drive)**: cada busca faz chamadas recursivas à API do Google Drive, varrendo ~303 pastas em 3 níveis. Isso é lento e consome muitas requisições. O segundo problema é que o **list-drive-files** também bate no Google Drive a cada request, sem cache no servidor.
+### 2. Simplificar páginas de obrigado
 
----
+Ambas as páginas (`ThankYouBasico.tsx` e `ThankYouCompleto.tsx`) serão reduzidas para conter apenas:
 
-## Fase 1 — Cache no servidor (Edge Functions)
+- Header com logo
+- Hero de confirmação (icone + titulo + parabéns)
+- Seção "Como Acessar Sua Plataforma" (3 passos + botão de acesso)
+- Footer simples
 
-### 1.1 Adicionar cache em memória no `list-drive-files`
-- Cache em memória (Map) com TTL de 10 minutos por folderId
-- Resultado: pastas já visitadas carregam instantaneamente no servidor
+Removido de **ThankYouBasico**:
+- Seção "Upgrade Banner" (oferta do plano completo por R$ 6,90)
+- Seção "Suporte"
 
-### 1.2 Reescrever `search-drive` com índice em cache
-- Na primeira busca (ou cold start), construir um índice completo de todas as pastas e arquivos (3 níveis) e mantê-lo em memória com TTL de 15 minutos
-- Buscas subsequentes fazem apenas filter no índice em memória — resposta em <50ms
-- Adicionar header `Cache-Control` para que o browser também cache resultados de busca por 60 segundos
+Removido de **ThankYouCompleto**:
+- Seção "O Que Você Desbloqueou" (grid de features + bônus)
+- Seção "Suporte"
 
----
+### 3. Revisão geral de performance
 
-## Fase 2 — Otimizações no Frontend
-
-### 2.1 Cache mais inteligente no `useDriveFiles`
-- Aumentar TTL do sessionStorage de 5min para 10min (alinhado com servidor)
-- Mostrar dados do cache imediatamente (já faz stale-while-revalidate, manter)
-
-### 2.2 Debounce da busca global
-- Aumentar debounce de 400ms para 500ms para reduzir requests durante digitação rápida
-
-### 2.3 Virtualização de listas longas
-- Quando uma pasta tem muitos arquivos (>50), renderizar apenas os visíveis usando windowing simples (limitar a 50 itens iniciais com botão "Mostrar mais")
-- Evita renderizar centenas de FileCards de uma vez
-
-### 2.4 Prefetch da pasta raiz
-- Fazer prefetch da pasta raiz no `useEffect` do componente antes do usuário interagir
-- Adicionar `loading="lazy"` ao iframe do PDF viewer
-
-### 2.5 Otimizar re-renders
-- Memoizar callbacks do GlobalSearchPanel que criam novas funções a cada render (onFolderOpen, onFileOpen inline)
+- Verificar se as otimizações de cache nas Edge Functions estão funcionando corretamente
+- Confirmar que o debounce de busca, virtualização de listas e lazy loading do PDF estão ativos
+- Rodar perfil de performance no browser para identificar gargalos restantes
 
 ---
 
-## Fase 3 — UX de carregamento
+### Detalhes técnicos
 
-### 3.1 Skeleton loading mais granular
-- Mostrar skeletons com layout mais fiel (ícone + texto) em vez de barras genéricas
+**Arquivos criados:**
+- `src/components/funnel/PricingCardsNovaOferta.tsx`
+- `src/pages/NovaOferta.tsx`
 
-### 3.2 Transições de estado
-- Ao navegar entre pastas, manter o conteúdo anterior visível com opacity reduzida enquanto carrega (evitar flash branco)
-
----
-
-## Detalhes Técnicos
-
-**Arquivos modificados:**
-- `supabase/functions/list-drive-files/index.ts` — cache em memória
-- `supabase/functions/search-drive/index.ts` — índice em memória + cache
-- `src/hooks/useDriveFiles.ts` — TTL do cache, prefetch
-- `src/pages/Acervo.tsx` — virtualização, memoização, skeletons
-- `src/components/acervo/GlobalSearchPanel.tsx` — debounce ajustado
-
-**Nenhuma tabela de banco de dados necessária.** As otimizações são todas em cache (memória nas Edge Functions + sessionStorage no client).
+**Arquivos editados:**
+- `src/App.tsx` — nova rota `/nova-oferta`
+- `src/components/funnel/SalesPage.tsx` — prop para alternar PricingCards
+- `src/pages/ThankYouBasico.tsx` — remover upgrade banner e suporte
+- `src/pages/ThankYouCompleto.tsx` — remover features grid, bônus e suporte
