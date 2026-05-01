@@ -14,6 +14,7 @@ import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
 import OrderBumpManutencao from "./pages/OrderBumpManutencao";
 import ThankYouBasico from "./pages/ThankYouBasico";
 import ThankYouCompleto from "./pages/ThankYouCompleto";
+import NovaOferta from "./pages/NovaOferta";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/nova-oferta" element={<NovaOferta />} />
           <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
           <Route path="/plano-premium-completo" element={<Acervo plan="premium" />} />
           <Route path="/bonus/rotina-de-estudo" element={<BonusRotina />} />
