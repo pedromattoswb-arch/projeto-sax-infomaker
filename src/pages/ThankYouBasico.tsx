@@ -1,13 +1,19 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, Check, Star, Sparkles } from "lucide-react";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, Check, Star, Sparkles, Lock, Gift, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
-const scrollToAccess = () => {
-  document.getElementById("acesso")?.scrollIntoView({ behavior: "smooth" });
-};
-
 const ThankYouBasico = () => {
   useNoIndex();
+  const [showUpsell, setShowUpsell] = useState(false);
+
+  const scrollToUpsell = () => {
+    setShowUpsell(true);
+    setTimeout(() => {
+      document.getElementById("oferta-exclusiva")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* HEADER */}
@@ -43,18 +49,25 @@ const ThankYouBasico = () => {
             Você agora tem acesso a <strong>+5.000 partituras para Sax Alto e Sax Tenor</strong> na plataforma Clube do Sax. Siga as instruções abaixo para começar a tocar.
           </p>
 
-          <button
-            onClick={scrollToAccess}
-            className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2"
-          >
-            VER COMO ACESSAR
-            <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
-          </button>
+          <div className="flex flex-col gap-4 items-center">
+            <button
+              onClick={scrollToUpsell}
+              className="gradient-cta text-white font-bold font-heading py-4 px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 group"
+            >
+              VER O QUE VOCÊ DESBLOQUEOU
+              <Lock className="w-5 h-5 group-hover:hidden" />
+              <Gift className="w-5 h-5 hidden group-hover:block animate-bounce" />
+            </button>
+            <p className="text-xs text-muted-foreground animate-pulse flex items-center gap-1">
+              <ChevronDown className="w-3 h-3" /> Clique acima para liberar seu bônus exclusivo
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* UPSELL SECTION — Direct checkout */}
-      <section className="py-12 px-4 md:px-8 section-alt">
+      {/* UPSELL SECTION — Only visible after interaction */}
+      {showUpsell && (
+        <section className="py-12 px-4 md:px-8 section-alt animate-fade-in scroll-mt-20" id="oferta-exclusiva">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2 mb-4">
@@ -118,7 +131,8 @@ const ThankYouBasico = () => {
             Não quer agora? Sem problema — continue abaixo para acessar sua plataforma.
           </p>
         </div>
-      </section>
+        </section>
+      )}
 
       {/* INSTRUÇÕES DE ACESSO */}
       <section className="py-12 md:py-16 px-4 md:px-8" id="acesso">
