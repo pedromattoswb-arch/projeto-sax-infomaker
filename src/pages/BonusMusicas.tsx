@@ -234,7 +234,13 @@ const BonusMusicas = () => {
                 <div className="ml-8 pl-3.5">
                   <p className="text-xs text-muted-foreground font-body">
                     {song.artist} • <span className="text-primary/70">{song.genre}</span>
+                    {song.key && <span className="ml-2 text-foreground">🎹 {song.key}</span>}
                   </p>
+                  {song.chords && (
+                    <p className="text-xs font-body text-primary/80 mt-0.5 font-mono tracking-wide">
+                      {song.chords}
+                    </p>
+                  )}
                   <p className="text-xs font-body text-foreground mt-1 leading-relaxed">
                     💡 {song.tip}
                   </p>
