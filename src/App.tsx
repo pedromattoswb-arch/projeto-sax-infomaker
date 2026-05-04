@@ -15,6 +15,9 @@ import OrderBumpManutencao from "./pages/OrderBumpManutencao";
 import ThankYouBasico from "./pages/ThankYouBasico";
 import ThankYouCompleto from "./pages/ThankYouCompleto";
 import NovaOferta from "./pages/NovaOferta";
+import UpsellToolkit from "./pages/UpsellToolkit";
+import DownsellToolkit from "./pages/DownsellToolkit";
+import ToolkitPage from "./pages/ToolkitPage";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -37,8 +40,16 @@ const App = () => (
           <Route path="/orderbump/digitacao" element={<OrderBumpDigitacao />} />
           <Route path="/orderbump/transposicao" element={<OrderBumpTransposicao />} />
           <Route path="/orderbump/manutencao" element={<OrderBumpManutencao />} />
+          {/* Thank You pages */}
           <Route path="/cx/r7b2k9" element={<ThankYouBasico />} />
           <Route path="/cx/m4p8x1" element={<ThankYouCompleto />} />
+          {/* Upsell / Downsell */}
+          <Route path="/cx/v3j8q2" element={<UpsellToolkit />} />
+          <Route path="/cx/d5w2n8" element={<DownsellToolkit />} />
+          {/* Toolkit delivery (full kit with scales) */}
+          <Route path="/cx/k9t3m7" element={<ToolkitPage showScales={true} />} />
+          {/* Toolkit delivery (downsell — tuner + metronome only) */}
+          <Route path="/cx/h6f1p4" element={<ToolkitPage showScales={false} />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

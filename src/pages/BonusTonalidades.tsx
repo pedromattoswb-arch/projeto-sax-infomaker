@@ -2,6 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import CircleOfFifths from "@/components/bonus/CircleOfFifths";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
@@ -102,6 +103,27 @@ const BonusTonalidades = () => {
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
               {loading ? "GERANDO PDF..." : "BAIXAR PDF GRATUITO"}
             </button>
+          </div>
+
+          {/* Ciclo de Quintas Visual */}
+          <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm mb-8">
+            <h2 className="text-lg md:text-xl font-bold font-heading mb-2 flex items-center gap-2 justify-center">
+              🎯 Ciclo de Quintas Interativo
+            </h2>
+            <p className="text-sm font-body text-muted-foreground mb-5 text-center">
+              O ciclo de quintas é a ferramenta mais importante da teoria musical. Clique em qualquer tonalidade para destacá-la.
+            </p>
+            <CircleOfFifths />
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs font-body text-muted-foreground">
+              <div className="glass-card rounded-lg p-3 text-center">
+                <span className="font-bold text-foreground block mb-1">Sentido horário</span>
+                Quintas ascendentes (+1 sustenido)
+              </div>
+              <div className="glass-card rounded-lg p-3 text-center">
+                <span className="font-bold text-foreground block mb-1">Sentido anti-horário</span>
+                Quartas ascendentes (+1 bemol)
+              </div>
+            </div>
           </div>
 
           {/* Transposição */}

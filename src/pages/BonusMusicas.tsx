@@ -11,20 +11,22 @@ type Song = {
   genre: string;
   difficulty: "Iniciante" | "Intermediário" | "Avançado";
   tip: string;
+  key?: string;
+  chords?: string;
 };
 
 const songs: Song[] = [
   // Pop/Internacional
-  { name: "Careless Whisper", artist: "George Michael", genre: "Pop", difficulty: "Intermediário", tip: "O riff de sax mais famoso do mundo. Domine o vibrato no tema principal." },
-  { name: "Baker Street", artist: "Gerry Rafferty", genre: "Rock", difficulty: "Intermediário", tip: "Solo icônico de sax. Trabalhe o registro agudo com potência." },
-  { name: "Just the Two of Us", artist: "Grover Washington Jr.", genre: "Jazz/Pop", difficulty: "Avançado", tip: "Fraseado suave e articulação jazz. Estude os chord changes." },
-  { name: "Take Five", artist: "Dave Brubeck", genre: "Jazz", difficulty: "Avançado", tip: "Compasso 5/4 — pratique com metrônomo até internalizar." },
-  { name: "The Pink Panther", artist: "Henry Mancini", genre: "Jazz", difficulty: "Iniciante", tip: "Tema simples e divertido. Ótimo para treinar dinâmicas." },
-  { name: "Fly Me to the Moon", artist: "Frank Sinatra", genre: "Jazz", difficulty: "Intermediário", tip: "Standards essencial. Decore a melodia e improvise sobre os changes." },
-  { name: "Shape of You", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Melodia moderna e acessível. Bom para atrair público jovem." },
-  { name: "Perfect", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Balada perfeita para casamentos. Foco em expressividade." },
-  { name: "All of Me", artist: "John Legend", genre: "Pop", difficulty: "Iniciante", tip: "Melodia emotiva. Explore dinâmicas piano/forte." },
-  { name: "Someone Like You", artist: "Adele", genre: "Pop", difficulty: "Iniciante", tip: "Balada poderosa. Trabalhe o fraseado longo sem perder ar." },
+  { name: "Careless Whisper", artist: "George Michael", genre: "Pop", difficulty: "Intermediário", tip: "O riff de sax mais famoso do mundo. Domine o vibrato no tema principal.", key: "Ré m", chords: "Dm – Gm – Am – Bb" },
+  { name: "Baker Street", artist: "Gerry Rafferty", genre: "Rock", difficulty: "Intermediário", tip: "Solo icônico de sax. Trabalhe o registro agudo com potência.", key: "Ré M", chords: "D – A – G – Em" },
+  { name: "Just the Two of Us", artist: "Grover Washington Jr.", genre: "Jazz/Pop", difficulty: "Avançado", tip: "Fraseado suave e articulação jazz. Estude os chord changes.", key: "Réb M", chords: "Dbmaj7 – Cb7 – Bbm7 – Eb7" },
+  { name: "Take Five", artist: "Dave Brubeck", genre: "Jazz", difficulty: "Avançado", tip: "Compasso 5/4 — pratique com metrônomo até internalizar.", key: "Mib m", chords: "Ebm – Bbm (alternando)" },
+  { name: "The Pink Panther", artist: "Henry Mancini", genre: "Jazz", difficulty: "Iniciante", tip: "Tema simples e divertido. Ótimo para treinar dinâmicas.", key: "Mi m", chords: "Em – C – B7" },
+  { name: "Fly Me to the Moon", artist: "Frank Sinatra", genre: "Jazz", difficulty: "Intermediário", tip: "Standards essencial. Decore a melodia e improvise sobre os changes.", key: "Dó M", chords: "Am – Dm7 – G7 – Cmaj7" },
+  { name: "Shape of You", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Melodia moderna e acessível. Bom para atrair público jovem.", key: "Dó# m", chords: "C#m – F#m – A – B" },
+  { name: "Perfect", artist: "Ed Sheeran", genre: "Pop", difficulty: "Iniciante", tip: "Balada perfeita para casamentos. Foco em expressividade.", key: "Láb M", chords: "Ab – Fm – Db – Eb" },
+  { name: "All of Me", artist: "John Legend", genre: "Pop", difficulty: "Iniciante", tip: "Melodia emotiva. Explore dinâmicas piano/forte.", key: "Láb M", chords: "Ab – Fm – Db – Eb" },
+  { name: "Someone Like You", artist: "Adele", genre: "Pop", difficulty: "Iniciante", tip: "Balada poderosa. Trabalhe o fraseado longo sem perder ar.", key: "Lá M", chords: "A – E – F#m – D" },
   // Jazz Essentials
   { name: "Autumn Leaves", artist: "Joseph Kosma", genre: "Jazz", difficulty: "Intermediário", tip: "O standard mais tocado. Domine em todas as tonalidades." },
   { name: "So What", artist: "Miles Davis", genre: "Jazz", difficulty: "Intermediário", tip: "Modal jazz. Use escala dórica e pense em espaço entre as notas." },
@@ -232,7 +234,13 @@ const BonusMusicas = () => {
                 <div className="ml-8 pl-3.5">
                   <p className="text-xs text-muted-foreground font-body">
                     {song.artist} • <span className="text-primary/70">{song.genre}</span>
+                    {song.key && <span className="ml-2 text-foreground">🎹 {song.key}</span>}
                   </p>
+                  {song.chords && (
+                    <p className="text-xs font-body text-primary/80 mt-0.5 font-mono tracking-wide">
+                      {song.chords}
+                    </p>
+                  )}
                   <p className="text-xs font-body text-foreground mt-1 leading-relaxed">
                     💡 {song.tip}
                   </p>
