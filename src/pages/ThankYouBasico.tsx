@@ -157,7 +157,7 @@ const ThankYouBasico = () => {
                 </div>
                 <div>
                   <h3 className="font-bold font-heading text-base mb-1">{item.title}</h3>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed">{item.description}</p>
+                  <p className="text-muted-foreground font-body text-[15px] md:text-lg leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
