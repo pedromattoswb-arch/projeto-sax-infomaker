@@ -11,6 +11,8 @@ type Song = {
   genre: string;
   difficulty: "Iniciante" | "Intermediário" | "Avançado";
   tip: string;
+  key?: string;
+  chords?: string;
 };
 
 const songs: Song[] = [
