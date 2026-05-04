@@ -31,6 +31,13 @@ const ThankYouCompleto = () => {
             <span className="text-gold">Acesso Completo</span>! 🎷🔥
           </h1>
 
+          <div className="bg-gold/10 border border-gold/20 rounded-lg p-3 mb-4 inline-block">
+            <p className="text-gold font-bold text-sm md:text-base flex items-center gap-2 justify-center">
+              <Mail className="w-4 h-4" />
+              O acesso acabou de ser enviado para o e-mail cadastrado via plataforma Cakto
+            </p>
+          </div>
+
           <p className="text-foreground font-body text-[15px] md:text-lg mb-4 leading-relaxed max-w-xl mx-auto">
             Você agora tem acesso a <strong>+10.000 partituras e playbacks profissionais para Sax Alto e Sax Tenor</strong>, busca por voz, vídeos tutoriais e todos os bônus exclusivos.
           </p>
@@ -122,10 +129,10 @@ const ThankYouCompleto = () => {
       {/* INSTRUÇÕES DE ACESSO */}
       <section className="py-12 md:py-16 px-4 md:px-8" id="acesso">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-bold font-heading text-center mb-2">
+          <h2 className="text-xl md:text-3xl font-extrabold font-heading text-center mb-3">
             Como Acessar Sua Plataforma
           </h2>
-          <p className="text-center text-muted-foreground font-body text-sm mb-8">
+          <p className="text-center text-muted-foreground font-body text-[15px] md:text-lg mb-8">
             Siga estes 3 passos simples para começar a tocar
           </p>
 
