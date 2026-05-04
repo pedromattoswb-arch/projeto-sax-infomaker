@@ -2,6 +2,7 @@ import { ArrowLeft, Download, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import CircleOfFifths from "@/components/bonus/CircleOfFifths";
 import { generateTonalidadesPDF } from "@/lib/pdfGenerators";
 import useNoIndex from "@/hooks/useNoIndex";
 
