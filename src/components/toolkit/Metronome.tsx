@@ -1,9 +1,16 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Play, Square, Plus, Minus } from "lucide-react";
+import { Play, Square, Plus, Minus, Hand } from "lucide-react";
 
 type TimeSignature = "2/4" | "3/4" | "4/4" | "6/8";
 
 const TIME_SIGNATURES: TimeSignature[] = ["2/4", "3/4", "4/4", "6/8"];
+
+const BPM_PRESETS = [
+  { label: "Lento", bpm: 60 },
+  { label: "Moderado", bpm: 100 },
+  { label: "Rápido", bpm: 140 },
+  { label: "Muito Rápido", bpm: 180 },
+];
 
 function getBeatsPerMeasure(ts: TimeSignature): number {
   return parseInt(ts.split("/")[0]);
@@ -13,49 +20,58 @@ const Metronome = () => {
   const [bpm, setBpm] = useState(80);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeSignature, setTimeSignature] = useState<TimeSignature>("4/4");
-  const [currentBeat, setCurrentBeat] = useState(0);
+  const [currentBeat, setCurrentBeat] = useState(-1);
   const [progressive, setProgressive] = useState(false);
   const [bpmIncrement, setBpmIncrement] = useState(5);
   const [measuresPerStep, setMeasuresPerStep] = useState(4);
+  const [tapTimes, setTapTimes] = useState<number[]>([]);
 
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const intervalRef = useRef<number>(0);
-  const beatRef = useRef(0);
+  const nextBeatTimeRef = useRef(0);
+  const beatIndexRef = useRef(0);
   const measureCountRef = useRef(0);
   const bpmRef = useRef(bpm);
+  const schedulerRef = useRef<number>(0);
+  const isPlayingRef = useRef(false);
 
   bpmRef.current = bpm;
 
-  const playClick = useCallback((accent: boolean) => {
-    if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
-    const ctx = audioCtxRef.current;
+  const getAudioCtx = useCallback(() => {
+    if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
+      audioCtxRef.current = new AudioContext();
+    }
+    return audioCtxRef.current;
+  }, []);
+
+  const scheduleClick = useCallback((time: number, accent: boolean) => {
+    const ctx = getAudioCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.frequency.value = accent ? 1000 : 700;
-    gain.gain.setValueAtTime(accent ? 0.6 : 0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.08);
-  }, []);
+    gain.gain.setValueAtTime(accent ? 0.7 : 0.35, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+    osc.start(time);
+    osc.stop(time + 0.1);
+  }, [getAudioCtx]);
 
-  const startMetronome = useCallback(() => {
-    beatRef.current = 0;
-    measureCountRef.current = 0;
-    setCurrentBeat(0);
-    setIsPlaying(true);
-
+  const scheduler = useCallback(() => {
+    if (!isPlayingRef.current) return;
+    const ctx = getAudioCtx();
     const beatsPerMeasure = getBeatsPerMeasure(timeSignature);
+    const scheduleAheadTime = 0.1;
 
-    const tick = () => {
-      const isAccent = beatRef.current % beatsPerMeasure === 0;
-      playClick(isAccent);
-      setCurrentBeat(beatRef.current % beatsPerMeasure);
+    while (nextBeatTimeRef.current < ctx.currentTime + scheduleAheadTime) {
+      const isAccent = beatIndexRef.current % beatsPerMeasure === 0;
+      scheduleClick(nextBeatTimeRef.current, isAccent);
 
-      beatRef.current++;
+      const beatInMeasure = beatIndexRef.current % beatsPerMeasure;
+      setCurrentBeat(beatInMeasure);
 
-      if (beatRef.current % beatsPerMeasure === 0) {
+      beatIndexRef.current++;
+
+      if (beatIndexRef.current % beatsPerMeasure === 0) {
         measureCountRef.current++;
         if (progressive && measureCountRef.current >= measuresPerStep) {
           measureCountRef.current = 0;
@@ -64,39 +80,92 @@ const Metronome = () => {
         }
       }
 
-      const interval = 60000 / bpmRef.current;
-      intervalRef.current = window.setTimeout(tick, interval);
-    };
+      const interval = 60.0 / bpmRef.current;
+      nextBeatTimeRef.current += interval;
+    }
 
-    tick();
-  }, [timeSignature, progressive, bpmIncrement, measuresPerStep, playClick]);
+    schedulerRef.current = window.setTimeout(scheduler, 25);
+  }, [timeSignature, progressive, bpmIncrement, measuresPerStep, scheduleClick, getAudioCtx]);
+
+  const startMetronome = useCallback(() => {
+    const ctx = getAudioCtx();
+    if (ctx.state === "suspended") ctx.resume();
+    beatIndexRef.current = 0;
+    measureCountRef.current = 0;
+    nextBeatTimeRef.current = ctx.currentTime + 0.05;
+    isPlayingRef.current = true;
+    setIsPlaying(true);
+    setCurrentBeat(0);
+    scheduler();
+  }, [scheduler, getAudioCtx]);
 
   const stopMetronome = useCallback(() => {
-    clearTimeout(intervalRef.current);
+    isPlayingRef.current = false;
+    clearTimeout(schedulerRef.current);
     setIsPlaying(false);
-    setCurrentBeat(0);
-    beatRef.current = 0;
+    setCurrentBeat(-1);
+    beatIndexRef.current = 0;
+  }, []);
+
+  // Tap tempo
+  const handleTap = useCallback(() => {
+    const now = performance.now();
+    setTapTimes(prev => {
+      const recent = [...prev, now].filter(t => now - t < 3000);
+      if (recent.length >= 3) {
+        const intervals: number[] = [];
+        for (let i = 1; i < recent.length; i++) {
+          intervals.push(recent[i] - recent[i - 1]);
+        }
+        const avg = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const detectedBpm = Math.round(60000 / avg);
+        if (detectedBpm >= 40 && detectedBpm <= 220) {
+          setBpm(detectedBpm);
+        }
+      }
+      return recent;
+    });
   }, []);
 
   useEffect(() => {
-    return () => clearTimeout(intervalRef.current);
+    return () => {
+      clearTimeout(schedulerRef.current);
+      isPlayingRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
     if (isPlaying) {
       stopMetronome();
-      startMetronome();
+      setTimeout(() => startMetronome(), 50);
     }
   }, [timeSignature]);
 
   const beatsPerMeasure = getBeatsPerMeasure(timeSignature);
 
   return (
-    <div className="flex flex-col items-center gap-6 py-6 px-4">
+    <div className="flex flex-col items-center gap-5 py-6 px-4">
       {/* BPM Display */}
       <div className="text-center">
-        <div className="text-7xl font-extrabold font-heading text-foreground tracking-tight">{bpm}</div>
+        <div className="text-8xl font-extrabold font-heading text-foreground tracking-tight leading-none">{bpm}</div>
         <div className="text-sm text-muted-foreground font-body mt-1">BPM</div>
+      </div>
+
+      {/* BPM Presets */}
+      <div className="flex gap-1.5 flex-wrap justify-center">
+        {BPM_PRESETS.map((preset) => (
+          <button
+            key={preset.label}
+            onClick={() => setBpm(preset.bpm)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold font-heading transition-all ${
+              bpm === preset.bpm
+                ? "bg-primary/20 text-primary border border-primary/30"
+                : "glass-card text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {preset.label}
+          </button>
+        ))}
       </div>
 
       {/* BPM Controls */}
@@ -128,11 +197,11 @@ const Metronome = () => {
         {Array.from({ length: beatsPerMeasure }).map((_, i) => (
           <div
             key={i}
-            className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold font-heading transition-all duration-100 ${
+            className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold font-heading transition-all duration-75 ${
               isPlaying && currentBeat === i
                 ? i === 0
-                  ? "bg-primary text-primary-foreground scale-125 shadow-lg shadow-primary/40"
-                  : "bg-[hsl(142,70%,45%)] text-white scale-110 shadow-lg"
+                  ? "bg-primary text-primary-foreground scale-130 shadow-lg shadow-primary/50"
+                  : "bg-[hsl(142,70%,45%)] text-white scale-115 shadow-lg shadow-[hsl(142,70%,45%)]/40"
                 : "glass-card text-muted-foreground"
             }`}
           >
@@ -149,7 +218,7 @@ const Metronome = () => {
             onClick={() => setTimeSignature(ts)}
             className={`px-4 py-2 rounded-xl text-sm font-bold font-heading transition-all ${
               timeSignature === ts
-                ? "bg-primary text-primary-foreground shadow-lg"
+                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                 : "glass-card text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -157,6 +226,15 @@ const Metronome = () => {
           </button>
         ))}
       </div>
+
+      {/* Tap Tempo */}
+      <button
+        onClick={handleTap}
+        className="glass-card rounded-xl px-6 py-3 flex items-center gap-2 text-sm font-bold font-heading text-muted-foreground hover:text-foreground transition-all active:scale-95 border border-border"
+      >
+        <Hand className="w-4 h-4" />
+        TAP TEMPO
+      </button>
 
       {/* Progressive mode */}
       <div className="glass-card rounded-xl p-4 w-full max-w-sm space-y-3">
