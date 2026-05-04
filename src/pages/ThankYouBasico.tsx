@@ -75,10 +75,13 @@ const ThankYouBasico = () => {
               <Zap className="w-4 h-4 text-primary fill-primary" />
               <span className="text-xs font-bold font-heading text-primary uppercase tracking-wider">Oferta Exclusiva — Só Aparece Uma Vez</span>
             </div>
-            <h2 className="text-xl md:text-3xl font-extrabold font-heading mb-3">
+            <h2 className="text-xl md:text-3xl font-extrabold font-heading mb-5">
               Você tem as partituras. Agora precisa das{" "}
               <span className="text-primary">ferramentas certas</span> para estudar de verdade.
             </h2>
+            <div className="rounded-2xl overflow-hidden shadow-lg mb-5 max-w-md mx-auto">
+              <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
+            </div>
             <p className="text-[15px] md:text-lg text-muted-foreground font-body max-w-lg mx-auto">
               Afinador cromático, metrônomo profissional e gerador de escalas — com transposição automática para sax. Tudo online, sem instalar nada.
             </p>
@@ -104,10 +107,8 @@ const ThankYouBasico = () => {
             })}
           </div>
 
-          {/* Product Banner */}
-          <div className="rounded-2xl overflow-hidden shadow-lg mb-6">
-            <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
-          </div>
+
+
 
           {/* Direct CTA — no intermediary page */}
           <div className="glass-card rounded-2xl p-8 border-2 border-primary/30 text-center relative overflow-hidden">
