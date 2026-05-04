@@ -71,7 +71,7 @@ const ThankYouCompleto = () => {
               Falta uma coisa para seu estudo ficar{" "}
               <span className="text-primary">completo de verdade</span>
             </h2>
-            <p className="text-sm text-muted-foreground font-body max-w-lg mx-auto">
+            <p className="text-[15px] md:text-lg text-muted-foreground font-body max-w-lg mx-auto">
               Afinador cromático, metrônomo profissional e gerador de escalas — com transposição automática para sax. Tudo online, sem instalar nada.
             </p>
           </div>
