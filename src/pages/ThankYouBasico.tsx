@@ -2,6 +2,7 @@ import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, C
 import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const ThankYouBasico = () => {
   useNoIndex();
@@ -101,6 +102,11 @@ const ThankYouBasico = () => {
                 </div>
               );
             })}
+          </div>
+
+          {/* Product Banner */}
+          <div className="rounded-2xl overflow-hidden shadow-lg mb-6">
+            <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
           </div>
 
           {/* Direct CTA — no intermediary page */}

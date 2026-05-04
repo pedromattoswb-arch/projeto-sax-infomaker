@@ -2,6 +2,7 @@ import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Crown, Star, Zap, Ga
 import { useState } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const ThankYouCompleto = () => {
   useNoIndex();
@@ -105,6 +106,11 @@ const ThankYouCompleto = () => {
                 </div>
               );
             })}
+          </div>
+
+          {/* Product Banner */}
+          <div className="rounded-2xl overflow-hidden shadow-lg mb-6">
+            <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
           </div>
 
           {/* Direct CTA — no intermediary page */}
