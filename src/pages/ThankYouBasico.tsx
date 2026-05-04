@@ -2,6 +2,7 @@ import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, C
 import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const ThankYouBasico = () => {
   useNoIndex();
