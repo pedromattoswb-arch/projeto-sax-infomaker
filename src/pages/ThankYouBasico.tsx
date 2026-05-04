@@ -1,5 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, Check, Star, Sparkles } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
@@ -14,15 +13,17 @@ const ThankYouBasico = () => {
       {/* HEADER */}
       <header className="py-3 px-4 md:px-8 border-b border-border bg-card">
         <div className="max-w-3xl mx-auto flex items-center justify-center">
-          <img src={logoClubeSax} alt="Clube do Sax" className="h-8 md:h-10 w-auto" />
+          <img src={logoClubeSax} alt="Clube do Sax" className="h-10 md:h-12 w-auto" />
         </div>
       </header>
 
       {/* HERO — Confirmação */}
-      <section className="py-12 md:py-20 px-4 md:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-[hsl(142,70%,45%)]/15 flex items-center justify-center mx-auto mb-6">
+      <section className="py-14 md:py-20 px-4 md:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(142,70%,45%)]/5 via-transparent to-transparent" />
+        <div className="max-w-2xl mx-auto text-center relative">
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-[hsl(142,70%,45%)]/15 flex items-center justify-center mx-auto mb-6 relative">
             <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-[hsl(142,70%,45%)]" />
+            <Sparkles className="w-5 h-5 text-primary absolute -top-1 -right-1 animate-pulse" />
           </div>
 
           <h1 className="text-2xl md:text-4xl font-extrabold font-heading mb-3 leading-tight">
@@ -45,49 +46,70 @@ const ThankYouBasico = () => {
         </div>
       </section>
 
-      {/* UPSELL SECTION */}
-      <section className="py-10 px-4 md:px-8 section-alt">
+      {/* UPSELL SECTION — Direct checkout */}
+      <section className="py-12 px-4 md:px-8 section-alt">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-4">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2 mb-4">
               <Zap className="w-4 h-4 text-primary fill-primary" />
-              <span className="text-xs font-bold font-heading text-primary">OFERTA EXCLUSIVA</span>
+              <span className="text-xs font-bold font-heading text-primary uppercase tracking-wider">Oferta Exclusiva — Só Aparece Uma Vez</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-extrabold font-heading mb-2">
-              Complete seu estudo com as <span className="text-primary">ferramentas certas</span>
+            <h2 className="text-xl md:text-3xl font-extrabold font-heading mb-3">
+              Você tem as partituras. Agora precisa das{" "}
+              <span className="text-primary">ferramentas certas</span> para estudar de verdade.
             </h2>
-            <p className="text-sm text-muted-foreground font-body max-w-md mx-auto">
-              Afinador, metrônomo e gerador de escalas — com transposição automática para sax.
+            <p className="text-sm text-muted-foreground font-body max-w-lg mx-auto">
+              Afinador cromático, metrônomo profissional e gerador de escalas — com transposição automática para sax. Tudo online, sem instalar nada.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-3 mb-6">
+          {/* Feature cards */}
+          <div className="grid sm:grid-cols-3 gap-4 mb-8">
             {[
-              { icon: Gauge, title: "Afinador", desc: "Detecta notas em tempo real" },
-              { icon: Timer, title: "Metrônomo", desc: "Modo progressivo inteligente" },
-              { icon: Music, title: "Escalas", desc: "10 escalas + arpejos transpostos" },
+              { icon: Gauge, title: "Afinador", desc: "Detecta nota em tempo real + Hz + transposição", color: "text-primary", bg: "bg-primary/15" },
+              { icon: Timer, title: "Metrônomo", desc: "Tap tempo + modo progressivo + precisão de áudio", color: "text-[hsl(142,70%,45%)]", bg: "bg-[hsl(142,70%,45%)]/15" },
+              { icon: Music, title: "Escalas", desc: "10 escalas + 5 arpejos + tocar cada nota", color: "text-primary", bg: "bg-primary/15" },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="glass-card rounded-xl p-4 text-center">
-                  <Icon className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <h3 className="font-bold font-heading text-sm">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground">{item.desc}</p>
+                <div key={i} className="glass-card rounded-2xl p-5 text-center border border-border hover:border-primary/30 transition-all">
+                  <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mx-auto mb-3`}>
+                    <Icon className={`w-7 h-7 ${item.color}`} />
+                  </div>
+                  <h3 className="font-bold font-heading text-sm mb-1">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               );
             })}
           </div>
 
-          <div className="text-center">
-            <Link
-              to="/cx/v3j8q2"
-              className="gradient-cta text-white font-bold font-heading py-3.5 px-8 rounded-xl text-sm shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2"
+          {/* Direct CTA — no intermediary page */}
+          <div className="glass-card rounded-2xl p-8 border-2 border-primary/30 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(142,70%,45%)] to-primary" />
+            <p className="text-xs text-muted-foreground font-heading uppercase tracking-widest mb-1">Kit Ferramentas do Saxofonista</p>
+            <div className="text-4xl md:text-5xl font-extrabold font-heading text-primary mb-1">R$ 27,90</div>
+            <p className="text-xs text-muted-foreground font-body mb-5">Pagamento único · Acesso vitalício · 3 ferramentas</p>
+            
+            <a
+              href="#"
+              className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-base md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 w-full justify-center"
             >
-              VER OFERTA — R$ 27,90
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <p className="text-xs text-muted-foreground mt-2">Pagamento único · Acesso vitalício</p>
+              QUERO O KIT COMPLETO — R$ 27,90
+              <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
+            </a>
+
+            <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
+              {["Afinador", "Metrônomo", "Escalas", "Acesso Vitalício"].map((t) => (
+                <span key={t} className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Check className="w-3 h-3 text-[hsl(142,70%,45%)]" /> {t}
+                </span>
+              ))}
+            </div>
           </div>
+
+          <p className="text-center text-xs text-muted-foreground mt-3 font-body">
+            Não quer agora? Sem problema — continue abaixo para acessar sua plataforma.
+          </p>
         </div>
       </section>
 
@@ -122,8 +144,8 @@ const ThankYouBasico = () => {
                 description: "Navegue pelas categorias, busque suas músicas favoritas e toque com partituras profissionais para Sax Alto e Sax Tenor.",
               },
             ].map((item) => (
-              <div key={item.step} className="flex gap-4 bg-card rounded-xl border border-border p-5 shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-[hsl(142,70%,45%)]/15 flex items-center justify-center shrink-0">
+              <div key={item.step} className="flex gap-4 glass-card rounded-xl border border-border p-5">
+                <div className="w-11 h-11 rounded-full bg-[hsl(142,70%,45%)]/15 flex items-center justify-center shrink-0">
                   <span className="text-sm font-extrabold font-heading text-[hsl(142,70%,45%)]">{item.step}</span>
                 </div>
                 <div>
@@ -151,7 +173,7 @@ const ThankYouBasico = () => {
 
       {/* FOOTER */}
       <footer className="py-6 px-4 border-t border-border text-center">
-        <img src={logoClubeSax} alt="Clube do Sax" className="h-7 mx-auto mb-3" />
+        <img src={logoClubeSax} alt="Clube do Sax" className="h-8 mx-auto mb-3" />
         <p className="text-xs text-muted-foreground font-body">
           © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
         </p>
