@@ -108,6 +108,11 @@ const ThankYouCompleto = () => {
             })}
           </div>
 
+          {/* Product Banner */}
+          <div className="rounded-2xl overflow-hidden shadow-lg mb-6">
+            <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
+          </div>
+
           {/* Direct CTA — no intermediary page */}
           <div className="glass-card rounded-2xl p-8 border-2 border-primary/30 text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(142,70%,45%)] to-primary" />
