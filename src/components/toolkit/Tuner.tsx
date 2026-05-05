@@ -22,12 +22,12 @@ function transposeSax(noteIndex: number, saxType: SaxType): { noteNamePt: string
   return { noteNamePt: NOTE_NAMES_PT[transposed] };
 }
 
-function autoCorrelate(buf: Float32Array, sampleRate: number): number {
+function autoCorrelate(buf: Float32Array, sampleRate: number, threshold: number): { freq: number; rms: number } {
   const size = buf.length;
   let rms = 0;
   for (let i = 0; i < size; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / size);
-  if (rms < 0.005) return -1;
+  if (rms < threshold) return { freq: -1, rms };
 
   // Normalized autocorrelation
   const halfSize = Math.floor(size / 2);
