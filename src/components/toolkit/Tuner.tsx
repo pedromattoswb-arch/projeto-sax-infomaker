@@ -147,6 +147,7 @@ const Tuner = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
+          deviceId: selectedDeviceId ? { exact: selectedDeviceId } : undefined,
           echoCancellation: false,
           noiseSuppression: false,
           autoGainControl: false,
