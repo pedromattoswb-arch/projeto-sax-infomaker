@@ -43,14 +43,14 @@ function autoCorrelate(buf: Float32Array, sampleRate: number, threshold: number)
   // Find first dip
   let d = 1;
   while (d < halfSize - 1 && corr[d] > corr[d + 1]) d++;
-  if (d >= halfSize - 1) return -1;
+  if (d >= halfSize - 1) return { freq: -1, rms };
 
   // Find peak after dip
   let maxval = -1, maxpos = -1;
   for (let i = d; i < halfSize - 1; i++) {
     if (corr[i] > maxval) { maxval = corr[i]; maxpos = i; }
   }
-  if (maxpos <= 0 || maxpos >= halfSize - 2) return -1;
+  if (maxpos <= 0 || maxpos >= halfSize - 2) return { freq: -1, rms };
 
   // Parabolic interpolation
   const x1 = corr[maxpos - 1], x2 = corr[maxpos], x3 = corr[maxpos + 1];
@@ -58,7 +58,7 @@ function autoCorrelate(buf: Float32Array, sampleRate: number, threshold: number)
   const b = (x3 - x1) / 2;
   const refinedPos = a !== 0 ? maxpos - b / (2 * a) : maxpos;
 
-  return sampleRate / refinedPos;
+  return { freq: sampleRate / refinedPos, rms };
 }
 
 const SMOOTH_SIZE = 5;
