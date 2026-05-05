@@ -132,7 +132,10 @@ const UpsellSection = ({ onNoThanks }: UpsellSectionProps) => {
             <div className="text-5xl font-extrabold font-heading text-primary mb-1">
               R$ 27,90
             </div>
-            <p className="text-xs text-muted-foreground font-body mb-6">Pagamento único · Sem mensalidade</p>
+            <p className="text-xs text-muted-foreground font-body mb-6 italic">
+              Pagamento único · Sem mensalidade<br/>
+              Acesso liberado via <strong>E-mail e WhatsApp</strong> imediatamente após a compra.
+            </p>
 
             <a
               href="https://pay.wiapy.com/ymgWWLcrw9"
