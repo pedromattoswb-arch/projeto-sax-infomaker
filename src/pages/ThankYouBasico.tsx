@@ -69,19 +69,8 @@ const ThankYouBasico = () => {
       </section>
 
       {showUpsell && (
-        <section className="py-12 px-4 bg-primary/5 border-y border-primary/10" id="upsell-section">
-          {/* Include UpsellToolkit content here */}
-          {/* For now, I'll put a placeholder but I need to actually move the code */}
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-black mb-6">Oferta Exclusiva de Acesso!</h2>
-            <p>Conteúdo do Upsell aqui...</p>
-            <a href="https://pay.wiapy.com/ymgWWLcrw9" className="bg-primary text-white py-3 px-6 rounded-lg font-bold">QUERO O KIT</a>
-            <button onClick={() => window.location.href = "/cx/d5w2n8"} className="block mt-4 text-sm underline text-muted-foreground">Não, obrigado.</button>
-          </div>
-        </section>
+        <UpsellSection onNoThanks={() => window.location.href = "/cx/d5w2n8"} />
       )}
-
-      {/* Removido upsell interno para usar página dedicada */}
 
       {/* INSTRUÇÕES DE ACESSO */}
       <section className="py-12 md:py-16 px-4 md:px-8" id="acesso">
