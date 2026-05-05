@@ -44,6 +44,7 @@ const App = () => (
           <Route path="/cx/r7b2k9" element={<ThankYouBasico />} />
           <Route path="/cx/m4p8x1" element={<ThankYouCompleto />} />
           {/* Upsell / Downsell */}
+          <Route path="/upsell-toolkit" element={<UpsellToolkit />} />
           <Route path="/cx/v3j8q2" element={<UpsellToolkit />} />
           <Route path="/cx/d5w2n8" element={<DownsellToolkit />} />
           {/* Toolkit delivery (full kit with scales) */}
