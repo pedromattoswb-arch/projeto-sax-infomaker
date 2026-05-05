@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Crown, Star, Zap, Gauge, Timer, Check, Sparkles, Lock, Gift, ChevronDown } from "lucide-react";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Crown, Star, Zap, Gauge, Timer, Check, Sparkles, Lock, Gift, ChevronDown, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
@@ -70,78 +70,141 @@ const ThankYouCompleto = () => {
         </div>
       </section>
 
-      {/* UPSELL SECTION — Only visible after interaction */}
+      {/* UPSELL SECTION — Improved & Visual */}
       {showUpsell && (
-        <section className="py-12 px-4 md:px-8 section-alt animate-fade-in scroll-mt-20" id="oferta-exclusiva">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2 mb-4">
-              <Zap className="w-4 h-4 text-primary fill-primary" />
-              <span className="text-xs font-bold font-heading text-primary uppercase tracking-wider">Oferta Exclusiva — Só Aparece Uma Vez</span>
+        <section className="py-12 px-4 md:px-16 section-alt animate-fade-in scroll-mt-20 border-y border-primary/10 bg-gradient-to-b from-card to-background" id="oferta-exclusiva">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2 mb-4">
+                <Zap className="w-4 h-4 text-primary fill-primary animate-pulse" />
+                <span className="text-xs font-bold font-heading text-primary uppercase tracking-wider">Oportunidade Única de Upgrade</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold font-heading mb-6 tracking-tight">
+                Complete sua jornada com o <br className="hidden md:block" />
+                <span className="text-primary underline decoration-primary/30">Kit de Ferramentas Pro</span>
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground font-body max-w-2xl mx-auto leading-relaxed">
+                Você já tem o melhor acervo de partituras. Agora, adicione a <span className="text-foreground font-bold italic">precisão técnica</span> que falta para você se tornar um mestre.
+              </p>
             </div>
-            <h2 className="text-xl md:text-3xl font-extrabold font-heading mb-5">
-              Falta uma coisa para seu estudo ficar{" "}
-              <span className="text-primary">completo de verdade</span>
-            </h2>
-            <div className="rounded-2xl overflow-hidden shadow-lg mb-5 max-w-md mx-auto">
-              <img src={kitBanner} alt="Kit Ferramentas do Saxofonista" className="w-full h-auto" />
-            </div>
-            <p className="text-[15px] md:text-lg text-muted-foreground font-body max-w-lg mx-auto">
-              Afinador cromático, metrônomo profissional e gerador de escalas — com transposição automática para sax. Tudo online, sem instalar nada.
-            </p>
-          </div>
 
-          {/* Feature cards */}
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
-            {[
-              { icon: Gauge, title: "Afinador", desc: "Detecta nota em tempo real + Hz + transposição", color: "text-primary", bg: "bg-primary/15" },
-              { icon: Timer, title: "Metrônomo", desc: "Tap tempo + modo progressivo + precisão de áudio", color: "text-[hsl(142,70%,45%)]", bg: "bg-[hsl(142,70%,45%)]/15" },
-              { icon: Music, title: "Escalas", desc: "10 escalas + 5 arpejos + tocar cada nota", color: "text-primary", bg: "bg-primary/15" },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div key={i} className="glass-card rounded-2xl p-5 text-center border border-border hover:border-primary/30 transition-all">
-                  <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mx-auto mb-3`}>
-                    <Icon className={`w-7 h-7 ${item.color}`} />
+            {/* Visual Demonstration Layout */}
+            <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative bg-card rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+                  <img src={kitBanner} alt="Kit Ferramentas" className="w-full h-auto transform group-hover:scale-[1.01] transition-transform duration-500" />
+                  
+                  {/* Visual labels */}
+                  <div className="absolute bottom-4 right-4 bg-primary text-white text-[10px] px-3 py-1.5 rounded-full font-bold shadow-lg animate-bounce">
+                    3 FERRAMENTAS EM 1
                   </div>
-                  <h3 className="font-bold font-heading text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
-              );
-            })}
-          </div>
+                
+                {/* Highlights */}
+                <div className="grid grid-cols-3 gap-3 mt-4">
+                  {[
+                    { label: "Afinador", icon: Gauge, detail: "Detecta Real" },
+                    { label: "Metrônomo", icon: Timer, detail: "Digital Pro" },
+                    { label: "Escalas", icon: Music, detail: "Mapas Visuais" }
+                  ].map((t) => (
+                    <div key={t.label} className="bg-card/50 border border-border rounded-xl p-3 text-center">
+                      <t.icon className="w-5 h-5 text-primary mx-auto mb-1" />
+                      <div className="text-[10px] font-bold uppercase tracking-tighter">{t.label}</div>
+                      <div className="text-[9px] text-muted-foreground">{t.detail}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold font-heading flex items-center gap-2">
+                    <CheckCircle2 className="w-6 h-6 text-primary" />
+                    O que você leva no Kit:
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    {[
+                      { title: "Afinador Cromático", desc: "Ajuste fino com calibração A4, transposição automática e detecção de frequência em Hz." },
+                      { title: "Metrônomo Visual", desc: "Sincronia perfeita com subdivisões rítmicas e interface intuitiva para praticar passagens difíceis." },
+                      { title: "Dicionário de Escalas", desc: "Aprenda todas as escalas maiores, menores e arpejos com visualização direta no Sax." }
+                    ].map((feature, idx) => (
+                      <div key={idx} className="flex gap-4 items-start p-4 rounded-xl bg-primary/5 border border-primary/10 hover:bg-primary/10 transition-colors">
+                        <div className="mt-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center shrink-0">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-base">{feature.title}</h4>
+                          <p className="text-sm text-muted-foreground leading-snug">{feature.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
+                <div className="p-4 bg-gold/10 border border-gold/20 rounded-xl">
+                  <p className="text-sm font-bold text-gold flex items-center gap-2">
+                    <Star className="w-4 h-4 fill-gold" />
+                    Aproveite: Você já é um aluno Premium, esta oferta é um bônus de agradecimento!
+                  </p>
+                </div>
+              </div>
+            </div>
 
+            {/* Pricing Card */}
+            <div className="max-w-xl mx-auto glass-card rounded-3xl p-8 md:p-10 border-2 border-primary/40 text-center relative overflow-hidden shadow-2xl">
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-gold to-primary" />
+              
+              <p className="text-sm text-primary font-bold font-heading uppercase tracking-[0.2em] mb-2">Oferta Especial Pós-Compra</p>
+              <h3 className="text-xl md:text-2xl font-extrabold mb-4">Kit de Ferramentas do Saxofonista</h3>
+              
+              <div className="text-5xl md:text-7xl font-black font-heading text-primary mb-2 drop-shadow-sm">
+                <span className="text-2xl align-top mt-4 mr-1">R$</span>27,90
+              </div>
+              <p className="text-sm text-muted-foreground mb-8">Pagamento único · Acesso vitalício · 100% Online</p>
+              
+              <a
+                href="https://pay.wiapy.com/ymgWWLcrw9"
+                className="gradient-cta text-white font-bold font-heading py-5 px-10 rounded-2xl text-lg md:text-xl shadow-cta hover:shadow-cta-lg hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-3 w-full justify-center group"
+              >
+                QUERO DESBLOQUEAR AGORA
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              </a>
 
-          {/* Direct CTA — no intermediary page */}
-          <div className="glass-card rounded-2xl p-8 border-2 border-primary/30 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(142,70%,45%)] to-primary" />
-            <p className="text-xs text-muted-foreground font-heading uppercase tracking-widest mb-1">Kit Ferramentas do Saxofonista</p>
-            <div className="text-4xl md:text-5xl font-extrabold font-heading text-primary mb-1">R$ 27,90</div>
-            <p className="text-xs text-muted-foreground font-body mb-5">Pagamento único · Acesso vitalício · 3 ferramentas</p>
+              <div className="flex items-center justify-center gap-6 mt-8 opacity-70">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+                  <ShieldCheck className="w-3.5 h-3.5" /> Site Seguro
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+                  <Check className="w-3.5 h-3.5" /> Sem Fidelidade
+                </div>
+              </div>
+            </div>
 
-            <a
-              href="#"
-              className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-base md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 w-full justify-center"
-            >
-              QUERO O KIT COMPLETO — R$ 27,90
-              <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
-            </a>
-
-            <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
-              {["Afinador", "Metrônomo", "Escalas", "Acesso Vitalício"].map((t) => (
-                <span key={t} className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Check className="w-3 h-3 text-[hsl(142,70%,45%)]" /> {t}
-                </span>
-              ))}
+            {/* DOWNSELL */}
+            <div className="mt-12 text-center">
+              <div className="inline-block p-6 rounded-2xl border border-dashed border-border hover:border-primary/30 transition-all group">
+                <p className="text-sm text-muted-foreground mb-4">Acha que agora não é o momento? Use este cupom especial:</p>
+                <a 
+                  href="https://pay.wiapy.com/SSjOIsHzZ"
+                  className="text-primary font-bold text-sm underline-offset-4 hover:underline flex items-center justify-center gap-2 transition-all"
+                >
+                  Pegar Kit Promocional (Apenas R$ 14,50)
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+              
+              <button 
+                onClick={() => {
+                  document.getElementById("acesso")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="mt-8 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors uppercase tracking-widest font-bold"
+              >
+                Não desejo turbinar meu acesso agora.
+              </button>
             </div>
           </div>
-
-          <p className="text-center text-xs text-muted-foreground mt-3 font-body">
-            Não quer agora? Sem problema — continue abaixo para acessar sua plataforma.
-          </p>
-        </div>
         </section>
       )}
 
