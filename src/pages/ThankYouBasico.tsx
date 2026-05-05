@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
+import UpsellSection from "@/components/UpsellSection";
 
 const ThankYouBasico = () => {
   useNoIndex();
