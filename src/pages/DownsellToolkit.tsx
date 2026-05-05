@@ -1,14 +1,21 @@
 import { ArrowRight, Gauge, Timer, X, Check, Shield, Mail, Zap, Smartphone, Sparkles, Music } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const DownsellToolkit = () => {
   useNoIndex();
+  const [searchParams] = useSearchParams();
+  const plan = searchParams.get("plan");
 
   const handleFinalExit = () => {
-    // Redireciona para o produto principal baseado na compra (simplificado para o acervo)
-    window.location.href = "/acervo-basico"; 
+    // Redireciona para o produto principal baseado na compra
+    if (plan === "completo") {
+      window.location.href = "/plano-premium-completo";
+    } else {
+      window.location.href = "/acervo-basico"; 
+    }
   };
 
   return (
