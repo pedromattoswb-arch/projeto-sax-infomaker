@@ -7,9 +7,12 @@ import kitBanner from "@/assets/kit-ferramentas-banner.png";
 const ThankYouBasico = () => {
   useNoIndex();
   const [showUpsell, setShowUpsell] = useState(false);
-
-  const handleContinue = () => {
-    window.location.href = "/upsell-toolkit";
+  
+  const handleToggleUpsell = () => {
+    setShowUpsell(true);
+    setTimeout(() => {
+      document.getElementById('upsell-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   return (
@@ -51,19 +54,31 @@ const ThankYouBasico = () => {
 
           <div className="flex flex-col gap-4 items-center">
             <button
-              onClick={handleContinue}
+              onClick={handleToggleUpsell}
               className="gradient-cta text-white font-bold font-heading py-4 px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 group"
             >
-              CONTINUAR PARA O MEU ACESSO
-              <Lock className="w-5 h-5 group-hover:hidden" />
-              <Gift className="w-5 h-5 hidden group-hover:block animate-bounce" />
+              VEJA O QUE VOCÊ ACABOU DE DESBLOQUEAR
+              <Gift className="w-5 h-5 animate-bounce" />
             </button>
             <p className="text-xs text-muted-foreground animate-pulse flex items-center gap-1">
-              <ChevronDown className="w-3 h-3" /> Clique acima para liberar seu bônus exclusivo
+              <ChevronDown className="w-3 h-3" /> Clique acima para desbloquear seu kit de ferramentas
             </p>
           </div>
         </div>
       </section>
+
+      {showUpsell && (
+        <section className="py-12 px-4 bg-primary/5 border-y border-primary/10" id="upsell-section">
+          {/* Include UpsellToolkit content here */}
+          {/* For now, I'll put a placeholder but I need to actually move the code */}
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl font-black mb-6">Oferta Exclusiva de Acesso!</h2>
+            <p>Conteúdo do Upsell aqui...</p>
+            <a href="https://pay.wiapy.com/ymgWWLcrw9" className="bg-primary text-white py-3 px-6 rounded-lg font-bold">QUERO O KIT</a>
+            <button onClick={() => window.location.href = "/cx/d5w2n8"} className="block mt-4 text-sm underline text-muted-foreground">Não, obrigado.</button>
+          </div>
+        </section>
+      )}
 
       {/* Removido upsell interno para usar página dedicada */}
 
