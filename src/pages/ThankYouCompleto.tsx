@@ -73,7 +73,7 @@ const ThankYouCompleto = () => {
       </section>
 
       {showUpsell && (
-        <UpsellSection onNoThanks={() => window.location.href = "/cx/d5w2n8"} />
+        <UpsellSection onNoThanks={() => window.location.href = "/cx/d5w2n8?plan=completo"} />
       )}
 
       {/* INSTRUÇÕES DE ACESSO */}
