@@ -3,13 +3,17 @@ import { useState } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
+import UpsellSection from "@/components/UpsellSection";
 
 const ThankYouCompleto = () => {
   useNoIndex();
   const [showUpsell, setShowUpsell] = useState(false);
 
-  const handleContinue = () => {
-    window.location.href = "/upsell-toolkit";
+  const handleToggleUpsell = () => {
+    setShowUpsell(true);
+    setTimeout(() => {
+      document.getElementById('upsell-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   return (
@@ -55,12 +59,11 @@ const ThankYouCompleto = () => {
 
           <div className="flex flex-col gap-4 items-center">
             <button
-              onClick={handleContinue}
+              onClick={handleToggleUpsell}
               className="gradient-cta text-white font-bold font-heading py-4 px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 group"
             >
-              CONTINUAR PARA O MEU ACESSO
-              <Lock className="w-5 h-5 group-hover:hidden" />
-              <Gift className="w-5 h-5 hidden group-hover:block animate-bounce" />
+              VEJA O QUE VOCÊ ACABOU DE DESBLOQUEAR
+              <Gift className="w-5 h-5 animate-bounce" />
             </button>
             <p className="text-xs text-muted-foreground animate-pulse flex items-center gap-1">
               <ChevronDown className="w-3 h-3" /> Clique acima para desbloquear seu kit de ferramentas
@@ -69,7 +72,9 @@ const ThankYouCompleto = () => {
         </div>
       </section>
 
-      {/* Removido upsell interno para usar página dedicada */}
+      {showUpsell && (
+        <UpsellSection onNoThanks={() => window.location.href = "/cx/d5w2n8"} />
+      )}
 
       {/* INSTRUÇÕES DE ACESSO */}
       <section className="py-12 md:py-16 px-4 md:px-8" id="acesso">
