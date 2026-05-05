@@ -1,9 +1,15 @@
-import { ArrowRight, Gauge, Timer, X, Check, Shield } from "lucide-react";
+import { ArrowRight, Gauge, Timer, X, Check, Shield, Mail, Zap, Smartphone, Sparkles, Music } from "lucide-react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const DownsellToolkit = () => {
   useNoIndex();
+
+  const handleFinalExit = () => {
+    // Redireciona para o produto principal baseado na compra (simplificado para o acervo)
+    window.location.href = "/acervo-basico"; 
+  };
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -32,40 +38,51 @@ const DownsellToolkit = () => {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Visual Demo Section */}
       <section className="py-6 px-4 md:px-8">
-        <div className="max-w-md mx-auto space-y-4">
-          {[
-            {
-              icon: Gauge,
-              title: "Afinador Cromático para Sax",
-              desc: "Detecta nota em tempo real, mostra cents e frequência, transposição automática para Alto (Eb) ou Tenor (Bb).",
-              color: "text-primary",
-              bg: "bg-primary/15",
-              border: "border-primary/20",
-            },
-            {
-              icon: Timer,
-              title: "Metrônomo Profissional",
-              desc: "40-220 BPM, scheduling de áudio preciso, 4 fórmulas de compasso, tap tempo e modo progressivo automático.",
-              color: "text-[hsl(142,70%,45%)]",
-              bg: "bg-[hsl(142,70%,45%)]/15",
-              border: "border-[hsl(142,70%,45%)]/20",
-            },
-          ].map((feat, i) => {
-            const Icon = feat.icon;
-            return (
-              <div key={i} className={`glass-card rounded-2xl p-6 flex gap-5 items-start border ${feat.border}`}>
-                <div className={`w-14 h-14 rounded-2xl ${feat.bg} flex items-center justify-center shrink-0`}>
-                  <Icon className={`w-7 h-7 ${feat.color}`} />
-                </div>
-                <div>
-                  <h3 className="font-bold font-heading text-lg mb-1">{feat.title}</h3>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed">{feat.desc}</p>
-                </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 items-center bg-card/50 rounded-[2.5rem] p-8 border border-border/50">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[hsl(142,70%,45%)]/20 to-primary/20 rounded-2xl blur opacity-75" />
+              <img 
+                src={kitBanner} 
+                alt="Kit Essencial" 
+                className="relative rounded-xl border border-white/5 shadow-xl w-full h-auto transform group-hover:scale-[1.02] transition-transform duration-500" 
+              />
+              <div className="absolute top-4 right-4 bg-[hsl(142,70%,45%)] text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg">
+                OFERTA FINAL
               </div>
-            );
-          })}
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-black font-heading leading-tight flex items-center gap-2">
+                <Zap className="w-5 h-5 text-primary fill-primary" />
+                Duo de Precisão
+              </h3>
+              {[
+                {
+                  icon: Gauge,
+                  title: "Afinador Pro",
+                  desc: "Detecta Real, Hz e Pitch exato para seu Sax.",
+                  color: "text-primary",
+                },
+                {
+                  icon: Timer,
+                  title: "Metrônomo Digital",
+                  desc: "Ritmo inabalável para nunca perder o compasso.",
+                  color: "text-[hsl(142,70%,45%)]",
+                },
+              ].map((feat, i) => (
+                <div key={i} className="flex gap-4 items-start p-4 rounded-xl bg-background/50 border border-border/50">
+                  <feat.icon className={`w-6 h-6 ${feat.color} shrink-0 mt-0.5`} />
+                  <div>
+                    <h4 className="font-bold text-sm">{feat.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{feat.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -112,15 +129,15 @@ const DownsellToolkit = () => {
             <p className="text-xs text-muted-foreground font-heading uppercase tracking-widest mb-2">Afinador + Metrônomo Pro</p>
             <div className="flex items-center justify-center gap-3 mb-1">
               <span className="text-lg text-muted-foreground line-through font-heading">R$ 27,90</span>
-              <span className="text-5xl font-extrabold font-heading text-[hsl(142,70%,45%)]">R$ 14,90</span>
+              <span className="text-5xl font-extrabold font-heading text-[hsl(142,70%,45%)]">R$ 14,50</span>
             </div>
             <p className="text-xs text-muted-foreground font-body mb-6">Pagamento único · Acesso vitalício</p>
 
             <a
-              href="#"
+              href="https://pay.wiapy.com/SSjOIsHzZ"
               className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-base md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 w-full justify-center"
             >
-              QUERO POR R$ 14,90
+              SIM! QUERO POR R$ 14,50
               <ArrowRight className="w-5 h-5 animate-arrow-bounce" />
             </a>
 
@@ -134,7 +151,7 @@ const DownsellToolkit = () => {
           </div>
 
           <button
-            onClick={() => window.location.href = "/cx/r7b2k9"}
+            onClick={handleFinalExit}
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-body"
           >
             <X className="w-4 h-4" />
