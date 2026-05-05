@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Mic, MicOff, Check } from "lucide-react";
 
-const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const NOTE_NAMES_PT = ["Dó", "Dó#", "Ré", "Ré#", "Mi", "Fá", "Fá#", "Sol", "Sol#", "Lá", "Lá#", "Si"];
 
 const A4 = 440;
@@ -14,66 +13,61 @@ function frequencyToNote(freq: number) {
   const cents = Math.round((semitones - rounded) * 100);
   const noteIndex = ((rounded % 12) + 12) % 12;
   const octave = Math.floor((rounded + 9) / 12) + 4;
-  return { noteIndex, octave, cents, noteName: NOTE_NAMES[noteIndex], noteNamePt: NOTE_NAMES_PT[noteIndex], freq };
+  return { noteIndex, octave, cents, noteNamePt: NOTE_NAMES_PT[noteIndex], freq };
 }
 
-function transposeSax(noteIndex: number, saxType: SaxType): { noteIndex: number; noteNamePt: string } {
+function transposeSax(noteIndex: number, saxType: SaxType): { noteNamePt: string } {
   const offset = saxType === "alto" ? 9 : 2;
   const transposed = (noteIndex + offset) % 12;
-  return { noteIndex: transposed, noteNamePt: NOTE_NAMES_PT[transposed] };
+  return { noteNamePt: NOTE_NAMES_PT[transposed] };
 }
 
 function autoCorrelate(buf: Float32Array, sampleRate: number): number {
-  let size = buf.length;
+  const size = buf.length;
   let rms = 0;
   for (let i = 0; i < size; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / size);
-  if (rms < 0.008) return -1;
+  if (rms < 0.005) return -1;
 
-  // Trim edges
-  let r1 = 0, r2 = size - 1;
-  const thresh = 0.15;
-  for (let i = 0; i < size / 2; i++) { if (Math.abs(buf[i]) < thresh) { r1 = i; break; } }
-  for (let i = 1; i < size / 2; i++) { if (Math.abs(buf[size - i]) < thresh) { r2 = size - i; break; } }
-
-  buf = buf.slice(r1, r2);
-  size = buf.length;
-  if (size < 2) return -1;
-
-  const c = new Array(size).fill(0);
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size - i; j++) {
-      c[i] += buf[j] * buf[j + i];
+  // Normalized autocorrelation
+  const halfSize = Math.floor(size / 2);
+  const corr = new Float32Array(halfSize);
+  for (let lag = 0; lag < halfSize; lag++) {
+    let sum = 0;
+    for (let i = 0; i < halfSize; i++) {
+      sum += buf[i] * buf[i + lag];
     }
+    corr[lag] = sum;
   }
 
-  let d = 0;
-  while (d < size - 1 && c[d] > c[d + 1]) d++;
-  if (d >= size - 1) return -1;
+  // Find first dip
+  let d = 1;
+  while (d < halfSize - 1 && corr[d] > corr[d + 1]) d++;
+  if (d >= halfSize - 1) return -1;
 
+  // Find peak after dip
   let maxval = -1, maxpos = -1;
-  for (let i = d; i < size; i++) {
-    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+  for (let i = d; i < halfSize - 1; i++) {
+    if (corr[i] > maxval) { maxval = corr[i]; maxpos = i; }
   }
-  if (maxpos <= 0 || maxpos >= size - 1) return -1;
+  if (maxpos <= 0 || maxpos >= halfSize - 2) return -1;
 
-  let T0 = maxpos;
-  const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+  // Parabolic interpolation
+  const x1 = corr[maxpos - 1], x2 = corr[maxpos], x3 = corr[maxpos + 1];
   const a = (x1 + x3 - 2 * x2) / 2;
   const b = (x3 - x1) / 2;
-  if (a) T0 = T0 - b / (2 * a);
+  const refinedPos = a !== 0 ? maxpos - b / (2 * a) : maxpos;
 
-  return sampleRate / T0;
+  return sampleRate / refinedPos;
 }
 
-// Smoothing buffer for stable readings
 const SMOOTH_SIZE = 5;
 
 const Tuner = () => {
   const [isListening, setIsListening] = useState(false);
   const [saxType, setSaxType] = useState<SaxType>("alto");
   const [detectedNote, setDetectedNote] = useState<ReturnType<typeof frequencyToNote> | null>(null);
-  const [transposedNote, setTransposedNote] = useState<{ noteIndex: number; noteNamePt: string } | null>(null);
+  const [transposedNote, setTransposedNote] = useState<{ noteNamePt: string } | null>(null);
   const [smoothCents, setSmoothCents] = useState(0);
 
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -81,9 +75,21 @@ const Tuner = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number>(0);
   const historyRef = useRef<{ noteIndex: number; cents: number; freq: number }[]>([]);
+  const saxTypeRef = useRef<SaxType>(saxType);
+  const isListeningRef = useRef(false);
 
-  const detect = useCallback(() => {
-    if (!analyserRef.current || !audioContextRef.current) return;
+  // Keep refs in sync
+  useEffect(() => { saxTypeRef.current = saxType; }, [saxType]);
+
+  // Re-transpose when saxType changes
+  useEffect(() => {
+    if (detectedNote && isListening) {
+      setTransposedNote(transposeSax(detectedNote.noteIndex, saxType));
+    }
+  }, [saxType, detectedNote, isListening]);
+
+  const detect = () => {
+    if (!analyserRef.current || !audioContextRef.current || !isListeningRef.current) return;
     const analyser = analyserRef.current;
     const buf = new Float32Array(analyser.fftSize);
     analyser.getFloatTimeDomainData(buf);
@@ -91,69 +97,87 @@ const Tuner = () => {
 
     if (freq > 50 && freq < 2000) {
       const note = frequencyToNote(freq);
-      
-      // Push to smoothing buffer
+
       historyRef.current.push({ noteIndex: note.noteIndex, cents: note.cents, freq: note.freq });
       if (historyRef.current.length > SMOOTH_SIZE) historyRef.current.shift();
 
-      // Find most common note in buffer
       const counts: Record<number, number> = {};
       historyRef.current.forEach(h => { counts[h.noteIndex] = (counts[h.noteIndex] || 0) + 1; });
       let bestNote = note.noteIndex;
       let bestCount = 0;
       Object.entries(counts).forEach(([k, v]) => { if (v > bestCount) { bestCount = v; bestNote = Number(k); } });
 
-      // Average cents for the dominant note
       const relevantCents = historyRef.current.filter(h => h.noteIndex === bestNote).map(h => h.cents);
       const avgCents = Math.round(relevantCents.reduce((a, b) => a + b, 0) / relevantCents.length);
 
       const smoothedNote = { ...note, noteIndex: bestNote, noteNamePt: NOTE_NAMES_PT[bestNote], cents: avgCents };
       setDetectedNote(smoothedNote);
       setSmoothCents(avgCents);
-      setTransposedNote(transposeSax(bestNote, saxType));
+      setTransposedNote(transposeSax(bestNote, saxTypeRef.current));
     }
 
     rafRef.current = requestAnimationFrame(detect);
-  }, [saxType]);
+  };
 
   const startListening = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        },
+      });
       streamRef.current = stream;
+
       const ctx = new AudioContext();
+      // Resume in case browser created it in suspended state
+      if (ctx.state === "suspended") {
+        await ctx.resume();
+      }
       audioContextRef.current = ctx;
+
       const source = ctx.createMediaStreamSource(stream);
       const analyser = ctx.createAnalyser();
       analyser.fftSize = 4096;
-      analyser.smoothingTimeConstant = 0.8;
+      analyser.smoothingTimeConstant = 0;
       source.connect(analyser);
       analyserRef.current = analyser;
       historyRef.current = [];
+      isListeningRef.current = true;
       setIsListening(true);
       rafRef.current = requestAnimationFrame(detect);
-    } catch {
-      console.error("Microphone access denied");
+    } catch (err: unknown) {
+      const name = err instanceof DOMException ? err.name : "";
+      if (name === "NotAllowedError") {
+        alert("Permissão do microfone negada. Habilite nas configurações do navegador.");
+      } else if (name === "NotFoundError") {
+        alert("Nenhum microfone encontrado.");
+      } else {
+        console.error("Microphone error:", err);
+        alert("Erro ao acessar o microfone.");
+      }
     }
   };
 
   const stopListening = () => {
+    isListeningRef.current = false;
     cancelAnimationFrame(rafRef.current);
     streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
     audioContextRef.current?.close();
+    audioContextRef.current = null;
+    analyserRef.current = null;
     setIsListening(false);
     setDetectedNote(null);
     setTransposedNote(null);
+    setSmoothCents(0);
     historyRef.current = [];
   };
 
   useEffect(() => {
-    if (detectedNote && isListening) {
-      setTransposedNote(transposeSax(detectedNote.noteIndex, saxType));
-    }
-  }, [saxType, detectedNote, isListening]);
-
-  useEffect(() => {
     return () => {
+      isListeningRef.current = false;
       cancelAnimationFrame(rafRef.current);
       streamRef.current?.getTracks().forEach((t) => t.stop());
       audioContextRef.current?.close();
@@ -164,7 +188,6 @@ const Tuner = () => {
   const centsAngle = Math.max(-50, Math.min(50, cents));
   const isInTune = Math.abs(cents) <= 5;
 
-  // Generate tick marks for the gauge
   const ticks = [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50];
 
   return (
@@ -203,7 +226,6 @@ const Tuner = () => {
             </filter>
           </defs>
           
-          {/* Background arc */}
           <path
             d="M 20 105 A 90 90 0 0 1 200 105"
             fill="none"
@@ -213,7 +235,6 @@ const Tuner = () => {
             opacity="0.25"
           />
           
-          {/* Green center zone */}
           <path
             d="M 103 17 A 90 90 0 0 1 117 17"
             fill="none"
@@ -223,18 +244,17 @@ const Tuner = () => {
             opacity="0.5"
           />
 
-          {/* Tick marks */}
           {ticks.map((tick) => {
             const angle = -90 + (tick / 50) * 50;
             const rad = (angle * Math.PI) / 180;
             const cx = 110, cy = 105, r1 = 82, r2 = 92;
-            const x1 = cx + r1 * Math.cos(rad);
-            const y1 = cy + r1 * Math.sin(rad);
-            const x2 = cx + r2 * Math.cos(rad);
-            const y2 = cy + r2 * Math.sin(rad);
+            const x1t = cx + r1 * Math.cos(rad);
+            const y1t = cy + r1 * Math.sin(rad);
+            const x2t = cx + r2 * Math.cos(rad);
+            const y2t = cy + r2 * Math.sin(rad);
             const isMajor = tick === 0 || Math.abs(tick) === 50;
             return (
-              <line key={tick} x1={x1} y1={y1} x2={x2} y2={y2}
+              <line key={tick} x1={x1t} y1={y1t} x2={x2t} y2={y2t}
                 stroke={tick === 0 ? "hsl(142 70% 45%)" : "hsl(0 0% 50%)"}
                 strokeWidth={isMajor ? 2 : 1}
                 opacity={isMajor ? 0.8 : 0.4}
@@ -242,17 +262,15 @@ const Tuner = () => {
             );
           })}
           
-          {/* Labels */}
           <text x="28" y="115" fill="hsl(0 0% 50%)" fontSize="8" textAnchor="middle">-50</text>
           <text x="110" y="12" fill="hsl(142 70% 45%)" fontSize="8" textAnchor="middle" fontWeight="bold">0</text>
           <text x="192" y="115" fill="hsl(0 0% 50%)" fontSize="8" textAnchor="middle">+50</text>
           
-          {/* Needle */}
           <line
             x1="110"
             y1="105"
-            x2={110 + 78 * Math.sin((centsAngle * Math.PI) / 180 * 1)}
-            y2={105 - 78 * Math.cos((centsAngle * Math.PI) / 180 * 1)}
+            x2={110 + 78 * Math.sin((centsAngle * Math.PI) / 180)}
+            y2={105 - 78 * Math.cos((centsAngle * Math.PI) / 180)}
             stroke={isInTune ? "hsl(142 70% 45%)" : "hsl(var(--primary))"}
             strokeWidth="2.5"
             strokeLinecap="round"
