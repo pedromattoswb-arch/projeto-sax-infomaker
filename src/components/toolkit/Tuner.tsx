@@ -69,6 +69,14 @@ const Tuner = () => {
   const [detectedNote, setDetectedNote] = useState<ReturnType<typeof frequencyToNote> | null>(null);
   const [transposedNote, setTransposedNote] = useState<{ noteNamePt: string } | null>(null);
   const [smoothCents, setSmoothCents] = useState(0);
+  
+  // New features
+  const [a4Reference, setA4Reference] = useState(440);
+  const [sensitivity, setSensitivity] = useState(0.005);
+  const [currentRms, setCurrentRms] = useState(0);
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
+  const [showSettings, setShowSettings] = useState(false);
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -77,9 +85,21 @@ const Tuner = () => {
   const historyRef = useRef<{ noteIndex: number; cents: number; freq: number }[]>([]);
   const saxTypeRef = useRef<SaxType>(saxType);
   const isListeningRef = useRef(false);
+  const a4Ref = useRef(440);
+  const sensitivityRef = useRef(0.005);
 
   // Keep refs in sync
   useEffect(() => { saxTypeRef.current = saxType; }, [saxType]);
+  useEffect(() => { a4Ref.current = a4Reference; }, [a4Reference]);
+  useEffect(() => { sensitivityRef.current = sensitivity; }, [sensitivity]);
+
+  useEffect(() => {
+    const getDevices = async () => {
+      const allDevices = await navigator.mediaDevices.enumerateDevices();
+      setDevices(allDevices.filter(d => d.kind === "audioinput"));
+    };
+    getDevices();
+  }, []);
 
   // Re-transpose when saxType changes
   useEffect(() => {
