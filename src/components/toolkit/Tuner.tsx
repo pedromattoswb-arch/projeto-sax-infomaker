@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { Mic, MicOff, Check } from "lucide-react";
+import { Mic, MicOff, Check, Settings, ShieldCheck, Activity } from "lucide-react";
 
 const NOTE_NAMES_PT = ["Dó", "Dó#", "Ré", "Ré#", "Mi", "Fá", "Fá#", "Sol", "Sol#", "Lá", "Lá#", "Si"];
 
-const A4 = 440;
+const DEFAULT_A4 = 440;
 
 type SaxType = "alto" | "tenor";
 
-function frequencyToNote(freq: number) {
-  const semitones = 12 * Math.log2(freq / A4);
+function frequencyToNote(freq: number, a4: number) {
+  const semitones = 12 * Math.log2(freq / a4);
   const rounded = Math.round(semitones);
   const cents = Math.round((semitones - rounded) * 100);
   const noteIndex = ((rounded % 12) + 12) % 12;
@@ -22,12 +22,12 @@ function transposeSax(noteIndex: number, saxType: SaxType): { noteNamePt: string
   return { noteNamePt: NOTE_NAMES_PT[transposed] };
 }
 
-function autoCorrelate(buf: Float32Array, sampleRate: number): number {
+function autoCorrelate(buf: Float32Array, sampleRate: number, threshold: number): { freq: number; rms: number } {
   const size = buf.length;
   let rms = 0;
   for (let i = 0; i < size; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / size);
-  if (rms < 0.005) return -1;
+  if (rms < threshold) return { freq: -1, rms };
 
   // Normalized autocorrelation
   const halfSize = Math.floor(size / 2);
@@ -43,14 +43,14 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
   // Find first dip
   let d = 1;
   while (d < halfSize - 1 && corr[d] > corr[d + 1]) d++;
-  if (d >= halfSize - 1) return -1;
+  if (d >= halfSize - 1) return { freq: -1, rms };
 
   // Find peak after dip
   let maxval = -1, maxpos = -1;
   for (let i = d; i < halfSize - 1; i++) {
     if (corr[i] > maxval) { maxval = corr[i]; maxpos = i; }
   }
-  if (maxpos <= 0 || maxpos >= halfSize - 2) return -1;
+  if (maxpos <= 0 || maxpos >= halfSize - 2) return { freq: -1, rms };
 
   // Parabolic interpolation
   const x1 = corr[maxpos - 1], x2 = corr[maxpos], x3 = corr[maxpos + 1];
@@ -58,7 +58,7 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
   const b = (x3 - x1) / 2;
   const refinedPos = a !== 0 ? maxpos - b / (2 * a) : maxpos;
 
-  return sampleRate / refinedPos;
+  return { freq: sampleRate / refinedPos, rms };
 }
 
 const SMOOTH_SIZE = 5;
@@ -69,6 +69,14 @@ const Tuner = () => {
   const [detectedNote, setDetectedNote] = useState<ReturnType<typeof frequencyToNote> | null>(null);
   const [transposedNote, setTransposedNote] = useState<{ noteNamePt: string } | null>(null);
   const [smoothCents, setSmoothCents] = useState(0);
+  
+  // New features
+  const [a4Reference, setA4Reference] = useState(440);
+  const [sensitivity, setSensitivity] = useState(0.005);
+  const [currentRms, setCurrentRms] = useState(0);
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
+  const [showSettings, setShowSettings] = useState(false);
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -77,9 +85,21 @@ const Tuner = () => {
   const historyRef = useRef<{ noteIndex: number; cents: number; freq: number }[]>([]);
   const saxTypeRef = useRef<SaxType>(saxType);
   const isListeningRef = useRef(false);
+  const a4Ref = useRef(440);
+  const sensitivityRef = useRef(0.005);
 
   // Keep refs in sync
   useEffect(() => { saxTypeRef.current = saxType; }, [saxType]);
+  useEffect(() => { a4Ref.current = a4Reference; }, [a4Reference]);
+  useEffect(() => { sensitivityRef.current = sensitivity; }, [sensitivity]);
+
+  useEffect(() => {
+    const getDevices = async () => {
+      const allDevices = await navigator.mediaDevices.enumerateDevices();
+      setDevices(allDevices.filter(d => d.kind === "audioinput"));
+    };
+    getDevices();
+  }, []);
 
   // Re-transpose when saxType changes
   useEffect(() => {
@@ -93,10 +113,12 @@ const Tuner = () => {
     const analyser = analyserRef.current;
     const buf = new Float32Array(analyser.fftSize);
     analyser.getFloatTimeDomainData(buf);
-    const freq = autoCorrelate(buf, audioContextRef.current.sampleRate);
+    const { freq, rms } = autoCorrelate(buf, audioContextRef.current.sampleRate, sensitivityRef.current);
+
+    setCurrentRms(rms);
 
     if (freq > 50 && freq < 2000) {
-      const note = frequencyToNote(freq);
+      const note = frequencyToNote(freq, a4Ref.current);
 
       historyRef.current.push({ noteIndex: note.noteIndex, cents: note.cents, freq: note.freq });
       if (historyRef.current.length > SMOOTH_SIZE) historyRef.current.shift();
@@ -114,6 +136,8 @@ const Tuner = () => {
       setDetectedNote(smoothedNote);
       setSmoothCents(avgCents);
       setTransposedNote(transposeSax(bestNote, saxTypeRef.current));
+    } else {
+      setDetectedNote(null);
     }
 
     rafRef.current = requestAnimationFrame(detect);
@@ -123,6 +147,7 @@ const Tuner = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
+          deviceId: selectedDeviceId ? { exact: selectedDeviceId } : undefined,
           echoCancellation: false,
           noiseSuppression: false,
           autoGainControl: false,
@@ -318,6 +343,23 @@ const Tuner = () => {
         )}
       </div>
 
+      {/* Real-time Indicator (Hz/RMS) */}
+      {isListening && (
+        <div className="flex gap-4 text-[10px] font-mono text-muted-foreground bg-secondary/20 px-3 py-1 rounded-full border border-white/5">
+          <div className="flex items-center gap-1">
+            <span className="opacity-50 uppercase tracking-tighter font-bold">In:</span>
+            <span className={currentRms > sensitivity ? "text-green-500" : ""}>
+              {(currentRms * 100).toFixed(1)}%
+            </span>
+          </div>
+          <div className="w-px h-3 bg-white/10" />
+          <div className="flex items-center gap-1">
+            <span className="opacity-50 uppercase tracking-tighter font-bold">Hz:</span>
+            <span>{detectedNote ? detectedNote.freq.toFixed(1) : "---"}</span>
+          </div>
+        </div>
+      )}
+
       {/* Mic button */}
       <button
         onClick={isListening ? stopListening : startListening}
@@ -333,6 +375,119 @@ const Tuner = () => {
       <span className="text-xs text-muted-foreground font-body">
         {isListening ? "Toque para parar" : "Toque para ativar o afinador"}
       </span>
+
+      {/* Action Buttons */}
+      <div className="flex gap-4 mt-2">
+        <button
+          onClick={() => setShowSettings(!showSettings)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            showSettings ? "bg-primary text-primary-foreground" : "glass-card text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Settings className="w-4 h-4" />
+          Ajustes
+        </button>
+      </div>
+
+      {/* Settings & Diagnostics Panel */}
+      {showSettings && (
+        <div className="w-full max-w-sm glass-card rounded-2xl p-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="space-y-4">
+            <h3 className="flex items-center gap-2 text-sm font-bold font-heading text-primary uppercase tracking-wider">
+              <Activity className="w-4 h-4" />
+              Calibração & Sensibilidade
+            </h3>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground font-medium">Referência A4 (Hz)</span>
+                <span className="text-primary font-bold">{a4Reference} Hz</span>
+              </div>
+              <input
+                type="range"
+                min="430"
+                max="450"
+                step="1"
+                value={a4Reference}
+                onChange={(e) => setA4Reference(Number(e.target.value))}
+                className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground font-medium">Sensibilidade (Threshold)</span>
+                <span className="text-primary font-bold">{(sensitivity * 1000).toFixed(1)}</span>
+              </div>
+              <input
+                type="range"
+                min="0.001"
+                max="0.05"
+                step="0.001"
+                value={sensitivity}
+                onChange={(e) => setSensitivity(Number(e.target.value))}
+                className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+              <p className="text-[10px] text-muted-foreground leading-tight">
+                Aumente se o afinador estiver captando ruído de fundo. Diminua se ele não estiver pegando seu som.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4 pt-4 border-t border-white/5">
+            <h3 className="flex items-center gap-2 text-sm font-bold font-heading text-primary uppercase tracking-wider">
+              <ShieldCheck className="w-4 h-4" />
+              Diagnóstico do Microfone
+            </h3>
+
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground font-medium">Dispositivo</span>
+                <select
+                  value={selectedDeviceId}
+                  onChange={(e) => {
+                    setSelectedDeviceId(e.target.value);
+                    if (isListening) {
+                      stopListening();
+                      setTimeout(startListening, 100);
+                    }
+                  }}
+                  className="w-full bg-secondary/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="">Padrão do Sistema</option>
+                  {devices.map((device) => (
+                    <option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `Microfone ${device.deviceId.slice(0, 5)}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground font-medium">Nível de Entrada (RMS)</span>
+                  <span className={`${currentRms > sensitivity ? "text-green-500" : "text-muted-foreground"} font-mono`}>
+                    {currentRms.toFixed(4)}
+                  </span>
+                </div>
+                <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-100 ${currentRms > sensitivity ? "bg-green-500" : "bg-primary/40"}`}
+                    style={{ width: `${Math.min(100, currentRms * 1000)}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 py-2 px-3 bg-secondary/30 rounded-lg">
+                <div className={`w-2 h-2 rounded-full ${isListening ? "bg-green-500 animate-pulse" : "bg-red-500"}`} />
+                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">
+                  Status: {isListening ? "Captando Áudio" : "Inativo"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
