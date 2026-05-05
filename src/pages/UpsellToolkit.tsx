@@ -1,6 +1,8 @@
-import { ArrowRight, Gauge, Timer, Music, Zap, Check, X, Shield, Star } from "lucide-react";
+import { ArrowRight, Gauge, Timer, Music, Zap, Check, X, Shield, Star, Smartphone, Lock, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import kitBanner from "@/assets/kit-ferramentas-banner.png";
 
 const features = [
   {
@@ -38,6 +40,23 @@ const comparisons = [
 
 const UpsellToolkit = () => {
   useNoIndex();
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      setShowExitModal(true);
+      window.history.pushState(null, "", window.location.pathname);
+    };
+    
+    window.history.pushState(null, "", window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const handleNoThanks = () => {
+    window.location.href = "/downsell-toolkit";
+  };
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -74,23 +93,66 @@ const UpsellToolkit = () => {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-10 px-4 md:px-8">
-        <div className="max-w-2xl mx-auto space-y-5">
-          {features.map((feat, i) => {
-            const Icon = feat.icon;
-            return (
-              <div key={i} className={`glass-card rounded-2xl p-6 md:p-7 flex gap-5 items-start border ${feat.borderColor} hover:scale-[1.01] transition-all`}>
-                <div className={`w-14 h-14 rounded-2xl ${feat.bgColor} flex items-center justify-center shrink-0`}>
-                  <Icon className={`w-7 h-7 ${feat.color}`} />
-                </div>
-                <div>
-                  <h3 className="font-bold font-heading text-lg mb-1.5">{feat.title}</h3>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed">{feat.description}</p>
+      {/* Visual Demo Section */}
+      <section className="py-10 px-4 md:px-8 bg-card/30">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Visual Column */}
+            <div className="relative">
+              <div className="absolute -inset-4 bg-primary/20 rounded-[2rem] blur-3xl opacity-50" />
+              <div className="relative glass-card rounded-2xl overflow-hidden shadow-2xl border border-white/5 group">
+                <img 
+                  src={kitBanner} 
+                  alt="Demonstração do Kit" 
+                  className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                  <div className="bg-primary/90 backdrop-blur-md text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                    Acesso Exclusivo
+                  </div>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Tool Mini Cards */}
+              <div className="grid grid-cols-3 gap-3 mt-6">
+                {[
+                  { label: "Pitch", icon: Gauge, desc: "Afinador Real" },
+                  { label: "Tempo", icon: Timer, desc: "Digital Pro" },
+                  { label: "Study", icon: Music, desc: "Escalas/Arpejos" }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-card border border-border/50 p-3 rounded-xl text-center shadow-sm">
+                    <item.icon className="w-5 h-5 text-primary mx-auto mb-1" />
+                    <div className="text-[10px] font-black uppercase">{item.label}</div>
+                    <div className="text-[8px] text-muted-foreground">{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Content Column */}
+            <div className="space-y-6">
+              <h2 className="text-2xl md:text-3xl font-black font-heading leading-tight">
+                O que você vai levar no <span className="text-primary underline decoration-primary/20">Kit de Elite</span>
+              </h2>
+              <div className="space-y-4">
+                {features.map((feat, i) => {
+                  const Icon = feat.icon;
+                  return (
+                    <div key={i} className="flex gap-4 items-start p-4 rounded-2xl bg-primary/5 border border-primary/10 hover:bg-primary/10 transition-colors group">
+                      <div className={`w-10 h-10 rounded-xl ${feat.bgColor} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                        <Icon className={`w-5 h-5 ${feat.color}`} />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-base mb-0.5">{feat.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-snug">{feat.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -153,7 +215,7 @@ const UpsellToolkit = () => {
             <p className="text-xs text-muted-foreground font-body mb-6">Pagamento único · Acesso vitalício · 3 ferramentas</p>
 
             <a
-              href="#"
+              href="https://pay.wiapy.com/ymgWWLcrw9"
               className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-base md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 w-full justify-center"
             >
               QUERO O KIT COMPLETO
@@ -170,14 +232,50 @@ const UpsellToolkit = () => {
           </div>
 
           <button
-            onClick={() => window.location.href = "/cx/d5w2n8"}
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-body"
+            onClick={handleNoThanks}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-body underline underline-offset-4"
           >
-            <X className="w-4 h-4" />
-            Não, obrigado. Seguir sem o Kit.
+            Não, obrigado. Prefiro seguir sem as ferramentas.
           </button>
         </div>
       </section>
+
+      {/* Exit Intent Modal / Promotion */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-card w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-primary/30 animate-scale-in">
+            <div className="bg-primary p-6 text-white text-center relative">
+              <Sparkles className="w-12 h-12 absolute -top-4 -left-4 rotate-12 opacity-20" />
+              <h3 className="text-2xl font-black font-heading mb-1 uppercase tracking-tight">ESPERE! NÃO VÁ AINDA! 🛑</h3>
+              <p className="text-white/80 text-sm font-medium">Liberei uma condição especial para você.</p>
+            </div>
+            <div className="p-8 text-center">
+              <p className="text-muted-foreground mb-6 font-medium">
+                Você realmente vai deixar passar a chance de tocar afinado e no tempo por menos do que um lanche?
+              </p>
+              <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-8">
+                <p className="text-xs font-bold text-primary uppercase mb-2">Acesso Promocional</p>
+                <div className="text-4xl font-black font-heading text-primary">R$ 14,50</div>
+                <p className="text-[10px] text-muted-foreground mt-2 uppercase font-bold tracking-wider">(Afinador + Metrônomo Vitalício)</p>
+              </div>
+              <div className="space-y-4">
+                <a
+                  href="https://pay.wiapy.com/SSjOIsHzZ"
+                  className="gradient-cta text-white font-bold font-heading py-4 px-8 rounded-xl text-lg shadow-cta hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                >
+                  SIM! QUERO O DESCONTO <Zap className="w-5 h-5 fill-white" />
+                </a>
+                <button 
+                  onClick={() => window.location.href = "/acervo-basico"} 
+                  className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest"
+                >
+                  Não, quero abrir mão das ferramentas
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-6 px-4 border-t border-border text-center">
