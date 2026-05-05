@@ -343,6 +343,23 @@ const Tuner = () => {
         )}
       </div>
 
+      {/* Real-time Indicator (Hz/RMS) */}
+      {isListening && (
+        <div className="flex gap-4 text-[10px] font-mono text-muted-foreground bg-secondary/20 px-3 py-1 rounded-full border border-white/5">
+          <div className="flex items-center gap-1">
+            <span className="opacity-50 uppercase tracking-tighter font-bold">In:</span>
+            <span className={currentRms > sensitivity ? "text-green-500" : ""}>
+              {(currentRms * 100).toFixed(1)}%
+            </span>
+          </div>
+          <div className="w-px h-3 bg-white/10" />
+          <div className="flex items-center gap-1">
+            <span className="opacity-50 uppercase tracking-tighter font-bold">Hz:</span>
+            <span>{detectedNote ? detectedNote.freq.toFixed(1) : "---"}</span>
+          </div>
+        </div>
+      )}
+
       {/* Mic button */}
       <button
         onClick={isListening ? stopListening : startListening}
