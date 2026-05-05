@@ -8,12 +8,29 @@ import UpsellSection from "@/components/UpsellSection";
 const ThankYouCompleto = () => {
   useNoIndex();
   const [showUpsell, setShowUpsell] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleToggleUpsell = () => {
-    setShowUpsell(true);
+    if (isLoading || showUpsell) return;
+    
+    setIsLoading(true);
     setTimeout(() => {
-      document.getElementById('upsell-section')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+      setShowUpsell(true);
+      setIsLoading(false);
+      setTimeout(() => {
+        const element = document.getElementById('upsell-section');
+        if (element) {
+          const headerOffset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }, 100);
+    }, 1500);
   };
 
   return (
@@ -60,10 +77,11 @@ const ThankYouCompleto = () => {
           <div className="flex flex-col gap-4 items-center">
             <button
               onClick={handleToggleUpsell}
-              className="gradient-cta text-white font-bold font-heading py-4 px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-cta-pulse inline-flex items-center gap-2 group"
+              disabled={isLoading}
+              className={`gradient-cta text-white font-bold font-heading py-4 px-10 rounded-xl text-[15px] md:text-lg shadow-cta hover:shadow-cta-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-2 group ${isLoading ? 'opacity-80 cursor-wait animate-pulse' : 'animate-cta-pulse'}`}
             >
-              VEJA O QUE VOCÊ ACABOU DE DESBLOQUEAR
-              <Gift className="w-5 h-5 animate-bounce" />
+              {isLoading ? "DESBLOQUEANDO..." : "VEJA O QUE VOCÊ ACABOU DE DESBLOQUEAR"}
+              {!isLoading && <Gift className="w-5 h-5 animate-bounce" />}
             </button>
             <p className="text-xs text-muted-foreground animate-pulse flex items-center gap-1">
               <ChevronDown className="w-3 h-3" /> Clique acima para desbloquear seu kit de ferramentas
