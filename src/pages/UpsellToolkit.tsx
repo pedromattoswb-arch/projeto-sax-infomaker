@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import UpsellSection from "@/components/UpsellSection";
@@ -6,6 +7,8 @@ import { Sparkles, Zap } from "lucide-react";
 
 const UpsellToolkit = () => {
   useNoIndex();
+  const [searchParams] = useSearchParams();
+  const plan = searchParams.get("plan");
   const [showExitModal, setShowExitModal] = useState(false);
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const UpsellToolkit = () => {
   }, []);
 
   const handleNoThanks = () => {
-    window.location.href = "/cx/d5w2n8";
+    window.location.href = `/cx/d5w2n8?plan=${plan || 'basico'}`;
   };
 
   return (
@@ -61,7 +64,13 @@ const UpsellToolkit = () => {
                   SIM! QUERO O DESCONTO <Zap className="w-5 h-5 fill-white" />
                 </a>
                 <button 
-                  onClick={() => window.location.href = "/acervo-basico"} 
+                  onClick={() => {
+                    if (plan === "completo") {
+                      window.location.href = "/plano-premium-completo";
+                    } else {
+                      window.location.href = "/acervo-basico"; 
+                    }
+                  }} 
                   className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest"
                 >
                   Não, quero abrir mão das ferramentas
