@@ -358,6 +358,119 @@ const Tuner = () => {
       <span className="text-xs text-muted-foreground font-body">
         {isListening ? "Toque para parar" : "Toque para ativar o afinador"}
       </span>
+
+      {/* Action Buttons */}
+      <div className="flex gap-4 mt-2">
+        <button
+          onClick={() => setShowSettings(!showSettings)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            showSettings ? "bg-primary text-primary-foreground" : "glass-card text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Settings className="w-4 h-4" />
+          Ajustes
+        </button>
+      </div>
+
+      {/* Settings & Diagnostics Panel */}
+      {showSettings && (
+        <div className="w-full max-w-sm glass-card rounded-2xl p-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="space-y-4">
+            <h3 className="flex items-center gap-2 text-sm font-bold font-heading text-primary uppercase tracking-wider">
+              <Activity className="w-4 h-4" />
+              Calibração & Sensibilidade
+            </h3>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground font-medium">Referência A4 (Hz)</span>
+                <span className="text-primary font-bold">{a4Reference} Hz</span>
+              </div>
+              <input
+                type="range"
+                min="430"
+                max="450"
+                step="1"
+                value={a4Reference}
+                onChange={(e) => setA4Reference(Number(e.target.value))}
+                className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground font-medium">Sensibilidade (Threshold)</span>
+                <span className="text-primary font-bold">{(sensitivity * 1000).toFixed(1)}</span>
+              </div>
+              <input
+                type="range"
+                min="0.001"
+                max="0.05"
+                step="0.001"
+                value={sensitivity}
+                onChange={(e) => setSensitivity(Number(e.target.value))}
+                className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+              <p className="text-[10px] text-muted-foreground leading-tight">
+                Aumente se o afinador estiver captando ruído de fundo. Diminua se ele não estiver pegando seu som.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4 pt-4 border-t border-white/5">
+            <h3 className="flex items-center gap-2 text-sm font-bold font-heading text-primary uppercase tracking-wider">
+              <ShieldCheck className="w-4 h-4" />
+              Diagnóstico do Microfone
+            </h3>
+
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground font-medium">Dispositivo</span>
+                <select
+                  value={selectedDeviceId}
+                  onChange={(e) => {
+                    setSelectedDeviceId(e.target.value);
+                    if (isListening) {
+                      stopListening();
+                      setTimeout(startListening, 100);
+                    }
+                  }}
+                  className="w-full bg-secondary/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="">Padrão do Sistema</option>
+                  {devices.map((device) => (
+                    <option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `Microfone ${device.deviceId.slice(0, 5)}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground font-medium">Nível de Entrada (RMS)</span>
+                  <span className={`${currentRms > sensitivity ? "text-green-500" : "text-muted-foreground"} font-mono`}>
+                    {currentRms.toFixed(4)}
+                  </span>
+                </div>
+                <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-100 ${currentRms > sensitivity ? "bg-green-500" : "bg-primary/40"}`}
+                    style={{ width: `${Math.min(100, currentRms * 1000)}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 py-2 px-3 bg-secondary/30 rounded-lg">
+                <div className={`w-2 h-2 rounded-full ${isListening ? "bg-green-500 animate-pulse" : "bg-red-500"}`} />
+                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">
+                  Status: {isListening ? "Captando Áudio" : "Inativo"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
