@@ -3,12 +3,12 @@ import { Mic, MicOff, Check } from "lucide-react";
 
 const NOTE_NAMES_PT = ["Dó", "Dó#", "Ré", "Ré#", "Mi", "Fá", "Fá#", "Sol", "Sol#", "Lá", "Lá#", "Si"];
 
-const A4 = 440;
+const DEFAULT_A4 = 440;
 
 type SaxType = "alto" | "tenor";
 
-function frequencyToNote(freq: number) {
-  const semitones = 12 * Math.log2(freq / A4);
+function frequencyToNote(freq: number, a4: number) {
+  const semitones = 12 * Math.log2(freq / a4);
   const rounded = Math.round(semitones);
   const cents = Math.round((semitones - rounded) * 100);
   const noteIndex = ((rounded % 12) + 12) % 12;
