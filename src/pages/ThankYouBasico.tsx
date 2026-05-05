@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, Check, Star, Sparkles, Lock, Gift, ChevronDown } from "lucide-react";
+import { CheckCircle2, ArrowRight, Smartphone, Music, Mail, Zap, Gauge, Timer, Check, Star, Sparkles, Lock, Gift, ChevronDown, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
