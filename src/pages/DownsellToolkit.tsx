@@ -138,7 +138,10 @@ const DownsellToolkit = () => {
               <span className="text-lg text-muted-foreground line-through font-heading">R$ 27,90</span>
               <span className="text-5xl font-extrabold font-heading text-[hsl(142,70%,45%)]">R$ 14,50</span>
             </div>
-            <p className="text-xs text-muted-foreground font-body mb-6">Pagamento único · Acesso vitalício</p>
+            <p className="text-xs text-muted-foreground font-body mb-6">
+              Pagamento único · Acesso vitalício<br/>
+              Acesso enviado por <strong>E-mail e WhatsApp</strong>.
+            </p>
 
             <a
               href="https://pay.wiapy.com/SSjOIsHzZ"
