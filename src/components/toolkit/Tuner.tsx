@@ -113,10 +113,12 @@ const Tuner = () => {
     const analyser = analyserRef.current;
     const buf = new Float32Array(analyser.fftSize);
     analyser.getFloatTimeDomainData(buf);
-    const freq = autoCorrelate(buf, audioContextRef.current.sampleRate);
+    const { freq, rms } = autoCorrelate(buf, audioContextRef.current.sampleRate, sensitivityRef.current);
+
+    setCurrentRms(rms);
 
     if (freq > 50 && freq < 2000) {
-      const note = frequencyToNote(freq);
+      const note = frequencyToNote(freq, a4Ref.current);
 
       historyRef.current.push({ noteIndex: note.noteIndex, cents: note.cents, freq: note.freq });
       if (historyRef.current.length > SMOOTH_SIZE) historyRef.current.shift();
@@ -134,6 +136,8 @@ const Tuner = () => {
       setDetectedNote(smoothedNote);
       setSmoothCents(avgCents);
       setTransposedNote(transposeSax(bestNote, saxTypeRef.current));
+    } else {
+      setDetectedNote(null);
     }
 
     rafRef.current = requestAnimationFrame(detect);
