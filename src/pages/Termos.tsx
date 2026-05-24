@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useNoIndex } from "@/hooks/useNoIndex";
+import useNoIndex from "@/hooks/useNoIndex";
 
 const Termos = () => {
   useNoIndex();
