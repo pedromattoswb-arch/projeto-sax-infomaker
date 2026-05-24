@@ -445,12 +445,24 @@ const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground font-body mb-2 max-w-md mx-auto leading-relaxed">
+        <p className="text-xs text-muted-foreground font-body mb-3 max-w-md mx-auto leading-relaxed">
           Produto digital com entrega imediata. Após a confirmação do pagamento, você recebe o acesso por e-mail. Confira sua caixa de entrada e a pasta de spam.
         </p>
 
-        <p className="text-xs text-muted-foreground font-body">
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-3 text-xs font-body">
+          <a href="/termos-de-uso" className="text-muted-foreground hover:text-primary underline-offset-4 hover:underline transition-colors">
+            Termos de Uso
+          </a>
+          <span className="text-muted-foreground/40">•</span>
+          <a href="/politica-de-privacidade" className="text-muted-foreground hover:text-primary underline-offset-4 hover:underline transition-colors">
+            Política de Privacidade
+          </a>
+        </div>
+
+        <p className="text-xs text-muted-foreground font-body leading-relaxed">
           © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
+          <br />
+          CNPJ: 51.919.716/0001-28
         </p>
       </footer>
 
