@@ -18,6 +18,8 @@ import NovaOferta from "./pages/NovaOferta";
 import UpsellToolkit from "./pages/UpsellToolkit";
 import DownsellToolkit from "./pages/DownsellToolkit";
 import ToolkitPage from "./pages/ToolkitPage";
+import Termos from "./pages/Termos";
+import Privacidade from "./pages/Privacidade";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
