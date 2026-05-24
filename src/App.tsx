@@ -18,6 +18,8 @@ import NovaOferta from "./pages/NovaOferta";
 import UpsellToolkit from "./pages/UpsellToolkit";
 import DownsellToolkit from "./pages/DownsellToolkit";
 import ToolkitPage from "./pages/ToolkitPage";
+import Termos from "./pages/Termos";
+import Privacidade from "./pages/Privacidade";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -51,6 +53,9 @@ const App = () => (
           <Route path="/cx/k9t3m7" element={<ToolkitPage showScales={true} />} />
           {/* Toolkit delivery (downsell — tuner + metronome only) */}
           <Route path="/cx/h6f1p4" element={<ToolkitPage showScales={false} />} />
+          {/* Legal */}
+          <Route path="/termos-de-uso" element={<Termos />} />
+          <Route path="/politica-de-privacidade" element={<Privacidade />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
