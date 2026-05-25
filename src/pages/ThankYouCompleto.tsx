@@ -18,6 +18,10 @@ const triggerPurchaseConversion = () => {
 };
 
 const ThankYouCompleto = () => {
+  useNoIndex();
+  useEffect(() => {
+    triggerPurchaseConversion();
+  }, []);
   const [showUpsell, setShowUpsell] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
