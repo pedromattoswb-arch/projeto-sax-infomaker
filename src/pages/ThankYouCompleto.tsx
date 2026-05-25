@@ -16,7 +16,8 @@ const triggerPurchaseConversion = () => {
     });
   }
 };
-  useNoIndex();
+
+const ThankYouCompleto = () => {
   const [showUpsell, setShowUpsell] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
