@@ -5,7 +5,17 @@ import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
 import UpsellSection from "@/components/UpsellSection";
 
-const ThankYouBasico = () => {
+// Google Ads conversion event for purchase
+const triggerPurchaseConversion = () => {
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    (window as any).gtag("event", "conversion", {
+      send_to: "AW-18189363456/2C2hCLWTu7McEIDSruFD",
+      value: 1.0,
+      currency: "BRL",
+      transaction_id: "",
+    });
+  }
+};
   useNoIndex();
   const [showUpsell, setShowUpsell] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
