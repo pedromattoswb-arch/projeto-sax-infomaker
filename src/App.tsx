@@ -20,6 +20,7 @@ import DownsellToolkit from "./pages/DownsellToolkit";
 import ToolkitPage from "./pages/ToolkitPage";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
+import Lp2 from "./pages/Lp2";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
