@@ -200,11 +200,11 @@ const SalesPageV2 = () => {
               {partituras.map((p, i) => (
                 <div
                   key={i}
-                  className="mg-glass p-3 transition-all duration-500 hover:-translate-y-1"
-                  style={{ borderRadius: 18 }}
+                  className="p-3 transition-all duration-500 hover:-translate-y-1 shadow-2xl"
+                  style={{ borderRadius: 18, background: "#ffffff", border: "1px solid rgba(212,175,55,0.25)" }}
                 >
-                  <div className="aspect-[3/4] overflow-hidden rounded-xl bg-[#0a0a0a]">
-                    <img src={p} alt={`Partitura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                  <div className="aspect-[3/4] overflow-hidden rounded-xl bg-white">
+                    <img src={p} alt={`Partitura ${i + 1}`} className="w-full h-full object-contain" loading="lazy" />
                   </div>
                 </div>
               ))}
