@@ -20,6 +20,7 @@ import DownsellToolkit from "./pages/DownsellToolkit";
 import ToolkitPage from "./pages/ToolkitPage";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
+import Lp2 from "./pages/Lp2";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/lp-2" element={<Lp2 />} />
           <Route path="/nova-oferta" element={<NovaOferta />} />
           <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
           <Route path="/plano-premium-completo" element={<Acervo plan="premium" />} />

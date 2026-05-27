@@ -357,3 +357,144 @@
     overflow-x: hidden;
   }
 }
+
+/* ============================================
+   MIDNIGHT GOLD THEME — scoped to /lp-2 only
+   ============================================ */
+.theme-midnight-gold {
+  --mg-bg: #0a0a0a;
+  --mg-surface: #121317;
+  --mg-surface-2: #1a1b1f;
+  --mg-surface-3: #292a2e;
+  --mg-text: #e3e2e7;
+  --mg-text-dim: #b8b3a7;
+  --mg-gold: #d4af37;
+  --mg-gold-light: #f9e498;
+  --mg-gold-deep: #8a6f1a;
+  --mg-outline: rgba(255, 255, 255, 0.08);
+  --mg-outline-strong: rgba(255, 255, 255, 0.14);
+
+  background: var(--mg-bg);
+  color: var(--mg-text);
+  font-family: 'Manrope', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.theme-midnight-gold .mg-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.theme-midnight-gold .mg-body {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.theme-midnight-gold .mg-caps {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--mg-text-dim);
+}
+
+.theme-midnight-gold .mg-gold-text {
+  background: linear-gradient(180deg, #f9e498 0%, #d4af37 60%, #b8941d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.theme-midnight-gold .mg-glass {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--mg-outline);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.theme-midnight-gold .mg-glass-strong {
+  background: rgba(26, 27, 31, 0.7);
+  border: 1px solid var(--mg-outline-strong);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 20px;
+  box-shadow:
+    0 40px 80px -24px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.theme-midnight-gold .mg-gold-btn {
+  background: linear-gradient(180deg, #f9e498 0%, #d4af37 55%, #b8941d 100%);
+  color: #1a1100;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  padding: 0.95rem 1.75rem;
+  box-shadow:
+    0 10px 30px -8px rgba(212, 175, 55, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.theme-midnight-gold .mg-gold-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 16px 44px -8px rgba(212, 175, 55, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+}
+.theme-midnight-gold .mg-gold-btn:active {
+  transform: translateY(0);
+}
+
+.theme-midnight-gold .mg-ghost-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mg-outline-strong);
+  color: var(--mg-text);
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+.theme-midnight-gold .mg-ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.theme-midnight-gold .mg-divider-gold {
+  height: 1px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.7) 0%, transparent 80%);
+  border: 0;
+}
+
+.theme-midnight-gold .mg-gold-glow {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.theme-midnight-gold a {
+  color: inherit;
+}
+
+.theme-midnight-gold .mg-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mg-outline-strong);
+  border-radius: 9999px;
+  padding: 0.7rem 1.1rem;
+  color: var(--mg-text);
+  width: 100%;
+}
+.theme-midnight-gold .mg-input:focus {
+  outline: none;
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
