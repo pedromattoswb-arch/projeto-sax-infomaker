@@ -200,11 +200,11 @@ const SalesPageV2 = () => {
               {partituras.map((p, i) => (
                 <div
                   key={i}
-                  className="mg-glass p-3 transition-all duration-500 hover:-translate-y-1"
-                  style={{ borderRadius: 18 }}
+                  className="p-3 transition-all duration-500 hover:-translate-y-1 shadow-2xl"
+                  style={{ borderRadius: 18, background: "#ffffff", border: "1px solid rgba(212,175,55,0.25)" }}
                 >
-                  <div className="aspect-[3/4] overflow-hidden rounded-xl bg-[#0a0a0a]">
-                    <img src={p} alt={`Partitura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                  <div className="aspect-[3/4] overflow-hidden rounded-xl bg-white">
+                    <img src={p} alt={`Partitura ${i + 1}`} className="w-full h-full object-contain" loading="lazy" />
                   </div>
                 </div>
               ))}
@@ -414,15 +414,12 @@ const SalesPageV2 = () => {
         <section className="relative px-5 md:px-8 py-16 md:py-20">
           <div className="max-w-2xl mx-auto">
             <div className="mg-glass p-10 md:p-12 text-center" style={{ borderRadius: 24 }}>
-              <div
-                className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center"
-                style={{
-                  background: "rgba(212, 175, 55, 0.12)",
-                  border: "1px solid rgba(212, 175, 55, 0.35)",
-                }}
-              >
-                <ShieldCheck className="w-7 h-7" style={{ color: "var(--mg-gold)" }} />
-              </div>
+              <img
+                src="/selo-garantia.png"
+                alt="Selo de Garantia de 7 Dias"
+                className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-5 object-contain drop-shadow-[0_0_30px_rgba(212,175,55,0.45)]"
+                loading="lazy"
+              />
               <h3 className="mg-display text-2xl md:text-3xl mb-3">
                 Risco Zero para <em className="mg-gold-text">Você</em>
               </h3>
