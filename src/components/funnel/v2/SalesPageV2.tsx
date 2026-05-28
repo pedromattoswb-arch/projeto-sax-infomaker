@@ -61,20 +61,21 @@ const scrollTo = (id: string) => {
 const partituras = [partitura1, partitura3, partitura4, partitura5];
 
 const basicFeatures = [
-  "+5.000 partituras em PDF",
-  "Sax Alto e Tenor inclusos",
-  "16 categorias musicais",
-  "Acesso vitalício",
+  "+5.000 partituras em PDF (Sax Alto e Tenor)",
+  "16 estilos musicais organizados",
+  "Acesso vitalício — pague uma vez, use para sempre",
+  "Atualizações periódicas no acervo PDF",
 ];
 
 const premiumFeatures = [
-  "+10.000 partituras com playback",
-  "Plataforma exclusiva estilo app",
-  "Busca inteligente por voz",
-  "Vídeos tutoriais integrados",
-  "Músicas novas todo mês",
-  "Harpa Cristã completa",
-  "3 Bônus exclusivos",
+  "Tudo do Plano Básico, e ainda:",
+  "+10.000 partituras com playback profissional de estúdio",
+  "Plataforma exclusiva estilo app (rápida e intuitiva)",
+  "Busca inteligente por voz — encontre qualquer música em segundos",
+  "Vídeo aulas integradas para cada partitura",
+  "Novidades adicionadas todos os meses",
+  "Harpa Cristã completa com playback",
+  "3 Bônus exclusivos (rotina, tonalidades e técnica)",
 ];
 
 const SalesPageV2 = () => {
