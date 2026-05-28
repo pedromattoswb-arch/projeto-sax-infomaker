@@ -20,7 +20,7 @@ import {
 
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import heroMockup from "@/assets/hero-mockup.png";
-import mockupAcervo from "@/assets/mockup-acervo.png";
+import mockupAcervo from "@/assets/mockup-acervo-livros.png";
 
 import partitura1 from "@/assets/partituras-exemplo/partitura-1.png";
 import partitura3 from "@/assets/partituras-exemplo/partitura-3.png";
@@ -67,15 +67,14 @@ const GENRES_COUNT = CATALOG_GENRES.length;
 const basicIncluded = [
   "+5.000 partituras em PDF (Sax Alto e Tenor)",
   `${GENRES_COUNT} estilos musicais organizados`,
+  "Plataforma estilo app — acesso pelo celular, tablet ou PC",
   "Acesso vitalício — pague uma vez, use para sempre",
   "Atualizações periódicas no acervo PDF",
 ];
 
 const basicNotIncluded = [
   `Playbacks profissionais de estúdio (+${TOTAL_FMT} músicas)`,
-  "Plataforma exclusiva estilo app",
   "Busca inteligente por voz",
-  "Vídeo-aulas integradas para cada partitura",
   "Atualizações mensais com lançamentos",
   "Harpa Cristã completa com playback",
   "3 Bônus exclusivos (rotina, tonalidades e técnica)",
@@ -86,7 +85,6 @@ const premiumIncluded = [
   `+${TOTAL_FMT} partituras com playback profissional de estúdio`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",
-  "Vídeo-aulas integradas para cada partitura",
   "Novidades adicionadas todos os meses",
   "Harpa Cristã completa com playback",
   "3 Bônus exclusivos (rotina, tonalidades e técnica)",
