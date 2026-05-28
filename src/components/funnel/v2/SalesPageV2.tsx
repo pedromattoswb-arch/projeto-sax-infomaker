@@ -33,8 +33,16 @@ import dep2 from "@/assets/testimonials/depoimento-2.png";
 import dep3 from "@/assets/testimonials/depoimento-3.png";
 
 import VideoTestimonialCarousel from "@/components/funnel/VideoTestimonialCarousel";
+import SongCatalog from "@/components/funnel/SongCatalog";
 import FAQ from "@/components/funnel/FAQ";
-import WhatsAppButton from "@/components/funnel/WhatsAppButton";
+
+// Avatares reais (randomuser.me) — prova social no hero
+const heroAvatars = [
+  "https://randomuser.me/api/portraits/men/32.jpg",
+  "https://randomuser.me/api/portraits/women/44.jpg",
+  "https://randomuser.me/api/portraits/men/68.jpg",
+  "https://randomuser.me/api/portraits/women/65.jpg",
+];
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
 const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
