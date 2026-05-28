@@ -33,8 +33,16 @@ import dep2 from "@/assets/testimonials/depoimento-2.png";
 import dep3 from "@/assets/testimonials/depoimento-3.png";
 
 import VideoTestimonialCarousel from "@/components/funnel/VideoTestimonialCarousel";
+import SongCatalog from "@/components/funnel/SongCatalog";
 import FAQ from "@/components/funnel/FAQ";
-import WhatsAppButton from "@/components/funnel/WhatsAppButton";
+
+// Avatares reais (randomuser.me) — prova social no hero
+const heroAvatars = [
+  "https://randomuser.me/api/portraits/men/32.jpg",
+  "https://randomuser.me/api/portraits/women/44.jpg",
+  "https://randomuser.me/api/portraits/men/68.jpg",
+  "https://randomuser.me/api/portraits/women/65.jpg",
+];
 
 const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
 const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
@@ -53,20 +61,21 @@ const scrollTo = (id: string) => {
 const partituras = [partitura1, partitura3, partitura4, partitura5];
 
 const basicFeatures = [
-  "+5.000 partituras em PDF",
-  "Sax Alto e Tenor inclusos",
-  "16 categorias musicais",
-  "Acesso vitalício",
+  "+5.000 partituras em PDF (Sax Alto e Tenor)",
+  "16 estilos musicais organizados",
+  "Acesso vitalício — pague uma vez, use para sempre",
+  "Atualizações periódicas no acervo PDF",
 ];
 
 const premiumFeatures = [
-  "+10.000 partituras com playback",
-  "Plataforma exclusiva estilo app",
-  "Busca inteligente por voz",
-  "Vídeos tutoriais integrados",
-  "Músicas novas todo mês",
-  "Harpa Cristã completa",
-  "3 Bônus exclusivos",
+  "Tudo do Plano Básico, e ainda:",
+  "+10.000 partituras com playback profissional de estúdio",
+  "Plataforma exclusiva estilo app (rápida e intuitiva)",
+  "Busca inteligente por voz — encontre qualquer música em segundos",
+  "Vídeo aulas integradas para cada partitura",
+  "Novidades adicionadas todos os meses",
+  "Harpa Cristã completa com playback",
+  "3 Bônus exclusivos (rotina, tonalidades e técnica)",
 ];
 
 const SalesPageV2 = () => {
@@ -98,6 +107,7 @@ const SalesPageV2 = () => {
             {[
               { l: "Início", id: "top" },
               { l: "Acervo", id: "acervo" },
+              { l: "Catálogo", id: "catalogo" },
               { l: "Planos", id: "planos" },
               { l: "FAQ", id: "faq" },
             ].map((i) => (
@@ -122,33 +132,33 @@ const SalesPageV2 = () => {
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
             <div className="relative">
               <span className="mg-caps inline-block mb-5" style={{ color: "var(--mg-gold)" }}>
-                ★ Plataforma Número 1 no Brasil
+                ★ A plataforma preferida dos saxofonistas brasileiros
               </span>
               <h1 className="mg-display text-[40px] sm:text-5xl md:text-6xl lg:text-[68px] leading-[1.02] mb-6">
-                O Maior Acervo de <br />
-                <span className="mg-gold-text italic">Partituras com Playback</span>
-                <br />
-                do Brasil
+                Toque as músicas que você ama no seu <span className="mg-gold-text italic">Sax</span> —
+                com partitura e playback profissional
               </h1>
               <p className="text-base md:text-lg text-[var(--mg-text-dim)] leading-relaxed mb-8 max-w-xl">
-                Acesse uma plataforma exclusiva, pensada para saxofonistas que buscam excelência e um
-                acervo profissional sempre à mão.
+                Mais de <strong className="text-white">10.000 partituras com playback de estúdio</strong>,
+                organizadas em uma plataforma intuitiva. Estude o que quiser, na hora que quiser,
+                direto do seu celular, tablet ou computador.
               </p>
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <button onClick={() => scrollTo("planos")} className="mg-gold-btn inline-flex items-center gap-2 text-base">
-                  QUERO MEU ACESSO AGORA
+                  QUERO TOCAR AGORA
                   <ArrowRight className="w-5 h-5" />
                 </button>
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
-                    {[dep1, dep2, dep3].map((d, i) => (
+                    {heroAvatars.map((src, i) => (
                       <img
                         key={i}
-                        src={d}
-                        alt=""
+                        src={src}
+                        alt={`Saxofonista ${i + 1}`}
+                        loading="lazy"
                         className="w-9 h-9 rounded-full border-2 object-cover"
-                        style={{ borderColor: "var(--mg-bg)" }}
+                        style={{ borderColor: "var(--mg-gold)" }}
                       />
                     ))}
                   </div>
@@ -188,11 +198,11 @@ const SalesPageV2 = () => {
                 Acervo Premium
               </span>
               <h2 className="mg-display text-3xl md:text-5xl mb-4">
-                Excelência <em className="mg-gold-text">Visual e Musical</em>
+                Partituras de <em className="mg-gold-text">verdade</em>, com playback de estúdio
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Partituras diagramadas profissionalmente, alinhadas em alta fidelidade e sincronizadas
-                com playbacks de estúdio.
+                Diagramação profissional, legível em qualquer tela, sincronizada com playbacks
+                gravados em estúdio. Você toca junto e evolui muito mais rápido.
               </p>
             </div>
 
@@ -209,6 +219,17 @@ const SalesPageV2 = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        <div className="max-w-6xl mx-auto px-8">
+          <hr className="mg-divider-gold" />
+        </div>
+
+        {/* CATÁLOGO DEMONSTRATIVO */}
+        <section id="catalogo" className="relative">
+          <div className="max-w-6xl mx-auto">
+            <SongCatalog />
           </div>
         </section>
 
@@ -239,8 +260,9 @@ const SalesPageV2 = () => {
                 Pratique em qualquer lugar, <em className="mg-gold-text">a qualquer hora.</em>
               </h2>
               <p className="text-[var(--mg-text-dim)] mb-8 max-w-lg">
-                Sua estação de estudos cabe no bolso. Tudo organizado, com busca por voz e players
-                inteligentes para tocar junto sempre que quiser.
+                Sua estação de estudos cabe no bolso. Sem instalar nada, sem CDs, sem PDFs perdidos no
+                e-mail. Tudo organizado, com busca por voz e players inteligentes para tocar junto
+                sempre que quiser.
               </p>
               <ul className="space-y-5">
                 {[
@@ -284,7 +306,8 @@ const SalesPageV2 = () => {
                 A <em className="mg-gold-text">Comunidade</em> do Sax
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Histórias reais de músicos que transformaram seus estudos.
+                Mais de 847 saxofonistas já estão acelerando o aprendizado com o Clube do Sax.
+                Veja o que eles dizem:
               </p>
             </div>
 
@@ -294,6 +317,47 @@ const SalesPageV2 = () => {
               {[dep1, dep2, dep3].map((d, i) => (
                 <div key={i} className="mg-glass p-3" style={{ borderRadius: 18 }}>
                   <img src={d} alt="Depoimento" className="w-full rounded-xl" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <div className="max-w-6xl mx-auto px-8">
+          <hr className="mg-divider-gold" />
+        </div>
+
+        {/* POR QUE CLUBE DO SAX */}
+        <section className="relative px-5 md:px-8 py-20 md:py-28">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12 md:mb-16">
+              <span className="mg-caps inline-block mb-4" style={{ color: "var(--mg-gold)" }}>
+                Diferenciais
+              </span>
+              <h2 className="mg-display text-3xl md:text-5xl mb-4">
+                Por que o <em className="mg-gold-text">Clube do Sax?</em>
+              </h2>
+              <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
+                Tudo o que você precisa para evoluir no sax, em um único lugar.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                { icon: BookOpen, t: "Maior acervo do Brasil", d: "+10.000 partituras com playback profissional para Sax Alto e Tenor." },
+                { icon: Smartphone, t: "Plataforma estilo app", d: "Leve, rápida e organizada — funciona no celular, tablet ou PC sem instalar nada." },
+                { icon: Sparkles, t: "Atualizações mensais", d: "Novidades e lançamentos adicionados todos os meses, sem custo extra." },
+                { icon: Mic, t: "Suporte e comunidade", d: "Atendimento humano e uma comunidade ativa de saxofonistas para trocar ideias." },
+              ].map((f, i) => (
+                <div key={i} className="mg-glass p-6 text-center" style={{ borderRadius: 18 }}>
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border"
+                    style={{ background: "rgba(212,175,55,0.08)", borderColor: "rgba(212,175,55,0.3)" }}
+                  >
+                    <f.icon className="w-5 h-5" style={{ color: "var(--mg-gold)" }} />
+                  </div>
+                  <h3 className="mg-display text-lg mb-2">{f.t}</h3>
+                  <p className="text-sm text-[var(--mg-text-dim)] leading-relaxed">{f.d}</p>
                 </div>
               ))}
             </div>
@@ -464,6 +528,7 @@ const SalesPageV2 = () => {
               <h4 className="mg-caps mb-4">Navegação</h4>
               <ul className="space-y-2 text-sm text-[var(--mg-text-dim)]">
                 <li><button onClick={() => scrollTo("acervo")} className="hover:text-[var(--mg-gold)]">Acervo</button></li>
+                <li><button onClick={() => scrollTo("catalogo")} className="hover:text-[var(--mg-gold)]">Catálogo</button></li>
                 <li><button onClick={() => scrollTo("planos")} className="hover:text-[var(--mg-gold)]">Planos</button></li>
                 <li><button onClick={() => scrollTo("faq")} className="hover:text-[var(--mg-gold)]">FAQ</button></li>
               </ul>
@@ -484,8 +549,6 @@ const SalesPageV2 = () => {
           </div>
         </footer>
       </main>
-
-      <WhatsAppButton />
     </div>
   );
 };
