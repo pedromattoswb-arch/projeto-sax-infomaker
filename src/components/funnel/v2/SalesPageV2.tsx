@@ -20,7 +20,7 @@ import {
 
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import heroMockup from "@/assets/hero-mockup.png";
-import mockupAcervo from "@/assets/mockup-acervo.png";
+import mockupAcervo from "@/assets/mockup-acervo-livros.png";
 
 import partitura1 from "@/assets/partituras-exemplo/partitura-1.png";
 import partitura3 from "@/assets/partituras-exemplo/partitura-3.png";
@@ -67,15 +67,14 @@ const GENRES_COUNT = CATALOG_GENRES.length;
 const basicIncluded = [
   "+5.000 partituras em PDF (Sax Alto e Tenor)",
   `${GENRES_COUNT} estilos musicais organizados`,
+  "Plataforma estilo app — acesso pelo celular, tablet ou PC",
   "Acesso vitalício — pague uma vez, use para sempre",
   "Atualizações periódicas no acervo PDF",
 ];
 
 const basicNotIncluded = [
   `Playbacks profissionais de estúdio (+${TOTAL_FMT} músicas)`,
-  "Plataforma exclusiva estilo app",
   "Busca inteligente por voz",
-  "Vídeo-aulas integradas para cada partitura",
   "Atualizações mensais com lançamentos",
   "Harpa Cristã completa com playback",
   "3 Bônus exclusivos (rotina, tonalidades e técnica)",
@@ -86,7 +85,6 @@ const premiumIncluded = [
   `+${TOTAL_FMT} partituras com playback profissional de estúdio`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",
-  "Vídeo-aulas integradas para cada partitura",
   "Novidades adicionadas todos os meses",
   "Harpa Cristã completa com playback",
   "3 Bônus exclusivos (rotina, tonalidades e técnica)",
@@ -344,43 +342,49 @@ const SalesPageV2 = () => {
 
         {/* PRATIQUE EM QUALQUER LUGAR */}
         <section className="relative px-5 md:px-8 py-20 md:py-28">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div
-                className="mg-gold-glow"
-                style={{ width: 460, height: 460, inset: 0, margin: "auto" }}
-              />
-              <div className="relative flex items-center justify-center">
-                <img
-                  src={mockupAcervo}
-                  alt="Mockup do app Clube do Sax"
-                  className="w-full max-w-sm drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]"
-                  loading="lazy"
+          {(() => {
+            const features = [
+              { icon: Wifi, t: "Acesso Online", d: "Conecte do celular, tablet ou computador, onde estiver." },
+              {
+                icon: PlayCircle,
+                t: "Players Inteligentes",
+                d: "Controle de andamento e tonalidade direto no playback.",
+              },
+              { icon: Smartphone, t: "Multi-dispositivo", d: "Funciona em qualquer aparelho, sem instalação." },
+            ];
+            const Heading = (
+              <>
+                <span className="mg-caps inline-block mb-4" style={{ color: "var(--mg-gold)" }}>
+                  Mobilidade Total
+                </span>
+                <h2 className="mg-display text-3xl md:text-5xl leading-tight mb-5">
+                  Pratique em qualquer lugar, <em className="mg-gold-text">a qualquer hora.</em>
+                </h2>
+                <p className="text-[var(--mg-text-dim)] max-w-lg lg:mb-8">
+                  Sua estação de estudos cabe no bolso. Sem instalar nada, sem CDs, sem PDFs perdidos no e-mail.
+                  Tudo organizado, com busca por voz e players inteligentes para tocar junto sempre que quiser.
+                </p>
+              </>
+            );
+            const Mockup = (
+              <div className="relative">
+                <div
+                  className="mg-gold-glow"
+                  style={{ width: 460, height: 460, inset: 0, margin: "auto" }}
                 />
+                <div className="relative flex items-center justify-center">
+                  <img
+                    src={mockupAcervo}
+                    alt="Acervo Premium de Partituras para Sax"
+                    className="w-full max-w-sm drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <span className="mg-caps inline-block mb-4" style={{ color: "var(--mg-gold)" }}>
-                Mobilidade Total
-              </span>
-              <h2 className="mg-display text-3xl md:text-5xl leading-tight mb-5">
-                Pratique em qualquer lugar, <em className="mg-gold-text">a qualquer hora.</em>
-              </h2>
-              <p className="text-[var(--mg-text-dim)] mb-8 max-w-lg">
-                Sua estação de estudos cabe no bolso. Sem instalar nada, sem CDs, sem PDFs perdidos no e-mail.
-                Tudo organizado, com busca por voz e players inteligentes para tocar junto sempre que quiser.
-              </p>
-              <ul className="space-y-5">
-                {[
-                  { icon: Wifi, t: "Acesso Online", d: "Conecte do celular, tablet ou computador, onde estiver." },
-                  {
-                    icon: PlayCircle,
-                    t: "Players Inteligentes",
-                    d: "Controle de andamento e tonalidade direto no playback.",
-                  },
-                  { icon: Smartphone, t: "Multi-dispositivo", d: "Funciona em qualquer aparelho, sem instalação." },
-                ].map((f, i) => (
+            );
+            const Bullets = (
+              <ul className="space-y-5 text-left">
+                {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-4">
                     <div
                       className="w-11 h-11 rounded-full flex items-center justify-center shrink-0 border"
@@ -398,9 +402,28 @@ const SalesPageV2 = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            );
+            return (
+              <>
+                {/* Mobile: heading → subheadline → mockup → bullets */}
+                <div className="lg:hidden max-w-xl mx-auto flex flex-col items-center text-center">
+                  {Heading}
+                  <div className="my-8 w-full flex justify-center">{Mockup}</div>
+                  <div className="w-full">{Bullets}</div>
+                </div>
+                {/* Desktop: two-column split */}
+                <div className="hidden lg:grid max-w-6xl mx-auto grid-cols-2 gap-20 items-center">
+                  {Mockup}
+                  <div>
+                    {Heading}
+                    {Bullets}
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </section>
+
 
         <div className="max-w-6xl mx-auto px-8">
           <hr className="mg-divider-gold" />
