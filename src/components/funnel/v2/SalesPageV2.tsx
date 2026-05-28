@@ -107,6 +107,7 @@ const SalesPageV2 = () => {
             {[
               { l: "Início", id: "top" },
               { l: "Acervo", id: "acervo" },
+              { l: "Catálogo", id: "catalogo" },
               { l: "Planos", id: "planos" },
               { l: "FAQ", id: "faq" },
             ].map((i) => (
