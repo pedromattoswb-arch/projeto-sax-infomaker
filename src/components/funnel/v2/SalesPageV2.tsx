@@ -16,6 +16,10 @@ import {
   Mail,
   MessageCircle,
   Zap,
+  Headphones,
+  Search,
+  Infinity as InfinityIcon,
+  Heart,
 } from "lucide-react";
 
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
@@ -82,7 +86,7 @@ const basicNotIncluded = [
 
 const premiumIncluded = [
   "Tudo do Plano Básico, e ainda:",
-  `+${TOTAL_FMT} partituras com playback profissional de estúdio`,
+  `+${TOTAL_FMT} partituras com playback profissional de estúdio (Sax Alto e Tenor)`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",
   "Novidades adicionadas todos os meses",
@@ -212,8 +216,8 @@ const SalesPageV2 = () => {
             {/* Subheadline + CTA + social proof */}
             <div className="relative order-3 lg:order-3 flex flex-col items-center lg:items-start">
               <p className="text-base md:text-lg text-[var(--mg-text-dim)] leading-relaxed mb-8 max-w-xl">
-                Mais de <strong className="text-white">{TOTAL_FMT} partituras com playback de estúdio</strong>,
-                organizadas em uma plataforma intuitiva. Estude o que quiser, na hora que quiser, direto do seu
+                Mais de <strong className="text-white">{TOTAL_FMT} partituras com playback de estúdio para Sax Alto e Sax Tenor</strong>,
+                organizadas em um app que cabe no seu bolso. Estude o que quiser, na hora que quiser — direto do
                 celular, tablet ou computador.
               </p>
 
@@ -263,8 +267,9 @@ const SalesPageV2 = () => {
                 Partituras de <em className="mg-gold-text">verdade</em>, com playback de estúdio
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Diagramação profissional, legível em qualquer tela, sincronizada com playbacks gravados em
-                estúdio. Você toca junto e evolui muito mais rápido.
+                Diagramação profissional para <strong className="text-white">Sax Alto (Eb) e Sax Tenor (Bb)</strong>,
+                legível em qualquer tela e sincronizada com playbacks gravados em estúdio. Você toca junto e
+                evolui muito mais rápido.
               </p>
             </div>
 
@@ -296,6 +301,131 @@ const SalesPageV2 = () => {
         <div className="max-w-6xl mx-auto px-8">
           <hr className="mg-divider-gold" />
         </div>
+
+        {/* TUDO QUE VOCÊ RECEBE — Value Stack */}
+        <section id="tudo-que-recebe" className="relative px-5 md:px-8 py-20 md:py-28">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12 md:mb-16">
+              <span className="mg-caps inline-block mb-4" style={{ color: "var(--mg-gold)" }}>
+                Acesso Completo
+              </span>
+              <h2 className="mg-display text-3xl md:text-5xl mb-4">
+                Tudo que você recebe ao entrar no{" "}
+                <em className="mg-gold-text">Clube do Sax Brasil</em>
+              </h2>
+              <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
+                Um pacote completo para <strong className="text-white">Sax Alto e Sax Tenor</strong> — partituras,
+                playbacks, app e bônus. Tudo organizado, tudo entregue na hora.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+              {[
+                {
+                  icon: BookOpen,
+                  t: `+${TOTAL_FMT} partituras`,
+                  d: `Para Sax Alto e Sax Tenor, organizadas em ${GENRES_COUNT} estilos musicais.`,
+                },
+                {
+                  icon: Headphones,
+                  t: "Playbacks de estúdio",
+                  d: "Gravados com banda real em qualidade profissional para você tocar junto.",
+                },
+                {
+                  icon: Smartphone,
+                  t: "Plataforma estilo app",
+                  d: "Funciona no celular, tablet ou computador. Sem instalar, sem complicação.",
+                },
+                {
+                  icon: Search,
+                  t: "Busca inteligente por voz",
+                  d: "Fala o nome da música e ela aparece em segundos. Estudo sem fricção.",
+                },
+                {
+                  icon: Sparkles,
+                  t: "Atualizações mensais",
+                  d: "Lançamentos novos adicionados todo mês, sem pagar nada a mais.",
+                },
+                {
+                  icon: Heart,
+                  t: "Harpa Cristã completa",
+                  d: "Hinos clássicos com partitura e playback prontos para tocar.",
+                },
+                {
+                  icon: Crown,
+                  t: "3 Bônus exclusivos",
+                  d: "Rotina de estudo, mapa de tonalidades e 100 músicas essenciais.",
+                },
+                {
+                  icon: InfinityIcon,
+                  t: "Acesso vitalício",
+                  d: "Pagou uma vez, é seu pra sempre. Nada de mensalidade.",
+                },
+              ].map((f, i) => (
+                <div
+                  key={i}
+                  className="mg-glass p-5 md:p-6 flex flex-col items-start"
+                  style={{ borderRadius: 18 }}
+                >
+                  <div
+                    className="w-11 h-11 rounded-full flex items-center justify-center mb-4 border"
+                    style={{
+                      background: "rgba(212,175,55,0.1)",
+                      borderColor: "rgba(212,175,55,0.35)",
+                    }}
+                  >
+                    <f.icon className="w-5 h-5" style={{ color: "var(--mg-gold)" }} />
+                  </div>
+                  <h3 className="mg-display text-lg mb-2 leading-tight">{f.t}</h3>
+                  <p className="text-sm text-[var(--mg-text-dim)] leading-relaxed">{f.d}</p>
+                  <span
+                    className="mg-caps mt-4 text-[10px]"
+                    style={{ color: "var(--mg-gold)" }}
+                  >
+                    Incluso no acesso
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Faixa Sax Alto + Tenor */}
+            <div
+              className="mg-glass mt-10 p-6 md:p-7 flex flex-col sm:flex-row gap-5 sm:gap-8 items-center justify-center text-center"
+              style={{ borderRadius: 22, border: "1px solid rgba(212,175,55,0.35)" }}
+            >
+              <div className="flex items-center gap-3">
+                <Music className="w-6 h-6" style={{ color: "var(--mg-gold)" }} />
+                <div className="text-left">
+                  <div className="mg-display text-lg leading-tight">Sax Alto (Eb)</div>
+                  <div className="text-xs text-[var(--mg-text-dim)]">Todas as partituras transcritas</div>
+                </div>
+              </div>
+              <div className="hidden sm:block h-10 w-px bg-white/10" />
+              <div className="flex items-center gap-3">
+                <Music className="w-6 h-6" style={{ color: "var(--mg-gold)" }} />
+                <div className="text-left">
+                  <div className="mg-display text-lg leading-tight">Sax Tenor (Bb)</div>
+                  <div className="text-xs text-[var(--mg-text-dim)]">Todas as partituras transcritas</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-10">
+              <button
+                onClick={() => scrollTo("planos")}
+                className="mg-gold-btn inline-flex items-center gap-2 text-base"
+              >
+                VER PLANOS E GARANTIR ACESSO
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <div className="max-w-6xl mx-auto px-8">
+          <hr className="mg-divider-gold" />
+        </div>
+
 
         {/* COMUNIDADE — depoimentos */}
         <section className="relative px-5 md:px-8 py-20 md:py-28">
@@ -759,7 +889,7 @@ const SalesPageV2 = () => {
             <div className="md:col-span-2">
               <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mb-4" />
               <p className="text-sm text-[var(--mg-text-dim)] max-w-sm">
-                Plataforma premium de partituras e playbacks para saxofonistas de todo o Brasil.
+                Plataforma premium de partituras e playbacks para Sax Alto e Sax Tenor — saxofonistas de todo o Brasil.
               </p>
             </div>
             <div>
