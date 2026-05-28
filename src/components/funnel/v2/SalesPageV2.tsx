@@ -16,6 +16,10 @@ import {
   Mail,
   MessageCircle,
   Zap,
+  Headphones,
+  Search,
+  Infinity as InfinityIcon,
+  Heart,
 } from "lucide-react";
 
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
@@ -212,8 +216,8 @@ const SalesPageV2 = () => {
             {/* Subheadline + CTA + social proof */}
             <div className="relative order-3 lg:order-3 flex flex-col items-center lg:items-start">
               <p className="text-base md:text-lg text-[var(--mg-text-dim)] leading-relaxed mb-8 max-w-xl">
-                Mais de <strong className="text-white">{TOTAL_FMT} partituras com playback de estúdio</strong>,
-                organizadas em uma plataforma intuitiva. Estude o que quiser, na hora que quiser, direto do seu
+                Mais de <strong className="text-white">{TOTAL_FMT} partituras com playback de estúdio para Sax Alto e Sax Tenor</strong>,
+                organizadas em um app que cabe no seu bolso. Estude o que quiser, na hora que quiser — direto do
                 celular, tablet ou computador.
               </p>
 
@@ -263,8 +267,9 @@ const SalesPageV2 = () => {
                 Partituras de <em className="mg-gold-text">verdade</em>, com playback de estúdio
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Diagramação profissional, legível em qualquer tela, sincronizada com playbacks gravados em
-                estúdio. Você toca junto e evolui muito mais rápido.
+                Diagramação profissional para <strong className="text-white">Sax Alto (Eb) e Sax Tenor (Bb)</strong>,
+                legível em qualquer tela e sincronizada com playbacks gravados em estúdio. Você toca junto e
+                evolui muito mais rápido.
               </p>
             </div>
 

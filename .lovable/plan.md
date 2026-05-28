@@ -1,80 +1,59 @@
-Mudanças escopadas apenas em `/lp-2` (`SalesPageV2.tsx` + novo `SongCatalogV2.tsx`). Nada na página principal `/`, no checkout, backend ou tracking muda.
+# Otimização da `/lp-2` — Seção "Tudo que você recebe" + copy demonstrativa
 
-## 1. Catálogo no tema Midnight Gold
+## Objetivo
 
-Criar `src/components/funnel/v2/SongCatalogV2.tsx` — equivalente ao `SongCatalog`, com identidade da /lp-2:
-- `mg-display` em títulos, `mg-caps` na tag superior, corpo em `text-[var(--mg-text-dim)]`.
-- Cards de gênero em `mg-glass` com borda dourada `rgba(212,175,55,0.25)`.
-- Ícones e destaques em `var(--mg-gold)`; remover `text-primary`/`bg-primary` (verde da página principal).
-- CTA final usando `mg-gold-btn`. Modal de catálogo completo em fundo `var(--mg-bg)` com bordas douradas.
+Deixar 100% claro, logo no início da página, **tudo** que o lead recebe ao entrar no Clube do Sax Brasil, reforçando que as partituras são para **Sax Alto e Sax Tenor**, e otimizar a copy geral para vender melhor.
 
-Substituir `<SongCatalog />` por `<SongCatalogV2 />` em `SalesPageV2.tsx`.
+## 1. Nova seção: "Tudo que você recebe ao entrar hoje"
 
-## 2. Números congruentes
+Inserida **logo depois** da seção *"Partituras de verdade, com playback de estúdio"* e **antes** dos depoimentos.
 
-Os números do catálogo derivam de `CATALOG_GENRES` (`TOTAL_CATALOG_COUNT`, `CATALOG_GENRES.length`). Auditar `SalesPageV2.tsx` e padronizar todas as menções — hero, "Por que Clube do Sax", features dos planos, bônus e qualquer texto — para refletir exatamente os mesmos valores ("+10.000 partituras", número correto de estilos). Ajustar `basicFeatures[0]` se o número não bater com a realidade do plano.
+Estrutura visual (mesma identidade Midnight Gold — `mg-glass`, `mg-display`, `mg-caps`, dourado `var(--mg-gold)`):
 
-## 3. Hero mobile — reordenação e centralização
+- **Eyebrow:** "Acesso Completo"
+- **Headline:** "Tudo que você recebe ao entrar no *Clube do Sax Brasil*"
+- **Sub:** "Um pacote completo para Sax Alto e Sax Tenor — partituras, playbacks, app e bônus. Tudo organizado, tudo na hora."
 
-No mobile (`<lg`): ordem visual passa a ser **headline → mockup → subheadline + prova social + CTA**, tudo centralizado (`text-center`, `items-center`, `mx-auto`). No desktop (`lg:`): mantém split atual (texto à esquerda, mockup à direita, alinhado à esquerda). Implementação via `order-*` + `lg:order-none` e `text-center lg:text-left`.
+**Grid principal — Value Stack (8 cards `mg-glass` em grid 1 col mobile / 2 cols sm / 4 cols lg)**, cada card com ícone dourado, título e descrição curta + um selo dourado de "valor percebido" (sem inventar preço, apenas reforço de valor):
 
-## 4. Amostras de partituras — 1/linha no mobile
+1. **+10.000 partituras** — Sax Alto **e** Sax Tenor, organizadas em 15 estilos.
+2. **Playbacks profissionais de estúdio** — Gravados com banda real, em qualidade de estúdio.
+3. **Plataforma estilo app** — Funciona no celular, tablet ou PC. Sem instalar nada.
+4. **Busca inteligente por voz** — Fala o nome da música e ela aparece em segundos.
+5. **Atualizações mensais** — Lançamentos novos toda semana, sem pagar nada a mais.
+6. **Harpa Cristã completa** — Hinos clássicos com partitura + playback.
+7. **Acesso vitalício** — Pagou uma vez, é seu pra sempre. Sem mensalidade.
 
-Trocar grid de `grid-cols-2 lg:grid-cols-4` para `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`. Desktop intacto.
+**Faixa de reforço Sax Alto + Tenor** abaixo dos cards (`mg-glass` faixa horizontal centralizada com 2 selos dourados lado a lado):
 
-## 5. Reordenar seções
+- 🎷 **Sax Alto (Eb)** — Todas as partituras transcritas
+- 🎷 **Sax Tenor (Bb)** — Todas as partituras transcritas
 
-Nova ordem:
-1. Hero
-2. Acervo — amostras de partituras
-3. **Comunidade (depoimentos)** ← movido para cá
-4. Catálogo demonstrativo (SongCatalogV2)
-5. Pratique em qualquer lugar
-6. Por que o Clube do Sax
-7. **Bônus** ← novo (ver §6)
-8. Planos / Pricing (com comparação clara — ver §7)
-9. Garantia / FAQ / Footer
+**CTA secundário** ao final da seção: botão `mg-gold-btn` "Ver Planos e Garantir Acesso" → scroll para `#planos`.
 
-Divisores `mg-divider-gold` reposicionados.
+## 2. Otimização de copy (sem mudar layout)
 
-## 6. Seção de Bônus (reaproveitando os 3 que já existem)
+- **Hero subheadline:** trocar para reforçar Sax Alto **e** Tenor + benefício principal logo de cara.
+  - Atual: "Mais de {TOTAL} partituras com playback de estúdio, organizadas em uma plataforma intuitiva..."
+  - Novo: "Mais de **10.000 partituras com playback de estúdio para Sax Alto e Sax Tenor**, organizadas em um app que cabe no seu bolso. Estude o que quiser, na hora que quiser."
+- **Seção "Partituras de verdade":** ajustar sub para citar Alto + Tenor.
+  - Novo: "Diagramação profissional para **Sax Alto (Eb) e Sax Tenor (Bb)**, legível em qualquer tela, sincronizada com playbacks gravados em estúdio."
+- **Seção "Pratique em qualquer lugar":** acrescentar Sax Alto/Tenor na intro.
+- **Seção "Por que o Clube do Sax":** primeiro card já cita Sax Alto e Tenor — manter, garantir consistência.
+- **Planos — Básico:** primeira linha já cita "(Sax Alto e Tenor)" — manter.
+- **Planos — Premium:** acrescentar "(para Sax Alto e Tenor)" na primeira linha de partituras.
+- **Garantia:** reescrever sem usar a palavra "reembolso" e em tom mais humano e direto (já está compliance — apenas refino curto).
+- **Footer descrição:** acrescentar "para Sax Alto e Tenor".
 
-Adicionar uma seção de bônus na /lp-2 reutilizando exatamente os 3 bônus que já existem em `BonusSection.tsx` (Rotina de Estudo, Mapa de Tonalidades, 100 Músicas) — sem inventar bônus novos. Renderização própria no tema Midnight Gold:
-- Cards `mg-glass` com selo dourado "BÔNUS 1/2/3", título em `mg-display`, descrição em `text-[var(--mg-text-dim)]`.
-- Tag superior `mg-caps` em ouro: "Exclusivo do Premium".
-- Reforço de que os 3 bônus estão disponíveis dentro da plataforma do Clube do Sax (apenas no Premium).
+## 3. Arquivos afetados
 
-Implementação: bloco JSX direto dentro de `SalesPageV2.tsx` (ou um pequeno componente `BonusSectionV2.tsx` no folder `v2/`) com os mesmos textos do `BonusSection.tsx`, sem alterar o componente original.
+- `src/components/funnel/v2/SalesPageV2.tsx` — única mudança: inserir a nova seção entre `ACERVO` e `COMUNIDADE`, ajustar 5–6 strings de copy.
 
-## 7. Comparação clara entre planos — incluso vs não-incluso
+Nenhuma mudança em backend, checkout, tracking, rotas, `SongCatalogV2`, `BonusSectionV2`, ou na página `/` principal.
 
-Reformular o bloco de pricing em `SalesPageV2.tsx` para deixar 100% explícito o que cada plano tem e o que **não** tem, principalmente no Básico:
+## 4. Detalhes técnicos
 
-- Cada card mostra **duas listas**:
-  - Itens inclusos com check em `var(--mg-gold)`.
-  - Itens **não inclusos** com ícone `X` (lucide `XCircle` ou `X`) em vermelho/cinza apagado (`text-[var(--mg-text-dim)]` com opacidade) e texto riscado/atenuado.
-
-- **Plano Básico — Inclusos**: +5.000 partituras em PDF (Sax Alto e Tenor), gêneros organizados, acesso vitalício, atualizações periódicas no PDF.
-- **Plano Básico — Não inclusos (X)**: Playbacks profissionais de estúdio, plataforma estilo app, busca por voz, vídeo-aulas integradas, atualizações mensais, Harpa Cristã completa, 3 bônus exclusivos.
-- **Plano Premium — Inclusos**: tudo do Básico + todos os itens acima como check em ouro, mais "selo Premium" no card.
-
-Manter preços, links de checkout e copy de CTA atuais — apenas reorganizar a visualização para evidenciar o contraste.
-
-## 8. Reforço da entrega automática (e-mail + WhatsApp)
-
-Adicionar bloco curto e visível de "Como você recebe seu acesso" — para reforçar confiança e remover dúvida:
-
-- Posicionamento: logo abaixo do CTA principal dentro de cada card de plano (linha pequena com ícones), **e** uma faixa dedicada após a seção de planos, antes da Garantia.
-- Conteúdo (sem inventar nada além do que o cliente recebe):
-  - Ícone `Mail` — "Link de acesso enviado automaticamente no seu **e-mail**"
-  - Ícone `MessageCircle` (ou similar) — "Também recebe o link pelo **WhatsApp**"
-  - Ícone `Zap` — "Liberação imediata após a confirmação do pagamento"
-- Estilo: cápsula `mg-glass` com ícones em `var(--mg-gold)` e texto em branco/dim, totalmente alinhado ao tema Midnight Gold.
-
-## Arquivos afetados
-
-- `src/components/funnel/v2/SongCatalogV2.tsx` (novo)
-- `src/components/funnel/v2/BonusSectionV2.tsx` (novo, opcional — pode ficar inline)
-- `src/components/funnel/v2/SalesPageV2.tsx` (reordenação, hero mobile, grid partituras, troca catálogo, bônus, pricing comparativo com X, faixa de entrega)
-
-Sem alterações em `/`, no `SalesPage.tsx`, `BonusSection.tsx`, backend, checkout ou tracking.
+- Reutilizar `CATALOG_GENRES.length` e `TOTAL_CATALOG_COUNT` para manter números congruentes.
+- Ícones lucide já importados (`BookOpen`, `Music`, `Smartphone`, `Mic`, `Sparkles`, `Crown`, `ShieldCheck`, `Zap`, `MessageCircle`) + adicionar `Headphones` e `Infinity` se precisar.
+- Grid mobile-first: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4`.
+- Sem novas dependências, sem novos assets.
