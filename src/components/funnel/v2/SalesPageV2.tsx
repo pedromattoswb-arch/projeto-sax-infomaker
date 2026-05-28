@@ -528,6 +528,7 @@ const SalesPageV2 = () => {
               <h4 className="mg-caps mb-4">Navegação</h4>
               <ul className="space-y-2 text-sm text-[var(--mg-text-dim)]">
                 <li><button onClick={() => scrollTo("acervo")} className="hover:text-[var(--mg-gold)]">Acervo</button></li>
+                <li><button onClick={() => scrollTo("catalogo")} className="hover:text-[var(--mg-gold)]">Catálogo</button></li>
                 <li><button onClick={() => scrollTo("planos")} className="hover:text-[var(--mg-gold)]">Planos</button></li>
                 <li><button onClick={() => scrollTo("faq")} className="hover:text-[var(--mg-gold)]">FAQ</button></li>
               </ul>
