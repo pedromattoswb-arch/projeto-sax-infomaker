@@ -493,8 +493,6 @@ const SalesPageV2 = () => {
           </div>
         </footer>
       </main>
-
-      <WhatsAppButton />
     </div>
   );
 };
