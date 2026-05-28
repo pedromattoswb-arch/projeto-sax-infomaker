@@ -889,7 +889,7 @@ const SalesPageV2 = () => {
             <div className="md:col-span-2">
               <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mb-4" />
               <p className="text-sm text-[var(--mg-text-dim)] max-w-sm">
-                Plataforma premium de partituras e playbacks para saxofonistas de todo o Brasil.
+                Plataforma premium de partituras e playbacks para Sax Alto e Sax Tenor — saxofonistas de todo o Brasil.
               </p>
             </div>
             <div>
