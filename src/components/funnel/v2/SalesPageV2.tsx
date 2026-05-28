@@ -38,7 +38,12 @@ import dep3 from "@/assets/testimonials/depoimento-3.png";
 import VideoTestimonialCarousel from "@/components/funnel/VideoTestimonialCarousel";
 import SongCatalogV2 from "@/components/funnel/v2/SongCatalogV2";
 import BonusSectionV2 from "@/components/funnel/v2/BonusSectionV2";
-import FAQ from "@/components/funnel/FAQ";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { CATALOG_GENRES, TOTAL_CATALOG_COUNT } from "@/data/catalogSongs";
 
 const heroAvatars = [
@@ -877,11 +882,67 @@ const SalesPageV2 = () => {
                 Dúvidas <em className="mg-gold-text">Frequentes</em>
               </h2>
             </div>
-            <div className="mg-glass p-2 md:p-4" style={{ borderRadius: 20 }}>
-              <FAQ />
-            </div>
+            <Accordion type="single" collapsible className="space-y-3">
+              {[
+                {
+                  q: "O que exatamente eu recebo ao comprar?",
+                  a: `Acesso imediato à plataforma estilo app com +${TOTAL_FMT} partituras profissionais e playbacks de estúdio para Sax Alto e Sax Tenor, organizadas em ${GENRES_COUNT} estilos. No plano Completo você também recebe busca por voz, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos (Rotina de Estudo, Mapa de Tonalidades e 100 Músicas Essenciais). Acesso vitalício.`,
+                },
+                {
+                  q: "Funciona para Sax Alto e Sax Tenor?",
+                  a: "Sim. Todas as partituras estão disponíveis nas duas afinações — Sax Alto (Eb) e Sax Tenor (Bb). Você escolhe a tonalidade do seu instrumento.",
+                },
+                {
+                  q: "Como recebo o acesso?",
+                  a: "Assim que o pagamento é confirmado, o link de acesso é enviado automaticamente para o seu e-mail e também para o seu WhatsApp. A entrega é instantânea, 24h por dia. Confira a caixa de entrada, a aba Promoções e o spam.",
+                },
+                {
+                  q: "Posso acessar pelo celular?",
+                  a: "Sim. A plataforma funciona em celular, tablet ou computador, como um app — sem precisar instalar nada. Você abre a partitura e dá play no playback na mesma tela.",
+                },
+                {
+                  q: "Qual a diferença entre Básico e Completo?",
+                  a: `O Básico (R$ 9,90) entrega +5.000 partituras em PDF para Sax Alto e Tenor. O Completo (R$ 19,90) entrega +${TOTAL_FMT} partituras com playback profissional, busca por voz, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.`,
+                },
+                {
+                  q: "As partituras são de qualidade profissional?",
+                  a: "Sim. Todas foram revisadas por músicos profissionais, com melodia, harmonia e arranjos completos em PDF de alta resolução. Cada partitura tem o playback de estúdio correspondente para você tocar junto.",
+                },
+                {
+                  q: "Como funciona a busca por voz?",
+                  a: "No plano Completo, você toca no ícone de microfone e fala o nome da música. A plataforma reconhece sua voz e abre a partitura + playback em segundos. Funciona em português.",
+                },
+                {
+                  q: "O acesso é realmente vitalício?",
+                  a: "Sim. Pague uma vez e use para sempre — nos dois planos. Inclui todas as atualizações futuras de partituras e playbacks.",
+                },
+                {
+                  q: "E se eu não gostar?",
+                  a: "Você tem 7 dias de garantia incondicional. Se não sentir que valeu cada centavo, devolvemos 100% do seu investimento. Sem perguntas.",
+                },
+                {
+                  q: "Quem processa o pagamento?",
+                  a: "O pagamento é processado pela Cakto, plataforma brasileira utilizada por milhares de produtores digitais. Toda transação é protegida com criptografia SSL.",
+                },
+              ].map((item, i) => (
+                <AccordionItem
+                  key={i}
+                  value={`faq-${i}`}
+                  className="mg-glass border-0 px-5 md:px-6"
+                  style={{ borderRadius: 16 }}
+                >
+                  <AccordionTrigger className="mg-display text-base md:text-lg py-5 text-left hover:no-underline [&[data-state=open]]:text-[var(--mg-gold)]">
+                    {item.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm md:text-base text-[var(--mg-text-dim)] leading-relaxed pb-5">
+                    {item.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </section>
+
 
         {/* FOOTER */}
         <footer className="border-t border-white/5 mt-16">
