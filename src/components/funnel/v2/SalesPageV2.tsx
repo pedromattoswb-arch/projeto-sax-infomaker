@@ -323,6 +323,47 @@ const SalesPageV2 = () => {
           </div>
         </section>
 
+        <div className="max-w-6xl mx-auto px-8">
+          <hr className="mg-divider-gold" />
+        </div>
+
+        {/* POR QUE CLUBE DO SAX */}
+        <section className="relative px-5 md:px-8 py-20 md:py-28">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12 md:mb-16">
+              <span className="mg-caps inline-block mb-4" style={{ color: "var(--mg-gold)" }}>
+                Diferenciais
+              </span>
+              <h2 className="mg-display text-3xl md:text-5xl mb-4">
+                Por que o <em className="mg-gold-text">Clube do Sax?</em>
+              </h2>
+              <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
+                Tudo o que você precisa para evoluir no sax, em um único lugar.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                { icon: BookOpen, t: "Maior acervo do Brasil", d: "+10.000 partituras com playback profissional para Sax Alto e Tenor." },
+                { icon: Smartphone, t: "Plataforma estilo app", d: "Leve, rápida e organizada — funciona no celular, tablet ou PC sem instalar nada." },
+                { icon: Sparkles, t: "Atualizações mensais", d: "Novidades e lançamentos adicionados todos os meses, sem custo extra." },
+                { icon: Mic, t: "Suporte e comunidade", d: "Atendimento humano e uma comunidade ativa de saxofonistas para trocar ideias." },
+              ].map((f, i) => (
+                <div key={i} className="mg-glass p-6 text-center" style={{ borderRadius: 18 }}>
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border"
+                    style={{ background: "rgba(212,175,55,0.08)", borderColor: "rgba(212,175,55,0.3)" }}
+                  >
+                    <f.icon className="w-5 h-5" style={{ color: "var(--mg-gold)" }} />
+                  </div>
+                  <h3 className="mg-display text-lg mb-2">{f.t}</h3>
+                  <p className="text-sm text-[var(--mg-text-dim)] leading-relaxed">{f.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* PRICING — INVISTA NO SEU TALENTO */}
         <section id="planos" className="relative px-5 md:px-8 py-20 md:py-28">
           <div className="max-w-6xl mx-auto">
