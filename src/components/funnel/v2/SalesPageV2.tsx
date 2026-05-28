@@ -260,8 +260,9 @@ const SalesPageV2 = () => {
                 Pratique em qualquer lugar, <em className="mg-gold-text">a qualquer hora.</em>
               </h2>
               <p className="text-[var(--mg-text-dim)] mb-8 max-w-lg">
-                Sua estação de estudos cabe no bolso. Tudo organizado, com busca por voz e players
-                inteligentes para tocar junto sempre que quiser.
+                Sua estação de estudos cabe no bolso. Sem instalar nada, sem CDs, sem PDFs perdidos no
+                e-mail. Tudo organizado, com busca por voz e players inteligentes para tocar junto
+                sempre que quiser.
               </p>
               <ul className="space-y-5">
                 {[
