@@ -132,33 +132,33 @@ const SalesPageV2 = () => {
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
             <div className="relative">
               <span className="mg-caps inline-block mb-5" style={{ color: "var(--mg-gold)" }}>
-                ★ Plataforma Número 1 no Brasil
+                ★ A plataforma preferida dos saxofonistas brasileiros
               </span>
               <h1 className="mg-display text-[40px] sm:text-5xl md:text-6xl lg:text-[68px] leading-[1.02] mb-6">
-                O Maior Acervo de <br />
-                <span className="mg-gold-text italic">Partituras com Playback</span>
-                <br />
-                do Brasil
+                Toque as músicas que você ama no seu <span className="mg-gold-text italic">Sax</span> —
+                com partitura e playback profissional
               </h1>
               <p className="text-base md:text-lg text-[var(--mg-text-dim)] leading-relaxed mb-8 max-w-xl">
-                Acesse uma plataforma exclusiva, pensada para saxofonistas que buscam excelência e um
-                acervo profissional sempre à mão.
+                Mais de <strong className="text-white">10.000 partituras com playback de estúdio</strong>,
+                organizadas em uma plataforma intuitiva. Estude o que quiser, na hora que quiser,
+                direto do seu celular, tablet ou computador.
               </p>
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <button onClick={() => scrollTo("planos")} className="mg-gold-btn inline-flex items-center gap-2 text-base">
-                  QUERO MEU ACESSO AGORA
+                  QUERO TOCAR AGORA
                   <ArrowRight className="w-5 h-5" />
                 </button>
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
-                    {[dep1, dep2, dep3].map((d, i) => (
+                    {heroAvatars.map((src, i) => (
                       <img
                         key={i}
-                        src={d}
-                        alt=""
+                        src={src}
+                        alt={`Saxofonista ${i + 1}`}
+                        loading="lazy"
                         className="w-9 h-9 rounded-full border-2 object-cover"
-                        style={{ borderColor: "var(--mg-bg)" }}
+                        style={{ borderColor: "var(--mg-gold)" }}
                       />
                     ))}
                   </div>
