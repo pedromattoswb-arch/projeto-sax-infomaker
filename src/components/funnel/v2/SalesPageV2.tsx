@@ -198,11 +198,11 @@ const SalesPageV2 = () => {
                 Acervo Premium
               </span>
               <h2 className="mg-display text-3xl md:text-5xl mb-4">
-                Excelência <em className="mg-gold-text">Visual e Musical</em>
+                Partituras de <em className="mg-gold-text">verdade</em>, com playback de estúdio
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Partituras diagramadas profissionalmente, alinhadas em alta fidelidade e sincronizadas
-                com playbacks de estúdio.
+                Diagramação profissional, legível em qualquer tela, sincronizada com playbacks
+                gravados em estúdio. Você toca junto e evolui muito mais rápido.
               </p>
             </div>
 
@@ -219,6 +219,17 @@ const SalesPageV2 = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        <div className="max-w-6xl mx-auto px-8">
+          <hr className="mg-divider-gold" />
+        </div>
+
+        {/* CATÁLOGO DEMONSTRATIVO */}
+        <section id="catalogo" className="relative">
+          <div className="max-w-6xl mx-auto">
+            <SongCatalog />
           </div>
         </section>
 
