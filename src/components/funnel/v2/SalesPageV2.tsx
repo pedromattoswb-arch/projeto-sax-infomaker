@@ -86,7 +86,7 @@ const basicNotIncluded = [
 
 const premiumIncluded = [
   "Tudo do Plano Básico, e ainda:",
-  `+${TOTAL_FMT} partituras com playback profissional de estúdio`,
+  `+${TOTAL_FMT} partituras com playback profissional de estúdio (Sax Alto e Tenor)`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",
   "Novidades adicionadas todos os meses",
