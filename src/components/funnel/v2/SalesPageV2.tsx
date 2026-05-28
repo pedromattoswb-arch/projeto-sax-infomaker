@@ -306,7 +306,8 @@ const SalesPageV2 = () => {
                 A <em className="mg-gold-text">Comunidade</em> do Sax
               </h2>
               <p className="text-[var(--mg-text-dim)] max-w-2xl mx-auto">
-                Histórias reais de músicos que transformaram seus estudos.
+                Mais de 847 saxofonistas já estão acelerando o aprendizado com o Clube do Sax.
+                Veja o que eles dizem:
               </p>
             </div>
 
