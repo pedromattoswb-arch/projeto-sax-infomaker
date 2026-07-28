@@ -182,7 +182,7 @@ const PricingCardsNovaOferta = () => {
 
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-10 backdrop-blur-sm">
                 <p className="text-sm font-bold leading-relaxed text-center text-blue-100/80">
-                  💡 Por apenas R$ 20 a mais você desbloqueia <strong className="text-primary font-black">tudo</strong>: playbacks profissionais, busca por voz e bônus.
+                  💡 Por apenas R$ 10 a mais você desbloqueia <strong className="text-primary font-black">tudo</strong>: playbacks profissionais, busca por voz e bônus.
                 </p>
               </div>
 
