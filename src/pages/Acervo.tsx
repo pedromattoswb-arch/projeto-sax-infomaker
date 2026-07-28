@@ -34,7 +34,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type FileFilter = "all" | "pdf" | "audio";
 
-const UPGRADE_URL = "https://pay.cakto.com.br/52pq694_804276";
+const UPGRADE_URL = "https://pay.wiapy.com/jyPuib6Uivrl";
 
 const LOCKED_FOLDER_NAMES = [
   "playbacks",

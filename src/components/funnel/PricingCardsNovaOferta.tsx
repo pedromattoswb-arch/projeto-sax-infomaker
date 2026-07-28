@@ -1,7 +1,7 @@
 import { Check, X, Star, ArrowRight, Sparkles, Crown, Zap, ShieldCheck, Lock, BadgeCheck } from "lucide-react";
 
-const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
-const PREMIUM_LINK = "https://pay.cakto.com.br/rbva2ch_869767";
+const ESSENTIAL_LINK = "https://pay.wiapy.com/PTslvctv1QE6";
+const PREMIUM_LINK = "https://pay.wiapy.com/jyPuib6Uivrl";
 
 const essentialHas = [
   "+5.000 partituras em PDF",
@@ -74,7 +74,7 @@ const PricingCardsNovaOferta = () => {
 
             <div className="mb-10">
               <div className="flex items-baseline gap-1.5 mb-1">
-                <span className="text-5xl font-black font-heading tracking-tighter">R$ 9,90</span>
+                <span className="text-5xl font-black font-heading tracking-tighter">R$ 14,90</span>
               </div>
               <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
             </div>
@@ -147,7 +147,7 @@ const PricingCardsNovaOferta = () => {
 
               <div className="mb-10 relative">
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="text-5xl md:text-6xl font-black font-heading text-white tracking-tighter">R$ 29,90</span>
+                  <span className="text-5xl md:text-6xl font-black font-heading text-white tracking-tighter">R$ 24,90</span>
                 </div>
                 <span className="text-xs text-blue-400 font-bold uppercase tracking-widest">Pagamento Único • Vitalício</span>
               </div>
@@ -182,7 +182,7 @@ const PricingCardsNovaOferta = () => {
 
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-10 backdrop-blur-sm">
                 <p className="text-sm font-bold leading-relaxed text-center text-blue-100/80">
-                  💡 Por apenas R$ 20 a mais você desbloqueia <strong className="text-primary font-black">tudo</strong>: playbacks profissionais, busca por voz e bônus.
+                  💡 Por apenas R$ 10 a mais você desbloqueia <strong className="text-primary font-black">tudo</strong>: playbacks profissionais, busca por voz e bônus.
                 </p>
               </div>
 
@@ -216,7 +216,7 @@ const PricingCardsNovaOferta = () => {
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <BadgeCheck className="w-4 h-4 text-primary" />
-            <span className="text-xs font-body">Pagamento via Cakto</span>
+            <span className="text-xs font-body">Pagamento via Wiapy</span>
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Zap className="w-4 h-4 text-primary" />

@@ -78,7 +78,7 @@ const ThankYouBasico = () => {
             <p className="text-primary font-bold text-sm md:text-base flex items-start gap-3 text-left">
               <Mail className="w-5 h-5 mt-0.5 shrink-0" />
               <span>
-                O acesso foi enviado agora para seu <strong>E-mail e WhatsApp</strong> cadastrados na Cakto. Verifique sua caixa de entrada e spam.
+                O acesso foi enviado agora para seu <strong>E-mail e WhatsApp</strong> cadastrados na Wiapy. Verifique sua caixa de entrada e spam.
               </span>
             </p>
           </div>
@@ -123,7 +123,7 @@ const ThankYouBasico = () => {
                 step: "1",
                 icon: Mail,
                 title: "Verifique seu e-mail",
-                description: "A Cakto enviou automaticamente um e-mail com seu login e senha de acesso. Confira a caixa de entrada, a aba \"Promoções\" e a pasta de spam.",
+                description: "A Wiapy enviou automaticamente um e-mail com seu login e senha de acesso. Confira a caixa de entrada, a aba \"Promoções\" e a pasta de spam.",
               },
               {
                 step: "2",

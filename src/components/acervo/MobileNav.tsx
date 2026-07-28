@@ -63,7 +63,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onToggle, plan = "premium" 
           ))}
           {plan === "basic" && (
             <a
-              href="https://pay.cakto.com.br/52pq694_804276"
+              href="https://pay.wiapy.com/jyPuib6Uivrl"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 transition-colors font-body font-bold text-sm min-h-[48px] mt-2 border border-amber-500/20"

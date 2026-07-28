@@ -26,7 +26,7 @@ const Termos = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">3. Pagamento e Acesso</h2>
-            <p>Os pagamentos são processados via plataformas terceiras seguras (Cakto/Wiapy). Após a confirmação, o acesso ao conteúdo é liberado de forma imediata. O acesso é pessoal e intransferível.</p>
+            <p>Os pagamentos são processados via plataformas terceiras seguras (Wiapy). Após a confirmação, o acesso ao conteúdo é liberado de forma imediata. O acesso é pessoal e intransferível.</p>
           </section>
 
           <section>

@@ -53,8 +53,8 @@ const heroAvatars = [
   "https://randomuser.me/api/portraits/women/65.jpg",
 ];
 
-const ESSENTIAL_LINK = "https://pay.cakto.com.br/qqpusnn_804258";
-const PREMIUM_LINK = "https://pay.cakto.com.br/39hving";
+const ESSENTIAL_LINK = "https://pay.wiapy.com/PTslvctv1QE6";
+const PREMIUM_LINK = "https://pay.wiapy.com/jyPuib6Uivrl";
 
 const goCheckout = (plan: "essential" | "premium") => {
   const link = plan === "essential" ? ESSENTIAL_LINK : PREMIUM_LINK;
@@ -658,7 +658,7 @@ const SalesPageV2 = () => {
                 <div className="mb-7">
                   <div className="flex items-baseline gap-1">
                     <span className="text-sm text-[var(--mg-text-dim)]">R$</span>
-                    <span className="mg-display text-5xl">9,90</span>
+                    <span className="mg-display text-5xl">14,90</span>
                     <span className="text-sm text-[var(--mg-text-dim)]">/un.</span>
                   </div>
                   <span className="mg-caps">Pagamento Único · Vitalício</span>
@@ -752,7 +752,7 @@ const SalesPageV2 = () => {
                   <div className="mb-7">
                     <div className="flex items-baseline gap-1">
                       <span className="text-sm text-[var(--mg-text-dim)]">R$</span>
-                      <span className="mg-display text-5xl mg-gold-text">19,90</span>
+                      <span className="mg-display text-5xl mg-gold-text">24,90</span>
                       <span className="text-sm text-[var(--mg-text-dim)]">/un.</span>
                     </div>
                     <span className="mg-caps">Pagamento Único · Vitalício</span>
@@ -842,7 +842,7 @@ const SalesPageV2 = () => {
 
             <p className="text-center text-xs text-[var(--mg-text-dim)] mt-8">
               <ShieldCheck className="w-3.5 h-3.5 inline mr-1.5" style={{ color: "var(--mg-gold)" }} />
-              Pagamento seguro via Cakto · Acesso imediato por e-mail e WhatsApp
+              Pagamento seguro via Wiapy · Acesso imediato por e-mail e WhatsApp
             </p>
           </div>
         </section>
@@ -902,7 +902,7 @@ const SalesPageV2 = () => {
                 },
                 {
                   q: "Qual a diferença entre Básico e Completo?",
-                  a: `O Básico (R$ 9,90) entrega +5.000 partituras em PDF para Sax Alto e Tenor. O Completo (R$ 19,90) entrega +${TOTAL_FMT} partituras com playback profissional, busca por voz, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.`,
+                  a: `O Básico (R$ 14,90) entrega +5.000 partituras em PDF para Sax Alto e Tenor. O Completo (R$ 24,90) entrega +${TOTAL_FMT} partituras com playback profissional, busca por voz, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.`,
                 },
                 {
                   q: "As partituras são de qualidade profissional?",
@@ -922,7 +922,7 @@ const SalesPageV2 = () => {
                 },
                 {
                   q: "Quem processa o pagamento?",
-                  a: "O pagamento é processado pela Cakto, plataforma brasileira utilizada por milhares de produtores digitais. Toda transação é protegida com criptografia SSL.",
+                  a: "O pagamento é processado pela Wiapy, plataforma brasileira utilizada por milhares de produtores digitais. Toda transação é protegida com criptografia SSL.",
                 },
               ].map((item, i) => (
                 <AccordionItem
