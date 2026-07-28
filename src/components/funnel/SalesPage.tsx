@@ -108,7 +108,7 @@ const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
             </span>
             <div className="text-right flex flex-col items-end">
               <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest leading-none mb-1">A partir de</span>
-              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 9,90</span>
+              <span className="text-xl md:text-2xl font-black text-primary leading-none tracking-tight">R$ 14,90</span>
             </div>
           </div>
         </div>
@@ -400,7 +400,7 @@ const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
           </p>
           
           <p className="text-muted-foreground font-medium text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma estilo Netflix. Acesso vitalício por apenas <strong className="text-foreground">R$ 9,90</strong>.
+            Mais de 10.000 partituras com playback profissional, organizadas por gênero, numa plataforma estilo Netflix. Acesso vitalício por apenas <strong className="text-foreground">R$ 14,90</strong>.
           </p>
 
           <div className="flex flex-col items-center gap-8">
@@ -437,7 +437,7 @@ const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Lock className="w-4 h-4 text-primary" />
-            <span className="text-xs font-body">Pagamento via Cakto</span>
+            <span className="text-xs font-body">Pagamento via Wiapy</span>
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <BadgeCheck className="w-4 h-4 text-primary" />
@@ -472,7 +472,7 @@ const SalesPage = ({ pricingVariant = "default" }: SalesPageProps) => {
           onClick={scrollToOffers}
           className="w-full gradient-cta text-white font-bold font-heading py-3.5 rounded-xl text-sm shadow-cta flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          GARANTIR MEU ACESSO — A PARTIR DE R$9,90
+          GARANTIR MEU ACESSO — A PARTIR DE R$14,90
           <ArrowRight className="w-4 h-4 animate-arrow-bounce" />
         </button>
       </div>

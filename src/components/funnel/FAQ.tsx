@@ -19,12 +19,12 @@ const faqItems = [
   {
     question: "Como recebo o acesso?",
     answer:
-      "Assim que o pagamento é confirmado, a plataforma Cakto envia automaticamente um e-mail com seu login e senha de acesso. A entrega é instantânea — funciona 24h, inclusive de madrugada e fim de semana. Importante: confira sua caixa de entrada, a aba \"Promoções\" e a pasta de spam/lixo eletrônico.",
+      "Assim que o pagamento é confirmado, a plataforma Wiapy envia automaticamente um e-mail com seu login e senha de acesso. A entrega é instantânea — funciona 24h, inclusive de madrugada e fim de semana. Importante: confira sua caixa de entrada, a aba \"Promoções\" e a pasta de spam/lixo eletrônico.",
   },
   {
     question: "Quem processa o pagamento?",
     answer:
-      "O pagamento é processado pela Cakto, uma plataforma brasileira de pagamentos digitais utilizada por milhares de produtores de conteúdo. Toda a transação é protegida com criptografia SSL e nenhuma informação bancária é armazenada em nosso site.",
+      "O pagamento é processado pela Wiapy, uma plataforma brasileira de pagamentos digitais utilizada por milhares de produtores de conteúdo. Toda a transação é protegida com criptografia SSL e nenhuma informação bancária é armazenada em nosso site.",
   },
   {
     question: "As partituras são de qualidade profissional?",
@@ -39,7 +39,7 @@ const faqItems = [
   {
     question: "Qual a diferença entre Básico e Completo?",
     answer:
-      "O Básico (R$ 9,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 19,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.",
+      "O Básico (R$ 14,90) tem +5.000 partituras em PDF com busca por texto. O Completo (R$ 24,90) tem +10.000 partituras com playback profissional para tocar junto, busca por voz, vídeos tutoriais integrados, atualizações mensais, Harpa Cristã completa e 3 bônus exclusivos.",
   },
   {
     question: "O que são os vídeos tutoriais?",
@@ -54,7 +54,7 @@ const faqItems = [
   {
     question: "E se eu não gostar?",
     answer:
-      "Você tem 7 dias de garantia total. Se em 7 dias você não sentir que valeu cada centavo, a gente devolve 100% do seu dinheiro. Sem perguntas. Sem complicação. O reembolso é processado diretamente pela plataforma Cakto.",
+      "Você tem 7 dias de garantia total. Se em 7 dias você não sentir que valeu cada centavo, a gente devolve 100% do seu dinheiro. Sem perguntas. Sem complicação. O reembolso é processado diretamente pela plataforma Wiapy.",
   },
   {
     question: "O acesso é realmente vitalício?",
@@ -64,7 +64,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Sim. O Clube do Sax é uma empresa registrada com CNPJ. O pagamento é processado pela Cakto com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
+      "Sim. O Clube do Sax é uma empresa registrada com CNPJ. O pagamento é processado pela Wiapy com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
   },
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",

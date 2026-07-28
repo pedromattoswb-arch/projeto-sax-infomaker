@@ -25,7 +25,7 @@ const Privacidade = () => {
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>Nome completo, e-mail, telefone/WhatsApp e CPF (no momento da compra)</li>
               <li>Dados de navegação (cookies, endereço IP, dispositivo, páginas visitadas)</li>
-              <li>Dados de pagamento (processados diretamente pelas plataformas Cakto/Wiapy — não armazenamos cartões)</li>
+              <li>Dados de pagamento (processados diretamente pelas plataformas Wiapy — não armazenamos cartões)</li>
             </ul>
           </section>
 
@@ -47,7 +47,7 @@ const Privacidade = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">5. Compartilhamento de Dados</h2>
-            <p>Seus dados podem ser compartilhados apenas com parceiros estritamente necessários à operação: processadores de pagamento (Cakto/Wiapy), plataformas de envio de e-mail e WhatsApp, e ferramentas de análise. Nunca vendemos seus dados a terceiros.</p>
+            <p>Seus dados podem ser compartilhados apenas com parceiros estritamente necessários à operação: processadores de pagamento (Wiapy), plataformas de envio de e-mail e WhatsApp, e ferramentas de análise. Nunca vendemos seus dados a terceiros.</p>
           </section>
 
           <section>
