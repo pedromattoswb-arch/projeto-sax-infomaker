@@ -166,11 +166,28 @@ const ThankYouBasico = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="py-6 px-4 border-t border-border text-center">
-        <img src={logoClubeSax} alt="Clube do Sax" className="h-8 mx-auto mb-3" />
-        <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
-        </p>
+      <footer className="py-12 px-4 border-t border-border bg-card">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mx-auto" />
+          <div className="space-y-3">
+            <h3 className="font-extrabold text-xl">Ficou com alguma dúvida?</h3>
+            <p className="text-muted-foreground">Nossa equipe de suporte está pronta para te ajudar agora mesmo.</p>
+            <a
+              href={`https://wa.me/5511951042381?text=${encodeURIComponent("Olá, sou aluno do Plano Básico e tenho uma dúvida.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-5 rounded-2xl font-bold hover:bg-[#128C7E] transition-all shadow-xl hover:shadow-2xl border-2 border-white/20 active:scale-[0.98]"
+            >
+              <img src="/whatsapp-logo-fallback.png" alt="" className="w-8 h-8 shrink-0" onError={(e) => {
+                e.currentTarget.src = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg";
+              }} />
+              <span className="text-lg text-white">Dúvidas? Fale conosco no WhatsApp</span>
+            </a>
+          </div>
+          <p className="text-xs text-muted-foreground font-body">
+            © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
+          </p>
+        </div>
       </footer>
     </div>
   );
