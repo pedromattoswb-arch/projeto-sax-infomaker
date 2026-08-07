@@ -609,6 +609,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         </div>
       )}
+      {plan === "premium" && <WhatsAppSupport />}
     </div>
   );
 };
