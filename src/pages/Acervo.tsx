@@ -849,6 +849,15 @@ const BonusSection = () => (
         </Link>
       ))}
     </div>
+    <div className="mt-12 py-12 border-t border-border/50 text-center space-y-6">
+      <div className="space-y-3 max-w-lg mx-auto">
+        <h3 className="text-2xl font-extrabold font-heading text-foreground">Ficou com alguma dúvida?</h3>
+        <p className="text-muted-foreground font-body leading-relaxed">
+          Nossa equipe está disponível agora mesmo no WhatsApp para te ajudar a aproveitar ao máximo sua plataforma.
+        </p>
+      </div>
+      <WhatsAppSupport showFooterButton />
+    </div>
   </div>
 );
 
