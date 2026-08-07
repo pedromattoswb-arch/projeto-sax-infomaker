@@ -1,9 +1,23 @@
 import { MessageCircle } from "lucide-react";
 
-const WhatsAppSupport = () => {
+const WhatsAppSupport = ({ showFooterButton = false }: { showFooterButton?: boolean }) => {
   const phoneNumber = "5511951042381";
   const message = encodeURIComponent("Olá, sou aluno do Plano Completo e preciso de suporte.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  if (showFooterButton) {
+    return (
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2.5 bg-[#25D366] text-white px-6 py-4 rounded-xl font-bold hover:bg-[#128C7E] transition-all shadow-lg hover:shadow-xl"
+      >
+        <MessageCircle className="w-6 h-6" />
+        Precisa de ajuda? Fale conosco no WhatsApp
+      </a>
+    );
+  }
 
   return (
     <a
