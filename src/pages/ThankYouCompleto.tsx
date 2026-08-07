@@ -173,8 +173,8 @@ const ThankYouCompleto = () => {
         <div className="max-w-2xl mx-auto text-center space-y-6">
           <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mx-auto" />
           <div className="space-y-3">
-            <h3 className="font-bold">Ainda com dúvidas?</h3>
-            <p className="text-sm text-muted-foreground">Nossa equipe de suporte está pronta para te ajudar no WhatsApp.</p>
+            <h3 className="font-extrabold text-xl">Ficou com alguma dúvida?</h3>
+            <p className="text-muted-foreground">Nossa equipe está pronta para te atender agora mesmo.</p>
             <WhatsAppSupport showFooterButton />
           </div>
           <p className="text-xs text-muted-foreground font-body">
