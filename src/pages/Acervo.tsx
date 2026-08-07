@@ -837,10 +837,4 @@ const BonusSection = () => (
   </div>
 );
 
-      </footer>
-      {plan === "premium" && <WhatsAppSupport />}
-    </div>
-  );
-};
-
 export default Acervo;
