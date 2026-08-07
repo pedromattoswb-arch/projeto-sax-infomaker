@@ -4,6 +4,7 @@ import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
 import UpsellSection from "@/components/UpsellSection";
+import WhatsAppSupport from "@/components/WhatsAppSupport";
 
 // Google Ads conversion event for purchase
 const triggerPurchaseConversion = () => {
@@ -174,6 +175,7 @@ const ThankYouCompleto = () => {
           © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
         </p>
       </footer>
+      <WhatsAppSupport />
     </div>
   );
 };
