@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import WhatsAppSupport from "@/components/WhatsAppSupport";
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
@@ -834,5 +835,11 @@ const BonusSection = () => (
     </div>
   </div>
 );
+
+      </footer>
+      {plan === "premium" && <WhatsAppSupport />}
+    </div>
+  );
+};
 
 export default Acervo;
