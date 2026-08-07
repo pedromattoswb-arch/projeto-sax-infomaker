@@ -9,7 +9,7 @@ const essentialHas = [
   "16 categorias musicais",
   "Busca por texto na plataforma",
   "Acesso vitalício",
-  "Suporte por e-mail e WhatsApp",
+  "Suporte prioritário por e-mail",
 ];
 
 const essentialMissing = [
@@ -24,6 +24,7 @@ const essentialMissing = [
 const premiumFeatures = [
   { text: "Tudo do plano Básico incluído", highlight: true },
   { text: "+10.000 partituras com playback profissional" },
+  { text: "Suporte VIP via WhatsApp", highlight: true },
   { text: "Plataforma exclusiva estilo app" },
   { text: "Busca inteligente por voz" },
   { text: "Vídeos tutoriais integrados" },
