@@ -79,6 +79,7 @@ const basicIncluded = [
   "Plataforma estilo app — acesso pelo celular, tablet ou PC",
   "Acesso vitalício — pague uma vez, use para sempre",
   "Atualizações periódicas no acervo PDF",
+  "Suporte prioritário por e-mail",
 ];
 
 const basicNotIncluded = [
@@ -91,6 +92,7 @@ const basicNotIncluded = [
 
 const premiumIncluded = [
   "Tudo do Plano Básico, e ainda:",
+  "Suporte VIP via WhatsApp",
   `+${TOTAL_FMT} partituras com playback profissional de estúdio (Sax Alto e Tenor)`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",

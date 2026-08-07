@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import WhatsAppSupport from "@/components/WhatsAppSupport";
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
@@ -608,6 +609,7 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         </div>
       )}
+      {plan === "premium" && <WhatsAppSupport />}
     </div>
   );
 };
