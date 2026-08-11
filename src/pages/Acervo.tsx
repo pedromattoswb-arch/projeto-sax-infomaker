@@ -21,6 +21,7 @@ import {
   Crown,
   Lock,
   Play,
+  Star,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
@@ -52,10 +53,13 @@ const LOCKED_FOLDER_NAMES = [
 ];
 
 const BONUS_VIRTUAL_FOLDERS = [
-  { id: "dire-straits", name: "ESPECIAL: Dire Straits", path: "/especial/dire-straits", isSpecial: true },
   { id: "bonus-rotina", name: "BÔNUS: Guia Rotina de Estudo", path: "/bonus/rotina-de-estudo" },
   { id: "bonus-tonalidades", name: "BÔNUS: Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades" },
   { id: "bonus-100musicas", name: "BÔNUS: 100 Músicas Essenciais", path: "/bonus/100-musicas" },
+];
+
+const MAIN_VIRTUAL_FOLDERS = [
+  { id: "dire-straits", name: "ESPECIAL: Dire Straits", path: "/especial/dire-straits", isSpecial: true },
 ];
 
 interface AcervoProps {
@@ -268,6 +272,44 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
       <MobileNav open={menuOpen} onToggle={() => setMenuOpen(false)} plan={plan} />
 
       <main id="acervo-content" className="max-w-5xl mx-auto px-4 py-5 md:py-8" role="main">
+        {/* Main/Special Virtual Folders - shown at root level above others */}
+        {isRoot && (
+          <div className="mb-8" role="region" aria-label="Especial">
+            <h2 className="text-xs uppercase tracking-widest text-primary font-body font-bold mb-3 flex items-center gap-2">
+              <Star className="w-4 h-4 fill-primary/20" />
+              Destaque ({MAIN_VIRTUAL_FOLDERS.length})
+            </h2>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="list">
+              {MAIN_VIRTUAL_FOLDERS.map((folder) =>
+                isBasic ? (
+                  <LockedFolderCard
+                    key={folder.id}
+                    folder={{ id: folder.id, name: folder.name, type: "folder" as const }}
+                    upgradeUrl={UPGRADE_URL}
+                  />
+                ) : (
+                  <Link
+                    key={folder.id}
+                    to={folder.path}
+                    role="listitem"
+                    className="group flex items-center gap-3 p-3 md:p-5 bg-card border-2 border-primary/20 rounded-2xl hover:border-primary/60 hover:shadow-lg transition-all w-full min-h-[60px] relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 p-1">
+                      <div className="bg-primary text-[8px] text-primary-foreground px-1.5 py-0.5 rounded-bl-lg font-bold uppercase tracking-tighter">Novo</div>
+                    </div>
+                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center bg-primary/10">
+                      <Music className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                    </div>
+                    <span className="font-body font-bold text-sm md:text-base text-foreground group-hover:text-primary break-words leading-snug flex-1 transition-colors">
+                      {folder.name}
+                    </span>
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Bonus Virtual Folders - shown at root level */}
         {isRoot && (
           <div className="mb-6" role="region" aria-label="Bônus">
@@ -290,8 +332,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     role="listitem"
                     className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-md transition-all w-full min-h-[60px]"
                   >
-                    <div className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center ${bonus.isSpecial ? 'bg-destructive/10' : 'bg-primary/10'}`}>
-                      {bonus.isSpecial ? <Music className="w-5 h-5 md:w-6 md:h-6 text-destructive" /> : <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />}
+                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center bg-primary/10">
+                      <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                     </div>
                     <span className="font-body font-bold text-sm md:text-base text-foreground group-hover:text-primary break-words leading-snug flex-1 transition-colors">
                       {bonus.name}
