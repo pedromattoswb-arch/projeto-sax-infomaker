@@ -85,6 +85,7 @@ const FOLDER_NAME_MAP: Record<string, string> = {
   "BACKING TRACKS": "Playbacks",
   "SHEET MUSIC": "Partituras",
   "SCORES": "Partituras",
+  "DIRE STRAITS": "Dire Straits - Especial",
 };
 
 function formatFolderName(raw: string): string {
