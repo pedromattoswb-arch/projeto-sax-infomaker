@@ -354,6 +354,7 @@ export const CATALOG_GENRES: CatalogGenre[] = [
       { title: "On Every Street", artist: "Dire Straits" },
       { title: "Romeo and Juliet", artist: "Dire Straits" },
       { title: "Brothers in Arms", artist: "Dire Straits" },
+      { title: "So Far Away", artist: "Dire Straits" },
       { title: "Born to Run", artist: "Bruce Springsteen" },
     ],
   },
