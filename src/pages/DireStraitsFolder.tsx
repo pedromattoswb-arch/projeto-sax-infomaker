@@ -27,6 +27,12 @@ import roadrunningAsset from "@/assets/dire-straits/all-the-roadrunning.pdf.asse
 import telegraphAsset from "@/assets/dire-straits/telegraph-road-v-2.pdf.asset.json";
 import tunnelAsset from "@/assets/dire-straits/tunnel-of-love-v-2.pdf.asset.json";
 import walkOnLifeAsset from "@/assets/dire-straits/walk-on-life.pdf.asset.json";
+import onEveryStreetAsset from "@/assets/dire-straits/on-every-street.pdf.asset.json";
+import romeoJulietAsset from "@/assets/dire-straits/romeo---juliet-v-2.pdf.asset.json";
+import brothersInArmsAsset from "@/assets/dire-straits/brothers-in-arms-v-4.pdf.asset.json";
+import sultansOfSwingAsset from "@/assets/dire-straits/sultans-of-swing-v-5.pdf.asset.json";
+import walkOfLifeV2Asset from "@/assets/dire-straits/walk-of-life-v-2.pdf.asset.json";
+import yourLatestTrickV2Asset from "@/assets/dire-straits/your-latest-trick-v-2.pdf.asset.json";
 
 const DIRE_STRAITS_FILES = [
   { id: "ds-1", name: "Dire Straits - Private Investigations.pdf", type: "pdf" as const, downloadUrl: privateInvestigationsAsset.url, viewUrl: privateInvestigationsAsset.url },
@@ -35,6 +41,12 @@ const DIRE_STRAITS_FILES = [
   { id: "ds-4", name: "Dire Straits - Telegraph Road.pdf", type: "pdf" as const, downloadUrl: telegraphAsset.url, viewUrl: telegraphAsset.url },
   { id: "ds-5", name: "Dire Straits - Tunnel of Love.pdf", type: "pdf" as const, downloadUrl: tunnelAsset.url, viewUrl: tunnelAsset.url },
   { id: "ds-6", name: "Dire Straits - Walk on Life.pdf", type: "pdf" as const, downloadUrl: walkOnLifeAsset.url, viewUrl: walkOnLifeAsset.url },
+  { id: "ds-7", name: "Dire Straits - On Every Street.pdf", type: "pdf" as const, downloadUrl: onEveryStreetAsset.url, viewUrl: onEveryStreetAsset.url },
+  { id: "ds-8", name: "Dire Straits - Romeo and Juliet.pdf", type: "pdf" as const, downloadUrl: romeoJulietAsset.url, viewUrl: romeoJulietAsset.url },
+  { id: "ds-9", name: "Dire Straits - Brothers in Arms.pdf", type: "pdf" as const, downloadUrl: brothersInArmsAsset.url, viewUrl: brothersInArmsAsset.url },
+  { id: "ds-10", name: "Dire Straits - Sultans of Swing.pdf", type: "pdf" as const, downloadUrl: sultansOfSwingAsset.url, viewUrl: sultansOfSwingAsset.url },
+  { id: "ds-11", name: "Dire Straits - Walk of Life (v2).pdf", type: "pdf" as const, downloadUrl: walkOfLifeV2Asset.url, viewUrl: walkOfLifeV2Asset.url },
+  { id: "ds-12", name: "Dire Straits - Your Latest Trick (v2).pdf", type: "pdf" as const, downloadUrl: yourLatestTrickV2Asset.url, viewUrl: yourLatestTrickV2Asset.url },
 ];
 
 const UPGRADE_URL = "https://pay.wiapy.com/jyPuib6Uivrl";
