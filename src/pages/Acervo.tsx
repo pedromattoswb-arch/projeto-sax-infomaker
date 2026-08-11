@@ -52,6 +52,7 @@ const LOCKED_FOLDER_NAMES = [
 ];
 
 const BONUS_VIRTUAL_FOLDERS = [
+  { id: "dire-straits", name: "ESPECIAL: Dire Straits", path: "/especial/dire-straits", isSpecial: true },
   { id: "bonus-rotina", name: "BÔNUS: Guia Rotina de Estudo", path: "/bonus/rotina-de-estudo" },
   { id: "bonus-tonalidades", name: "BÔNUS: Mapa de Tonalidades", path: "/bonus/mapa-de-tonalidades" },
   { id: "bonus-100musicas", name: "BÔNUS: 100 Músicas Essenciais", path: "/bonus/100-musicas" },
@@ -289,8 +290,8 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                     role="listitem"
                     className="group flex items-center gap-3 p-3 md:p-5 bg-card border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-md transition-all w-full min-h-[60px]"
                   >
-                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                    <div className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center ${bonus.isSpecial ? 'bg-destructive/10' : 'bg-primary/10'}`}>
+                      {bonus.isSpecial ? <Music className="w-5 h-5 md:w-6 md:h-6 text-destructive" /> : <Gift className="w-5 h-5 md:w-6 md:h-6 text-primary" />}
                     </div>
                     <span className="font-body font-bold text-sm md:text-base text-foreground group-hover:text-primary break-words leading-snug flex-1 transition-colors">
                       {bonus.name}
