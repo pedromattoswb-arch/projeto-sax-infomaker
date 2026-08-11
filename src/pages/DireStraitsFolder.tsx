@@ -33,6 +33,8 @@ import brothersInArmsAsset from "@/assets/dire-straits/brothers-in-arms-v-4.pdf.
 import sultansOfSwingAsset from "@/assets/dire-straits/sultans-of-swing-v-5.pdf.asset.json";
 import walkOfLifeV2Asset from "@/assets/dire-straits/walk-of-life-v-2.pdf.asset.json";
 import yourLatestTrickV2Asset from "@/assets/dire-straits/your-latest-trick-v-2.pdf.asset.json";
+import onEveryStreet2Asset from "@/assets/dire-straits/on-every-street-2.pdf.asset.json";
+import soFarAwayAsset from "@/assets/dire-straits/so-far-away.pdf.asset.json";
 
 const DIRE_STRAITS_FILES = [
   { id: "ds-1", name: "Dire Straits - Private Investigations.pdf", type: "pdf" as const, downloadUrl: privateInvestigationsAsset.url, viewUrl: privateInvestigationsAsset.url },
@@ -47,6 +49,8 @@ const DIRE_STRAITS_FILES = [
   { id: "ds-10", name: "Dire Straits - Sultans of Swing.pdf", type: "pdf" as const, downloadUrl: sultansOfSwingAsset.url, viewUrl: sultansOfSwingAsset.url },
   { id: "ds-11", name: "Dire Straits - Walk of Life (v2).pdf", type: "pdf" as const, downloadUrl: walkOfLifeV2Asset.url, viewUrl: walkOfLifeV2Asset.url },
   { id: "ds-12", name: "Dire Straits - Your Latest Trick (v2).pdf", type: "pdf" as const, downloadUrl: yourLatestTrickV2Asset.url, viewUrl: yourLatestTrickV2Asset.url },
+  { id: "ds-13", name: "Dire Straits - On Every Street (v2).pdf", type: "pdf" as const, downloadUrl: onEveryStreet2Asset.url, viewUrl: onEveryStreet2Asset.url },
+  { id: "ds-14", name: "Dire Straits - So Far Away.pdf", type: "pdf" as const, downloadUrl: soFarAwayAsset.url, viewUrl: soFarAwayAsset.url },
 ];
 
 const UPGRADE_URL = "https://pay.wiapy.com/jyPuib6Uivrl";
