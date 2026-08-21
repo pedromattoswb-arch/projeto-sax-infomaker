@@ -801,17 +801,12 @@ const SalesPageV2 = () => {
               >
                 Como você recebe seu acesso
               </p>
-              <div className="grid sm:grid-cols-3 gap-5">
+              <div className="grid sm:grid-cols-2 gap-5">
                 {[
                   {
                     icon: Mail,
                     t: "Por e-mail",
                     d: "Link de acesso enviado automaticamente para o e-mail informado na compra.",
-                  },
-                  {
-                    icon: MessageCircle,
-                    t: "Por E-mail",
-                    d: "Você recebe o link de acesso direto no seu e-mail cadastrado.",
                   },
                   {
                     icon: Zap,
