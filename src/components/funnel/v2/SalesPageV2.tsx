@@ -92,7 +92,7 @@ const basicNotIncluded = [
 
 const premiumIncluded = [
   "Tudo do Plano Básico, e ainda:",
-  "Suporte VIP via WhatsApp",
+  "Suporte prioritário via e-mail",
   `+${TOTAL_FMT} partituras com playback profissional de estúdio (Sax Alto e Tenor)`,
   "Plataforma exclusiva estilo app (rápida e intuitiva)",
   "Busca inteligente por voz — ache qualquer música em segundos",
@@ -108,10 +108,6 @@ const DeliveryReinforce = ({ compact = false }: { compact?: boolean }) => (
     <span className="inline-flex items-center gap-2">
       <Mail className="w-4 h-4 shrink-0" style={{ color: "var(--mg-gold)" }} />
       Link de acesso enviado no <strong className="text-white">e-mail</strong>
-    </span>
-    <span className="inline-flex items-center gap-2">
-      <MessageCircle className="w-4 h-4 shrink-0" style={{ color: "var(--mg-gold)" }} />
-      Também enviado pelo <strong className="text-white">WhatsApp</strong>
     </span>
     {!compact && (
       <span className="inline-flex items-center gap-2">
@@ -814,8 +810,8 @@ const SalesPageV2 = () => {
                   },
                   {
                     icon: MessageCircle,
-                    t: "Por WhatsApp",
-                    d: "Você também recebe o link de acesso direto no seu WhatsApp.",
+                    t: "Por E-mail",
+                    d: "Você recebe o link de acesso direto no seu e-mail cadastrado.",
                   },
                   {
                     icon: Zap,
@@ -844,7 +840,7 @@ const SalesPageV2 = () => {
 
             <p className="text-center text-xs text-[var(--mg-text-dim)] mt-8">
               <ShieldCheck className="w-3.5 h-3.5 inline mr-1.5" style={{ color: "var(--mg-gold)" }} />
-              Pagamento seguro via Wiapy · Acesso imediato por e-mail e WhatsApp
+              Pagamento seguro via Wiapy · Acesso imediato por e-mail
             </p>
           </div>
         </section>
@@ -896,7 +892,7 @@ const SalesPageV2 = () => {
                 },
                 {
                   q: "Como recebo o acesso?",
-                  a: "Assim que o pagamento é confirmado, o link de acesso é enviado automaticamente para o seu e-mail e também para o seu WhatsApp. A entrega é instantânea, 24h por dia. Confira a caixa de entrada, a aba Promoções e o spam.",
+                  a: "Assim que o pagamento é confirmado, o link de acesso é enviado automaticamente para o seu e-mail. A entrega é instantânea, 24h por dia. Confira a caixa de entrada, a aba Promoções e o spam.",
                 },
                 {
                   q: "Posso acessar pelo celular?",

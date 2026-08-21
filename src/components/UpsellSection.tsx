@@ -134,7 +134,7 @@ const UpsellSection = ({ onNoThanks }: UpsellSectionProps) => {
             </div>
             <p className="text-xs text-muted-foreground font-body mb-6 italic">
               Pagamento único · Sem mensalidade<br/>
-              Acesso liberado via <strong>E-mail e WhatsApp</strong> imediatamente após a compra.
+              Acesso liberado via <strong>E-mail</strong> imediatamente após a compra.
             </p>
 
             <a

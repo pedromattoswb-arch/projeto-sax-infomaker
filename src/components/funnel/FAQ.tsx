@@ -64,7 +64,7 @@ const faqItems = [
   {
     question: "Posso confiar neste site?",
     answer:
-      "Sim. O Clube do Sax é uma empresa registrada com CNPJ. O pagamento é processado pela Wiapy com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail e WhatsApp.",
+      "Sim. O Clube do Sax é uma empresa registrada com CNPJ. O pagamento é processado pela Wiapy com criptografia SSL. Oferecemos garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor. E nosso suporte está disponível por e-mail.",
   },
   {
     question: "Posso ver quais músicas estão no acervo antes de comprar?",

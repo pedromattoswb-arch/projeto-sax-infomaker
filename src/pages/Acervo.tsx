@@ -660,12 +660,12 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
                 <h3 className="font-bold text-lg">Dúvidas ou problemas com seu acesso?</h3>
                 <p className="text-sm text-muted-foreground">Como aluno Premium, você tem suporte prioritário via WhatsApp.</p>
                 <div className="flex justify-center pt-2">
-                  <WhatsAppSupport showFooterButton />
+                  
                 </div>
               </div>
             </div>
           </section>
-          <WhatsAppSupport />
+          
         </>
       )}
     </div>

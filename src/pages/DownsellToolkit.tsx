@@ -140,7 +140,7 @@ const DownsellToolkit = () => {
             </div>
             <p className="text-xs text-muted-foreground font-body mb-6">
               Pagamento único · Acesso vitalício<br/>
-              Acesso enviado por <strong>E-mail e WhatsApp</strong>.
+              Acesso enviado por <strong>E-mail</strong>.
             </p>
 
             <a
