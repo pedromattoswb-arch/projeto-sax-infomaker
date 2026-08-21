@@ -652,22 +652,6 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         </div>
       )}
-      {plan === "premium" && (
-        <>
-          <section className="mt-16 py-12 px-4 border-t border-border bg-card/30">
-            <div className="max-w-2xl mx-auto text-center space-y-6">
-              <div className="space-y-3">
-                <h3 className="font-bold text-lg">Dúvidas ou problemas com seu acesso?</h3>
-                <p className="text-sm text-muted-foreground">Como aluno Premium, você tem suporte prioritário via WhatsApp.</p>
-                <div className="flex justify-center pt-2">
-                  
-                </div>
-              </div>
-            </div>
-          </section>
-          
-        </>
-      )}
     </div>
   );
 };
