@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import WhatsAppSupport from "@/components/WhatsAppSupport";
+
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Folder,
@@ -135,7 +135,7 @@ const DireStraitsFolder = () => {
         </div>
       )}
       
-      <WhatsAppSupport />
+      
     </div>
   );
 };

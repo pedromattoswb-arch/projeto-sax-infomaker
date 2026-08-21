@@ -4,7 +4,7 @@ import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
 import UpsellSection from "@/components/UpsellSection";
-import WhatsAppSupport from "@/components/WhatsAppSupport";
+
 
 // Google Ads conversion event for purchase
 const triggerPurchaseConversion = () => {
@@ -76,7 +76,7 @@ const ThankYouCompleto = () => {
             <p className="text-gold font-bold text-sm md:text-base flex items-start gap-3 text-left">
               <Mail className="w-5 h-5 mt-0.5 shrink-0" />
               <span>
-                O acesso foi enviado agora para seu <strong>E-mail e WhatsApp</strong> cadastrados na Wiapy. Verifique sua caixa de entrada e spam.
+                O acesso foi enviado agora para seu <strong>E-mail</strong> cadastrado na Wiapy. Verifique sua caixa de entrada e spam.
               </span>
             </p>
           </div>
@@ -182,7 +182,7 @@ const ThankYouCompleto = () => {
           </p>
         </div>
       </footer>
-      <WhatsAppSupport />
+      
     </div>
   );
 };

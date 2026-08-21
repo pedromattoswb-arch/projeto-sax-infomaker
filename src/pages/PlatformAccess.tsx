@@ -1,4 +1,4 @@
-import WhatsAppSupport from "@/components/WhatsAppSupport";
+
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 
 const PlatformAccess = () => {
@@ -16,7 +16,7 @@ const PlatformAccess = () => {
           ABRIR ACERVO COMPLETO
         </button>
       </div>
-      <WhatsAppSupport />
+      
     </div>
   );
 };
