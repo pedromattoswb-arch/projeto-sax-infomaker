@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import WhatsAppSupport from "@/components/WhatsAppSupport";
+
 import useNoIndex from "@/hooks/useNoIndex";
 import {
   Search,
@@ -652,22 +652,6 @@ const Acervo = ({ plan = "premium" }: AcervoProps) => {
           </div>
         </div>
       )}
-      {plan === "premium" && (
-        <>
-          <section className="mt-16 py-12 px-4 border-t border-border bg-card/30">
-            <div className="max-w-2xl mx-auto text-center space-y-6">
-              <div className="space-y-3">
-                <h3 className="font-bold text-lg">Dúvidas ou problemas com seu acesso?</h3>
-                <p className="text-sm text-muted-foreground">Como aluno Premium, você tem suporte prioritário via WhatsApp.</p>
-                <div className="flex justify-center pt-2">
-                  <WhatsAppSupport showFooterButton />
-                </div>
-              </div>
-            </div>
-          </section>
-          <WhatsAppSupport />
-        </>
-      )}
     </div>
   );
 };
@@ -894,12 +878,11 @@ const BonusSection = () => (
     </div>
     <div className="mt-12 py-12 border-t border-border/50 text-center space-y-6">
       <div className="space-y-3 max-w-lg mx-auto">
-        <h3 className="text-2xl font-extrabold font-heading text-foreground">Ficou com alguma dúvida?</h3>
+        <h3 className="text-2xl font-extrabold font-heading text-foreground">Plataforma Exclusiva</h3>
         <p className="text-muted-foreground font-body leading-relaxed">
-          Nossa equipe está disponível agora mesmo no WhatsApp para te ajudar a aproveitar ao máximo sua plataforma.
+          Explore todo o conteúdo disponível e bons estudos!
         </p>
       </div>
-      <WhatsAppSupport showFooterButton />
     </div>
   </div>
 );

@@ -4,7 +4,7 @@ import useNoIndex from "@/hooks/useNoIndex";
 import logoClubeSax from "@/assets/logo-clube-do-sax.png";
 import kitBanner from "@/assets/kit-ferramentas-banner.png";
 import UpsellSection from "@/components/UpsellSection";
-import WhatsAppSupport from "@/components/WhatsAppSupport";
+
 
 // Google Ads conversion event for purchase
 const triggerPurchaseConversion = () => {
@@ -76,7 +76,7 @@ const ThankYouCompleto = () => {
             <p className="text-gold font-bold text-sm md:text-base flex items-start gap-3 text-left">
               <Mail className="w-5 h-5 mt-0.5 shrink-0" />
               <span>
-                O acesso foi enviado agora para seu <strong>E-mail e WhatsApp</strong> cadastrados na Wiapy. Verifique sua caixa de entrada e spam.
+                O acesso foi enviado agora para seu <strong>E-mail</strong> cadastrado na Wiapy. Verifique sua caixa de entrada e spam.
               </span>
             </p>
           </div>
@@ -173,16 +173,15 @@ const ThankYouCompleto = () => {
         <div className="max-w-2xl mx-auto text-center space-y-6">
           <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mx-auto" />
           <div className="space-y-3">
-            <h3 className="font-extrabold text-xl">Ficou com alguma dúvida?</h3>
-            <p className="text-muted-foreground">Nossa equipe está pronta para te atender agora mesmo.</p>
-            <WhatsAppSupport showFooterButton />
+            <h3 className="font-extrabold text-xl">Dúvidas?</h3>
+            <p className="text-muted-foreground">Verifique seu e-mail para instruções detalhadas de acesso.</p>
           </div>
           <p className="text-xs text-muted-foreground font-body">
             © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
           </p>
         </div>
       </footer>
-      <WhatsAppSupport />
+      
     </div>
   );
 };

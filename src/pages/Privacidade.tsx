@@ -23,7 +23,7 @@ const Privacidade = () => {
             <h2 className="text-xl font-semibold text-foreground mb-2">2. Dados Coletados</h2>
             <p>Coletamos os seguintes dados quando você navega ou realiza uma compra:</p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li>Nome completo, e-mail, telefone/WhatsApp e CPF (no momento da compra)</li>
+              <li>Nome completo, e-mail e CPF (no momento da compra)</li>
               <li>Dados de navegação (cookies, endereço IP, dispositivo, páginas visitadas)</li>
               <li>Dados de pagamento (processados diretamente pelas plataformas Wiapy — não armazenamos cartões)</li>
             </ul>
@@ -47,7 +47,7 @@ const Privacidade = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">5. Compartilhamento de Dados</h2>
-            <p>Seus dados podem ser compartilhados apenas com parceiros estritamente necessários à operação: processadores de pagamento (Wiapy), plataformas de envio de e-mail e WhatsApp, e ferramentas de análise. Nunca vendemos seus dados a terceiros.</p>
+            <p>Seus dados podem ser compartilhados apenas com parceiros estritamente necessários à operação: processadores de pagamento (Wiapy), plataformas de envio de e-mail e ferramentas de análise. Nunca vendemos seus dados a terceiros.</p>
           </section>
 
           <section>
@@ -59,7 +59,7 @@ const Privacidade = () => {
               <li>Anonimização, bloqueio ou eliminação dos dados</li>
               <li>Portabilidade ou revogação do consentimento</li>
             </ul>
-            <p className="mt-2">Para exercer seus direitos, entre em contato pelo WhatsApp disponível no site.</p>
+            <p className="mt-2">Para exercer seus direitos, entre em contato pelo e-mail informado no seu comprovante de compra.</p>
           </section>
 
           <section>
@@ -79,7 +79,7 @@ const Privacidade = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">10. Contato do Encarregado (DPO)</h2>
-            <p>Em caso de dúvidas sobre o tratamento dos seus dados, entre em contato pelo WhatsApp do site.</p>
+            <p>Em caso de dúvidas sobre o tratamento dos seus dados, entre em contato pelo e-mail informado no seu comprovante de compra.</p>
             <p className="mt-4 text-sm">
               <strong className="text-foreground">Clube do Sax</strong><br />
               CNPJ: 51.919.716/0001-28

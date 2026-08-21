@@ -21,7 +21,7 @@ const Termos = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">2. Sobre o Produto</h2>
-            <p>O Clube do Sax oferece um produto digital educacional voltado para o aprendizado de saxofone, contendo partituras, áudios de playback, vídeos e materiais complementares. A entrega é feita por e-mail e/ou WhatsApp logo após a confirmação do pagamento.</p>
+            <p>O Clube do Sax oferece um produto digital educacional voltado para o aprendizado de saxofone, contendo partituras, áudios de playback, vídeos e materiais complementares. A entrega é feita por e-mail logo após a confirmação do pagamento.</p>
           </section>
 
           <section>
@@ -51,7 +51,7 @@ const Termos = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-2">8. Contato</h2>
-            <p>Para dúvidas, suporte ou solicitações, entre em contato pelo WhatsApp disponível no site.</p>
+            <p>Para dúvidas ou suporte, entre em contato pelo e-mail informado no seu comprovante de compra.</p>
             <p className="mt-4 text-sm">
               <strong className="text-foreground">Clube do Sax</strong><br />
               CNPJ: 51.919.716/0001-28
