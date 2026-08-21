@@ -173,9 +173,8 @@ const ThankYouCompleto = () => {
         <div className="max-w-2xl mx-auto text-center space-y-6">
           <img src={logoClubeSax} alt="Clube do Sax" className="h-10 mx-auto" />
           <div className="space-y-3">
-            <h3 className="font-extrabold text-xl">Ficou com alguma dúvida?</h3>
-            <p className="text-muted-foreground">Nossa equipe está pronta para te atender agora mesmo.</p>
-            <WhatsAppSupport showFooterButton />
+            <h3 className="font-extrabold text-xl">Dúvidas?</h3>
+            <p className="text-muted-foreground">Verifique seu e-mail para instruções detalhadas de acesso.</p>
           </div>
           <p className="text-xs text-muted-foreground font-body">
             © {new Date().getFullYear()} Clube do Sax. Todos os direitos reservados.
