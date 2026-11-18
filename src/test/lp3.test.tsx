@@ -194,7 +194,12 @@ describe("Landing Page /lp-3 — Compressed Eager WebP, 3D Scroll Motion & Immed
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog", { name: /Visualização da partitura/i })).not.toBeInTheDocument();
 
-    // 8. Verify Pricing Checkout URLs + UTM passthrough
+    // 8. Verify Plano Completo VIP is ALWAYS the 1st option (DOM order + zero order-2 swap) & Checkout UTMs
+    const offersGrid = container.querySelector("#ofertas .grid") as HTMLElement;
+    expect(offersGrid.children[0].textContent).toContain("Plano Completo");
+    expect(offersGrid.children[1].textContent).toContain("Plano Básico");
+    expect(offersGrid.children[0].className).not.toContain("order-2");
+
     const originalLocation = window.location;
     Object.defineProperty(window, "location", {
       writable: true,

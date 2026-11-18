@@ -456,8 +456,9 @@ const SalesPageV3 = () => {
 
             <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto mb-8">
               Mais de 10.000 partituras com playback de estúdio para Sax Alto e Sax Tenor, busca por
-              voz e acesso vitalício a partir de <strong className="text-white">R$ 14,90</strong> —
-              com <strong className="text-[#1ed760]">Login enviado direto no seu e-mail na mesma hora!</strong>
+              voz e 3 bônus no <strong className="text-[#ffe49e]">Plano Completo VIP por apenas R$ 24,90</strong>{" "}
+              (pagamento único) — com{" "}
+              <strong className="text-[#1ed760]">Login enviado direto no seu e-mail na mesma hora!</strong>
             </p>
 
             <button
@@ -574,7 +575,7 @@ const SalesPageV3 = () => {
           onClick={scrollToOffers}
           className="w-full sax-cta-btn py-3.5 px-4 rounded-xl text-xs min-[375px]:text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
         >
-          <span className="truncate">GARANTIR ACESSO — A PARTIR DE R$ 14,90</span>
+          <span className="truncate">GARANTIR ACESSO COMPLETO — R$ 24,90</span>
           <ArrowRight className="w-4 h-4 shrink-0" />
         </button>
       </div>

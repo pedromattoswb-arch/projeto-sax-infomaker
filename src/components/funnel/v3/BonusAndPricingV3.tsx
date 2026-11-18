@@ -45,7 +45,7 @@ const essentialMissing = [
 ];
 
 const premiumFeatures = [
-  { text: "Tudo do Plano Básico incluído +", highlight: true },
+  { text: "Acesso 100% Completo (inclui tudo do Básico + recursos VIP):", highlight: true },
   { text: "+10.000 partituras com Playback de Estúdio (Sax Alto Eb e Tenor Bb)" },
   { text: "Login + Senha do App no seu E-mail na mesma hora", highlight: true },
   { text: "Plataforma exclusiva estilo Netflix & Spotify" },
@@ -356,98 +356,26 @@ export const PricingCardsV3 = ({ saxType }: PricingCardsV3Props) => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-7 md:gap-8 lg:gap-10 items-stretch max-w-5xl mx-auto">
-          {/* PLANO BÁSICO */}
-          <CinematicReveal className="order-2 md:order-1">
-            <div className="sax-card h-full rounded-3xl sm:rounded-[32px] p-6 sm:p-9 flex flex-col justify-between border border-white/10">
-              <div>
-                <div className="mb-6">
-                  <span className="inline-block bg-white/5 text-[#cfc3ae] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 border border-white/10">
-                    Apenas PDFs
-                  </span>
-                  <h3 className="text-2xl font-black font-heading text-white mb-1.5">
-                    Plano Básico
-                  </h3>
-                  <p className="text-sm sm:text-base text-[#cfc3ae]">
-                    Para quem deseja apenas as partituras em PDF sem acompanhamento.
-                  </p>
-                </div>
-
-                <div className="mb-6">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-sm font-bold text-[#cfc3ae]">R$</span>
-                    <span className="text-4xl sm:text-5xl font-black font-heading text-white tracking-tight">
-                      14,90
-                    </span>
-                  </div>
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae]">
-                    Pagamento Único • Acesso Vitalício
-                  </span>
-                </div>
-
-                <div className="rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-3 mb-6 flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#f5b942] shrink-0" />
-                  <span className="text-xs sm:text-sm font-semibold text-[#e6decb]">
-                    Acesso e Login enviados no e-mail na hora
-                  </span>
-                </div>
-
-                <p className="text-xs font-black uppercase tracking-[0.15em] text-[#ffe49e] mb-4">
-                  O que está incluso:
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {essentialHas.map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-white/90 font-medium">
-                      <Check className="w-4 h-4 text-[#f5b942] shrink-0 mt-1" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="border-t border-white/10 pt-5 mb-7">
-                  <p className="text-xs font-black uppercase tracking-[0.15em] text-white/40 mb-3.5">
-                    Não incluso no Básico:
-                  </p>
-                  <ul className="space-y-2.5">
-                    {essentialMissing.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-white/40">
-                        <X className="w-4 h-4 text-rose-400/50 shrink-0 mt-0.5" />
-                        <span className="line-through">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => handleCheckout("essential")}
-                className="min-h-[52px] w-full py-4 px-5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-white font-black uppercase tracking-wider text-sm transition-all cursor-pointer"
-              >
-                Garantir Plano Básico (R$ 14,90)
-              </button>
-            </div>
-          </CinematicReveal>
-
-          {/* PLANO COMPLETO VIP — FEATURED (First on mobile for optimal CRO!) */}
-          <CinematicReveal className="relative order-1 md:order-2 md:-mt-2 md:mb-2">
+        <div className="grid grid-cols-1 md:grid-cols-[1.12fr_0.88fr] gap-7 md:gap-8 lg:gap-10 items-stretch max-w-5xl mx-auto">
+          {/* OPÇÃO #1 (SEMPRE PRIMEIRA NO MOBILE, TABLET E DESKTOP): PLANO COMPLETO VIP */}
+          <CinematicReveal className="relative md:-mt-2 md:mb-2">
             <div className="relative h-full">
               <div
-                className="pointer-events-none absolute -inset-[2.5px] rounded-[30px] sm:rounded-[34px] opacity-80 blur-[3px]"
+                className="pointer-events-none absolute -inset-[2.5px] rounded-[30px] sm:rounded-[34px] opacity-85 blur-[3px]"
                 style={{
                   background: "linear-gradient(135deg, #ffe299 0%, #f5b942 45%, #1ed760 100%)",
                 }}
               />
 
-              <div className="relative h-full rounded-3xl sm:rounded-[32px] bg-gradient-to-b from-[#1a1308] via-[#100c06] to-[#090704] border-2 border-[#f5b942]/75 p-6 sm:p-9 flex flex-col justify-between shadow-2xl overflow-hidden">
+              <div className="relative h-full rounded-3xl sm:rounded-[32px] bg-gradient-to-b from-[#1a1308] via-[#100c06] to-[#090704] border-2 border-[#f5b942]/80 p-6 sm:p-9 flex flex-col justify-between shadow-2xl overflow-hidden">
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-5 flex-wrap">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#ffe299] to-[#f5b942] text-[#1c1102] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider shadow-md">
                       <Crown className="w-3.5 h-3.5 shrink-0" />
-                      Escolha de 94% dos Alunos
+                      1ª Opção • Escolha de 94% dos Alunos
                     </span>
                     <span className="inline-flex items-center gap-1 rounded-full bg-[#1ed760]/15 border border-[#1ed760]/40 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#1ed760]">
-                      <Sparkles className="w-3 h-3" /> VIP Completo
+                      <Sparkles className="w-3 h-3" /> Mais Completo
                     </span>
                   </div>
 
@@ -458,7 +386,7 @@ export const PricingCardsV3 = ({ saxType }: PricingCardsV3Props) => {
                     O aplicativo completo com +10.000 Partituras, Playbacks estilo Spotify, Busca por Voz e os 3 Bônus!
                   </p>
 
-                  <div className="mb-6 bg-black/45 border border-[#f5b942]/25 rounded-2xl p-4">
+                  <div className="mb-6 bg-black/45 border border-[#f5b942]/30 rounded-2xl p-4">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="text-xs sm:text-sm text-[#cfc3ae] line-through">
                         Valor real: R$ 197,00
@@ -517,7 +445,7 @@ export const PricingCardsV3 = ({ saxType }: PricingCardsV3Props) => {
 
                   <div className="rounded-2xl bg-[#f5b942]/12 border border-[#f5b942]/30 p-3.5 mb-6 text-center">
                     <p className="text-xs sm:text-sm font-bold text-[#ffe49e]">
-                      💡 Por apenas <strong>R$ 10 a mais</strong> você leva todos os{" "}
+                      💡 Melhor Custo-Benefício: por apenas <strong>R$ 10 de diferença</strong> você leva todos os{" "}
                       <strong className="text-white">+10.000 Playbacks de Estúdio</strong>, Busca por Voz e os 3 Bônus!
                     </p>
                   </div>
@@ -544,6 +472,78 @@ export const PricingCardsV3 = ({ saxType }: PricingCardsV3Props) => {
                   </div>
                 </div>
               </div>
+            </div>
+          </CinematicReveal>
+
+          {/* OPÇÃO #2 (SECUNDÁRIA): PLANO BÁSICO — APENAS PDFs */}
+          <CinematicReveal>
+            <div className="sax-card h-full rounded-3xl sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-between border border-white/10 opacity-95">
+              <div>
+                <div className="mb-6">
+                  <span className="inline-block bg-white/5 text-[#cfc3ae] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-3 border border-white/10">
+                    2ª Opção • Apenas PDFs
+                  </span>
+                  <h3 className="text-2xl font-black font-heading text-white mb-1.5">
+                    Plano Básico
+                  </h3>
+                  <p className="text-sm sm:text-base text-[#cfc3ae]">
+                    Opção enxuta para quem deseja somente partituras em PDF sem acompanhamento musical.
+                  </p>
+                </div>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-bold text-[#cfc3ae]">R$</span>
+                    <span className="text-4xl sm:text-5xl font-black font-heading text-white tracking-tight">
+                      14,90
+                    </span>
+                  </div>
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae]">
+                    Pagamento Único • Acesso Vitalício
+                  </span>
+                </div>
+
+                <div className="rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-3 mb-6 flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-[#f5b942] shrink-0" />
+                  <span className="text-xs sm:text-sm font-semibold text-[#e6decb]">
+                    Acesso e Login enviados no e-mail na hora
+                  </span>
+                </div>
+
+                <p className="text-xs font-black uppercase tracking-[0.15em] text-[#ffe49e] mb-4">
+                  O que está incluso:
+                </p>
+                <ul className="space-y-3 mb-6">
+                  {essentialHas.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-white/90 font-medium">
+                      <Check className="w-4 h-4 text-[#f5b942] shrink-0 mt-1" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="border-t border-white/10 pt-5 mb-7">
+                  <p className="text-xs font-black uppercase tracking-[0.15em] text-white/40 mb-3.5">
+                    Fica de fora no Básico:
+                  </p>
+                  <ul className="space-y-2.5">
+                    {essentialMissing.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-white/40">
+                        <X className="w-4 h-4 text-rose-400/50 shrink-0 mt-0.5" />
+                        <span className="line-through">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleCheckout("essential")}
+                className="min-h-[52px] w-full py-4 px-5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-white font-black uppercase tracking-wider text-sm transition-all cursor-pointer"
+              >
+                Escolher Plano Básico (R$ 14,90)
+              </button>
             </div>
           </CinematicReveal>
         </div>

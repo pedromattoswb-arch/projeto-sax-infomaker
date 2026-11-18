@@ -212,8 +212,8 @@ const FAQ_V3_ITEMS = [
     a: "Não! O Clube do Sax funciona como um Web App moderno (estilo Netflix e Spotify). Você faz login pelo navegador do seu iPhone, Android, iPad/Tablet ou Computador, abre a partitura na tela e dá play no playback instantaneamente — ou baixa o PDF quando quiser imprimir.",
   },
   {
-    q: "Qual a diferença entre o Plano Básico (R$ 14,90) e o Plano Completo VIP (R$ 24,90)?",
-    a: "O Plano Básico (R$ 14,90) entrega +5.000 partituras apenas em PDF. Já o Plano Completo VIP (R$ 24,90 — escolhido por 94% dos alunos) desbloqueia +10.000 partituras COM Playbacks profissionais de estúdio, Busca Inteligente por Voz, Vídeos Tutoriais, Harpa Cristã completa, atualizações mensais e os 3 Guias Bônus VIP.",
+    q: "Qual a diferença entre o Plano Completo VIP (R$ 24,90) e o Plano Básico (R$ 14,90)?",
+    a: "O Plano Completo VIP (R$ 24,90 — nossa 1ª opção e escolha de 94% dos alunos) libera a experiência completa do aplicativo: +10.000 partituras COM Playbacks profissionais de estúdio, Busca Inteligente por Voz, Vídeos Tutoriais, Harpa Cristã completa, atualizações mensais e os 3 Guias Bônus VIP. Já o Plano Básico (R$ 14,90) é uma opção secundária enxuta com +5.000 partituras apenas em PDF, sem playbacks e sem bônus.",
   },
   {
     q: "O pagamento é realmente único ou tem mensalidade?",
