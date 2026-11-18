@@ -61,11 +61,11 @@ function readOfferAlreadySeen(): boolean {
 }
 
 const SCENE_PROGRESS: Record<FunnelScene, number> = {
-  intro: 14,
-  "choose-sax": 38,
-  "style-step": 52,
-  "before-after": 68,
-  "build-library": 88,
+  intro: 16,
+  "choose-sax": 42,
+  "style-step": 56,
+  "before-after": 72,
+  "build-library": 90,
   offer: 100,
 };
 
@@ -92,7 +92,7 @@ export const FunnelController = () => {
   const [stageIntensity, setStageIntensity] = useState<number>(0.3);
   const [beatPulse, setBeatPulse] = useState<number>(0);
   const [spotlightX, setSpotlightX] = useState<number>(50);
-  const [spotlightIntensity, setSpotlightIntensity] = useState<number>(0.35);
+  const [spotlightIntensity, setSpotlightIntensity] = useState<number>(0.38);
 
   const [staffMode, setStaffMode] = useState<"hidden" | "draw" | "running">("hidden");
   const [comparisonMix, setComparisonMix] = useState<number>(0);
@@ -105,9 +105,10 @@ export const FunnelController = () => {
   const sceneRef = useRef<FunnelScene>(scene);
   sceneRef.current = scene;
 
-  // Subscribe to AudioEngine mute/status updates + preload optional audio + capture UTMs on entry
+  // Inicializa UTMs, garante áudio ligado por padrão e pré-carrega Sax Tenor em idle
   useEffect(() => {
     captureEntryQueryParams();
+    audioEngine.setMuted(false);
     audioEngine.preload();
 
     const unsub = audioEngine.subscribe(() => {
@@ -115,11 +116,10 @@ export const FunnelController = () => {
       setAudioStatus(audioEngine.getStatus());
     });
 
-    // Prefetch Scene 2 Tenor sax image during idle once Scene 1 is interactive
     const idleTimer = window.setTimeout(() => {
       const img = new Image();
       img.src = FUNNEL_CONFIG.assets.saxTenorImage;
-    }, 550);
+    }, 500);
 
     return () => {
       window.clearTimeout(idleTimer);
@@ -129,7 +129,7 @@ export const FunnelController = () => {
     };
   }, []);
 
-  // Push initial history state & wire browser Back button cleanly across scenes
+  // Histórico (botão Voltar retorna à cena anterior preservando UTMs)
   useEffect(() => {
     try {
       const currentUrl = `${window.location.pathname}${window.location.search}`;
@@ -155,10 +155,11 @@ export const FunnelController = () => {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  // Pre-load OfferSection lazy chunk during Scene 3 & 4 so Mask Reveal is 0ms instant!
+  // Pré-carrega o chunk da Oferta + imagens WebP de /lp-3 durante as Cenas 3 e 4 (transição 0ms!)
   useEffect(() => {
     if (scene === "before-after" || scene === "build-library") {
       void loadOfferSection();
+      void import("@/components/funnel/v3/lp3MediaPreload").then((m) => m.preloadAllLp3Media());
     }
     if (scene === "offer") {
       trackOfferViewContent(sax);
@@ -183,9 +184,13 @@ export const FunnelController = () => {
     setScene(next);
   }, []);
 
+  // Desbloqueio síncrono do áudio no EXATO instante do toque na Cena 1 (obrigatório p/ iOS & Instagram)
+  const handleUnlockAudio = useCallback(() => {
+    audioEngine.unlockAndPlayStinger();
+  }, []);
+
   const handleScene1Start = useCallback(() => {
     trackFunnelStart();
-    void audioEngine.unlockAndPlayStinger();
     navigateToScene("choose-sax");
   }, [navigateToScene]);
 
@@ -213,7 +218,6 @@ export const FunnelController = () => {
         setStaffMode("hidden");
         navigateToScene("style-step");
       } else {
-        // Seamless transition: drawn staff stays mounted and switches to running mode in Scene 3
         setStaffMode("running");
         setComparisonMix(0);
         setStageWarmth(0);
@@ -256,8 +260,6 @@ export const FunnelController = () => {
 
   const handleBuildComplete = useCallback(() => {
     trackLibraryBuilt(sax);
-    setStageWarmth(0.85);
-    setStageIntensity(0.5);
     navigateToScene("offer");
   }, [navigateToScene, sax]);
 
@@ -265,8 +267,6 @@ export const FunnelController = () => {
     trackSkipToOffer(SCENE_NUMBER[sceneRef.current]);
     audioEngine.stopComparison();
     setStaffMode("hidden");
-    setStageWarmth(0.85);
-    setStageIntensity(0.45);
     navigateToScene("offer");
   }, [navigateToScene]);
 
@@ -284,96 +284,114 @@ export const FunnelController = () => {
     navigateToScene("intro");
   }, [navigateToScene]);
 
-  const isStageScene = scene !== "offer";
+  // CENA 5 (OFERTA): renderiza 100% no tema idêntico da /lp-3 (sem overlays competindo)
+  if (scene === "offer") {
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#070503] flex items-center justify-center text-[#ffe49e] text-sm font-bold tracking-wider uppercase">
+            Abrindo seu acervo…
+          </div>
+        }
+      >
+        <OfferSection
+          sax={sax}
+          reducedMotion={reducedMotion}
+          onReplayFunnel={handleReplay}
+        />
+      </Suspense>
+    );
+  }
+
   const progressPct = SCENE_PROGRESS[scene];
 
   return (
     <div
-      className={`theme-jazz-club ${isStageScene ? "is-stage-locked" : "is-offer-scrollable"}`}
+      className="theme-jazz-club is-stage-locked"
       data-tier={device.tier}
       data-backdrop={device.allowBackdropFilter ? "on" : "off"}
     >
-      {/* Persistent Atmospheric Jazz Stage Background */}
+      {/* Persistent Atmospheric Jazz Stage Background (Full-Screen 100dvh) */}
       <StageBackground
         warmth={stageWarmth}
         intensity={stageIntensity}
         beatPulse={beatPulse}
         animateSmoke={device.allowAnimatedSmoke}
         reducedMotion={reducedMotion}
-        subtle={!isStageScene}
       />
 
-      {/* Cinematic Spotlight Tracking (Scenes 1–4) */}
-      {isStageScene && (
-        <Spotlight
-          xPercent={spotlightX}
-          intensity={spotlightIntensity}
-          warmth={stageWarmth}
-          reducedMotion={reducedMotion}
-        />
-      )}
+      {/* Cinematic Spotlight Tracking */}
+      <Spotlight
+        xPercent={spotlightX}
+        intensity={spotlightIntensity}
+        warmth={stageWarmth}
+        reducedMotion={reducedMotion}
+      />
 
-      {/* Single Canvas 2D Musical Particle Field (Scenes 1–4) */}
-      {isStageScene && (
-        <ParticleField
-          ref={particleRef}
-          maxParticles={device.maxParticles}
-          warmth={stageWarmth}
-          activity={scene === "intro" ? 0.2 : scene === "before-after" ? 0.25 + comparisonMix * 0.75 : 0.7}
-          enabled={!reducedMotion}
-        />
-      )}
+      {/* Single Canvas 2D Musical Particle Field */}
+      <ParticleField
+        ref={particleRef}
+        maxParticles={device.maxParticles}
+        warmth={stageWarmth}
+        activity={
+          scene === "intro"
+            ? 0.22
+            : scene === "before-after"
+            ? 0.25 + comparisonMix * 0.75
+            : 0.7
+        }
+        enabled={!reducedMotion}
+      />
 
-      {/* GLOBAL TOP HUD FOR SCENES 1–4: Thin Gold Progress Bar + Sound Toggle + "Ir para a oferta" (from Scene 2) */}
-      {isStageScene && (
-        <div className="fixed top-0 inset-x-0 z-40 pointer-events-none">
-          {/* Thin Golden Progress Bar */}
-          <div className="w-full h-[3px] bg-white/[0.08]" aria-hidden="true">
-            <div
-              className="h-full transition-[width] duration-500 ease-out"
-              style={{
-                width: `${progressPct}%`,
-                background: "linear-gradient(90deg, #8a6a2f 0%, #f5d58a 60%, #1ed760 100%)",
-              }}
-            />
-          </div>
+      {/* GLOBAL TOP HUD FOR SCENES 1–4: Thin Gold Progress Bar + Discreet Audio Pill + "Ir para a oferta" */}
+      <div className="fixed top-0 inset-x-0 z-40 pointer-events-none">
+        <div className="w-full h-[3px] bg-white/[0.08]" aria-hidden="true">
+          <div
+            className="h-full transition-[width] duration-500 ease-out"
+            style={{
+              width: `${progressPct}%`,
+              background: "linear-gradient(90deg, #8a6a2f 0%, #f5d58a 60%, #1ed760 100%)",
+            }}
+          />
+        </div>
 
-          <div className="flex items-center justify-between gap-2 px-4 pt-3 jazz-safe-top">
-            {/* Persistent Global Sound Toggle */}
+        <div className="flex items-center justify-between gap-2 px-4 pt-2.5 jazz-safe-top">
+          {/* Discreet, non-intrusive always-on audio pill */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              audioEngine.toggleMute();
+            }}
+            aria-label={isMuted ? "Ativar som da experiência" : "Silenciar som da experiência"}
+            aria-pressed={!isMuted}
+            className="pointer-events-auto min-h-[36px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] font-semibold text-[#cdc3b2] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+          >
+            {isMuted ? (
+              <VolumeX className="w-3.5 h-3.5 text-white/55 shrink-0" />
+            ) : (
+              <Volume2 className="w-3.5 h-3.5 text-[#1ed760] shrink-0" />
+            )}
+            <span>
+              {isMuted
+                ? FUNNEL_CONFIG.copy.global.soundOffLabel
+                : FUNNEL_CONFIG.copy.global.soundOnLabel}
+            </span>
+          </button>
+
+          {/* Discreet "Ir para a oferta" link starting from Scene 2 */}
+          {scene !== "intro" && (
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                audioEngine.toggleMute();
-              }}
-              aria-label={isMuted ? "Ativar som da experiência" : "Silenciar som da experiência"}
-              aria-pressed={!isMuted}
-              className="pointer-events-auto min-h-[40px] min-w-[40px] px-3 rounded-full bg-black/55 hover:bg-black/75 border border-[#f5d58a]/30 text-[#f5d58a] inline-flex items-center gap-1.5 text-xs font-bold cursor-pointer transition-colors"
+              onClick={handleSkipToOffer}
+              className="pointer-events-auto min-h-[36px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] sm:text-xs font-semibold text-[#cdc3b2] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
             >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4 text-white/65" />
-              ) : (
-                <Volume2 className="w-4 h-4 text-[#1ed760]" />
-              )}
-              <span className="hidden min-[380px]:inline">
-                {isMuted ? FUNNEL_CONFIG.copy.global.soundOffLabel : FUNNEL_CONFIG.copy.global.soundOnLabel}
-              </span>
+              <span>{FUNNEL_CONFIG.copy.global.skipToOffer}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#f5d58a]" />
             </button>
-
-            {/* Discreet "Ir para a oferta" link from Scene 2 onward */}
-            {scene !== "intro" && (
-              <button
-                type="button"
-                onClick={handleSkipToOffer}
-                className="pointer-events-auto min-h-[40px] px-3.5 rounded-full bg-black/50 hover:bg-black/75 border border-white/15 text-xs font-bold text-[#cdc3b2] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
-              >
-                <span>{FUNNEL_CONFIG.copy.global.skipToOffer}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#f5d58a]" />
-              </button>
-            )}
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* SEAMLESS SHARED SVG MUSIC STAFF (Bridges Scene 2 -> Scene 3 with ZERO cut!) */}
       {(scene === "choose-sax" || scene === "before-after") && staffMode !== "hidden" && (
@@ -390,10 +408,11 @@ export const FunnelController = () => {
         </div>
       )}
 
-      {/* ACTIVE SCENE RENDERER */}
+      {/* ACTIVE FULL-SCREEN STAGE SCENE */}
       {scene === "intro" && (
         <SceneIntro
           reducedMotion={reducedMotion}
+          onUnlockAudio={handleUnlockAudio}
           onStart={handleScene1Start}
           onBurstParticles={() => particleRef.current?.burst(0.5, 0.48, 54)}
           onStageFlash={handleStageFlash}
@@ -440,23 +459,6 @@ export const FunnelController = () => {
           reducedMotion={reducedMotion}
           onComplete={handleBuildComplete}
         />
-      )}
-
-      {scene === "offer" && (
-        <Suspense
-          fallback={
-            <div className="min-h-screen flex items-center justify-center text-[#f5d58a] text-sm font-bold tracking-wider uppercase">
-              Abrindo seu acervo…
-            </div>
-          }
-        >
-          <OfferSection
-            sax={sax}
-            reducedMotion={reducedMotion}
-            allowTilt={device.allowTilt}
-            onReplayFunnel={handleReplay}
-          />
-        </Suspense>
       )}
     </div>
   );

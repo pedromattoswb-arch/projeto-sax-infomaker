@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ArrowRight } from "lucide-react";
 import { FUNNEL_CONFIG, type SaxChoice } from "../funnel.config";
+import { audioEngine } from "../audio/AudioEngine";
 import { SaxVisual } from "../fx/SaxVisual";
 import { SplitTextHeading } from "../fx/SplitTextHeading";
 import { useIdleHint } from "../hooks/useIdleHint";
@@ -29,14 +31,13 @@ export const SceneChooseSax = ({
   const tenorRef = useRef<HTMLButtonElement | null>(null);
   const idle4s = useIdleHint(!chosen, 4000, "scene2");
 
-  // Scene entrance
   useEffect(() => {
-    onSpotlightMove(50, 0.72);
+    onSpotlightMove(50, 0.78);
     if (reducedMotion || !containerRef.current) return;
     const tween = gsap.fromTo(
       containerRef.current,
       { opacity: 0, scale: 0.96 },
-      { opacity: 1, scale: 1, duration: 0.55, ease: "expo.out" }
+      { opacity: 1, scale: 1, duration: 0.52, ease: "expo.out" }
     );
     return () => {
       tween.kill();
@@ -48,12 +49,15 @@ export const SceneChooseSax = ({
     const rect = e.currentTarget.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
     const ny = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rx: -ny * 9, ry: nx * 12 });
+    setTilt({ rx: -ny * 8, ry: nx * 11 });
   };
 
   const handlePick = (sax: SaxChoice) => {
     if (chosen) return;
     setChosen(sax);
+
+    // Toca uma frase cálida distinta para Alto (Eb) ou Tenor (Bb) dentro do gesto de toque
+    audioEngine.playSaxPreviewNote(sax);
 
     try {
       navigator.vibrate?.(25);
@@ -67,7 +71,7 @@ export const SceneChooseSax = ({
     onTriggerStaffDraw();
 
     if (reducedMotion) {
-      window.setTimeout(() => onSelect(sax), 950);
+      window.setTimeout(() => onSelect(sax), 900);
       return;
     }
 
@@ -83,9 +87,9 @@ export const SceneChooseSax = ({
         otherEl,
         {
           opacity: 0,
-          scale: 0.82,
+          scale: 0.84,
           filter: "blur(10px)",
-          duration: 0.45,
+          duration: 0.42,
           ease: "power2.in",
         },
         0
@@ -97,19 +101,17 @@ export const SceneChooseSax = ({
         pickedEl,
         {
           x: sax === "alto" ? "26%" : "-26%",
-          scale: 1.12,
-          rotateY: sax === "alto" ? 12 : -12,
-          duration: 0.65,
+          scale: 1.1,
+          rotateY: sax === "alto" ? 10 : -10,
+          duration: 0.62,
           ease: "expo.out",
         },
-        0.05
+        0.04
       );
     }
 
-    // Center spotlight gently after sax glides toward center
-    tl.call(() => onSpotlightMove(50, 0.95), [], 0.28);
+    tl.call(() => onSpotlightMove(50, 0.95), [], 0.26);
 
-    // Hold briefly while SVG staff draws (~1.2s total) then fade seamlessly into Scene 3
     tl.to(
       containerRef.current,
       {
@@ -127,14 +129,14 @@ export const SceneChooseSax = ({
       ref={containerRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={() => setTilt({ rx: 0, ry: 0 })}
-      className="relative z-10 flex flex-col items-center justify-between w-full h-full px-4 pt-16 pb-8 sm:pt-20 sm:pb-10 text-center select-none"
+      className="relative z-10 flex flex-col items-center justify-between w-full h-full px-4 pt-[68px] pb-7 sm:pt-20 sm:pb-10 text-center select-none jazz-safe-bottom"
       style={{ perspective: "1000px" }}
     >
-      {/* Top Question */}
+      {/* Top Guided Header */}
       <div className="max-w-lg mx-auto space-y-2">
-        <p className="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.24em] text-[#f5d58a]/85">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f5d58a]/12 border border-[#f5d58a]/35 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#f5d58a]">
           {FUNNEL_CONFIG.copy.scene2.eyebrow}
-        </p>
+        </span>
 
         <SplitTextHeading
           text={FUNNEL_CONFIG.copy.scene2.headline}
@@ -145,14 +147,14 @@ export const SceneChooseSax = ({
           delay={0.04}
         />
 
-        <p className="text-base text-[#cdc3b2] max-w-sm mx-auto leading-snug">
+        <p className="text-[15px] sm:text-base text-[#e0d7c6] max-w-sm mx-auto leading-snug">
           {FUNNEL_CONFIG.copy.scene2.subtitle}
         </p>
       </div>
 
-      {/* Two Floating Saxophones Side-by-Side */}
+      {/* Two Clear Interactive Instrument Cards Side-by-Side */}
       <div
-        className="grid grid-cols-2 gap-3 sm:gap-8 w-full max-w-xl mx-auto my-auto items-center"
+        className="grid grid-cols-2 gap-3 sm:gap-7 w-full max-w-xl mx-auto my-auto items-stretch"
         style={
           allowTilt && !reducedMotion && !chosen
             ? {
@@ -170,13 +172,14 @@ export const SceneChooseSax = ({
           onClick={() => handlePick("alto")}
           disabled={chosen !== null}
           aria-label="Escolher Sax Alto Mi bemol (Eb)"
-          className="group relative flex flex-col items-center justify-center rounded-3xl py-4 px-2 sm:p-6 bg-white/[0.03] hover:bg-white/[0.06] border border-[#f5d58a]/25 hover:border-[#f5d58a]/70 transition-all cursor-pointer active:scale-95"
+          className={`group relative flex flex-col items-center justify-between rounded-3xl py-4 px-2.5 sm:p-6 bg-white/[0.04] hover:bg-white/[0.08] border transition-all cursor-pointer active:scale-95 ${
+            idle4s ? "border-[#f5d58a]/80 shadow-[0_0_28px_rgba(245,213,138,0.22)]" : "border-[#f5d58a]/35 hover:border-[#f5d58a]"
+          }`}
         >
           <div
-            className="pointer-events-none absolute inset-x-4 top-6 bottom-12 rounded-full opacity-55 group-hover:opacity-90 transition-opacity"
+            className="pointer-events-none absolute inset-x-4 top-6 bottom-14 rounded-full opacity-60 group-hover:opacity-95 transition-opacity"
             style={{
-              background:
-                "radial-gradient(circle, rgba(245, 213, 138, 0.25) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(245, 213, 138, 0.26) 0%, transparent 70%)",
               filter: "blur(18px)",
             }}
             aria-hidden="true"
@@ -184,20 +187,27 @@ export const SceneChooseSax = ({
 
           <SaxVisual
             variant="alto"
-            className="h-[195px] min-[390px]:h-[225px] sm:h-[275px] w-auto relative z-10"
-            glowIntensity={chosen === "alto" ? 1.15 : 0.65}
+            className="h-[175px] min-[390px]:h-[210px] sm:h-[260px] w-auto relative z-10"
+            glowIntensity={chosen === "alto" ? 1.15 : 0.7}
             floatEnabled={!chosen}
             sheenEnabled
             reducedMotion={reducedMotion}
             priority
           />
 
-          <div className="relative z-10 mt-3 text-center">
-            <span className="block font-heading font-black text-xl sm:text-2xl tracking-wider jazz-gold-text">
-              {FUNNEL_CONFIG.copy.scene2.altoLabel}
-            </span>
-            <span className="block text-xs sm:text-sm font-semibold text-[#cdc3b2] mt-0.5">
-              {FUNNEL_CONFIG.copy.scene2.altoSub}
+          <div className="relative z-10 mt-2.5 w-full text-center space-y-2">
+            <div>
+              <span className="block font-heading font-black text-xl sm:text-2xl tracking-wider jazz-gold-text leading-none">
+                {FUNNEL_CONFIG.copy.scene2.altoLabel}
+              </span>
+              <span className="block text-xs sm:text-sm font-semibold text-[#e0d7c6] mt-1">
+                {FUNNEL_CONFIG.copy.scene2.altoSub}
+              </span>
+            </div>
+
+            <span className="w-full inline-flex items-center justify-center gap-1 rounded-xl bg-[#f5d58a]/15 group-hover:bg-[#f5d58a] text-[#f5d58a] group-hover:text-[#181003] border border-[#f5d58a]/45 py-2 px-2.5 text-[11px] sm:text-xs font-black uppercase tracking-wider transition-colors">
+              <span>{FUNNEL_CONFIG.copy.scene2.altoAction}</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0" />
             </span>
           </div>
         </button>
@@ -209,13 +219,14 @@ export const SceneChooseSax = ({
           onClick={() => handlePick("tenor")}
           disabled={chosen !== null}
           aria-label="Escolher Sax Tenor Si bemol (Bb)"
-          className="group relative flex flex-col items-center justify-center rounded-3xl py-4 px-2 sm:p-6 bg-white/[0.03] hover:bg-white/[0.06] border border-[#f5d58a]/25 hover:border-[#f5d58a]/70 transition-all cursor-pointer active:scale-95"
+          className={`group relative flex flex-col items-center justify-between rounded-3xl py-4 px-2.5 sm:p-6 bg-white/[0.04] hover:bg-white/[0.08] border transition-all cursor-pointer active:scale-95 ${
+            idle4s ? "border-[#f5d58a]/80 shadow-[0_0_28px_rgba(245,213,138,0.22)]" : "border-[#f5d58a]/35 hover:border-[#f5d58a]"
+          }`}
         >
           <div
-            className="pointer-events-none absolute inset-x-4 top-6 bottom-12 rounded-full opacity-55 group-hover:opacity-90 transition-opacity"
+            className="pointer-events-none absolute inset-x-4 top-6 bottom-14 rounded-full opacity-60 group-hover:opacity-95 transition-opacity"
             style={{
-              background:
-                "radial-gradient(circle, rgba(245, 213, 138, 0.25) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(245, 213, 138, 0.26) 0%, transparent 70%)",
               filter: "blur(18px)",
             }}
             aria-hidden="true"
@@ -223,27 +234,34 @@ export const SceneChooseSax = ({
 
           <SaxVisual
             variant="tenor"
-            className="h-[195px] min-[390px]:h-[225px] sm:h-[275px] w-auto relative z-10"
-            glowIntensity={chosen === "tenor" ? 1.15 : 0.65}
+            className="h-[175px] min-[390px]:h-[210px] sm:h-[260px] w-auto relative z-10"
+            glowIntensity={chosen === "tenor" ? 1.15 : 0.7}
             floatEnabled={!chosen}
             sheenEnabled
             reducedMotion={reducedMotion}
             priority
           />
 
-          <div className="relative z-10 mt-3 text-center">
-            <span className="block font-heading font-black text-xl sm:text-2xl tracking-wider jazz-gold-text">
-              {FUNNEL_CONFIG.copy.scene2.tenorLabel}
-            </span>
-            <span className="block text-xs sm:text-sm font-semibold text-[#cdc3b2] mt-0.5">
-              {FUNNEL_CONFIG.copy.scene2.tenorSub}
+          <div className="relative z-10 mt-2.5 w-full text-center space-y-2">
+            <div>
+              <span className="block font-heading font-black text-xl sm:text-2xl tracking-wider jazz-gold-text leading-none">
+                {FUNNEL_CONFIG.copy.scene2.tenorLabel}
+              </span>
+              <span className="block text-xs sm:text-sm font-semibold text-[#e0d7c6] mt-1">
+                {FUNNEL_CONFIG.copy.scene2.tenorSub}
+              </span>
+            </div>
+
+            <span className="w-full inline-flex items-center justify-center gap-1 rounded-xl bg-[#f5d58a]/15 group-hover:bg-[#f5d58a] text-[#f5d58a] group-hover:text-[#181003] border border-[#f5d58a]/45 py-2 px-2.5 text-[11px] sm:text-xs font-black uppercase tracking-wider transition-colors">
+              <span>{FUNNEL_CONFIG.copy.scene2.tenorAction}</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0" />
             </span>
           </div>
         </button>
       </div>
 
-      {/* Bottom Calibrating Text OR Idle Hint (leaves clean space for shared SVG MusicStaff) */}
-      <div className="min-h-[68px] flex flex-col items-center justify-center">
+      {/* Bottom Calibrating Text OR Idle Hint */}
+      <div className="min-h-[60px] flex flex-col items-center justify-center">
         {chosen ? (
           <SplitTextHeading
             text={FUNNEL_CONFIG.copy.scene2.adjustingTemplate(chosen)}
@@ -251,14 +269,14 @@ export const SceneChooseSax = ({
             mode="chars"
             className="text-sm sm:text-base font-bold text-[#f5d58a] tracking-wide"
             reducedMotion={reducedMotion}
-            delay={0.05}
+            delay={0.04}
           />
         ) : (
           <p
             className={`text-xs sm:text-sm font-semibold transition-all duration-300 ${
               idle4s
-                ? "text-[#f5d58a] bg-[#f5d58a]/12 border border-[#f5d58a]/40 rounded-full px-4 py-1.5"
-                : "text-[#cdc3b2]/75"
+                ? "text-[#140d02] bg-[#f5d58a] rounded-full px-4 py-1.5 font-extrabold shadow-lg"
+                : "text-[#cdc3b2]/85"
             }`}
           >
             {idle4s

@@ -8,7 +8,7 @@ import { __resetTrackingForTests } from "@/features/interativo/tracking/events";
 let reducedMotionPreferred = false;
 
 beforeEach(() => {
-  reducedMotionPreferred = true; // Determinístico para avançar timelines sem esperar animações longas
+  reducedMotionPreferred = true;
   sessionStorage.clear();
   __resetTrackingForTests();
 
@@ -72,7 +72,7 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
     }
   });
 
-  it("walks through Scenes 1 -> 2 (Tenor) -> 3 (Slider >85%) -> 4 -> 5 Offer with deduplicated tracking, VIP-first offer, 100% /lp-3 content and UTM passthrough", async () => {
+  it("walks through Scenes 1 -> 2 (Tenor) -> 3 (Slider >85%) -> 4 -> 5 Offer (100% identical /lp-3 structure, order, mockups, VIP-first & personalized)", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
 
     const originalLocation = window.location;
@@ -89,8 +89,9 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
 
     const { container } = render(<Interativo />);
 
-    // SCENE 1: Palco Apagado
+    // SCENE 1: Palco Apagado + Audio On by default + clear action pill
     expect(screen.getByLabelText(/Toque no sax e ligue o som/i)).toBeInTheDocument();
+    expect(screen.getByText(/Áudio ligado/i)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Ir para a oferta/i })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /Toque para ligar o som/i }));
@@ -98,13 +99,11 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
       vi.advanceTimersByTime(300);
     });
 
-    // Event: funnel_start fired once
     expect(window.fbq).toHaveBeenCalledWith("trackCustom", "funnel_start", { scene: 1 });
 
-    // SCENE 2: Qual é o seu sax? (Now "Ir para a oferta" appears)
+    // SCENE 2: Qual é o seu sax?
     expect(screen.getByRole("button", { name: /Ir para a oferta/i })).toBeInTheDocument();
-    const tenorBtn = screen.getByRole("button", { name: /Escolher Sax Tenor/i });
-    fireEvent.click(tenorBtn);
+    fireEvent.click(screen.getByRole("button", { name: /Escolher Sax Tenor/i }));
 
     await act(async () => {
       vi.advanceTimersByTime(1100);
@@ -113,7 +112,7 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
     expect(window.fbq).toHaveBeenCalledWith("trackCustom", "sax_selected", { sax: "tenor" });
     expect(sessionStorage.getItem("cs_interativo_sax")).toBe("tenor");
 
-    // SCENE 3: Sozinho x Com Banda (accessible slider via keyboard End -> 100%)
+    // SCENE 3: Sozinho x Com Banda
     const slider = screen.getByRole("slider", { name: /Comparar som do sax sozinho/i });
     fireEvent.keyDown(slider, { key: "End" });
 
@@ -123,16 +122,16 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
     fireEvent.click(screen.getByRole("button", { name: /Quero tocar assim/i }));
 
     // SCENE 4: Montando seu acervo -> auto transitions to Scene 5 Offer
-    expect(screen.getByText(/Montando seu acervo para Sax Tenor/i)).toBeInTheDocument();
+    expect(screen.getByText(/Preparando seu palco para Sax Tenor/i)).toBeInTheDocument();
     await act(async () => {
-      vi.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(1800);
     });
 
     expect(window.fbq).toHaveBeenCalledWith("trackCustom", "library_built", { sax: "tenor" });
 
-    // SCENE 5: Offer (lazy loaded)
+    // SCENE 5: Offer — 100% /lp-3 theme & structure personalized for Sax Tenor (Bb)!
     await waitFor(() => {
-      expect(screen.getByLabelText(/Seu acervo de Sax Tenor \(Bb\) está pronto/i)).toBeInTheDocument();
+      expect(screen.getByText(/Seu Acervo de Sax Tenor \(Bb\)/i)).toBeInTheDocument();
     });
 
     expect(window.fbq).toHaveBeenCalledWith(
@@ -141,12 +140,33 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
       expect.objectContaining({ sax: "tenor" })
     );
 
-    // Verify 100% /lp-3 key sections & content exist
-    expect(screen.getByText(/Veja a Qualidade Real das/i)).toBeInTheDocument();
-    expect(screen.getByText(/Dê Play nos/i)).toBeInTheDocument();
-    expect(screen.getByText(/Comprou, Chegou no/i)).toBeInTheDocument();
+    // Verify exact /lp-3 Mobile-First Order (order-1 Title -> order-2 Mockup -> order-3 Description) across ALL 4 mockup sections!
+    const heroGrid = container.querySelector("#conteudo-principal > section .grid") as HTMLElement;
+    expect(heroGrid.children[0].className).toContain("order-1");
+    expect(heroGrid.children[1].className).toContain("order-2");
+    expect(heroGrid.children[2].className).toContain("order-3");
+
+    const emailGrid = container.querySelector("#acesso-email .grid") as HTMLElement;
+    expect(emailGrid.children[0].className).toContain("order-1");
+    expect(emailGrid.children[1].className).toContain("order-2");
+    expect(emailGrid.children[2].className).toContain("order-3");
+
+    const appGrid = container.querySelector("#simulador-app .grid") as HTMLElement;
+    expect(appGrid.children[0].className).toContain("order-1");
+    expect(appGrid.children[1].className).toContain("order-2");
+    expect(appGrid.children[2].className).toContain("order-3");
+
+    const bonusGrid = container.querySelector("#bonus .grid") as HTMLElement;
+    expect(bonusGrid.children[0].className).toContain("order-1");
+    expect(bonusGrid.children[1].className).toContain("order-2");
+    expect(bonusGrid.children[2].className).toContain("order-3");
+
+    // Verify 100% /lp-3 sections present + Plano Completo VIP ALWAYS 1st
+    const offersGrid = container.querySelector("#ofertas .grid") as HTMLElement;
+    expect(offersGrid.children[0].textContent).toContain("Plano Completo");
+    expect(offersGrid.children[1].textContent).toContain("Plano Básico");
+
     expect(screen.getByText(/Mural Fixo de Mensagens no WhatsApp/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/3 Guias Bônus VIP/i).length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/7 Dias Sem Risco/i)).toBeInTheDocument();
     expect(screen.getByText(/CNPJ: 51\.919\.716\/0001-28/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Entrar no Aplicativo/i })).toHaveAttribute(
@@ -154,13 +174,8 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
       "https://app.clubedosax.com/login"
     );
 
-    // Verify Plano Completo VIP is ALWAYS 1st option BEFORE Plano Básico
-    const plansGrid = container.querySelector("#offer-plans .grid") as HTMLElement;
-    expect(plansGrid.children[0].textContent).toContain("Plano Completo");
-    expect(plansGrid.children[1].textContent).toContain("Plano Básico");
-
     // Verify Checkout CTA triggers InitiateCheckout + passes UTMs & fbclid
-    fireEvent.click(screen.getByRole("button", { name: /Ativar meu acervo VIP/i }));
+    fireEvent.click(screen.getByRole("button", { name: /QUERO O PLANO COMPLETO VIP/i }));
     expect(window.fbq).toHaveBeenCalledWith(
       "track",
       "InitiateCheckout",
@@ -191,15 +206,14 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
     expect(window.fbq).toHaveBeenCalledWith("trackCustom", "skip_to_offer", { from_scene: 2 });
 
     await waitFor(() => {
-      expect(screen.getByText(/Ative Seu Passaporte/i)).toBeInTheDocument();
+      expect(screen.getByText(/Escolha Seu Passaporte para o/i)).toBeInTheDocument();
     });
     expect(sessionStorage.getItem("cs_interativo_offer_seen")).toBe("1");
     unmount();
 
-    // Reload: opens straight on Offer without restarting Scene 1
     render(<Interativo />);
     await waitFor(() => {
-      expect(screen.getByText(/Ative Seu Passaporte/i)).toBeInTheDocument();
+      expect(screen.getByText(/Escolha Seu Passaporte para o/i)).toBeInTheDocument();
     });
     expect(screen.queryByLabelText(/Toque no sax e ligue o som/i)).not.toBeInTheDocument();
 

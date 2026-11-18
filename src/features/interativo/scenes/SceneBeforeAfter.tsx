@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ArrowRight, Sparkles, VolumeX } from "lucide-react";
+import { ArrowRight, ChevronsRight, Sparkles, Volume2 } from "lucide-react";
 import { FUNNEL_CONFIG, type SaxChoice } from "../funnel.config";
 import { audioEngine } from "../audio/AudioEngine";
 import { Waveform } from "../fx/Waveform";
@@ -19,39 +19,29 @@ interface SceneBeforeAfterProps {
   onBurstParticles: () => void;
 }
 
-/** 3-layer SVG silhouettes of an atmospheric Jazz Club crowd rising in parallax with the slider */
 const CrowdParallaxLayers = ({ mix }: { mix: number }) => {
   const m = Math.max(0, Math.min(1, mix));
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-32 sm:h-40 overflow-hidden select-none"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[2] h-28 sm:h-36 overflow-hidden select-none"
       aria-hidden="true"
     >
-      {/* Back distant crowd layer */}
       <svg
         viewBox="0 0 1200 180"
         preserveAspectRatio="none"
         className="absolute inset-x-0 bottom-0 w-full h-full transition-transform duration-150"
-        style={{
-          opacity: m * 0.42,
-          transform: `translate3d(0, ${(1 - m) * 44}px, 0)`,
-        }}
+        style={{ opacity: m * 0.42, transform: `translate3d(0, ${(1 - m) * 44}px, 0)` }}
       >
         <path
           d="M0,180 L0,118 C45,95 75,112 118,96 C158,82 188,108 232,92 C282,74 316,105 362,88 C410,70 448,100 495,84 C548,66 588,96 635,82 C682,68 724,98 776,82 C824,66 868,100 918,86 C966,72 1010,104 1062,88 C1110,74 1152,102 1200,90 L1200,180 Z"
           fill="#1b1409"
         />
       </svg>
-
-      {/* Mid crowd layer with faint amber rim */}
       <svg
         viewBox="0 0 1200 180"
         preserveAspectRatio="none"
         className="absolute inset-x-0 bottom-0 w-full h-full transition-transform duration-150"
-        style={{
-          opacity: m * 0.65,
-          transform: `translate3d(0, ${(1 - m) * 68}px, 0)`,
-        }}
+        style={{ opacity: m * 0.65, transform: `translate3d(0, ${(1 - m) * 68}px, 0)` }}
       >
         <path
           d="M0,180 L0,132 Q40,94 82,128 Q132,84 185,126 Q236,92 292,130 Q348,82 406,126 Q460,90 518,130 Q574,80 632,126 Q692,88 748,128 Q806,82 864,126 Q924,90 982,130 Q1040,84 1102,128 Q1152,96 1200,126 L1200,180 Z"
@@ -60,16 +50,11 @@ const CrowdParallaxLayers = ({ mix }: { mix: number }) => {
           strokeWidth="1.5"
         />
       </svg>
-
-      {/* Front foreground silhouette heads */}
       <svg
         viewBox="0 0 1200 160"
         preserveAspectRatio="none"
         className="absolute inset-x-0 bottom-0 w-full h-24 sm:h-28 transition-transform duration-150"
-        style={{
-          opacity: m * 0.88,
-          transform: `translate3d(0, ${(1 - m) * 90}px, 0)`,
-        }}
+        style={{ opacity: m * 0.88, transform: `translate3d(0, ${(1 - m) * 90}px, 0)` }}
       >
         <path
           d="M0,160 L0,124 C55,96 95,122 140,122 C185,92 230,118 280,124 C340,92 385,124 440,124 C505,88 555,122 612,124 C670,92 715,122 775,124 C835,90 880,120 945,124 C1005,92 1060,122 1125,122 C1160,104 1184,114 1200,122 L1200,160 Z"
@@ -104,13 +89,11 @@ export const SceneBeforeAfter = ({
   const idle4s = useIdleHint(!hasInteracted && !locked, 4000, "scene3-ghost");
   const idle10s = useIdleHint(!locked, 10000, "scene3-fallback");
 
-  // Start dual synchronized Web Audio tracks at mix = 0 on mount
   useEffect(() => {
     onMixChange(0);
     void audioEngine.startComparison(0);
   }, [onMixChange]);
 
-  // BPM synchronized subtle light pulse (84 BPM)
   useEffect(() => {
     if (reducedMotion) return;
     let rafId = 0;
@@ -130,14 +113,14 @@ export const SceneBeforeAfter = ({
     };
   }, [mix, onBeatPulse, reducedMotion]);
 
-  // 4s Ghost Drag Demonstration if user hasn't dragged yet
+  // 4s Ghost Drag Demonstration
   useEffect(() => {
     if (!idle4s || hasInteracted || locked || reducedMotion) return;
     const proxy = { v: 0 };
     const tl = gsap.timeline();
     tl.to(proxy, {
-      v: 0.36,
-      duration: 0.7,
+      v: 0.42,
+      duration: 0.72,
       ease: "power2.inOut",
       onUpdate: () => {
         if (!draggingRef.current && !lockedRef.current) {
@@ -150,7 +133,7 @@ export const SceneBeforeAfter = ({
       v: 0,
       duration: 0.65,
       ease: "power2.inOut",
-      delay: 0.15,
+      delay: 0.18,
       onUpdate: () => {
         if (!draggingRef.current && !lockedRef.current) {
           setMix(proxy.v);
@@ -220,7 +203,27 @@ export const SceneBeforeAfter = ({
     } catch {
       // noop
     }
-    applyRatio(ratioFromClientX(e.clientX));
+    const ratio = ratioFromClientX(e.clientX);
+    // Se o usuário tocar direto no lado direito (>= 0.65), anima suavemente até travar em 100%!
+    if (ratio >= 0.65 && mix < 0.25 && !reducedMotion) {
+      setHasInteracted(true);
+      const proxy = { v: mix };
+      gsap.to(proxy, {
+        v: 1,
+        duration: 0.45,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (!lockedRef.current) {
+            setMix(proxy.v);
+            audioEngine.setMix(proxy.v);
+            onMixChange(proxy.v);
+          }
+        },
+        onComplete: commitLock,
+      });
+      return;
+    }
+    applyRatio(ratio);
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -257,7 +260,7 @@ export const SceneBeforeAfter = ({
     gsap.to(sceneRef.current, {
       opacity: 0,
       scale: 1.05,
-      duration: 0.45,
+      duration: 0.42,
       ease: "power2.inOut",
       onComplete: onAdvance,
     });
@@ -269,11 +272,10 @@ export const SceneBeforeAfter = ({
   return (
     <div
       ref={sceneRef}
-      className="relative z-10 flex flex-col items-center justify-between w-full h-full px-5 pt-16 pb-8 sm:pt-20 sm:pb-10 text-center select-none"
+      className="relative z-10 flex flex-col items-center justify-between w-full h-full px-5 pt-[68px] pb-7 sm:pt-20 sm:pb-10 text-center select-none jazz-safe-bottom"
     >
       <CrowdParallaxLayers mix={mix} />
 
-      {/* Snap Flash Overlay */}
       <div
         ref={flashRef}
         className="pointer-events-none fixed inset-0 z-30 opacity-0"
@@ -284,18 +286,21 @@ export const SceneBeforeAfter = ({
         aria-hidden="true"
       />
 
-      {/* Top Headline / Status */}
+      {/* Top Headline & Clear Step Badge */}
       <div className="max-w-lg mx-auto space-y-2 relative z-10">
         <div
           className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.18em] border transition-colors duration-300 ${
-            mix > 0.5
+            locked
+              ? "bg-[#1ed760]/18 border-[#1ed760]/50 text-[#1ed760]"
+              : mix > 0.45
               ? "bg-[#f5d58a]/15 border-[#f5d58a]/45 text-[#f5d58a]"
-              : "bg-slate-800/70 border-slate-500/40 text-slate-300"
+              : "bg-slate-800/80 border-slate-400/40 text-slate-200"
           }`}
         >
           <span>
-            Sax {sax === "alto" ? "Alto (Eb)" : "Tenor (Bb)"} •{" "}
-            {mix < 0.35 ? "Estudo Seco" : mix < 0.85 ? "Entrando no Palco…" : "Palco Completo"}
+            {locked
+              ? `Sax ${sax === "alto" ? "Alto (Eb)" : "Tenor (Bb)"} • Palco Completo ✓`
+              : FUNNEL_CONFIG.copy.scene3.eyebrow}
           </span>
         </div>
 
@@ -311,26 +316,26 @@ export const SceneBeforeAfter = ({
         ) : (
           <h1 className="jazz-display text-white">
             Sinta a diferença de tocar{" "}
-            <span className={mix > 0.45 ? "jazz-gold-text italic" : "text-slate-300 italic"}>
+            <span className={mix > 0.45 ? "jazz-gold-text italic" : "text-sky-200 italic"}>
               {mix > 0.45 ? "com banda real." : "sozinho."}
             </span>
           </h1>
         )}
 
-        <p className="text-sm sm:text-base text-[#cdc3b2] max-w-md mx-auto">
+        <p className="text-[15px] sm:text-base text-[#e0d7c6] max-w-md mx-auto leading-snug">
           {locked
             ? FUNNEL_CONFIG.copy.scene3.lockedSub
-            : "Arraste a alça dourada e transforme o quarto silencioso num palco de estúdio."}
+            : "Compare o estudo seco com o palco de estúdio em tempo real:"}
         </p>
       </div>
 
-      {/* Middle Stage: Real-time Audio-Reactive Waveform (Staff sits cleanly right above from Controller) */}
-      <div className="w-full max-w-lg mx-auto my-auto relative z-10 space-y-3">
+      {/* Middle Stage: Real-time Audio-Reactive Waveform */}
+      <div className="w-full max-w-lg mx-auto my-auto relative z-10 space-y-2.5">
         <div
           className={`rounded-3xl p-4 sm:p-5 border transition-all duration-300 ${
             mix > 0.45
-              ? "bg-[#120e09]/80 border-[#f5d58a]/35 shadow-[0_18px_48px_rgba(245,185,66,0.16)]"
-              : "bg-[#0d1320]/80 border-slate-600/35"
+              ? "bg-[#120e09]/85 border-[#f5d58a]/40 shadow-[0_18px_48px_rgba(245,185,66,0.18)]"
+              : "bg-[#0d1320]/85 border-slate-500/40"
           }`}
         >
           <div className="flex items-center justify-between text-xs font-extrabold uppercase tracking-wider mb-2">
@@ -338,7 +343,7 @@ export const SceneBeforeAfter = ({
               {FUNNEL_CONFIG.copy.scene3.leftLabel}
             </span>
             <span className="tabular-nums text-[#f5d58a]">{pct}%</span>
-            <span className={mix >= 0.5 ? "text-[#1ed760]" : "text-white/45"}>
+            <span className={mix >= 0.5 ? "text-[#1ed760]" : "text-white/55"}>
               {FUNNEL_CONFIG.copy.scene3.rightLabel}
             </span>
           </div>
@@ -346,18 +351,27 @@ export const SceneBeforeAfter = ({
           <Waveform mix={mix} bpm={FUNNEL_CONFIG.audio.bpm} reducedMotion={reducedMotion} />
         </div>
 
-        {/* Discreet audio warning if muted or unavailable */}
-        {(isMuted || audioUnavailable) && (
-          <div className="inline-flex items-center gap-2 rounded-full bg-black/70 border border-white/15 px-3.5 py-1.5 text-xs font-semibold text-[#cdc3b2]">
-            <VolumeX className="w-3.5 h-3.5 text-[#f5d58a] shrink-0" />
-            <span>{FUNNEL_CONFIG.copy.scene3.silentNotice}</span>
-          </div>
-        )}
+        {/* Discreet audio reminder (calm, never intrusive) */}
+        <p className="inline-flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#cdc3b2]/75">
+          <Volume2 className="w-3.5 h-3.5 text-[#f5d58a]/80 shrink-0" />
+          <span>
+            {isMuted || audioUnavailable
+              ? FUNNEL_CONFIG.copy.scene3.silentNotice
+              : FUNNEL_CONFIG.copy.global.audioSubtleHint}
+          </span>
+        </p>
       </div>
 
-      {/* Bottom Interactive Slider (>= 56px golden handle) + Locked/Fallback CTA */}
-      <div className="w-full max-w-md mx-auto relative z-10 space-y-4">
-        {/* Accessible Custom Slider */}
+      {/* Bottom Interactive Slider with Crystal-Clear Directional Guide + CTA */}
+      <div className="w-full max-w-md mx-auto relative z-10 space-y-3">
+        {!locked && (
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f5d58a]/15 border border-[#f5d58a]/45 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-[#f5d58a]">
+            <span>{idle4s ? FUNNEL_CONFIG.copy.scene3.idleHint : FUNNEL_CONFIG.copy.scene3.sliderGuide}</span>
+            <ChevronsRight className="w-4 h-4 shrink-0" />
+          </div>
+        )}
+
+        {/* Accessible Custom Slider (Tap right side OR Drag handle!) */}
         <div
           ref={trackRef}
           role="slider"
@@ -374,11 +388,10 @@ export const SceneBeforeAfter = ({
           onKeyDown={handleKeyDown}
           className={`relative h-[64px] w-full rounded-full border p-1 cursor-grab active:cursor-grabbing touch-none transition-colors duration-300 ${
             locked
-              ? "bg-[#1ed760]/18 border-[#1ed760]/60 shadow-[0_0_32px_rgba(30,215,96,0.28)]"
-              : "bg-black/70 border-[#f5d58a]/40 shadow-[inset_0_2px_12px_rgba(0,0,0,0.85)]"
+              ? "bg-[#1ed760]/18 border-[#1ed760]/65 shadow-[0_0_32px_rgba(30,215,96,0.3)]"
+              : "bg-black/75 border-[#f5d58a]/55 shadow-[0_0_24px_rgba(245,185,66,0.18),inset_0_2px_12px_rgba(0,0,0,0.85)]"
           }`}
         >
-          {/* Active Fill Track */}
           <div
             className="absolute left-1 top-1 bottom-1 rounded-full pointer-events-none transition-[width] duration-75"
             style={{
@@ -387,13 +400,12 @@ export const SceneBeforeAfter = ({
               maxWidth: "calc(100% - 8px)",
               background: locked
                 ? "linear-gradient(90deg, #b8892e 0%, #f5d58a 50%, #1ed760 100%)"
-                : "linear-gradient(90deg, rgba(138,106,47,0.55) 0%, rgba(245,213,138,0.8) 100%)",
+                : "linear-gradient(90deg, rgba(138,106,47,0.6) 0%, rgba(245,213,138,0.85) 100%)",
             }}
           />
 
-          {/* Center Prompt Label */}
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-16">
-            <span className="text-xs sm:text-sm font-black uppercase tracking-[0.14em] text-white/95 truncate">
+            <span className="text-xs sm:text-sm font-black uppercase tracking-[0.12em] text-white truncate">
               {locked
                 ? "Banda Ativada ✓"
                 : mix < 0.25
@@ -402,9 +414,8 @@ export const SceneBeforeAfter = ({
             </span>
           </div>
 
-          {/* Golden Draggable Handle (56px x 56px minimum touch target) */}
           <div
-            className="pointer-events-none absolute top-1 w-[56px] h-[56px] rounded-full flex items-center justify-center shadow-[0_6px_22px_rgba(245,185,66,0.6)] border-2 border-[#fff3cc]"
+            className="pointer-events-none absolute top-1 w-[56px] h-[56px] rounded-full flex items-center justify-center shadow-[0_6px_22px_rgba(245,185,66,0.65)] border-2 border-[#fff3cc]"
             style={{
               left: `calc(${mix} * (100% - 64px) + 4px)`,
               background: locked
@@ -420,7 +431,7 @@ export const SceneBeforeAfter = ({
           </div>
         </div>
 
-        {/* CTA Button (appears on > 85% lock OR automatically after 10s fallback) */}
+        {/* CTA Button (appears immediately on > 85% lock OR automatically after 10s fallback) */}
         <div className="min-h-[56px] flex items-center justify-center">
           {showCta ? (
             <button
@@ -432,10 +443,8 @@ export const SceneBeforeAfter = ({
               <ArrowRight className="w-5 h-5 shrink-0" />
             </button>
           ) : (
-            <p className="text-xs font-semibold text-[#cdc3b2]/80">
-              {idle4s
-                ? FUNNEL_CONFIG.copy.scene3.idleHint
-                : "Deslize até o final para acender a banda completa"}
+            <p className="text-xs font-medium text-[#cdc3b2]/75">
+              Ou toque diretamente no lado direito da barra
             </p>
           )}
         </div>
