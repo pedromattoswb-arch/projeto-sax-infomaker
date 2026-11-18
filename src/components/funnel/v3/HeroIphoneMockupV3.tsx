@@ -13,8 +13,9 @@ import {
   FolderOpen,
   User,
 } from "lucide-react";
-import logoClubeSax from "@/assets/logo-clube-do-sax.png";
-import saxStageHeroArt from "@/assets/lp3/sax-stage-hero-art.jpg";
+import logoClubeSax from "@/assets/lp3/logo-clube-do-sax.webp";
+import saxStageHeroArt from "@/assets/lp3/sax-stage-hero-art.webp";
+import { Scroll3DMockup } from "./SaxThematicEffects";
 
 const HERO_APP_SONGS = [
   {
@@ -46,15 +47,17 @@ const HERO_APP_SONGS = [
 const HeroIphoneMockupV3 = () => {
   return (
     <div className="relative w-full flex items-center justify-center">
-      {/* Golden Stage Backdrop Illustration Behind the iPhone */}
+      {/* Golden Stage Backdrop Illustration Behind the iPhone (Compressed WebP, Eager Loaded) */}
       <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center">
-        <div className="relative w-full max-w-[680px] aspect-[16/10] rounded-[32px] overflow-hidden opacity-50 sm:opacity-65">
+        <div className="relative w-full max-w-[680px] aspect-[16/10] rounded-[32px] overflow-hidden opacity-55 sm:opacity-70">
           <img
             src={saxStageHeroArt}
             alt=""
-            width={1280}
-            height={720}
-            decoding="async"
+            width={960}
+            height={536}
+            loading="eager"
+            decoding="sync"
+            fetchPriority="high"
             className="w-full h-full object-cover"
             style={{
               maskImage: "radial-gradient(ellipse 72% 68% at 50% 50%, black 30%, transparent 78%)",
@@ -64,8 +67,8 @@ const HeroIphoneMockupV3 = () => {
         </div>
       </div>
 
-      {/* Floating Desktop Callout Badges (xl+ screens where there is plenty of horizontal space) */}
-      <div className="hidden xl:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#1ed760]/40 absolute -left-4 top-14 z-20 max-w-[220px] text-left shadow-2xl">
+      {/* Levitating Desktop Callout Badges */}
+      <div className="hidden xl:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#1ed760]/40 absolute -left-4 top-14 z-20 max-w-[220px] text-left shadow-2xl animate-sax-levitate">
         <div className="w-9 h-9 rounded-xl bg-[#1ed760]/20 border border-[#1ed760]/40 flex items-center justify-center shrink-0">
           <Mail className="w-4 h-4 text-[#1ed760]" />
         </div>
@@ -79,7 +82,7 @@ const HeroIphoneMockupV3 = () => {
         </div>
       </div>
 
-      <div className="hidden xl:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#f5b942]/45 absolute -right-4 bottom-16 z-20 max-w-[225px] text-left shadow-2xl">
+      <div className="hidden xl:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#f5b942]/45 absolute -right-4 bottom-16 z-20 max-w-[225px] text-left shadow-2xl animate-sax-levitate-delayed">
         <div className="w-9 h-9 rounded-xl bg-[#f5b942]/20 border border-[#f5b942]/40 flex items-center justify-center shrink-0">
           <Mic className="w-4 h-4 text-[#f5b942]" />
         </div>
@@ -93,8 +96,11 @@ const HeroIphoneMockupV3 = () => {
         </div>
       </div>
 
-      {/* CENTERPIECE: Fluid Mobile-First iPhone 16 Pro Desert Titanium Mockup */}
-      <div className="relative z-10 w-full max-w-[292px] min-[375px]:max-w-[324px] sm:max-w-[344px] mx-auto px-1">
+      {/* CENTERPIECE: Scroll-Synchronized 3D iPhone 16 Pro Desert Titanium Mockup */}
+      <Scroll3DMockup
+        tiltDirection={1}
+        className="relative z-10 w-full max-w-[292px] min-[375px]:max-w-[324px] sm:max-w-[344px] mx-auto px-1"
+      >
         {/* Titanium Side Physical Buttons */}
         <div className="hidden min-[360px]:block absolute left-[1px] top-[96px] w-[3px] h-7 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
         <div className="hidden min-[360px]:block absolute left-[1px] top-[138px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
@@ -104,12 +110,12 @@ const HeroIphoneMockupV3 = () => {
         <div className="iphone-16-frame">
           <div className="iphone-16-inner-bezel">
             <div className="iphone-16-screen text-left select-none">
-              {/* Subtle Glass Reflection */}
+              {/* Diagonal Specular Glass Reflection */}
               <div
-                className="pointer-events-none absolute inset-0 z-30 opacity-15"
+                className="pointer-events-none absolute inset-0 z-30 opacity-18"
                 style={{
                   background:
-                    "linear-gradient(125deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 28%, transparent 45%)",
+                    "linear-gradient(125deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.04) 28%, transparent 45%)",
                 }}
               />
 
@@ -147,6 +153,8 @@ const HeroIphoneMockupV3 = () => {
                       alt="Aplicativo Clube do Sax"
                       width={40}
                       height={29}
+                      loading="eager"
+                      decoding="sync"
                       className="h-7 w-auto shrink-0 drop-shadow-[0_0_8px_rgba(245,185,66,0.4)]"
                     />
                     <div className="min-w-0">
@@ -292,7 +300,7 @@ const HeroIphoneMockupV3 = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Scroll3DMockup>
     </div>
   );
 };

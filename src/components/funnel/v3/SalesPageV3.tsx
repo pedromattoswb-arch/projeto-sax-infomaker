@@ -16,12 +16,15 @@ import {
   X,
 } from "lucide-react";
 
-import logoClubeSax from "@/assets/logo-clube-do-sax.png";
-import SaxStageIntro from "./SaxStageIntro";
+import logoClubeSax from "@/assets/lp3/logo-clube-do-sax.webp";
+import seloGarantia from "@/assets/lp3/selo-garantia.webp";
 import {
   AmbientSaxBackdrop,
+  KineticHeading,
   MusicalStaffDivider,
+  Scroll3DMockup,
 } from "./SaxThematicEffects";
+import { preloadAllLp3Media } from "./lp3MediaPreload";
 import HeroIphoneMockupV3 from "./HeroIphoneMockupV3";
 import PartituraMarqueeV3 from "./PartituraMarqueeV3";
 import SpotifyPlaybackPlayerV3 from "./SpotifyPlaybackPlayerV3";
@@ -85,13 +88,17 @@ const NAV_LINKS = [
 ];
 
 const SalesPageV3 = () => {
-  const [showIntro, setShowIntro] = useState<boolean>(true);
   const [scrollPct, setScrollPct] = useState<number>(0);
   const [navOpen, setNavOpen] = useState<boolean>(false);
 
-  const counterPartituras = useCounter(10000, 2000);
-  const counterAlunos = useCounter(847, 1600);
-  const counterGeneros = useCounter(18, 1300);
+  const counterPartituras = useCounter(10000, 1800);
+  const counterAlunos = useCounter(847, 1500);
+  const counterGeneros = useCounter(18, 1200);
+
+  // Pre-decode all 31 compressed WebP media assets immediately on page entry BEFORE scrolling
+  useEffect(() => {
+    preloadAllLp3Media();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -114,10 +121,7 @@ const SalesPageV3 = () => {
         Pular para o conteúdo principal
       </a>
 
-      {/* AUTOMATIC SAXOPHONE OVERTURE INTRO ON ENTRY */}
-      {showIntro && <SaxStageIntro onComplete={() => setShowIntro(false)} />}
-
-      {/* AMBIENT STAGE SPOTLIGHTS & NOTES */}
+      {/* AMBIENT SCROLL-PARALLAX STAGE SPOTLIGHTS & NOTES */}
       <AmbientSaxBackdrop />
 
       {/* STICKY HEADER WITH DESKTOP NAV + COMPACT MOBILE MENU */}
@@ -137,6 +141,8 @@ const SalesPageV3 = () => {
               alt="Clube do Sax"
               width={64}
               height={46}
+              loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="h-10 sm:h-12 w-auto drop-shadow-[0_0_14px_rgba(245,185,66,0.38)]"
             />
@@ -248,9 +254,9 @@ const SalesPageV3 = () => {
         </div>
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN CONTENT — Enters Directly with Zero Blocking Overlay! */}
       <main id="conteudo-principal" className="relative z-10">
-        {/* HERO SECTION — 100% Mobile-First: 1. Badge + H1 Title -> 2. iPhone Mockup -> 3. Subtitle (Description) + CTA + Counters */}
+        {/* HERO SECTION — 100% Mobile-First: 1. Badge + Kinetic H1 Title -> 2. 3D Scroll-Synced iPhone Mockup -> 3. Description + CTA + Counters */}
         <section className="pt-7 sm:pt-12 pb-12 md:pb-20 px-4 sm:px-6 md:px-10 relative">
           <div className="sax-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-y-6 lg:gap-y-5 lg:gap-x-12 items-center">
@@ -266,13 +272,15 @@ const SalesPageV3 = () => {
                   </span>
                 </div>
 
-                <h1 className="sax-h1 text-white">
-                  O Maior Acervo de Partituras <br className="hidden sm:block" />
-                  <span className="sax-gold-gradient-text italic">com Playback de Estúdio</span>
-                </h1>
+                <KineticHeading>
+                  <h1 className="sax-h1 text-white">
+                    O Maior Acervo de Partituras <br className="hidden sm:block" />
+                    <span className="sax-gold-gradient-text italic">com Playback de Estúdio</span>
+                  </h1>
+                </KineticHeading>
               </div>
 
-              {/* 2. IPHONE 16 PRO APP MOCKUP (Directly between H1 Title and Subtitle on Mobile!) */}
+              {/* 2. 3D SCROLL-SYNCHRONIZED IPHONE 16 PRO APP MOCKUP (Immediately after H1 Title!) */}
               <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 my-1 lg:my-0">
                 <HeroIphoneMockupV3 />
               </div>
@@ -365,17 +373,17 @@ const SalesPageV3 = () => {
 
         <MusicalStaffDivider label="Ecossistema & Acesso no E-mail" />
 
-        {/* VISUAL ILLUSTRATED ECOSYSTEM + INSTANT EMAIL & LOGIN SECTION (Title -> Mockup -> Description) */}
+        {/* VISUAL ILLUSTRATED ECOSYSTEM + INSTANT EMAIL & LOGIN SECTION (Mention -> Immediate Visual) */}
         <EcosystemAndEmailV3 onScrollToOffers={scrollToOffers} />
 
         <MusicalStaffDivider label="Interface Oficial no iPhone" />
 
-        {/* APP SHOWCASE INSIDE REALISTIC IPHONE 16 PRO (Title -> Mockup -> Description) */}
+        {/* APP SHOWCASE INSIDE REALISTIC 3D IPHONE 16 PRO (Title -> Mockup -> Description) */}
         <AppSimulationIphoneV3 onScrollToOffers={scrollToOffers} />
 
         <MusicalStaffDivider label="Comunidade & Mural WhatsApp" />
 
-        {/* VIDEO TESTIMONIALS + FIXED WHATSAPP GALLERY WALL */}
+        {/* VIDEO TESTIMONIALS + FIXED WHATSAPP GALLERY WALL (Compressed WebP Eager Pre-Loaded) */}
         <WhatsappTestimonialsWallV3 />
 
         <MusicalStaffDivider label="Catálogo Real de Músicas" />
@@ -385,33 +393,37 @@ const SalesPageV3 = () => {
 
         <MusicalStaffDivider label="Presentes Exclusivos VIP" />
 
-        {/* 3 ILLUSTRATED BONUS VIP GUIDES (Title -> Mockup -> Description) */}
+        {/* 3 ILLUSTRATED BONUS VIP GUIDES (Each Bonus Title -> Immediate Visual Guide Preview) */}
         <BonusSectionV3 />
+
+        <MusicalStaffDivider label="Passaporte Vitalício" />
 
         {/* PRICING CARDS */}
         <PricingCardsV3 saxType="alto" />
 
-        {/* 7-DAY UNCONDITIONAL GUARANTEE (Title -> Seal Visual -> Description) */}
+        {/* 7-DAY UNCONDITIONAL GUARANTEE (Title -> 3D Seal Visual -> Description) */}
         <section className="sax-section">
           <div className="sax-container max-w-3xl text-center">
             <div className="sax-card rounded-3xl sm:rounded-[32px] p-6 sm:p-12 md:p-14 border border-[#f5b942]/35 relative overflow-hidden">
-              <h2 className="sax-h2 text-white mb-5">
-                Sua Satisfação Garantida Por{" "}
-                <span className="sax-gold-gradient-text italic">7 Dias Sem Risco!</span>
-              </h2>
+              <KineticHeading>
+                <h2 className="sax-h2 text-white mb-5">
+                  Sua Satisfação Garantida Por{" "}
+                  <span className="sax-gold-gradient-text italic">7 Dias Sem Risco!</span>
+                </h2>
+              </KineticHeading>
 
-              <div className="relative inline-block mb-6">
+              <Scroll3DMockup className="relative inline-block mb-6">
                 <div className="absolute inset-0 bg-[#f5b942]/25 blur-3xl rounded-full" />
                 <img
-                  src="/selo-garantia.png"
+                  src={seloGarantia}
                   alt="Selo de Garantia de 7 Dias"
                   width={144}
                   height={144}
-                  loading="lazy"
-                  decoding="async"
+                  loading="eager"
+                  decoding="sync"
                   className="w-28 h-28 sm:w-36 sm:h-36 relative z-10 drop-shadow-2xl mx-auto"
                 />
-              </div>
+              </Scroll3DMockup>
 
               <p className="sax-body-lg text-[#cfc3ae]">
                 Receba seu login por e-mail agora mesmo, entre no aplicativo, baixe partituras e toque
@@ -434,11 +446,13 @@ const SalesPageV3 = () => {
               <span>O Palco Está Pronto Para Você</span>
             </div>
 
-            <h2 className="sax-h2 text-white mb-5">
-              Entre Agora no <span className="sax-gold-gradient-text italic">Clube do Sax</span> e{" "}
-              <br className="hidden sm:block" />
-              Comece a Tocar em Menos de 1 Minuto!
-            </h2>
+            <KineticHeading>
+              <h2 className="sax-h2 text-white mb-5">
+                Entre Agora no <span className="sax-gold-gradient-text italic">Clube do Sax</span> e{" "}
+                <br className="hidden sm:block" />
+                Comece a Tocar em Menos de 1 Minuto!
+              </h2>
+            </KineticHeading>
 
             <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto mb-8">
               Mais de 10.000 partituras com playback de estúdio para Sax Alto e Sax Tenor, busca por
@@ -504,8 +518,8 @@ const SalesPageV3 = () => {
           alt="Clube do Sax"
           width={76}
           height={56}
-          loading="lazy"
-          decoding="async"
+          loading="eager"
+          decoding="sync"
           className="h-14 w-auto mx-auto mb-4 drop-shadow-[0_0_16px_rgba(245,185,66,0.3)]"
         />
 

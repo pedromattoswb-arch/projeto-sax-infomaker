@@ -1,13 +1,13 @@
 /* ==========================================================================
-   GOLDEN BRASS JAZZ STAGE THEME — Scoped strictly to /lp-3 (.theme-sax-stage)
-   Mobile-First • Fluid Typography • Adaptive Performance • Reduced-Motion Safe
+   GOLDEN BRASS 3D STAGE THEME — Scoped strictly to /lp-3 (.theme-sax-stage)
+   Mobile-First • Scroll-Synced 3D • Kinetic Gold Type • Eager Lightweight Media
    ========================================================================== */
 
 .theme-sax-stage {
   --sax-bg: #070503;
   --sax-bg-elevated: #110c07;
-  --sax-surface: rgba(24, 17, 10, 0.88);
-  --sax-surface-strong: rgba(16, 11, 7, 0.95);
+  --sax-surface: rgba(24, 17, 10, 0.9);
+  --sax-surface-strong: rgba(16, 11, 7, 0.96);
   --sax-brass: #f5b942;
   --sax-brass-light: #ffe49e;
   --sax-brass-deep: #b87914;
@@ -16,23 +16,22 @@
   --sax-spotify-dark: #15a847;
   --sax-text: #faf6ef;
   --sax-text-muted: #cfc3ae;
-  --sax-border: rgba(245, 185, 66, 0.18);
-  --sax-border-strong: rgba(245, 185, 66, 0.42);
+  --sax-border: rgba(245, 185, 66, 0.2);
+  --sax-border-strong: rgba(245, 185, 66, 0.46);
 
   background-color: var(--sax-bg);
   background-image:
-    radial-gradient(ellipse 85% 45% at 50% -8%, rgba(245, 185, 66, 0.14) 0%, transparent 65%),
-    radial-gradient(circle at 12% 24%, rgba(217, 119, 6, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 88% 68%, rgba(30, 215, 96, 0.04) 0%, transparent 45%);
+    radial-gradient(ellipse 85% 45% at 50% -6%, rgba(245, 185, 66, 0.16) 0%, transparent 65%),
+    radial-gradient(circle at 12% 24%, rgba(217, 119, 6, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 88% 68%, rgba(30, 215, 96, 0.05) 0%, transparent 45%);
   color: var(--sax-text);
-  /* Use clip instead of hidden so sticky elements work natively and layout bugs aren't masked */
   overflow-x: clip;
 }
 
-/* Fluid Typography System (Phase 3) */
+/* Fluid Typography System */
 .theme-sax-stage .sax-h1 {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(2rem, 4.4vw + 0.9rem, 3.75rem); /* 32px mobile -> 60px desktop */
+  font-size: clamp(2rem, 4.4vw + 0.9rem, 3.75rem);
   line-height: 1.08;
   font-weight: 900;
   letter-spacing: -0.025em;
@@ -40,34 +39,34 @@
 
 .theme-sax-stage .sax-h2 {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(1.625rem, 2.8vw + 0.85rem, 2.75rem); /* 26px mobile -> 44px desktop */
-  line-height: 1.15;
+  font-size: clamp(1.625rem, 2.8vw + 0.85rem, 2.75rem);
+  line-height: 1.14;
   font-weight: 900;
   letter-spacing: -0.02em;
 }
 
 .theme-sax-stage .sax-h3 {
   font-family: 'Poppins', system-ui, sans-serif;
-  font-size: clamp(1.2rem, 1.2vw + 0.9rem, 1.55rem); /* ~19.2px -> ~25px */
+  font-size: clamp(1.175rem, 1.15vw + 0.9rem, 1.5rem);
   line-height: 1.25;
   font-weight: 800;
   letter-spacing: -0.015em;
 }
 
 .theme-sax-stage .sax-body-lg {
-  font-size: clamp(1rem, 0.4vw + 0.92rem, 1.1875rem); /* 16px mobile -> 19px desktop */
-  line-height: 1.65;
+  font-size: clamp(1rem, 0.4vw + 0.92rem, 1.1875rem);
+  line-height: 1.64;
 }
 
 .theme-sax-stage .sax-body {
-  font-size: clamp(0.95rem, 0.2vw + 0.9rem, 1.0625rem); /* ~15.2px -> 17px */
-  line-height: 1.62;
+  font-size: clamp(0.95rem, 0.2vw + 0.9rem, 1.0625rem);
+  line-height: 1.6;
 }
 
-/* Consistent 8px-Multiple Section & Container Rhythm (Phase 4) */
+/* Section & Container Rhythm */
 .theme-sax-stage .sax-section {
-  padding-top: clamp(3.5rem, 6vw, 6rem);
-  padding-bottom: clamp(3.5rem, 6vw, 6rem);
+  padding-top: clamp(3rem, 5.5vw, 5.25rem);
+  padding-bottom: clamp(3rem, 5.5vw, 5.25rem);
   padding-left: clamp(1rem, 4vw, 2.5rem);
   padding-right: clamp(1rem, 4vw, 2.5rem);
   position: relative;
@@ -75,12 +74,12 @@
 
 .theme-sax-stage .sax-container {
   width: 100%;
-  max-width: 72rem; /* 1152px */
+  max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Accessible Keyboard Focus States (Phase 9) */
+/* Accessible Keyboard Focus States */
 .theme-sax-stage a:focus-visible,
 .theme-sax-stage button:focus-visible,
 .theme-sax-stage input:focus-visible,
@@ -89,44 +88,72 @@
   outline-offset: 3px;
 }
 
+/* Flowing Liquid Brass Gold Text Animation (Living Letters) */
+@keyframes sax-liquid-gold {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .theme-sax-stage .sax-gold-gradient-text {
-  background: linear-gradient(180deg, #fff2c2 0%, #f5b942 52%, #c98317 100%);
+  background: linear-gradient(
+    110deg,
+    #fff4cc 0%,
+    #f5b942 28%,
+    #ffeaad 50%,
+    #c98317 72%,
+    #fff2c2 100%
+  );
+  background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: sax-liquid-gold 5.5s ease-in-out infinite;
 }
 
-/* Adaptive Card Surface — lightweight on mobile, rich glass on desktop (Phase 8) */
+/* 3D Perspective Stage Container */
+.theme-sax-stage .sax-3d-perspective {
+  perspective: 1100px;
+  transform-style: preserve-3d;
+}
+
+/* Adaptive 3D Card Surface */
 .theme-sax-stage .sax-card {
-  background: linear-gradient(165deg, rgba(28, 20, 12, 0.93) 0%, rgba(13, 9, 5, 0.96) 100%);
+  background: linear-gradient(165deg, rgba(28, 20, 12, 0.94) 0%, rgba(13, 9, 5, 0.97) 100%);
   border: 1px solid var(--sax-border);
   box-shadow:
-    0 18px 40px -16px rgba(0, 0, 0, 0.78),
-    inset 0 1px 0 rgba(255, 235, 180, 0.08);
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+    0 20px 44px -16px rgba(0, 0, 0, 0.82),
+    inset 0 1px 0 rgba(255, 235, 180, 0.1);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
 }
 
 @media (min-width: 768px) {
   .theme-sax-stage .sax-card {
-    background: linear-gradient(165deg, rgba(28, 20, 12, 0.84) 0%, rgba(13, 9, 5, 0.9) 100%);
+    background: linear-gradient(165deg, rgba(28, 20, 12, 0.86) 0%, rgba(13, 9, 5, 0.92) 100%);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
   }
   .theme-sax-stage .sax-card:hover {
     border-color: var(--sax-border-strong);
+    transform: translateY(-4px);
     box-shadow:
-      0 26px 56px -16px rgba(0, 0, 0, 0.85),
-      0 0 28px -8px rgba(245, 185, 66, 0.18),
-      inset 0 1px 0 rgba(255, 235, 180, 0.15);
+      0 28px 60px -16px rgba(0, 0, 0, 0.88),
+      0 0 32px -8px rgba(245, 185, 66, 0.22),
+      inset 0 1px 0 rgba(255, 235, 180, 0.18);
   }
 }
 
-/* Brass metallic badge */
+/* Brass metallic badge with subtle living pulse */
+@keyframes sax-pill-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 185, 66, 0), inset 0 1px 0 rgba(255, 240, 200, 0.14); }
+  50% { box-shadow: 0 0 18px -2px rgba(245, 185, 66, 0.28), inset 0 1px 0 rgba(255, 240, 200, 0.24); }
+}
+
 .theme-sax-stage .sax-brass-pill {
-  background: linear-gradient(135deg, rgba(245, 185, 66, 0.16) 0%, rgba(184, 121, 20, 0.08) 100%);
-  border: 1px solid rgba(245, 185, 66, 0.36);
+  background: linear-gradient(135deg, rgba(245, 185, 66, 0.18) 0%, rgba(184, 121, 20, 0.09) 100%);
+  border: 1px solid rgba(245, 185, 66, 0.4);
   color: #ffe49e;
-  box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.14);
+  animation: sax-pill-glow 3.6s ease-in-out infinite;
 }
 
 /* High-converting Emerald Studio CTA */
@@ -136,19 +163,19 @@
   font-weight: 900;
   min-height: 48px;
   box-shadow:
-    0 12px 32px -6px rgba(30, 215, 96, 0.48),
-    0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+    0 12px 32px -6px rgba(30, 215, 96, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.24) inset,
     0 -3px 0 rgba(0, 0, 0, 0.22) inset;
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 @media (hover: hover) {
   .theme-sax-stage .sax-cta-btn:hover {
-    transform: translateY(-2px) scale(1.015);
+    transform: translateY(-2px) scale(1.018);
     filter: brightness(1.05);
     box-shadow:
-      0 18px 42px -6px rgba(30, 215, 96, 0.65),
-      0 0 0 1px rgba(255, 255, 255, 0.32) inset,
+      0 18px 44px -6px rgba(30, 215, 96, 0.68),
+      0 0 0 1px rgba(255, 255, 255, 0.34) inset,
       0 -3px 0 rgba(0, 0, 0, 0.22) inset;
   }
 }
@@ -172,7 +199,7 @@
 
 @media (hover: hover) {
   .theme-sax-stage .sax-gold-btn:hover {
-    transform: translateY(-1px) scale(1.015);
+    transform: translateY(-1px) scale(1.018);
     filter: brightness(1.05);
   }
 }
@@ -183,19 +210,15 @@
 
 /* Continuous Non-Stop Partitura Marquee (Zero Gaps / Zero Jumps) */
 @keyframes sax-marquee-continuous {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .sax-marquee-track {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: sax-marquee-continuous 44s linear infinite;
+  animation: sax-marquee-continuous 40s linear infinite;
 }
 
 @media (hover: hover) {
@@ -208,7 +231,7 @@
   animation-play-state: paused;
 }
 
-/* Spotify Equalizer Bars (Transform scaleY for zero layout recalculation!) */
+/* GPU-Composited Equalizer Bars */
 @keyframes sax-eq-scale-1 {
   0%, 100% { transform: scaleY(0.28); }
   50% { transform: scaleY(0.98); }
@@ -244,26 +267,36 @@
   animation: sax-vinyl-spin 6s linear infinite;
 }
 
+/* Gentle 3D Levitation for Badges & Accents */
+@keyframes sax-levitate {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+.animate-sax-levitate {
+  animation: sax-levitate 4s ease-in-out infinite;
+}
+
+.animate-sax-levitate-delayed {
+  animation: sax-levitate 4.4s ease-in-out 1.2s infinite;
+}
+
 /* Floating Ambient Musical Notes */
 @keyframes sax-float-note {
   0% {
-    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.85);
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.88);
     opacity: 0;
   }
-  20% {
-    opacity: 0.38;
-  }
-  80% {
-    opacity: 0.28;
-  }
+  20% { opacity: 0.36; }
+  80% { opacity: 0.26; }
   100% {
-    transform: translate3d(20px, -120px, 0) rotate(12deg) scale(1.08);
+    transform: translate3d(18px, -110px, 0) rotate(12deg) scale(1.08);
     opacity: 0;
   }
 }
 
 .animate-sax-float-note {
-  animation: sax-float-note var(--note-duration, 10s) ease-in-out infinite;
+  animation: sax-float-note var(--note-duration, 9s) ease-in-out infinite;
   animation-delay: var(--note-delay, 0s);
 }
 
@@ -278,22 +311,22 @@
   position: absolute;
   inset: 0;
   width: 45%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-  animation: sax-sheen 4.8s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  animation: sax-sheen 4.4s ease-in-out infinite;
   pointer-events: none;
 }
 
-/* Responsive iPhone 16 Pro Titanium Bezel (Fits 320px through 1920px cleanly!) */
+/* Responsive iPhone 16 Pro Titanium Bezel */
 .iphone-16-frame {
   position: relative;
   border-radius: 44px;
   padding: 8px;
-  background: linear-gradient(145deg, #544632 0%, #241d15 28%, #15110c 62%, #685338 100%);
+  background: linear-gradient(145deg, #5d4d37 0%, #241d15 28%, #15110c 62%, #735c3e 100%);
   box-shadow:
-    0 0 0 1.5px rgba(255, 224, 156, 0.35),
-    0 28px 64px -15px rgba(0, 0, 0, 0.88),
-    0 0 48px -15px rgba(245, 185, 66, 0.2),
-    inset 0 1px 2px rgba(255, 240, 200, 0.45);
+    0 0 0 1.5px rgba(255, 224, 156, 0.4),
+    0 30px 68px -14px rgba(0, 0, 0, 0.9),
+    0 0 52px -14px rgba(245, 185, 66, 0.25),
+    inset 0 1px 2px rgba(255, 240, 200, 0.48);
 }
 
 .iphone-16-inner-bezel {
@@ -324,7 +357,7 @@
   }
 }
 
-/* Accessibility: Full Reduced Motion Support (Phase 9) */
+/* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .theme-sax-stage *,
   .theme-sax-stage *::before,

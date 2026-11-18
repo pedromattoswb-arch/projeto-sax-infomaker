@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CATALOG_GENRES, TOTAL_CATALOG_COUNT, TOTAL_SAMPLE_COUNT } from "@/data/catalogSongs";
+import { CinematicReveal, KineticHeading } from "./SaxThematicEffects";
 
 interface SongCatalogV3Props {
   onScrollToOffers: () => void;
@@ -36,10 +37,12 @@ export const SongCatalogV3 = ({ onScrollToOffers }: SongCatalogV3Props) => {
             <span>Repertório Real Organizado por Estilo</span>
           </div>
 
-          <h2 className="sax-h2 text-white mb-4">
-            Mais de <span className="sax-gold-gradient-text italic">10.000 Músicas</span>{" "}
-            Prontas Para Você Tocar
-          </h2>
+          <KineticHeading>
+            <h2 className="sax-h2 text-white mb-4">
+              Mais de <span className="sax-gold-gradient-text italic">10.000 Músicas</span>{" "}
+              Prontas Para Você Tocar
+            </h2>
+          </KineticHeading>
 
           <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
             Explore abaixo uma amostra real das pastas dentro do aplicativo — todas com partitura
@@ -54,10 +57,8 @@ export const SongCatalogV3 = ({ onScrollToOffers }: SongCatalogV3Props) => {
             const visibleSongs = isExpanded ? genre.songs : genre.songs.slice(0, 6);
 
             return (
-              <div
-                key={genre.id}
-                className="sax-card rounded-3xl p-6 border border-[#f5b942]/20 flex flex-col justify-between"
-              >
+              <CinematicReveal key={genre.id}>
+                <div className="sax-card h-full rounded-3xl p-6 border border-[#f5b942]/20 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-5 pb-3.5 border-b border-white/10">
                     <span className="text-3xl shrink-0" aria-hidden="true">
@@ -101,7 +102,8 @@ export const SongCatalogV3 = ({ onScrollToOffers }: SongCatalogV3Props) => {
                     />
                   </button>
                 )}
-              </div>
+                </div>
+              </CinematicReveal>
             );
           })}
         </div>
@@ -231,9 +233,11 @@ export const FaqV3 = () => (
           <HelpCircle className="w-4 h-4 text-[#f5b942] shrink-0" />
           <span>Tire Suas Dúvidas</span>
         </div>
-        <h2 className="sax-h2 text-white">
-          Perguntas <span className="sax-gold-gradient-text italic">Frequentes</span>
-        </h2>
+        <KineticHeading>
+          <h2 className="sax-h2 text-white">
+            Perguntas <span className="sax-gold-gradient-text italic">Frequentes</span>
+          </h2>
+        </KineticHeading>
       </div>
 
       <Accordion type="single" collapsible className="space-y-3.5">

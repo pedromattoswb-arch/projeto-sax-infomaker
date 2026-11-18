@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { useReducedMotion } from "framer-motion";
 import { FileText, ZoomIn, X, CheckCircle2, Music } from "lucide-react";
 
-import p1 from "@/assets/partituras-exemplo/partitura-1.png";
-import p3 from "@/assets/partituras-exemplo/partitura-3.png";
-import p4 from "@/assets/partituras-exemplo/partitura-4.png";
-import p5 from "@/assets/partituras-exemplo/partitura-5.png";
-import p6 from "@/assets/partituras-exemplo/partitura-6.png";
-import p8 from "@/assets/partituras-exemplo/partitura-8.png";
-import p9 from "@/assets/partituras-exemplo/partitura-9.png";
-import type { SaxType } from "./SaxThematicEffects";
+import p1 from "@/assets/lp3/partituras/partitura-1.webp";
+import p3 from "@/assets/lp3/partituras/partitura-3.webp";
+import p4 from "@/assets/lp3/partituras/partitura-4.webp";
+import p5 from "@/assets/lp3/partituras/partitura-5.webp";
+import p6 from "@/assets/lp3/partituras/partitura-6.webp";
+import p8 from "@/assets/lp3/partituras/partitura-8.webp";
+import p9 from "@/assets/lp3/partituras/partitura-9.webp";
+import { KineticHeading, type SaxType } from "./SaxThematicEffects";
 
 interface SheetItem {
   id: string;
@@ -53,20 +53,27 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
   }, [zoomedSheet]);
 
   return (
-    <section id="partituras" className="py-12 md:py-16 relative">
-      {/* 1. Title */}
-      <div className="sax-container max-w-5xl px-4 sm:px-6 text-center mb-6 md:mb-8">
+    <section id="partituras" className="py-10 md:py-14 relative">
+      {/* 1. Mention / Title */}
+      <div className="sax-container max-w-4xl px-4 sm:px-6 text-center mb-6 md:mb-8">
         <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
           <FileText className="w-4 h-4 text-[#f5b942] shrink-0" />
           <span>Diagramação Limpa em Alta Definição</span>
         </div>
 
-        <h2 className="sax-h2 text-white">
-          Veja a Qualidade Real das <span className="sax-gold-gradient-text italic">Partituras</span>
-        </h2>
+        <KineticHeading>
+          <h2 className="sax-h2 text-white mb-3">
+            Veja a Qualidade Real das <span className="sax-gold-gradient-text italic">Partituras</span>
+          </h2>
+        </KineticHeading>
+
+        <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
+          Folhas revisadas compasso a compasso, prontas para ler no celular, tablet ou imprimir — já
+          transpostas para <strong className="text-[#ffe49e]">Sax Alto (Eb) e Sax Tenor (Bb)</strong>:
+        </p>
       </div>
 
-      {/* 2. Sheet Music Showcase (Directly below Title!) */}
+      {/* 2. Immediate Visual Representation: Continuous Non-Stop Zero-Gap Sheet Music Ribbon (All Eager WebP!) */}
       {prefersReducedMotion ? (
         <div className="sax-container px-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
           {FULL_SHEETS.map((sheet) => (
@@ -90,8 +97,8 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
                   alt={`Partitura ${sheet.title} — ${sheet.artist}`}
                   width={260}
                   height={356}
-                  loading="lazy"
-                  decoding="async"
+                  loading="eager"
+                  decoding="sync"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
@@ -121,7 +128,7 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
                       type="button"
                       tabIndex={halfIdx === 1 ? -1 : 0}
                       onClick={() => setZoomedSheet(sheet)}
-                      className="group relative w-[206px] sm:w-[244px] md:w-[268px] shrink-0 rounded-2xl overflow-hidden bg-white border-2 border-[#f5b942]/35 shadow-[0_16px_36px_rgba(0,0,0,0.72)] hover:border-[#f5b942] hover:-translate-y-1 transition-all duration-300 text-left flex flex-col cursor-pointer"
+                      className="group relative w-[206px] sm:w-[244px] md:w-[268px] shrink-0 rounded-2xl overflow-hidden bg-white border-2 border-[#f5b942]/35 shadow-[0_16px_36px_rgba(0,0,0,0.72)] hover:border-[#f5b942] hover:-translate-y-1.5 transition-all duration-300 text-left flex flex-col cursor-pointer"
                     >
                       <div className="bg-[#120d07] text-white px-3 py-2 flex items-center justify-between gap-2 border-b border-[#f5b942]/25">
                         <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#ffe49e] truncate">
@@ -139,8 +146,8 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
                           alt={`Partitura ${sheet.title} — ${sheet.artist}`}
                           width={268}
                           height={368}
-                          loading="lazy"
-                          decoding="async"
+                          loading="eager"
+                          decoding="sync"
                           className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
                           draggable={false}
                         />
@@ -175,16 +182,9 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
         </div>
       )}
 
-      {/* 3. Description (Subtitle) + Quality Pills */}
+      {/* 3. Concise Confirmation Badges */}
       <div className="sax-container max-w-4xl px-4 sm:px-6 text-center">
-        <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
-          Folhas limpas, revisadas compasso a compasso, prontas para ler no celular, tablet ou
-          imprimir — já transpostas para{" "}
-          <strong className="text-[#ffe49e]">Sax Alto (Eb) e Sax Tenor (Bb)</strong> e acompanhadas
-          de playback profissional.
-        </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mt-5 text-xs sm:text-sm font-bold text-[#ffe49e]">
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 text-xs sm:text-sm font-bold text-[#ffe49e]">
           <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
             <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
             Notas Grandes e Legíveis
@@ -195,7 +195,7 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
           </span>
           <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
             <ZoomIn className="w-4 h-4 text-[#f5b942] shrink-0" />
-            Clique na folha para dar zoom
+            Toque na folha para dar zoom
           </span>
         </div>
       </div>
@@ -235,6 +235,8 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
               <img
                 src={zoomedSheet.src}
                 alt={zoomedSheet.title}
+                loading="eager"
+                decoding="sync"
                 className="max-w-full h-auto rounded-lg"
               />
             </div>

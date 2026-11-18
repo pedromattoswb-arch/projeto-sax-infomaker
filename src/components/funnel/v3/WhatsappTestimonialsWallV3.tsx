@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, Video, CheckCheck, Star, Users, X, ZoomIn, Play } from "lucide-react";
+import { CinematicReveal, KineticHeading } from "./SaxThematicEffects";
 
 interface VideoTestimonialItem {
   src: string;
@@ -9,12 +10,12 @@ interface VideoTestimonialItem {
 }
 
 const VIDEO_TESTIMONIALS: VideoTestimonialItem[] = [
-  { src: "/testimonials/julio-sampaio-sp.mp4", poster: "/testimonials/posters/julio-sampaio-sp.jpg", name: "Júlio Sampaio", city: "São Paulo" },
-  { src: "/testimonials/marcelo-cristian-rj.mp4", poster: "/testimonials/posters/marcelo-cristian-rj.jpg", name: "Marcelo Cristian", city: "Rio de Janeiro" },
-  { src: "/testimonials/marcos-mattos-bsb.mp4", poster: "/testimonials/posters/marcos-mattos-bsb.jpg", name: "Marcos Mattos", city: "Brasília" },
-  { src: "/testimonials/julia-costa-sp.mp4", poster: "/testimonials/posters/julia-costa-sp.jpg", name: "Júlia Costa", city: "São Paulo" },
-  { src: "/testimonials/barbara-oliveira-floripa.mp4", poster: "/testimonials/posters/barbara-oliveira-floripa.jpg", name: "Bárbara Oliveira", city: "Florianópolis" },
-  { src: "/testimonials/gabriela-santana-sp.mp4", poster: "/testimonials/posters/gabriela-santana-sp.jpg", name: "Gabriela Santana", city: "São Paulo" },
+  { src: "/testimonials/julio-sampaio-sp.mp4", poster: "/lp3/posters/julio-sampaio-sp.webp", name: "Júlio Sampaio", city: "São Paulo" },
+  { src: "/testimonials/marcelo-cristian-rj.mp4", poster: "/lp3/posters/marcelo-cristian-rj.webp", name: "Marcelo Cristian", city: "Rio de Janeiro" },
+  { src: "/testimonials/marcos-mattos-bsb.mp4", poster: "/lp3/posters/marcos-mattos-bsb.webp", name: "Marcos Mattos", city: "Brasília" },
+  { src: "/testimonials/julia-costa-sp.mp4", poster: "/lp3/posters/julia-costa-sp.webp", name: "Júlia Costa", city: "São Paulo" },
+  { src: "/testimonials/barbara-oliveira-floripa.mp4", poster: "/lp3/posters/barbara-oliveira-floripa.webp", name: "Bárbara Oliveira", city: "Florianópolis" },
+  { src: "/testimonials/gabriela-santana-sp.mp4", poster: "/lp3/posters/gabriela-santana-sp.webp", name: "Gabriela Santana", city: "São Paulo" },
 ];
 
 interface PrintItem {
@@ -29,7 +30,7 @@ interface PrintItem {
 const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   {
     id: 2,
-    src: "/testimonials/depoimento-2.png",
+    src: "/lp3/testimonials/depoimento-2.webp",
     author: "Seu Jorge (68 anos)",
     role: "Aluno Novo no WhatsApp",
     channel: "WhatsApp",
@@ -37,7 +38,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 5,
-    src: "/testimonials/depoimento-5.png",
+    src: "/lp3/testimonials/depoimento-5.webp",
     author: "Prof. Carlos",
     role: "Professor de Sax há 15 anos",
     channel: "WhatsApp",
@@ -45,7 +46,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 9,
-    src: "/testimonials/depoimento-9.png",
+    src: "/lp3/testimonials/depoimento-9.webp",
     author: "Lucas",
     role: "Estudante de Conservatório",
     channel: "WhatsApp",
@@ -53,7 +54,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 4,
-    src: "/testimonials/depoimento-4.png",
+    src: "/lp3/testimonials/depoimento-4.webp",
     author: "Roberto & Mariana",
     role: "Saxofonistas no WhatsApp",
     channel: "WhatsApp",
@@ -61,7 +62,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 8,
-    src: "/testimonials/depoimento-8.png",
+    src: "/lp3/testimonials/depoimento-8.webp",
     author: "Prof. Antônio",
     role: "Maestro • Banda Municipal",
     channel: "WhatsApp",
@@ -69,7 +70,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 10,
-    src: "/testimonials/depoimento-10.png",
+    src: "/lp3/testimonials/depoimento-10.webp",
     author: "Júlia",
     role: "Iniciante (3 meses de Sax)",
     channel: "WhatsApp",
@@ -77,7 +78,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 1,
-    src: "/testimonials/depoimento-1.png",
+    src: "/lp3/testimonials/depoimento-1.webp",
     author: "Profa. Renata Vieira",
     role: "Professora de Música",
     channel: "Comunidade",
@@ -85,7 +86,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 3,
-    src: "/testimonials/depoimento-3.png",
+    src: "/lp3/testimonials/depoimento-3.webp",
     author: "Patrícia Santos Almeida",
     role: "Aluna Clube do Sax",
     channel: "Comunidade",
@@ -93,7 +94,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 6,
-    src: "/testimonials/depoimento-6.png",
+    src: "/lp3/testimonials/depoimento-6.webp",
     author: "Lucas Ferreira Costa",
     role: "1 ano estudando Sax",
     channel: "Comunidade",
@@ -101,7 +102,7 @@ const FIXED_TESTIMONIAL_PRINTS: PrintItem[] = [
   },
   {
     id: 7,
-    src: "/testimonials/depoimento-7.png",
+    src: "/lp3/testimonials/depoimento-7.webp",
     author: "Marcos Oliveira",
     role: "Turma da Escola de Música",
     channel: "Comunidade",
@@ -143,10 +144,12 @@ const WhatsappTestimonialsWallV3 = () => {
             <span>+847 Saxofonistas Reais Satisfeitos</span>
           </div>
 
-          <h2 className="sax-h2 text-white mb-4">
-            Veja Quem Já Está Tocando com o <br className="hidden sm:block" />
-            <span className="sax-gold-gradient-text italic">Clube do Sax</span>
-          </h2>
+          <KineticHeading>
+            <h2 className="sax-h2 text-white mb-4">
+              Veja Quem Já Está Tocando com o <br className="hidden sm:block" />
+              <span className="sax-gold-gradient-text italic">Clube do Sax</span>
+            </h2>
+          </KineticHeading>
 
           <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
             De iniciantes realizando o sonho aos 68 anos até professores e maestros de bandas
@@ -154,7 +157,7 @@ const WhatsappTestimonialsWallV3 = () => {
           </p>
         </div>
 
-        {/* PART 1: FIXED RESPONSIVE VIDEO TESTIMONIALS GRID (2 cols mobile -> 3 cols tablet -> 6 cols desktop, zero lateral scroll!) */}
+        {/* PART 1: Mention -> Immediate Video Grid (All Compressed WebP Posters Eager Loaded!) */}
         <div className="mb-14 md:mb-16">
           <div className="flex items-center justify-center gap-2.5 mb-6">
             <div className="w-9 h-9 rounded-xl bg-[#f5b942]/15 border border-[#f5b942]/35 flex items-center justify-center shrink-0">
@@ -165,95 +168,96 @@ const WhatsappTestimonialsWallV3 = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {VIDEO_TESTIMONIALS.map((t, i) => (
-              <div
-                key={t.src}
-                className="sax-card rounded-2xl overflow-hidden border border-[#f5b942]/25 flex flex-col"
-              >
-                <div className="relative aspect-[9/16] bg-[#120d08]">
-                  {activeVideoIndex === i ? (
-                    <video
-                      ref={(el) => {
-                        videoRefs.current[i] = el;
-                      }}
-                      src={t.src}
-                      poster={t.poster}
-                      controls
-                      autoPlay
-                      playsInline
-                      onPlay={() => {
-                        videoRefs.current.forEach((v, idx) => {
-                          if (v && idx !== i) v.pause();
-                        });
-                      }}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => handleVideoClick(i)}
-                      className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer group overflow-hidden"
-                      aria-label={`Assistir depoimento em vídeo de ${t.name}`}
-                    >
-                      <img
-                        src={t.poster}
-                        alt={`Depoimento de ${t.name}`}
-                        width={360}
-                        height={640}
-                        loading="lazy"
-                        decoding="async"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              <CinematicReveal key={t.src}>
+                <div className="sax-card h-full rounded-2xl overflow-hidden border border-[#f5b942]/25 flex flex-col">
+                  <div className="relative aspect-[9/16] bg-[#120d08]">
+                    {activeVideoIndex === i ? (
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[i] = el;
+                        }}
+                        src={t.src}
+                        poster={t.poster}
+                        controls
+                        autoPlay
+                        playsInline
+                        onPlay={() => {
+                          videoRefs.current.forEach((v, idx) => {
+                            if (v && idx !== i) v.pause();
+                          });
+                        }}
+                        className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/70" />
-                      <div className="relative z-10 flex flex-col items-center gap-1.5">
-                        <div className="w-12 h-12 rounded-full bg-[#f5b942] text-[#1c1102] flex items-center justify-center shadow-[0_8px_24px_rgba(245,185,66,0.5)] group-hover:scale-110 transition-transform">
-                          <Play className="w-5 h-5 ml-0.5 fill-current" />
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleVideoClick(i)}
+                        className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer group overflow-hidden"
+                        aria-label={`Assistir depoimento em vídeo de ${t.name}`}
+                      >
+                        <img
+                          src={t.poster}
+                          alt={`Depoimento de ${t.name}`}
+                          width={360}
+                          height={640}
+                          loading="eager"
+                          decoding="sync"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/70" />
+                        <div className="relative z-10 flex flex-col items-center gap-1.5">
+                          <div className="w-12 h-12 rounded-full bg-[#f5b942] text-[#1c1102] flex items-center justify-center shadow-[0_8px_24px_rgba(245,185,66,0.5)] group-hover:scale-110 transition-transform">
+                            <Play className="w-5 h-5 ml-0.5 fill-current" />
+                          </div>
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-white drop-shadow">
+                            Assistir
+                          </span>
                         </div>
-                        <span className="text-[11px] font-extrabold uppercase tracking-wider text-white drop-shadow">
-                          Assistir
-                        </span>
-                      </div>
-                    </button>
-                  )}
+                      </button>
+                    )}
+                  </div>
+                  <div className="p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-black font-heading text-white truncate">
+                      {t.name}
+                    </p>
+                    <p className="text-[11px] sm:text-xs text-[#cfc3ae] truncate">{t.city}</p>
+                  </div>
                 </div>
-                <div className="p-2.5 sm:p-3 text-left">
-                  <p className="text-xs sm:text-sm font-black font-heading text-white truncate">
-                    {t.name}
-                  </p>
-                  <p className="text-[11px] sm:text-xs text-[#cfc3ae] truncate">{t.city}</p>
-                </div>
-              </div>
+              </CinematicReveal>
             ))}
           </div>
         </div>
 
-        {/* PART 2: FIXED WHATSAPP & COMMUNITY GALLERY WALL (ALL 10 PRINTS VISIBLE SIDE-BY-SIDE & STACKED) */}
+        {/* PART 2: Mention -> Immediate Fixed WhatsApp & Community Gallery Wall (All 10 Ultra-Light WebP Prints Pre-Loaded Upfront!) */}
         <div>
-          <div className="rounded-3xl bg-gradient-to-r from-[#075E54]/85 via-[#0b3d36]/90 to-[#121c17]/95 border border-[#25D366]/35 px-4 sm:px-7 py-4 sm:py-5 mb-7 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
-            <div className="flex items-center gap-3.5 text-center sm:text-left flex-col sm:flex-row">
-              <div className="w-12 h-12 rounded-2xl bg-[#25D366] text-[#052912] flex items-center justify-center shrink-0 shadow-[0_0_24px_rgba(37,211,102,0.4)]">
-                <MessageCircle className="w-6 h-6 fill-current" />
+          <CinematicReveal>
+            <div className="rounded-3xl bg-gradient-to-r from-[#075E54]/85 via-[#0b3d36]/90 to-[#121c17]/95 border border-[#25D366]/35 px-4 sm:px-7 py-4 sm:py-5 mb-7 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
+              <div className="flex items-center gap-3.5 text-center sm:text-left flex-col sm:flex-row">
+                <div className="w-12 h-12 rounded-2xl bg-[#25D366] text-[#052912] flex items-center justify-center shrink-0 shadow-[0_0_24px_rgba(37,211,102,0.4)]">
+                  <MessageCircle className="w-6 h-6 fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-black font-heading text-white">
+                    Mural Fixo de Mensagens no WhatsApp & Comunidade
+                  </h3>
+                  <p className="text-xs sm:text-sm text-emerald-100/85">
+                    Todos os 10 prints listados lado a lado para você ler com total clareza (toque em qualquer print para ampliar)
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg sm:text-xl font-black font-heading text-white">
-                  Mural Fixo de Mensagens no WhatsApp & Comunidade
-                </h3>
-                <p className="text-xs sm:text-sm text-emerald-100/85">
-                  Todos os 10 prints listados lado a lado para você ler com total clareza (toque em qualquer print para ampliar)
-                </p>
+
+              <div className="flex items-center gap-1.5 bg-black/40 border border-white/15 rounded-full px-4 py-2 shrink-0">
+                <div className="flex text-[#f5b942]" aria-hidden="true">
+                  {[0, 1, 2, 3, 4].map((star) => (
+                    <Star key={star} className="w-3.5 h-3.5 fill-current" />
+                  ))}
+                </div>
+                <span className="text-xs font-black text-white ml-1">4.9/5</span>
               </div>
             </div>
+          </CinematicReveal>
 
-            <div className="flex items-center gap-1.5 bg-black/40 border border-white/15 rounded-full px-4 py-2 shrink-0">
-              <div className="flex text-[#f5b942]" aria-hidden="true">
-                {[0, 1, 2, 3, 4].map((star) => (
-                  <Star key={star} className="w-3.5 h-3.5 fill-current" />
-                ))}
-              </div>
-              <span className="text-xs font-black text-white ml-1">4.9/5</span>
-            </div>
-          </div>
-
-          {/* Multi-Column Masonry — ALL 10 PRINTS FIXED ON SCREEN */}
+          {/* Multi-Column Masonry — ALL 10 PRINTS FIXED ON SCREEN & EAGER DECODED */}
           <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
             {FIXED_TESTIMONIAL_PRINTS.map((item) => {
               const isWhatsapp = item.channel === "WhatsApp";
@@ -305,8 +309,8 @@ const WhatsappTestimonialsWallV3 = () => {
                     <img
                       src={item.src}
                       alt={`Depoimento de ${item.author}`}
-                      loading="lazy"
-                      decoding="async"
+                      loading="eager"
+                      decoding="sync"
                       className="w-full h-auto block object-contain"
                     />
                     <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity rounded-full bg-black/80 text-white px-2.5 py-1 text-[11px] font-bold inline-flex items-center gap-1">
@@ -358,6 +362,8 @@ const WhatsappTestimonialsWallV3 = () => {
               <img
                 src={selectedPrint.src}
                 alt={selectedPrint.author}
+                loading="eager"
+                decoding="sync"
                 className="max-w-full h-auto rounded-xl"
               />
             </div>

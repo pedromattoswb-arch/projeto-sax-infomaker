@@ -9,11 +9,12 @@ import {
   ArrowRight,
   Wifi,
   BatteryFull,
-  CheckCircle2,
   Smartphone,
+  Cloud,
 } from "lucide-react";
 
-import logoClubeSax from "@/assets/logo-clube-do-sax.png";
+import logoClubeSax from "@/assets/lp3/logo-clube-do-sax.webp";
+import { KineticHeading, Scroll3DMockup, CinematicReveal } from "./SaxThematicEffects";
 
 const APP_FOLDERS_PREVIEW = [
   { name: "MPB & Clássicos Brasil", count: "850+ músicas", emoji: "🇧🇷" },
@@ -31,25 +32,29 @@ const AppSimulationIphoneV3 = ({ onScrollToOffers }: AppSimulationIphoneV3Props)
   return (
     <section id="simulador-app" className="sax-section">
       <div className="sax-container">
-        {/* Mobile-First Grid: 1. Title -> 2. iPhone Mockup -> 3. Subtitle/Description + Bullets + CTA */}
+        {/* Mobile-First Flow: 1. Title -> 2. 3D Scroll-Synced iPhone Mockup -> 3. Paired Visual Highlights + CTA */}
         <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_364px] gap-y-6 lg:gap-y-5 lg:gap-x-14 items-center">
-          {/* 1. TITLE BLOCK (Always First) */}
+          {/* 1. TITLE BLOCK */}
           <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-end text-center lg:text-left">
             <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
               <Smartphone className="w-4 h-4 text-[#f5b942] shrink-0" />
               <span>Interface Oficial do Aluno</span>
             </div>
 
-            <h2 className="sax-h2 text-white">
-              Navegue Pela Plataforma <br className="hidden sm:block" />
-              <span className="sax-gold-gradient-text italic">Como um Aplicativo de Verdade</span>
-            </h2>
+            <KineticHeading>
+              <h2 className="sax-h2 text-white">
+                Navegue Pela Plataforma <br className="hidden sm:block" />
+                <span className="sax-gold-gradient-text italic">Como um Aplicativo de Verdade</span>
+              </h2>
+            </KineticHeading>
           </div>
 
-          {/* 2. IPHONE 16 PRO MOCKUP (Right between Title and Description on Mobile!) */}
+          {/* 2. 3D SCROLL-SYNCHRONIZED IPHONE 16 PRO MOCKUP (Immediately after Title!) */}
           <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 flex justify-center my-1 lg:my-0">
-            <div className="relative w-full max-w-[292px] min-[375px]:max-w-[328px] sm:max-w-[356px] px-1">
-              {/* Ambient Golden Halo Behind Phone */}
+            <Scroll3DMockup
+              tiltDirection={-1}
+              className="relative w-full max-w-[292px] min-[375px]:max-w-[328px] sm:max-w-[356px] px-1"
+            >
               <div
                 className="pointer-events-none absolute inset-0 rounded-[56px] opacity-35"
                 style={{
@@ -80,9 +85,9 @@ const AppSimulationIphoneV3 = ({ onScrollToOffers }: AppSimulationIphoneV3Props)
                           SaxApp
                         </span>
                         <div className="flex items-end gap-[2px] h-2.5" aria-hidden="true">
-                          <span className="w-[2px] h-1.5 rounded-full bg-[#1ed760]" />
-                          <span className="w-[2px] h-2.5 rounded-full bg-[#f5b942]" />
-                          <span className="w-[2px] h-1 rounded-full bg-[#1ed760]" />
+                          <span className="w-[2px] rounded-full bg-[#1ed760] animate-sax-eq-1" />
+                          <span className="w-[2px] rounded-full bg-[#f5b942] animate-sax-eq-2" />
+                          <span className="w-[2px] rounded-full bg-[#1ed760] animate-sax-eq-3" />
                         </div>
                       </div>
 
@@ -100,8 +105,8 @@ const AppSimulationIphoneV3 = ({ onScrollToOffers }: AppSimulationIphoneV3Props)
                           alt="Clube do Sax"
                           width={38}
                           height={28}
-                          loading="lazy"
-                          decoding="async"
+                          loading="eager"
+                          decoding="sync"
                           className="h-6 sm:h-7 w-auto shrink-0"
                         />
                         <span className="font-heading font-black text-xs text-white truncate">
@@ -195,32 +200,59 @@ const AppSimulationIphoneV3 = ({ onScrollToOffers }: AppSimulationIphoneV3Props)
                   </div>
                 </div>
               </div>
-            </div>
+            </Scroll3DMockup>
           </div>
 
-          {/* 3. DESCRIPTION (SUBTITLE) + BENEFITS + CTA (Right after Mockup on Mobile!) */}
+          {/* 3. DESCRIPTION + VISUAL FEATURE CARDS (Every point paired with its visual icon/tag!) */}
           <div className="order-3 lg:col-start-1 lg:row-start-2 lg:self-start text-center lg:text-left">
             <p className="sax-body-lg text-[#cfc3ae] mb-6 max-w-xl mx-auto lg:mx-0">
-              Uma experiência limpa, rápida e intuitiva pensada para facilitar o seu estudo diário.
               Encontre qualquer música em segundos, abra a{" "}
               <strong className="text-white">partitura em alta definição</strong> e dê play no{" "}
-              <strong className="text-[#ffe49e]">playback profissional na mesma tela</strong>.
+              <strong className="text-[#ffe49e]">playback profissional na mesma tela</strong>:
             </p>
 
-            <div className="space-y-3 max-w-xl mx-auto lg:mx-0 text-left mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto lg:mx-0 text-left mb-7">
               {[
-                "Funciona em qualquer iPhone, Android, Tablet ou Computador",
-                "Não ocupa memória do seu aparelho — acesso instantâneo na nuvem",
-                "Partituras prontas para Sax Alto (Eb) e Sax Tenor (Bb)",
-                "Busca inteligente por texto ou comando de voz no microfone",
-              ].map((line, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-2.5 text-sm sm:text-base text-[#faf6ef]/90"
-                >
-                  <CheckCircle2 className="w-5 h-5 text-[#1ed760] shrink-0 mt-0.5" />
-                  <span>{line}</span>
-                </div>
+                {
+                  icon: Smartphone,
+                  title: "iPhone, Android, Tablet & PC",
+                  sub: "Roda direto no navegador como um App",
+                  accent: "text-[#ffe49e] bg-[#f5b942]/15 border-[#f5b942]/30",
+                },
+                {
+                  icon: Cloud,
+                  title: "Zero Memória Ocupada",
+                  sub: "+10.000 arquivos salvos na nuvem",
+                  accent: "text-[#1ed760] bg-[#1ed760]/15 border-[#1ed760]/30",
+                },
+                {
+                  icon: FileText,
+                  title: "Partitura + MP3 na Mesma Tela",
+                  sub: "Sax Alto (Eb) e Sax Tenor (Bb)",
+                  accent: "text-[#ffe49e] bg-[#f5b942]/15 border-[#f5b942]/30",
+                },
+                {
+                  icon: Mic,
+                  title: "Busca por Texto ou Voz",
+                  sub: "Localize qualquer música em 1s",
+                  accent: "text-[#1ed760] bg-[#1ed760]/15 border-[#1ed760]/30",
+                },
+              ].map((card, idx) => (
+                <CinematicReveal key={idx}>
+                  <div className="sax-card h-full rounded-2xl p-3.5 flex items-start gap-3 border border-white/10">
+                    <div
+                      className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${card.accent}`}
+                    >
+                      <card.icon className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-black font-heading text-white leading-snug">
+                        {card.title}
+                      </p>
+                      <p className="text-xs text-[#cfc3ae] mt-0.5 leading-snug">{card.sub}</p>
+                    </div>
+                  </div>
+                </CinematicReveal>
               ))}
             </div>
 

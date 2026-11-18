@@ -19,7 +19,7 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react";
-import type { SaxType } from "./SaxThematicEffects";
+import { CinematicReveal, KineticHeading, type SaxType } from "./SaxThematicEffects";
 
 interface StudioTrack {
   id: string;
@@ -352,9 +352,11 @@ const SpotifyPlaybackPlayerV3 = ({
             <span>Experiência Sonora Hi-Fi • Estilo Spotify</span>
           </div>
 
-          <h2 className="sax-h2 text-white mb-3">
-            Dê Play nos <span className="sax-gold-gradient-text italic">Playbacks de Estúdio</span>
-          </h2>
+          <KineticHeading>
+            <h2 className="sax-h2 text-white mb-3">
+              Dê Play nos <span className="sax-gold-gradient-text italic">Playbacks de Estúdio</span>
+            </h2>
+          </KineticHeading>
 
           <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
             Banda real masterizada em estúdio! No aplicativo, você abre a partitura para{" "}
@@ -365,8 +367,9 @@ const SpotifyPlaybackPlayerV3 = ({
           </p>
         </div>
 
-        {/* SPOTIFY PREMIUM CONTAINER — 100% FIXED, ZERO INTERNAL OR HORIZONTAL SCROLL */}
-        <div className="rounded-3xl sm:rounded-[28px] border border-white/12 bg-[#0c0c0e] shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
+        {/* SPOTIFY PREMIUM CONTAINER — 100% FIXED, ZERO INTERNAL OR HORIZONTAL SCROLL, 3D SCROLL ELEVATION */}
+        <CinematicReveal>
+          <div className="rounded-3xl sm:rounded-[28px] border border-white/12 bg-[#0c0c0e] shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
           {/* TOP SPOTIFY FEATURED NOW-PLAYING HEADER */}
           <div
             className="relative rounded-t-3xl sm:rounded-t-[28px] p-4 sm:p-7 md:p-8 transition-colors duration-500"
@@ -812,7 +815,8 @@ const SpotifyPlaybackPlayerV3 = ({
               <ArrowRight className="w-4 h-4 shrink-0" />
             </button>
           </div>
-        </div>
+          </div>
+        </CinematicReveal>
       </div>
     </section>
   );

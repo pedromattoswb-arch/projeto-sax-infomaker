@@ -22,10 +22,10 @@ import ToolkitPage from "./pages/ToolkitPage";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
 import Lp2 from "./pages/Lp2";
+import Lp3 from "./pages/Lp3";
 import ScrollToTop from "./components/ScrollToTop";
 
 const DireStraitsFolder = lazy(() => import("./pages/DireStraitsFolder"));
-const Lp3 = lazy(() => import("./pages/Lp3"));
 
 const queryClient = new QueryClient();
 
