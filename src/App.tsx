@@ -4,27 +4,28 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Index from "./pages/Index";
-import Acervo from "./pages/Acervo";
-import NotFound from "./pages/NotFound";
-import BonusRotina from "./pages/BonusRotina";
-import BonusTonalidades from "./pages/BonusTonalidades";
-import BonusMusicas from "./pages/BonusMusicas";
-import OrderBumpDigitacao from "./pages/OrderBumpDigitacao";
-import OrderBumpTransposicao from "./pages/OrderBumpTransposicao";
-import OrderBumpManutencao from "./pages/OrderBumpManutencao";
-import ThankYouBasico from "./pages/ThankYouBasico";
-import ThankYouCompleto from "./pages/ThankYouCompleto";
-import NovaOferta from "./pages/NovaOferta";
-import UpsellToolkit from "./pages/UpsellToolkit";
-import DownsellToolkit from "./pages/DownsellToolkit";
-import ToolkitPage from "./pages/ToolkitPage";
-import Termos from "./pages/Termos";
-import Privacidade from "./pages/Privacidade";
-import Lp2 from "./pages/Lp2";
-import Lp3 from "./pages/Lp3";
 import ScrollToTop from "./components/ScrollToTop";
 
+const Index = lazy(() => import("./pages/Index"));
+const Lp2 = lazy(() => import("./pages/Lp2"));
+const Lp3 = lazy(() => import("./pages/Lp3"));
+const Interativo = lazy(() => import("./pages/Interativo"));
+const Acervo = lazy(() => import("./pages/Acervo"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const BonusRotina = lazy(() => import("./pages/BonusRotina"));
+const BonusTonalidades = lazy(() => import("./pages/BonusTonalidades"));
+const BonusMusicas = lazy(() => import("./pages/BonusMusicas"));
+const OrderBumpDigitacao = lazy(() => import("./pages/OrderBumpDigitacao"));
+const OrderBumpTransposicao = lazy(() => import("./pages/OrderBumpTransposicao"));
+const OrderBumpManutencao = lazy(() => import("./pages/OrderBumpManutencao"));
+const ThankYouBasico = lazy(() => import("./pages/ThankYouBasico"));
+const ThankYouCompleto = lazy(() => import("./pages/ThankYouCompleto"));
+const NovaOferta = lazy(() => import("./pages/NovaOferta"));
+const UpsellToolkit = lazy(() => import("./pages/UpsellToolkit"));
+const DownsellToolkit = lazy(() => import("./pages/DownsellToolkit"));
+const ToolkitPage = lazy(() => import("./pages/ToolkitPage"));
+const Termos = lazy(() => import("./pages/Termos"));
+const Privacidade = lazy(() => import("./pages/Privacidade"));
 const DireStraitsFolder = lazy(() => import("./pages/DireStraitsFolder"));
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/lp-2" element={<Lp2 />} />
             <Route path="/lp-3" element={<Lp3 />} />
+            <Route path="/interativo" element={<Interativo />} />
             <Route path="/nova-oferta" element={<NovaOferta />} />
             <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
             <Route path="/plano-premium-completo" element={<Acervo plan="premium" />} />

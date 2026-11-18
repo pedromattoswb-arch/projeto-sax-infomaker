@@ -1,0 +1,286 @@
+/* ==========================================================================
+   JAZZ CLUB CINEMATIC THEME — Scoped strictly to /interativo (.theme-jazz-club)
+   Mobile-First (390x844 base) • 100dvh • Safe Areas • Adaptive Low-Tier Fallbacks
+   ========================================================================== */
+
+.theme-jazz-club {
+  --jazz-bg: #07070a;
+  --jazz-surface: rgba(16, 15, 20, 0.9);
+  --jazz-gold-1: #8a6a2f;
+  --jazz-gold-2: #f5d58a;
+  --jazz-gold-3: #b8892e;
+  --jazz-amber: #f5b942;
+  --jazz-cold: #1d3557;
+  --jazz-cta-1: #28e96c;
+  --jazz-cta-2: #15a847;
+  --jazz-text: #faf6ef;
+  --jazz-muted: #cdc3b2;
+
+  background-color: var(--jazz-bg);
+  color: var(--jazz-text);
+  font-family: "Manrope", "Montserrat", system-ui, -apple-system, sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.theme-jazz-club.is-stage-locked {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.theme-jazz-club.is-offer-scrollable {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-y: auto;
+}
+
+/* Safe area helpers for iOS Instagram/Facebook WebView & Safari */
+.theme-jazz-club .jazz-safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.theme-jazz-club .jazz-safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Fluid Cinematic Typography (min 16px body on mobile) */
+.theme-jazz-club .jazz-display {
+  font-family: "Playfair Display", "Poppins", Georgia, serif;
+  font-size: clamp(1.9rem, 5.2vw + 0.7rem, 3.85rem);
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.theme-jazz-club .jazz-h2 {
+  font-family: "Playfair Display", "Poppins", Georgia, serif;
+  font-size: clamp(1.6rem, 3.2vw + 0.8rem, 2.85rem);
+  line-height: 1.14;
+  font-weight: 900;
+  letter-spacing: -0.018em;
+}
+
+.theme-jazz-club .jazz-h3 {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: clamp(1.15rem, 1.2vw + 0.85rem, 1.48rem);
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.theme-jazz-club .jazz-body {
+  font-size: clamp(1rem, 0.3vw + 0.94rem, 1.125rem);
+  line-height: 1.62;
+}
+
+/* Metallic Gold Gradient Text */
+.theme-jazz-club .jazz-gold-text {
+  background: linear-gradient(108deg, #8a6a2f 0%, #f5d58a 34%, #fff3cc 52%, #b8892e 78%, #f5d58a 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Primary Activation CTA */
+.theme-jazz-club .jazz-cta-primary {
+  background: linear-gradient(180deg, #2be96e 0%, #19be53 55%, #11933e 100%);
+  color: #031a0b;
+  font-weight: 900;
+  min-height: 52px;
+  box-shadow:
+    0 14px 36px -6px rgba(30, 215, 96, 0.52),
+    0 0 0 1px rgba(255, 255, 255, 0.28) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.22) inset;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-jazz-club .jazz-cta-primary:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .theme-jazz-club .jazz-cta-primary:hover {
+    transform: translateY(-2px) scale(1.015);
+    filter: brightness(1.05);
+    box-shadow:
+      0 18px 44px -6px rgba(30, 215, 96, 0.68),
+      0 0 0 1px rgba(255, 255, 255, 0.36) inset;
+  }
+}
+
+.theme-jazz-club .jazz-cta-gold {
+  background: linear-gradient(180deg, #fae2a3 0%, #dfad45 55%, #a8761c 100%);
+  color: #191003;
+  font-weight: 900;
+  min-height: 46px;
+  box-shadow:
+    0 10px 28px -6px rgba(245, 213, 138, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
+}
+
+.theme-jazz-club .jazz-cta-gold:active {
+  transform: scale(0.97);
+}
+
+/* Glassmorphism 3D Card (with automatic low-tier fallback without backdrop-filter) */
+.theme-jazz-club .jazz-glass {
+  background: linear-gradient(160deg, rgba(24, 21, 18, 0.86) 0%, rgba(10, 10, 14, 0.94) 100%);
+  border: 1px solid rgba(245, 213, 138, 0.24);
+  box-shadow:
+    0 24px 54px -16px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 240, 195, 0.16);
+}
+
+.theme-jazz-club[data-backdrop="on"] .jazz-glass {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Accessible keyboard focus ring */
+.theme-jazz-club a:focus-visible,
+.theme-jazz-club button:focus-visible,
+.theme-jazz-club input:focus-visible,
+.theme-jazz-club [role="slider"]:focus-visible {
+  outline: 2px solid #f5d58a;
+  outline-offset: 3px;
+}
+
+/* Specular metallic reflection sweep every ~2.6s */
+@keyframes jazz-sax-sheen {
+  0% {
+    transform: translate3d(-150%, -12%, 0) rotate(24deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.72;
+  }
+  42% {
+    transform: translate3d(175%, 12%, 0) rotate(24deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(175%, 12%, 0) rotate(24deg);
+    opacity: 0;
+  }
+}
+
+.jazz-sax-sheen-bar {
+  animation: jazz-sax-sheen 2.6s ease-in-out infinite;
+}
+
+/* Pulsing touch invitation ring on Scene 1 */
+@keyframes jazz-ring-pulse {
+  0% {
+    transform: scale(0.86);
+    opacity: 0.65;
+  }
+  70% {
+    transform: scale(1.26);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.26);
+    opacity: 0;
+  }
+}
+
+.jazz-pulse-ring {
+  animation: jazz-ring-pulse 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.jazz-pulse-ring-urgent {
+  animation: jazz-ring-pulse 1.25s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Slow drifting volumetric smoke */
+@keyframes jazz-smoke-drift-a {
+  0% {
+    transform: translate3d(-6%, 0, 0) scale(1.12);
+  }
+  50% {
+    transform: translate3d(6%, -3%, 0) scale(1.18);
+  }
+  100% {
+    transform: translate3d(-6%, 0, 0) scale(1.12);
+  }
+}
+
+@keyframes jazz-smoke-drift-b {
+  0% {
+    transform: translate3d(5%, 2%, 0) scale(1.15);
+  }
+  50% {
+    transform: translate3d(-5%, -2%, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(5%, 2%, 0) scale(1.15);
+  }
+}
+
+.jazz-smoke-a {
+  animation: jazz-smoke-drift-a 24s ease-in-out infinite;
+}
+
+.jazz-smoke-b {
+  animation: jazz-smoke-drift-b 31s ease-in-out infinite;
+}
+
+/* Infinite marquee in Offer */
+@keyframes jazz-marquee-run {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.jazz-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: jazz-marquee-run 38s linear infinite;
+}
+
+@media (hover: hover) {
+  .jazz-marquee-wrap:hover .jazz-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Responsive iPhone 16 Pro Frame inside Offer */
+.jazz-iphone-frame {
+  position: relative;
+  border-radius: 44px;
+  padding: 8px;
+  background: linear-gradient(145deg, #6b563a 0%, #241d15 28%, #13110e 65%, #7a6140 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(245, 213, 138, 0.42),
+    0 30px 66px -14px rgba(0, 0, 0, 0.92),
+    0 0 46px -12px rgba(245, 185, 66, 0.25);
+}
+
+.jazz-iphone-screen {
+  border-radius: 36px;
+  overflow: hidden;
+  background: #0a090c;
+  border: 2px solid #040406;
+}
+
+/* Reduced motion strict compliance */
+@media (prefers-reduced-motion: reduce) {
+  .theme-jazz-club .jazz-sax-sheen-bar,
+  .theme-jazz-club .jazz-pulse-ring,
+  .theme-jazz-club .jazz-pulse-ring-urgent,
+  .theme-jazz-club .jazz-smoke-a,
+  .theme-jazz-club .jazz-smoke-b,
+  .theme-jazz-club .jazz-marquee-track {
+    animation: none !important;
+  }
+}
