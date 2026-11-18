@@ -8,7 +8,6 @@ import {
   BadgeCheck,
   Mail,
   Sparkles,
-  PlayCircle,
   Zap,
   Users,
   Infinity as InfinityIcon,
@@ -22,7 +21,6 @@ import SaxStageIntro from "./SaxStageIntro";
 import {
   AmbientSaxBackdrop,
   MusicalStaffDivider,
-  type SaxType,
 } from "./SaxThematicEffects";
 import HeroIphoneMockupV3 from "./HeroIphoneMockupV3";
 import PartituraMarqueeV3 from "./PartituraMarqueeV3";
@@ -41,7 +39,6 @@ function useCounter(target: number, duration = 1800) {
   const started = useRef(false);
 
   useEffect(() => {
-    // Respect reduced motion: keep final target visible immediately
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
       setCount(target);
       return;
@@ -81,16 +78,14 @@ const scrollToOffers = () => scrollToSection("ofertas");
 const NAV_LINKS = [
   { label: "Partituras", id: "partituras" },
   { label: "Playbacks", id: "playbacks" },
-  { label: "App no iPhone", id: "simulador-app" },
+  { label: "O Aplicativo", id: "simulador-app" },
   { label: "Depoimentos", id: "depoimentos" },
   { label: "Planos", id: "ofertas" },
   { label: "Dúvidas", id: "faq" },
 ];
 
 const SalesPageV3 = () => {
-  const [introKey, setIntroKey] = useState<number>(1);
   const [showIntro, setShowIntro] = useState<boolean>(true);
-  const [saxType, setSaxType] = useState<SaxType>("alto");
   const [scrollPct, setScrollPct] = useState<number>(0);
   const [navOpen, setNavOpen] = useState<boolean>(false);
 
@@ -111,7 +106,7 @@ const SalesPageV3 = () => {
 
   return (
     <div className="theme-sax-stage relative min-h-screen font-body">
-      {/* Accessible Skip Link for Keyboard Users */}
+      {/* Accessible Skip Link */}
       <a
         href="#conteudo-principal"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[130] focus:rounded-xl focus:bg-[#f5b942] focus:px-4 focus:py-2.5 focus:text-sm focus:font-black focus:text-[#1c1102]"
@@ -120,12 +115,7 @@ const SalesPageV3 = () => {
       </a>
 
       {/* AUTOMATIC SAXOPHONE OVERTURE INTRO ON ENTRY */}
-      {showIntro && (
-        <SaxStageIntro
-          key={introKey}
-          onComplete={() => setShowIntro(false)}
-        />
-      )}
+      {showIntro && <SaxStageIntro onComplete={() => setShowIntro(false)} />}
 
       {/* AMBIENT STAGE SPOTLIGHTS & NOTES */}
       <AmbientSaxBackdrop />
@@ -167,19 +157,6 @@ const SalesPageV3 = () => {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Replay Saxophone Intro Button (Tablet/Desktop) */}
-            <button
-              type="button"
-              onClick={() => {
-                setIntroKey((k) => k + 1);
-                setShowIntro(true);
-              }}
-              className="hidden md:inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-[#ffe49e]/90 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-[#f5b942]/25 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
-            >
-              <PlayCircle className="w-3.5 h-3.5 text-[#f5b942]" />
-              <span>Abertura</span>
-            </button>
-
             <button
               type="button"
               onClick={scrollToOffers}
@@ -273,93 +250,104 @@ const SalesPageV3 = () => {
 
       {/* MAIN CONTENT */}
       <main id="conteudo-principal" className="relative z-10">
-        {/* HERO SECTION */}
-        <section className="pt-8 sm:pt-14 pb-12 md:pb-20 px-4 sm:px-6 md:px-10 relative">
-          <div className="sax-container max-w-5xl text-center">
-            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-wider mb-5">
-              <Headphones className="w-4 h-4 text-[#f5b942] shrink-0" />
-              <span>
-                Aplicativo exclusivo para{" "}
-                <strong className="text-white underline decoration-[#f5b942] underline-offset-4">
-                  Sax Alto (Eb) e Sax Tenor (Bb)
-                </strong>
-              </span>
-            </div>
+        {/* HERO SECTION — 100% Mobile-First: 1. Badge + H1 Title -> 2. iPhone Mockup -> 3. Subtitle (Description) + CTA + Counters */}
+        <section className="pt-7 sm:pt-12 pb-12 md:pb-20 px-4 sm:px-6 md:px-10 relative">
+          <div className="sax-container">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-y-6 lg:gap-y-5 lg:gap-x-12 items-center">
+              {/* 1. BADGE + H1 TITLE (Always First!) */}
+              <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-end text-center lg:text-left">
+                <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-wider mb-4">
+                  <Headphones className="w-4 h-4 text-[#f5b942] shrink-0" />
+                  <span>
+                    Aplicativo exclusivo para{" "}
+                    <strong className="text-white underline decoration-[#f5b942] underline-offset-4">
+                      Sax Alto (Eb) e Sax Tenor (Bb)
+                    </strong>
+                  </span>
+                </div>
 
-            <h1 className="sax-h1 text-white mb-5 max-w-4xl mx-auto">
-              O Maior Acervo de Partituras <br className="hidden sm:block" />
-              <span className="sax-gold-gradient-text italic">com Playback de Estúdio</span>
-            </h1>
-
-            <p className="sax-body-lg text-[#cfc3ae] font-medium max-w-3xl mx-auto mb-6">
-              Transforme seu celular, tablet ou PC em um verdadeiro{" "}
-              <strong className="text-white">Netflix & Spotify do Saxofonista</strong>: são{" "}
-              <strong className="text-[#ffe49e]">+10.000 partituras profissionais</strong> com
-              acompanhamento de banda real, busca por voz e{" "}
-              <strong className="text-[#1ed760]">acesso imediato enviado direto no seu e-mail!</strong>
-            </p>
-
-            {/* REALISTIC IPHONE 16 PRO MOCKUP SHOWCASE */}
-            <HeroIphoneMockupV3 saxType={saxType} onSaxTypeChange={setSaxType} />
-
-            {/* PRIMARY HERO CTA + INSTANT EMAIL LOGIN BADGE */}
-            <div className="max-w-xl mx-auto mt-6">
-              <button
-                type="button"
-                onClick={scrollToOffers}
-                className="sax-cta-btn sax-sheen-overlay relative overflow-hidden w-full sm:w-auto py-4 sm:py-5 px-8 sm:px-12 rounded-2xl text-base sm:text-lg uppercase tracking-wider inline-flex items-center justify-center gap-3 cursor-pointer"
-              >
-                <span>QUERO MEU ACESSO IMEDIATO</span>
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
-              </button>
-
-              <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 rounded-2xl bg-white/[0.04] border border-[#1ed760]/30 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#e6decb]">
-                <span className="inline-flex items-center gap-1.5 text-[#1ed760] font-bold">
-                  <Mail className="w-4 h-4 shrink-0" />
-                  Receba Login + Senha no E-mail na mesma hora
-                </span>
-                <span className="hidden sm:inline text-white/25">•</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-[#f5b942] shrink-0" />
-                  Pagamento Único • 7 Dias de Garantia
-                </span>
+                <h1 className="sax-h1 text-white">
+                  O Maior Acervo de Partituras <br className="hidden sm:block" />
+                  <span className="sax-gold-gradient-text italic">com Playback de Estúdio</span>
+                </h1>
               </div>
-            </div>
 
-            {/* ANIMATED METRIC COUNTERS (320px-safe typography & padding) */}
-            <div
-              ref={counterPartituras.ref}
-              className="grid grid-cols-3 gap-2.5 sm:gap-6 max-w-3xl mx-auto mt-8 sm:mt-10"
-            >
-              <div className="sax-card rounded-2xl sm:rounded-3xl p-3 sm:p-6 text-center min-w-0">
-                <span className="text-lg min-[375px]:text-xl sm:text-4xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
-                  {counterPartituras.count.toLocaleString("pt-BR")}+
-                </span>
-                <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
-                  Partituras
-                </span>
+              {/* 2. IPHONE 16 PRO APP MOCKUP (Directly between H1 Title and Subtitle on Mobile!) */}
+              <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 my-1 lg:my-0">
+                <HeroIphoneMockupV3 />
               </div>
-              <div
-                ref={counterAlunos.ref}
-                className="sax-card rounded-2xl sm:rounded-3xl p-3 sm:p-6 text-center min-w-0"
-              >
-                <span className="text-lg min-[375px]:text-xl sm:text-4xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
-                  {counterAlunos.count}+
-                </span>
-                <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
-                  Saxofonistas
-                </span>
-              </div>
-              <div
-                ref={counterGeneros.ref}
-                className="sax-card rounded-2xl sm:rounded-3xl p-3 sm:p-6 text-center min-w-0"
-              >
-                <span className="text-lg min-[375px]:text-xl sm:text-4xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
-                  {counterGeneros.count}+
-                </span>
-                <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
-                  Estilos
-                </span>
+
+              {/* 3. SUBTITLE (DESCRIPTION) + PRIMARY CTA + COUNTERS (Right after Mockup on Mobile!) */}
+              <div className="order-3 lg:col-start-1 lg:row-start-2 lg:self-start text-center lg:text-left">
+                <p className="sax-body-lg text-[#cfc3ae] font-medium max-w-2xl mx-auto lg:mx-0 mb-6">
+                  Transforme seu celular, tablet ou PC em um verdadeiro{" "}
+                  <strong className="text-white">Netflix & Spotify do Saxofonista</strong>: são{" "}
+                  <strong className="text-[#ffe49e]">+10.000 partituras profissionais</strong> com
+                  acompanhamento de banda real, busca por voz e{" "}
+                  <strong className="text-[#1ed760]">
+                    acesso imediato enviado direto no seu e-mail!
+                  </strong>
+                </p>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={scrollToOffers}
+                    className="sax-cta-btn sax-sheen-overlay relative overflow-hidden w-full sm:w-auto py-4 sm:py-5 px-8 sm:px-12 rounded-2xl text-base sm:text-lg uppercase tracking-wider inline-flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <span>QUERO MEU ACESSO IMEDIATO</span>
+                    <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
+                  </button>
+
+                  <div className="mt-4 inline-flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 rounded-2xl bg-white/[0.04] border border-[#1ed760]/30 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#e6decb]">
+                    <span className="inline-flex items-center gap-1.5 text-[#1ed760] font-bold">
+                      <Mail className="w-4 h-4 shrink-0" />
+                      Receba Login + Senha no E-mail na mesma hora
+                    </span>
+                    <span className="hidden sm:inline text-white/25">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-[#f5b942] shrink-0" />
+                      Pagamento Único • 7 Dias de Garantia
+                    </span>
+                  </div>
+                </div>
+
+                {/* ANIMATED METRIC COUNTERS */}
+                <div
+                  ref={counterPartituras.ref}
+                  className="grid grid-cols-3 gap-2.5 sm:gap-4 max-w-xl mx-auto lg:mx-0 mt-7"
+                >
+                  <div className="sax-card rounded-2xl p-3 sm:p-4 text-center min-w-0">
+                    <span className="text-lg min-[375px]:text-xl sm:text-3xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
+                      {counterPartituras.count.toLocaleString("pt-BR")}+
+                    </span>
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
+                      Partituras
+                    </span>
+                  </div>
+                  <div
+                    ref={counterAlunos.ref}
+                    className="sax-card rounded-2xl p-3 sm:p-4 text-center min-w-0"
+                  >
+                    <span className="text-lg min-[375px]:text-xl sm:text-3xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
+                      {counterAlunos.count}+
+                    </span>
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
+                      Saxofonistas
+                    </span>
+                  </div>
+                  <div
+                    ref={counterGeneros.ref}
+                    className="sax-card rounded-2xl p-3 sm:p-4 text-center min-w-0"
+                  >
+                    <span className="text-lg min-[375px]:text-xl sm:text-3xl font-black font-heading sax-gold-gradient-text tabular-nums block leading-tight">
+                      {counterGeneros.count}+
+                    </span>
+                    <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#cfc3ae] block mt-1 truncate">
+                      Estilos
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -368,29 +356,22 @@ const SalesPageV3 = () => {
         <MusicalStaffDivider label="Partituras em Alta Definição" />
 
         {/* CONTINUOUS NON-STOP ZERO-GAP PARTITURA CAROUSEL */}
-        <PartituraMarqueeV3 saxType={saxType} />
+        <PartituraMarqueeV3 saxType="alto" />
 
         <MusicalStaffDivider label="Player de Estúdio • Estilo Spotify" />
 
         {/* SPOTIFY-STYLE STUDIO PLAYBACK PLAYER (Compact Hamburger on Mobile + 100% Fixed Zero Scroll) */}
-        <SpotifyPlaybackPlayerV3
-          saxType={saxType}
-          onScrollToOffers={scrollToOffers}
-        />
+        <SpotifyPlaybackPlayerV3 saxType="alto" onScrollToOffers={scrollToOffers} />
 
         <MusicalStaffDivider label="Ecossistema & Acesso no E-mail" />
 
-        {/* VISUAL ILLUSTRATED ECOSYSTEM + INSTANT EMAIL & LOGIN SECTION */}
-        <EcosystemAndEmailV3 saxType={saxType} onScrollToOffers={scrollToOffers} />
+        {/* VISUAL ILLUSTRATED ECOSYSTEM + INSTANT EMAIL & LOGIN SECTION (Title -> Mockup -> Description) */}
+        <EcosystemAndEmailV3 onScrollToOffers={scrollToOffers} />
 
-        <MusicalStaffDivider label="Experimente o App no iPhone" />
+        <MusicalStaffDivider label="Interface Oficial no iPhone" />
 
-        {/* INTERACTIVE APP PREVIEW INSIDE REALISTIC IPHONE 16 PRO */}
-        <AppSimulationIphoneV3
-          saxType={saxType}
-          onSaxTypeChange={setSaxType}
-          onScrollToOffers={scrollToOffers}
-        />
+        {/* APP SHOWCASE INSIDE REALISTIC IPHONE 16 PRO (Title -> Mockup -> Description) */}
+        <AppSimulationIphoneV3 onScrollToOffers={scrollToOffers} />
 
         <MusicalStaffDivider label="Comunidade & Mural WhatsApp" />
 
@@ -404,16 +385,21 @@ const SalesPageV3 = () => {
 
         <MusicalStaffDivider label="Presentes Exclusivos VIP" />
 
-        {/* 3 ILLUSTRATED BONUS VIP GUIDES */}
+        {/* 3 ILLUSTRATED BONUS VIP GUIDES (Title -> Mockup -> Description) */}
         <BonusSectionV3 />
 
         {/* PRICING CARDS */}
-        <PricingCardsV3 saxType={saxType} />
+        <PricingCardsV3 saxType="alto" />
 
-        {/* 7-DAY UNCONDITIONAL GUARANTEE */}
+        {/* 7-DAY UNCONDITIONAL GUARANTEE (Title -> Seal Visual -> Description) */}
         <section className="sax-section">
           <div className="sax-container max-w-3xl text-center">
             <div className="sax-card rounded-3xl sm:rounded-[32px] p-6 sm:p-12 md:p-14 border border-[#f5b942]/35 relative overflow-hidden">
+              <h2 className="sax-h2 text-white mb-5">
+                Sua Satisfação Garantida Por{" "}
+                <span className="sax-gold-gradient-text italic">7 Dias Sem Risco!</span>
+              </h2>
+
               <div className="relative inline-block mb-6">
                 <div className="absolute inset-0 bg-[#f5b942]/25 blur-3xl rounded-full" />
                 <img
@@ -426,10 +412,6 @@ const SalesPageV3 = () => {
                   className="w-28 h-28 sm:w-36 sm:h-36 relative z-10 drop-shadow-2xl mx-auto"
                 />
               </div>
-
-              <h2 className="sax-h2 text-white mb-4">
-                Teste Tudo Por <span className="sax-gold-gradient-text italic">7 Dias Sem Risco!</span>
-              </h2>
 
               <p className="sax-body-lg text-[#cfc3ae]">
                 Receba seu login por e-mail agora mesmo, entre no aplicativo, baixe partituras e toque

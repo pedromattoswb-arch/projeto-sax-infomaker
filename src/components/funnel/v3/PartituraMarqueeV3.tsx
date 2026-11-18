@@ -19,7 +19,6 @@ interface SheetItem {
   genre: string;
 }
 
-// Curated 100% full, dense A4 pages (zero half-blank pages, zero holes)
 const FULL_SHEETS: SheetItem[] = [
   { id: "s1", src: p1, title: "Over The Rainbow", artist: "Clássico Internacional", genre: "Cinema & Pop" },
   { id: "s2", src: p3, title: "Além do Horizonte", artist: "Roberto Carlos", genre: "MPB Clássico" },
@@ -30,7 +29,6 @@ const FULL_SHEETS: SheetItem[] = [
   { id: "s7", src: p9, title: "Ainda Lembro (Arr. Completo)", artist: "Marisa Monte", genre: "MPB Groove" },
 ];
 
-// Double inside each half (~3800px per half) so even 4K ultrawide screens never see a gap
 const HALF_TRACK_SHEETS = [...FULL_SHEETS, ...FULL_SHEETS];
 
 interface PartituraMarqueeV3Props {
@@ -56,44 +54,21 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
 
   return (
     <section id="partituras" className="py-12 md:py-16 relative">
-      <div className="sax-container max-w-5xl px-4 sm:px-6 text-center mb-8 md:mb-10">
+      {/* 1. Title */}
+      <div className="sax-container max-w-5xl px-4 sm:px-6 text-center mb-6 md:mb-8">
         <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
           <FileText className="w-4 h-4 text-[#f5b942] shrink-0" />
           <span>Diagramação Limpa em Alta Definição</span>
         </div>
 
-        <h2 className="sax-h2 text-white mb-3">
+        <h2 className="sax-h2 text-white">
           Veja a Qualidade Real das <span className="sax-gold-gradient-text italic">Partituras</span>
         </h2>
-
-        <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
-          Folhas limpas, revisadas compasso a compasso, prontas para ler no celular, tablet ou imprimir — já transpostas para{" "}
-          <strong className="text-[#ffe49e]">
-            {saxType === "alto" ? "Sax Alto (Eb)" : "Sax Tenor (Bb)"}
-          </strong>{" "}
-          e acompanhadas de playback.
-        </p>
-
-        {/* Quick Quality Indicators */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mt-5 text-xs sm:text-sm font-bold text-[#ffe49e]">
-          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
-            <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
-            Notas Grandes e Legíveis
-          </span>
-          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
-            <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
-            Cifras + Melodia Completa
-          </span>
-          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
-            <ZoomIn className="w-4 h-4 text-[#f5b942] shrink-0" />
-            Toque em qualquer folha para ampliar
-          </span>
-        </div>
       </div>
 
+      {/* 2. Sheet Music Showcase (Directly below Title!) */}
       {prefersReducedMotion ? (
-        /* Accessible Static Grid Fallback when Reduced Motion is enabled */
-        <div className="sax-container px-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="sax-container px-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
           {FULL_SHEETS.map((sheet) => (
             <button
               key={sheet.id}
@@ -106,7 +81,7 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
                   {sheet.genre}
                 </span>
                 <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#1ed760]/20 text-[#1ed760] shrink-0">
-                  {saxType === "alto" ? "Eb" : "Bb"}
+                  Eb/Bb
                 </span>
               </div>
               <div className="aspect-[210/288] bg-white overflow-hidden">
@@ -128,8 +103,7 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
           ))}
         </div>
       ) : (
-        /* Continuous Seamless Non-Stop Ribbon — Side-by-Side Sheets Without Any Gaps */
-        <div className="relative w-full sax-marquee-wrapper py-2">
+        <div className="relative w-full sax-marquee-wrapper py-2 mb-6">
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-[#070503] to-transparent z-10" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-[#070503] to-transparent z-10" />
 
@@ -155,7 +129,7 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
                           {sheet.genre}
                         </span>
                         <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-[#1ed760]/20 text-[#1ed760] shrink-0">
-                          {saxType === "alto" ? "Alto Eb" : "Tenor Bb"}
+                          {saxType === "alto" ? "Eb & Bb" : "Eb & Bb"}
                         </span>
                       </div>
 
@@ -200,6 +174,31 @@ const PartituraMarqueeV3 = ({ saxType }: PartituraMarqueeV3Props) => {
           </div>
         </div>
       )}
+
+      {/* 3. Description (Subtitle) + Quality Pills */}
+      <div className="sax-container max-w-4xl px-4 sm:px-6 text-center">
+        <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
+          Folhas limpas, revisadas compasso a compasso, prontas para ler no celular, tablet ou
+          imprimir — já transpostas para{" "}
+          <strong className="text-[#ffe49e]">Sax Alto (Eb) e Sax Tenor (Bb)</strong> e acompanhadas
+          de playback profissional.
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mt-5 text-xs sm:text-sm font-bold text-[#ffe49e]">
+          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
+            <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
+            Notas Grandes e Legíveis
+          </span>
+          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
+            <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
+            Cifras + Melodia Completa
+          </span>
+          <span className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-[#f5b942]/25 rounded-full px-3.5 py-1.5">
+            <ZoomIn className="w-4 h-4 text-[#f5b942] shrink-0" />
+            Clique na folha para dar zoom
+          </span>
+        </div>
+      </div>
 
       {/* Full HD Sheet Lightbox Modal */}
       {zoomedSheet && (

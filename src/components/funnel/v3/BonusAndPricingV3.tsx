@@ -152,37 +152,44 @@ export const BonusSectionV3 = () => {
   return (
     <section id="bonus" className="sax-section">
       <div className="sax-container">
-        {/* Visual Hero Header for Bonuses */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 items-center mb-10 md:mb-12">
-          <div className="rounded-3xl overflow-hidden border border-[#f5b942]/35 shadow-2xl relative">
-            <img
-              src={illBonusVip}
-              alt="3 Guias Bônus Exclusivos do Plano Completo"
-              width={800}
-              height={600}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-60 sm:h-80 object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#090705] via-transparent to-transparent" />
-            <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between">
-              <span className="rounded-full bg-black/85 border border-[#f5b942]/50 px-3.5 py-1.5 text-xs font-black text-[#ffe49e]">
-                🎁 Valor Total: R$ 141,00 → GRÁTIS HOJE
-              </span>
-            </div>
-          </div>
-
-          <div className="text-center lg:text-left">
+        {/* Mobile-First Header: 1. Badge + H2 Title -> 2. Bonus Mockup -> 3. Subtitle/Description */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.12fr_0.88fr] gap-y-5 lg:gap-y-4 lg:gap-x-10 items-center mb-10 md:mb-12">
+          {/* 1. Title Block */}
+          <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-end text-center lg:text-left">
             <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
               <Gift className="w-4 h-4 text-[#f5b942] shrink-0" />
               <span>Presentes Exclusivos do Plano Completo</span>
             </div>
 
-            <h2 className="sax-h2 text-white mb-4">
+            <h2 className="sax-h2 text-white">
               Leve <span className="sax-gold-gradient-text italic">3 Guias Bônus VIP</span>{" "}
               para Evoluir 3x Mais Rápido
             </h2>
+          </div>
 
+          {/* 2. Bonus Books Mockup (Right between Title and Description on Mobile!) */}
+          <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            <div className="rounded-3xl overflow-hidden border border-[#f5b942]/35 shadow-2xl relative max-w-md mx-auto lg:max-w-none">
+              <img
+                src={illBonusVip}
+                alt="Mockup dos 3 Guias Bônus Exclusivos do Plano Completo"
+                width={800}
+                height={600}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-56 sm:h-72 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#090705] via-transparent to-transparent" />
+              <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-center sm:justify-start">
+                <span className="rounded-full bg-black/85 border border-[#f5b942]/50 px-3.5 py-1.5 text-xs font-black text-[#ffe49e]">
+                  🎁 Valor Total: R$ 141,00 → GRÁTIS HOJE
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Subtitle / Description */}
+          <div className="order-3 lg:col-start-1 lg:row-start-2 lg:self-start text-center lg:text-left">
             <p className="sax-body-lg text-[#cfc3ae]">
               Ao escolher o <strong className="text-white">Plano Completo</strong>, além das +10.000
               partituras com playback e busca por voz, esses 3 materiais especiais já aparecem
