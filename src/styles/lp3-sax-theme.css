@@ -1,0 +1,255 @@
+/* ==========================================================================
+   GOLDEN BRASS JAZZ STAGE & GAMIFIED SAX THEME — Scoped strictly to /lp-3
+   ========================================================================== */
+
+.theme-sax-stage {
+  --sax-bg: #070503;
+  --sax-bg-elevated: #110c07;
+  --sax-surface: rgba(24, 17, 10, 0.78);
+  --sax-surface-strong: rgba(18, 13, 8, 0.92);
+  --sax-brass: #f5b942;
+  --sax-brass-light: #ffe49e;
+  --sax-brass-deep: #b87914;
+  --sax-pearl: #fdf8ee;
+  --sax-spotify: #1ed760;
+  --sax-spotify-dark: #15a847;
+  --sax-text: #faf6ef;
+  --sax-text-muted: #c2b59f;
+  --sax-border: rgba(245, 185, 66, 0.16);
+  --sax-border-strong: rgba(245, 185, 66, 0.38);
+
+  background-color: var(--sax-bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245, 185, 66, 0.14) 0%, transparent 65%),
+    radial-gradient(circle at 15% 25%, rgba(217, 119, 6, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(30, 215, 96, 0.04) 0%, transparent 45%);
+  color: var(--sax-text);
+}
+
+.theme-sax-stage .sax-gold-gradient-text {
+  background: linear-gradient(180deg, #fff2c2 0%, #f5b942 52%, #c98317 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.theme-sax-stage .sax-card {
+  background: linear-gradient(165deg, rgba(28, 20, 12, 0.86) 0%, rgba(13, 9, 5, 0.92) 100%);
+  border: 1px solid var(--sax-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 24px 50px -16px rgba(0, 0, 0, 0.78),
+    inset 0 1px 0 rgba(255, 235, 180, 0.08);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-sax-stage .sax-card:hover {
+  border-color: var(--sax-border-strong);
+  box-shadow:
+    0 28px 60px -16px rgba(0, 0, 0, 0.85),
+    0 0 30px -8px rgba(245, 185, 66, 0.18),
+    inset 0 1px 0 rgba(255, 235, 180, 0.16);
+}
+
+/* Mother-of-pearl saxophone key button */
+.theme-sax-stage .sax-pearl-key {
+  background: radial-gradient(circle at 32% 28%, #ffffff 0%, #f8efe0 48%, #dfd0b8 88%, #b9a382 100%);
+  border: 3px solid #d89b2b;
+  box-shadow:
+    0 6px 0 #7c520b,
+    0 10px 20px rgba(0, 0, 0, 0.65),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  color: #261906;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
+}
+
+.theme-sax-stage .sax-pearl-key:hover {
+  filter: brightness(1.04);
+}
+
+.theme-sax-stage .sax-pearl-key:active,
+.theme-sax-stage .sax-pearl-key.is-pressed {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #7c520b,
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(245, 185, 66, 0.65),
+    inset 0 2px 6px rgba(255, 255, 255, 0.95);
+}
+
+/* Brass metallic badge */
+.theme-sax-stage .sax-brass-pill {
+  background: linear-gradient(135deg, rgba(245, 185, 66, 0.16) 0%, rgba(184, 121, 20, 0.08) 100%);
+  border: 1px solid rgba(245, 185, 66, 0.35);
+  color: #ffe299;
+  box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.15);
+}
+
+/* High-converting Emerald Studio CTA */
+.theme-sax-stage .sax-cta-btn {
+  background: linear-gradient(180deg, #28e96c 0%, #18bd52 55%, #11963f 100%);
+  color: #041d0c;
+  font-weight: 900;
+  box-shadow:
+    0 12px 32px -6px rgba(30, 215, 96, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.22) inset;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.theme-sax-stage .sax-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.05);
+  box-shadow:
+    0 18px 42px -6px rgba(30, 215, 96, 0.68),
+    0 0 0 1px rgba(255, 255, 255, 0.32) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.22) inset;
+}
+
+.theme-sax-stage .sax-cta-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Golden VIP CTA variant */
+.theme-sax-stage .sax-gold-btn {
+  background: linear-gradient(180deg, #ffe7a3 0%, #f5b942 52%, #c98317 100%);
+  color: #1c1102;
+  font-weight: 900;
+  box-shadow:
+    0 12px 32px -6px rgba(245, 185, 66, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.2) inset;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.theme-sax-stage .sax-gold-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.05);
+  box-shadow:
+    0 18px 42px -6px rgba(245, 185, 66, 0.68),
+    0 0 0 1px rgba(255, 255, 255, 0.55) inset;
+}
+
+/* Continuous Non-Stop Partitura Marquee (Zero Gaps / Zero Jumps) */
+@keyframes sax-marquee-continuous {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.sax-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: sax-marquee-continuous 42s linear infinite;
+}
+
+.sax-marquee-wrapper:hover .sax-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Spotify Equalizer Bars */
+@keyframes sax-eq-1 {
+  0%, 100% { height: 22%; }
+  50% { height: 95%; }
+}
+@keyframes sax-eq-2 {
+  0%, 100% { height: 85%; }
+  35% { height: 28%; }
+  70% { height: 100%; }
+}
+@keyframes sax-eq-3 {
+  0%, 100% { height: 40%; }
+  45% { height: 100%; }
+  80% { height: 25%; }
+}
+@keyframes sax-eq-4 {
+  0%, 100% { height: 70%; }
+  25% { height: 20%; }
+  65% { height: 92%; }
+}
+
+.animate-sax-eq-1 { animation: sax-eq-1 0.75s ease-in-out infinite; }
+.animate-sax-eq-2 { animation: sax-eq-2 0.62s ease-in-out infinite; }
+.animate-sax-eq-3 { animation: sax-eq-3 0.84s ease-in-out infinite; }
+.animate-sax-eq-4 { animation: sax-eq-4 0.58s ease-in-out infinite; }
+
+/* Vinyl Spin */
+@keyframes sax-vinyl-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-sax-vinyl {
+  animation: sax-vinyl-spin 6s linear infinite;
+}
+
+/* Floating Ambient Musical Notes */
+@keyframes sax-float-note {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.85);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.45;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate3d(24px, -130px, 0) rotate(14deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.animate-sax-float-note {
+  animation: sax-float-note var(--note-duration, 9s) ease-in-out infinite;
+  animation-delay: var(--note-delay, 0s);
+}
+
+/* Subtle metallic sheen sweep */
+@keyframes sax-sheen {
+  0% { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100% { transform: translateX(240%) skewX(-20deg); }
+}
+
+.sax-sheen-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  animation: sax-sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* iPhone Titanium Bezel Styling */
+.iphone-16-frame {
+  position: relative;
+  border-radius: 52px;
+  padding: 11px;
+  background: linear-gradient(145deg, #544632 0%, #241d15 28%, #15110c 62%, #685338 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 224, 156, 0.35),
+    0 35px 80px -15px rgba(0, 0, 0, 0.9),
+    0 0 60px -15px rgba(245, 185, 66, 0.22),
+    inset 0 1px 2px rgba(255, 240, 200, 0.45);
+}
+
+.iphone-16-inner-bezel {
+  border-radius: 42px;
+  background: #050506;
+  padding: 3px;
+  box-shadow: inset 0 0 0 1.5px #000000;
+}
+
+.iphone-16-screen {
+  position: relative;
+  border-radius: 39px;
+  overflow: hidden;
+  background: #0a0908;
+}

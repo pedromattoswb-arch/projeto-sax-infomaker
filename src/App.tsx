@@ -22,6 +22,7 @@ import ToolkitPage from "./pages/ToolkitPage";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
 import Lp2 from "./pages/Lp2";
+import Lp3 from "./pages/Lp3";
 import ScrollToTop from "./components/ScrollToTop";
 
 const DireStraitsFolder = lazy(() => import("./pages/DireStraitsFolder"));
@@ -39,6 +40,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/lp-2" element={<Lp2 />} />
+            <Route path="/lp-3" element={<Lp3 />} />
             <Route path="/nova-oferta" element={<NovaOferta />} />
             <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
             <Route path="/plano-premium-completo" element={<Acervo plan="premium" />} />
