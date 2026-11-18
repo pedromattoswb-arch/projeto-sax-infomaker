@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Mail,
   KeyRound,
@@ -7,10 +7,6 @@ import {
   Zap,
   Sparkles,
   ArrowRight,
-  FolderOpen,
-  Video,
-  BookOpen,
-  Infinity as InfinityIcon,
   ShieldCheck,
   Clock,
 } from "lucide-react";
@@ -19,7 +15,7 @@ import illAcervo from "@/assets/lp3/ill-acervo-partituras.jpg";
 import illVoz from "@/assets/lp3/ill-voz-inteligente.jpg";
 import illMulti from "@/assets/lp3/ill-multi-dispositivos.jpg";
 import illEmail from "@/assets/lp3/ill-acesso-email.jpg";
-import type { SaxType } from "./SaxThematicEffects";
+import { CinematicReveal, type SaxType } from "./SaxThematicEffects";
 
 interface EcosystemAndEmailV3Props {
   saxType: SaxType;
@@ -30,71 +26,61 @@ const VISUAL_PILLARS = [
   {
     image: illAcervo,
     badge: "+10.000 Músicas",
-    xpTag: "+250 XP",
+    tag: "Alto Eb & Tenor Bb",
     title: "+10.000 Partituras com Playback de Estúdio",
     desc: "Cada música já vem com a partitura revisada para Sax Alto (Eb) e Sax Tenor (Bb) + o playback profissional para tocar junto.",
   },
   {
     image: illVoz,
-    badge: "Exclusivo IA",
-    xpTag: "+200 XP",
-    title: "Busca por Voz Inteligente em 1 Segundo",
+    badge: "Busca por Voz",
+    tag: "Em 1 Segundo",
+    title: "Busca por Voz Inteligente no Microfone",
     desc: "Toque no microfone, fale o nome da música ou artista e o aplicativo abre a partitura e o playback automaticamente.",
   },
   {
     image: illMulti,
-    badge: "Web App VIP",
-    xpTag: "+200 XP",
+    badge: "Web App Oficial",
+    tag: "Sem Instalar Nada",
     title: "Estude no Celular, Tablet ou Computador",
-    desc: "Plataforma estilo Netflix & Spotify que roda liso na tela do seu celular, iPad na estante ou PC — sem precisar instalar nada pesado.",
+    desc: "Plataforma estilo Netflix & Spotify que roda liso na tela do seu celular, iPad na estante ou PC — sem ocupar memória.",
   },
   {
     image: illEmail,
-    badge: "Na Mesma Hora",
-    xpTag: "+350 XP",
-    title: "Login Direto no Seu E-mail Imediatamente",
+    badge: "Acesso Imediato",
+    tag: "Login no E-mail",
+    title: "Login Direto no Seu E-mail na Mesma Hora",
     desc: "Confirmou o pagamento? No mesmo instante chega no seu e-mail seu Login e Senha exclusivos para entrar no aplicativo e tocar.",
   },
 ];
 
-/* Animated SVG Vector Mini-Drawings ("GIF-style" 60fps loops) for the 4 extra ecosystem cards */
 const AnimatedMiniFeatures = () => {
+  const prefersReducedMotion = useReducedMotion();
+
   const items = [
     {
       title: "+18 Gêneros Organizados",
       metric: "18+ Pastas",
       desc: "MPB, Gospel, Harpa Cristã, Jazz, Bossa Nova, Pop, Rock, Casamento, Sertanejo e muito mais em pastas impecáveis.",
       svg: (
-        <svg viewBox="0 0 64 64" className="w-12 h-12">
-          <motion.path
+        <svg viewBox="0 0 64 64" className="w-11 h-11" aria-hidden="true">
+          <path
             d="M8 20 C8 16 11 14 15 14 L26 14 L31 19 L50 19 C54 19 56 21 56 25 L56 47 C56 51 53 53 49 53 L15 53 C11 53 8 51 8 47 Z"
             fill="rgba(245,185,66,0.16)"
             stroke="#f5b942"
             strokeWidth="2.5"
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.text
-            x="26"
-            y="41"
-            fill="#ffe299"
-            fontSize="18"
-            fontWeight="bold"
-            animate={{ scale: [1, 1.18, 1], opacity: [0.75, 1, 0.75] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-          >
+          <text x="26" y="41" fill="#ffe49e" fontSize="18" fontWeight="bold">
             ♫
-          </motion.text>
+          </text>
         </svg>
       ),
-      icon: FolderOpen,
     },
     {
       title: "Vídeos Tutoriais Integrados",
       metric: "Passo a Passo",
       desc: "Aulas rápidas dentro do próprio app mostrando como aproveitar cada recurso, busca por voz e organização de repertório.",
       svg: (
-        <svg viewBox="0 0 64 64" className="w-12 h-12">
+        <svg viewBox="0 0 64 64" className="w-11 h-11" aria-hidden="true">
           <rect
             x="8"
             y="14"
@@ -105,88 +91,72 @@ const AnimatedMiniFeatures = () => {
             stroke="#1ed760"
             strokeWidth="2.5"
           />
-          <motion.polygon
-            points="27,24 27,38 40,31"
-            fill="#1ed760"
-            animate={{ scale: [0.92, 1.12, 0.92] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{ transformOrigin: "32px 31px" }}
-          />
+          <polygon points="27,24 27,38 40,31" fill="#1ed760" />
           <line x1="20" y1="53" x2="44" y2="53" stroke="#f5b942" strokeWidth="2.5" strokeLinecap="round" />
         </svg>
       ),
-      icon: Video,
     },
     {
       title: "Harpa Cristã + Guias de Estudo",
       metric: "Completo",
       desc: "Todos os 640 louvores da Harpa Cristã + rotina cronometrada, mapa de tonalidades e repertório essencial.",
       svg: (
-        <svg viewBox="0 0 64 64" className="w-12 h-12">
-          <motion.path
+        <svg viewBox="0 0 64 64" className="w-11 h-11" aria-hidden="true">
+          <path
             d="M14 14 L31 18 L31 50 L14 46 Z"
             fill="rgba(245,185,66,0.2)"
             stroke="#f5b942"
             strokeWidth="2.2"
-            animate={{ rotateY: [0, 12, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
           />
-          <motion.path
+          <path
             d="M50 14 L33 18 L33 50 L50 46 Z"
             fill="rgba(245,185,66,0.12)"
-            stroke="#ffe299"
+            stroke="#ffe49e"
             strokeWidth="2.2"
-            animate={{ rotateY: [0, -12, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
           />
         </svg>
       ),
-      icon: BookOpen,
     },
     {
       title: "Acesso Vitalício + Atualizações",
       metric: "Sem Mensalidade",
       desc: "Pague uma única vez e tenha acesso para sempre — incluindo novas partituras e playbacks adicionados todo mês.",
       svg: (
-        <svg viewBox="0 0 64 64" className="w-12 h-12">
+        <svg viewBox="0 0 64 64" className="w-11 h-11" aria-hidden="true">
           <motion.path
             d="M20 32 C13 32 10 25 14 21 C18 17 25 21 32 32 C39 43 46 47 50 43 C54 39 51 32 44 32 C39 32 35 36 32 32 C29 28 25 32 20 32 Z"
             fill="none"
             stroke="#f5b942"
             strokeWidth="3.2"
             strokeLinecap="round"
-            animate={{ strokeDashoffset: [0, -40] }}
+            animate={prefersReducedMotion ? undefined : { strokeDashoffset: [0, -40] }}
             strokeDasharray="8 4"
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
           />
         </svg>
       ),
-      icon: InfinityIcon,
     },
   ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
       {items.map((item, idx) => (
-        <div
-          key={idx}
-          className="sax-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group"
-        >
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="rounded-2xl bg-black/45 border border-[#f5b942]/25 p-2">
-                {item.svg}
+        <CinematicReveal key={idx} delay={idx * 0.05}>
+          <div className="sax-card h-full rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="rounded-2xl bg-black/45 border border-[#f5b942]/25 p-2 shrink-0">
+                  {item.svg}
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-wider text-[#ffe49e] bg-[#f5b942]/12 border border-[#f5b942]/30 px-2.5 py-1 rounded-full">
+                  {item.metric}
+                </span>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ffe299] bg-[#f5b942]/12 border border-[#f5b942]/30 px-2.5 py-1 rounded-full">
-                {item.metric}
-              </span>
+              <h3 className="sax-h3 text-white mb-2">{item.title}</h3>
+              <p className="text-sm sm:text-[15px] text-[#cfc3ae] leading-relaxed">{item.desc}</p>
             </div>
-            <h3 className="text-lg font-black font-heading text-white mb-2 leading-snug">
-              {item.title}
-            </h3>
-            <p className="text-sm text-[#c2b59f] leading-relaxed">{item.desc}</p>
           </div>
-        </div>
+        </CinematicReveal>
       ))}
     </div>
   );
@@ -196,20 +166,20 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
   return (
     <>
       {/* PART 1: ILLUSTRATED ECOSYSTEM SECTION */}
-      <section className="py-16 md:py-24 px-5 md:px-10 relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 md:mb-16">
-            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-[#f5b942]" />
-              Estação Completa do Saxofonista
+      <section id="ecossistema" className="sax-section">
+        <div className="sax-container">
+          <div className="text-center mb-10 md:mb-14">
+            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
+              <Sparkles className="w-4 h-4 text-[#f5b942] shrink-0" />
+              <span>Estação Completa do Saxofonista</span>
             </div>
 
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-white mb-4">
+            <h2 className="sax-h2 text-white mb-4">
               Esqueça PDFs Bagunçados. <br className="hidden sm:block" />
               Tenha <span className="sax-gold-gradient-text italic">Tudo em Um Único App</span>
             </h2>
 
-            <p className="text-sm sm:text-base md:text-lg text-[#c2b59f] max-w-2xl mx-auto">
+            <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
               Criado sob medida para quem toca{" "}
               <strong className="text-white">
                 {saxType === "alto" ? "Sax Alto (Eb)" : "Sax Tenor (Bb)"}
@@ -221,45 +191,38 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
           {/* 4 Visual Illustrated Feature Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {VISUAL_PILLARS.map((pillar, idx) => (
-              <div
-                key={idx}
-                className="sax-card rounded-[28px] overflow-hidden flex flex-col group"
-              >
-                {/* Custom Generated 3D/Editorial Illustration Header */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#090604]">
-                  <img
-                    src={pillar.image}
-                    alt={pillar.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e0a06] via-transparent to-black/25" />
+              <CinematicReveal key={idx} delay={idx * 0.06}>
+                <div className="sax-card h-full rounded-3xl sm:rounded-[28px] overflow-hidden flex flex-col group">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#090604]">
+                    <img
+                      src={pillar.image}
+                      alt={pillar.title}
+                      width={800}
+                      height={500}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0e0a06] via-transparent to-black/25" />
 
-                  {/* Floating Gamified Badges on Illustration */}
-                  <div className="absolute top-4 left-4">
-                    <span className="rounded-full bg-black/75 backdrop-blur-md border border-[#f5b942]/45 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#ffe299]">
-                      {pillar.badge}
-                    </span>
+                    <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 flex-wrap">
+                      <span className="rounded-full bg-black/80 border border-[#f5b942]/45 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ffe49e]">
+                        {pillar.badge}
+                      </span>
+                      <span className="rounded-full bg-[#1ed760]/20 border border-[#1ed760]/50 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#1ed760]">
+                        {pillar.tag}
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute top-4 right-4">
-                    <span className="rounded-full bg-[#1ed760]/20 backdrop-blur-md border border-[#1ed760]/50 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#1ed760]">
-                      {pillar.xpTag}
-                    </span>
+
+                  <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="sax-h3 text-white mb-2.5">{pillar.title}</h3>
+                      <p className="sax-body text-[#cfc3ae]">{pillar.desc}</p>
+                    </div>
                   </div>
                 </div>
-
-                {/* Card Copy */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-black font-heading text-white mb-2.5 tracking-tight">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-[#c2b59f] leading-relaxed">
-                      {pillar.desc}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              </CinematicReveal>
             ))}
           </div>
 
@@ -269,38 +232,36 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
       </section>
 
       {/* PART 2: DEDICATED INSTANT EMAIL + APP LOGIN VISUAL SECTION */}
-      <section className="py-16 md:py-24 px-5 md:px-10 relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="sax-card rounded-[32px] p-6 sm:p-10 md:p-12 border border-[#1ed760]/35 relative overflow-hidden">
-            {/* Ambient Emerald & Brass Glow */}
+      <section className="sax-section pt-4 md:pt-8">
+        <div className="sax-container">
+          <div className="sax-card rounded-3xl sm:rounded-[32px] p-5 sm:p-9 md:p-12 border border-[#1ed760]/35 relative overflow-hidden">
             <div
-              className="pointer-events-none absolute -right-24 -top-24 w-96 h-96 rounded-full opacity-25"
+              className="pointer-events-none absolute -right-24 -top-24 w-80 h-80 rounded-full opacity-20"
               style={{
                 background: "radial-gradient(circle, rgba(30,215,96,0.45) 0%, transparent 70%)",
-                filter: "blur(50px)",
+                filter: "blur(45px)",
               }}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-8 lg:gap-12 items-center relative z-10">
               {/* Left Column: Step-by-Step Instant Email Explanation */}
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#1ed760]/15 border border-[#1ed760]/40 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#1ed760] mb-5">
-                  <Zap className="w-3.5 h-3.5" />
-                  Entrega 100% Automática • 24 Horas por Dia
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#1ed760]/15 border border-[#1ed760]/40 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.15em] text-[#1ed760] mb-5">
+                  <Zap className="w-4 h-4 shrink-0" />
+                  <span>Entrega 100% Automática • 24h por Dia</span>
                 </div>
 
-                <h2 className="text-2xl sm:text-4xl font-black font-heading tracking-tight text-white mb-4 leading-[1.12]">
+                <h2 className="sax-h2 text-white mb-4">
                   Comprou, Chegou no <span className="text-[#1ed760] italic">Seu E-mail</span>{" "}
                   na Mesma Hora com Seu Login!
                 </h2>
 
-                <p className="text-sm sm:text-base text-[#c2b59f] leading-relaxed mb-7">
+                <p className="sax-body text-[#cfc3ae] mb-7">
                   Sem esperar aprovação manual e sem links confusos! Nosso sistema libera seu acesso{" "}
                   <strong className="text-white">automaticamente em segundos</strong>, inclusive de
                   madrugada, finais de semana e feriados:
                 </p>
 
-                {/* 3 Illustrated Animated Steps */}
                 <div className="space-y-4 mb-8">
                   {[
                     {
@@ -308,7 +269,7 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
                       icon: ShieldCheck,
                       title: "Escolha Seu Plano com Pagamento Seguro",
                       desc: "Pague via Pix ou Cartão no ambiente criptografado da Wiapy.",
-                      accent: "text-[#ffe299] border-[#f5b942]/40 bg-[#f5b942]/12",
+                      accent: "text-[#ffe49e] border-[#f5b942]/40 bg-[#f5b942]/12",
                     },
                     {
                       step: "02",
@@ -322,28 +283,26 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
                       icon: KeyRound,
                       title: "Use Seu Login & Senha e Comece a Tocar!",
                       desc: "Dentro do e-mail já vêm seu Login e Senha prontos para entrar no App pelo celular, tablet ou computador.",
-                      accent: "text-[#ffe299] border-[#f5b942]/40 bg-[#f5b942]/12",
+                      accent: "text-[#ffe49e] border-[#f5b942]/40 bg-[#f5b942]/12",
                     },
                   ].map((s) => (
                     <div
                       key={s.step}
-                      className="flex items-start gap-4 rounded-2xl bg-black/40 border border-white/10 p-4"
+                      className="flex items-start gap-3.5 sm:gap-4 rounded-2xl bg-black/45 border border-white/10 p-4"
                     >
                       <div
                         className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${s.accent}`}
                       >
                         <s.icon className="w-5 h-5" />
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-[#f5b942]">
-                            Passo {s.step}
-                          </span>
-                        </div>
-                        <h3 className="text-sm sm:text-base font-black font-heading text-white">
+                      <div className="min-w-0">
+                        <span className="text-[11px] font-black uppercase tracking-widest text-[#f5b942] block mb-0.5">
+                          Passo {s.step}
+                        </span>
+                        <h3 className="text-base font-black font-heading text-white leading-snug">
                           {s.title}
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#c2b59f] mt-0.5 leading-relaxed">
+                        <p className="text-sm text-[#cfc3ae] mt-1 leading-relaxed">
                           {s.desc}
                         </p>
                       </div>
@@ -354,78 +313,74 @@ const EcosystemAndEmailV3 = ({ saxType, onScrollToOffers }: EcosystemAndEmailV3P
                 <button
                   type="button"
                   onClick={onScrollToOffers}
-                  className="sax-cta-btn w-full sm:w-auto px-8 py-4 rounded-2xl text-sm uppercase tracking-wider inline-flex items-center justify-center gap-2.5"
+                  className="sax-cta-btn w-full sm:w-auto px-7 py-4 rounded-2xl text-sm sm:text-base uppercase tracking-wider inline-flex items-center justify-center gap-2.5 cursor-pointer"
                 >
-                  Receber Meu Acesso no E-mail Agora
-                  <ArrowRight className="w-4 h-4" />
+                  <span>Receber Meu Acesso no E-mail Agora</span>
+                  <ArrowRight className="w-5 h-5 shrink-0" />
                 </button>
               </div>
 
-              {/* Right Column: Live Animated E-mail + Login Pass Visual Card */}
+              {/* Right Column: Live E-mail + Login Pass Visual Card */}
               <div className="relative">
-                {/* Generated Golden Envelope Illustration Top Banner */}
                 <div className="rounded-3xl overflow-hidden border border-[#f5b942]/35 bg-[#090705] shadow-2xl">
-                  <div className="relative h-48 sm:h-56 overflow-hidden">
+                  <div className="relative h-44 sm:h-56 overflow-hidden">
                     <img
                       src={illEmail}
                       alt="Acesso enviado imediatamente por e-mail"
-                      className="w-full h-full object-cover"
+                      width={800}
+                      height={600}
                       loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#090705] via-[#090705]/30 to-transparent" />
-                    <motion.div
-                      animate={{ scale: [1, 1.04, 1] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute bottom-3 left-4 right-4 flex items-center justify-between rounded-xl bg-black/80 backdrop-blur-md border border-[#1ed760]/45 px-3.5 py-2"
-                    >
-                      <span className="inline-flex items-center gap-2 text-xs font-extrabold text-white">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#1ed760] animate-ping" />
-                        Novo E-mail Recebido Agora!
+                    <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-4 flex items-center justify-between gap-2 rounded-xl bg-black/85 border border-[#1ed760]/45 px-3.5 py-2">
+                      <span className="inline-flex items-center gap-2 text-xs font-extrabold text-white truncate">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#1ed760] shrink-0" />
+                        Novo E-mail Recebido!
                       </span>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1ed760]">
-                        <Clock className="w-3 h-3" /> Há 2 seg
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1ed760] shrink-0">
+                        <Clock className="w-3 h-3" /> Agora
                       </span>
-                    </motion.div>
+                    </div>
                   </div>
 
-                  {/* Simulated Real Welcome E-mail Card */}
-                  <div className="p-5 sm:p-6 bg-[#0d0a07]">
+                  {/* Simulated Real Welcome E-mail Card (320px-safe layout) */}
+                  <div className="p-4 sm:p-6 bg-[#0d0a07]">
                     <div className="border-b border-white/10 pb-3 mb-4">
-                      <p className="text-[11px] text-[#c2b59f]">
+                      <p className="text-xs text-[#cfc3ae] truncate">
                         <strong className="text-white">De:</strong> Clube do Sax Oficial &lt;acesso@clubedosax.com&gt;
                       </p>
-                      <p className="text-xs sm:text-sm font-black text-[#ffe299] mt-1">
+                      <p className="text-sm font-black text-[#ffe49e] mt-1 leading-snug">
                         🎷 Parabéns! Seu Login do Aplicativo Clube do Sax está Liberado!
                       </p>
                     </div>
 
-                    {/* Credentials Preview Box */}
-                    <div className="rounded-2xl bg-white/[0.04] border border-[#f5b942]/25 p-4 mb-4 space-y-2.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#c2b59f] font-medium">Seu Login:</span>
-                        <span className="font-mono font-bold text-white bg-black/50 px-2.5 py-1 rounded-lg border border-white/10">
+                    <div className="rounded-2xl bg-white/[0.04] border border-[#f5b942]/25 p-3.5 sm:p-4 mb-4 space-y-2.5">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                        <span className="text-[#cfc3ae] font-medium">Seu Login:</span>
+                        <span className="font-mono text-xs font-bold text-white bg-black/55 px-2.5 py-1 rounded-lg border border-white/10 truncate max-w-full">
                           seu.email@gmail.com
                         </span>
                       </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#c2b59f] font-medium">Sua Senha VIP:</span>
-                        <span className="font-mono font-bold text-[#1ed760] bg-[#1ed760]/10 px-2.5 py-1 rounded-lg border border-[#1ed760]/30">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                        <span className="text-[#cfc3ae] font-medium">Sua Senha VIP:</span>
+                        <span className="font-mono text-xs font-bold text-[#1ed760] bg-[#1ed760]/10 px-2.5 py-1 rounded-lg border border-[#1ed760]/30">
                           SAX-VIP-2026 ✓
                         </span>
                       </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#c2b59f] font-medium">Status do Acervo:</span>
-                        <span className="inline-flex items-center gap-1 font-bold text-[#ffe299]">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#1ed760]" />
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                        <span className="text-[#cfc3ae] font-medium">Status do Acervo:</span>
+                        <span className="inline-flex items-center gap-1 font-bold text-[#ffe49e]">
+                          <CheckCircle2 className="w-4 h-4 text-[#1ed760]" />
                           Vitalício Liberado
                         </span>
                       </div>
                     </div>
 
-                    {/* Mock Button Inside Email */}
-                    <div className="w-full rounded-xl bg-gradient-to-r from-[#f5b942] to-[#d99522] text-[#1c1102] font-black text-xs uppercase tracking-wider py-3 px-4 flex items-center justify-center gap-2 shadow-lg">
-                      <Smartphone className="w-4 h-4" />
-                      Acessar Aplicativo Clube do Sax
+                    <div className="w-full rounded-xl bg-gradient-to-r from-[#f5b942] to-[#d99522] text-[#1c1102] font-black text-xs uppercase tracking-wider py-3 px-4 flex items-center justify-center gap-2 shadow-lg text-center">
+                      <Smartphone className="w-4 h-4 shrink-0" />
+                      <span>Acessar Aplicativo Clube do Sax</span>
                     </div>
                   </div>
                 </div>

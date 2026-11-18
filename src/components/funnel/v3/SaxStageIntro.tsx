@@ -1,32 +1,39 @@
 import { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, ArrowRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 import saxStageHeroArt from "@/assets/lp3/sax-stage-hero-art.jpg";
-import { playWarmSaxChord } from "./saxAudioSynth";
 
 interface SaxStageIntroProps {
   onComplete: () => void;
 }
 
 const STAGE_STEPS = [
-  "Afinando Sax Alto (Eb) & Sax Tenor (Bb)...",
+  "Preparando Aplicativo Clube do Sax...",
   "Sincronizando +10.000 Partituras & Playbacks...",
-  "Preparando Palco VIP Clube do Sax...",
 ];
 
 const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
-  const [visible, setVisible] = useState(true);
+  const hookReduced = useReducedMotion();
+  const prefersReducedMotion =
+    Boolean(hookReduced) ||
+    (typeof window !== "undefined" &&
+      Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches));
+  const [visible, setVisible] = useState(!prefersReducedMotion);
   const [progress, setProgress] = useState(0);
-  const [soundPlayed, setSoundPlayed] = useState(false);
 
   const finishIntro = useCallback(() => {
     setVisible(false);
-    setTimeout(onComplete, 420);
+    setTimeout(onComplete, 320);
   }, [onComplete]);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      onComplete();
+      return;
+    }
+
     const start = performance.now();
-    const totalMs = 2650;
+    const totalMs = 1850;
     let rafId: number;
 
     const update = (now: number) => {
@@ -42,49 +49,45 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
 
     rafId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(rafId);
-  }, [finishIntro]);
+  }, [finishIntro, onComplete, prefersReducedMotion]);
 
-  const stepIndex = progress < 36 ? 0 : progress < 76 ? 1 : 2;
-
-  const handleSoundTap = () => {
-    if (!soundPlayed) {
-      playWarmSaxChord();
-      setSoundPlayed(true);
-    }
-    finishIntro();
-  };
+  const stepIndex = progress < 55 ? 0 : 1;
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
           key="sax-stage-intro"
+          role="dialog"
+          aria-label="Apresentação Clube do Sax"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.04, filter: "blur(8px)" }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-[120] flex flex-col items-center justify-center overflow-hidden bg-[#060402] px-5 select-none"
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[120] flex flex-col items-center justify-center overflow-hidden bg-[#060402] px-4 select-none"
         >
           {/* Warm Velvet Stage Spotlight Cone */}
           <div
-            className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[680px] h-[680px] rounded-full opacity-60"
+            className="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 w-full max-w-[640px] h-[560px] rounded-full opacity-55"
             style={{
               background:
-                "conic-gradient(from 155deg at 50% 0%, transparent 0deg, rgba(245,185,66,0.28) 25deg, rgba(255,235,175,0.42) 35deg, rgba(245,185,66,0.28) 45deg, transparent 70deg)",
-              filter: "blur(36px)",
+                "conic-gradient(from 155deg at 50% 0%, transparent 0deg, rgba(245,185,66,0.26) 25deg, rgba(255,235,175,0.4) 35deg, rgba(245,185,66,0.26) 45deg, transparent 70deg)",
+              filter: "blur(32px)",
             }}
           />
 
           {/* Subtle Saxophone Stage Artwork Halo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 0.34, scale: 1.02 }}
-            transition={{ duration: 2.4, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 0.32, scale: 1 }}
+            transition={{ duration: 1.6, ease: "easeOut" }}
             className="pointer-events-none absolute inset-0 flex items-center justify-center"
           >
             <img
               src={saxStageHeroArt}
               alt=""
-              className="w-full max-w-4xl h-auto object-cover rounded-full blur-[2px]"
+              width={1280}
+              height={720}
+              className="w-full max-w-4xl h-auto object-cover"
               style={{
                 maskImage: "radial-gradient(circle, black 28%, transparent 72%)",
                 WebkitMaskImage: "radial-gradient(circle, black 28%, transparent 72%)",
@@ -92,41 +95,41 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
             />
           </motion.div>
 
-          {/* Skip Button Top-Right */}
+          {/* Accessible Skip Button Top-Right (44px min touch target) */}
           <button
+            type="button"
             onClick={finishIntro}
-            className="absolute top-5 right-5 z-20 inline-flex items-center gap-1.5 rounded-full border border-[#f5b942]/30 bg-black/60 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#ffe299] hover:bg-[#f5b942]/15 transition-colors backdrop-blur-md"
+            className="absolute top-4 right-4 z-20 min-h-[44px] inline-flex items-center gap-1.5 rounded-full border border-[#f5b942]/35 bg-black/75 px-4 py-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#ffe49e] hover:bg-[#f5b942]/15 transition-colors cursor-pointer"
           >
             Entrar Direto
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-4 h-4" />
           </button>
 
-          {/* Center Animated Golden Saxophone + Pressing Pearl Keys + Blooming Notes */}
+          {/* Center Animated Golden Saxophone */}
           <div className="relative z-10 flex flex-col items-center text-center max-w-md w-full">
-            <div className="relative w-44 h-44 sm:w-52 sm:h-52 mb-5 flex items-center justify-center">
-              {/* Expanding Golden Soundwave Rings */}
-              {[0, 1, 2].map((ring) => (
+            <div className="relative w-36 h-36 sm:w-44 sm:h-44 mb-4 flex items-center justify-center">
+              {[0, 1].map((ring) => (
                 <motion.div
                   key={ring}
-                  initial={{ scale: 0.55, opacity: 0.7 }}
-                  animate={{ scale: 1.65, opacity: 0 }}
+                  initial={{ scale: 0.6, opacity: 0.65 }}
+                  animate={{ scale: 1.55, opacity: 0 }}
                   transition={{
-                    duration: 1.8,
+                    duration: 1.6,
                     repeat: Infinity,
-                    delay: ring * 0.55,
+                    delay: ring * 0.6,
                     ease: "easeOut",
                   }}
-                  className="absolute inset-4 rounded-full border border-[#f5b942]/45 pointer-events-none"
+                  className="absolute inset-4 rounded-full border border-[#f5b942]/40 pointer-events-none"
                 />
               ))}
 
-              {/* Animated Vector Golden Saxophone with Pressing Pearl Keys */}
               <motion.svg
                 viewBox="0 0 200 200"
-                className="w-40 h-40 sm:w-44 sm:h-44 drop-shadow-[0_0_32px_rgba(245,185,66,0.55)]"
-                initial={{ rotate: -8, scale: 0.86, opacity: 0 }}
-                animate={{ rotate: [ -6, 2, -2 ], scale: 1, opacity: 1 }}
-                transition={{ duration: 1.4, ease: "easeOut" }}
+                className="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-[0_0_28px_rgba(245,185,66,0.5)]"
+                initial={{ rotate: -6, scale: 0.9, opacity: 0 }}
+                animate={{ rotate: [-4, 2, -1], scale: 1, opacity: 1 }}
+                transition={{ duration: 1.1, ease: "easeOut" }}
+                aria-hidden="true"
               >
                 <defs>
                   <linearGradient id="saxBrassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -142,7 +145,6 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                   </radialGradient>
                 </defs>
 
-                {/* Mouthpiece & Neck (Tudel) */}
                 <path
                   d="M52 28 L68 24 C78 22, 86 28, 88 38 L92 56"
                   fill="none"
@@ -157,8 +159,6 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                   strokeWidth="7"
                   strokeLinecap="round"
                 />
-
-                {/* Saxophone Main Body Tube & J-Bow */}
                 <path
                   d="M92 54 L106 142 C109 162, 129 168, 138 150 L150 116"
                   fill="none"
@@ -166,8 +166,6 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                   strokeWidth="15"
                   strokeLinecap="round"
                 />
-
-                {/* Saxophone Flared Bell (Campana) */}
                 <path
                   d="M136 118 L168 106 C172 122, 160 136, 144 134 Z"
                   fill="url(#saxBrassGrad)"
@@ -185,12 +183,11 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                   strokeWidth="2.5"
                 />
 
-                {/* 4 Animated Mother-of-Pearl Keys pressing sequentially */}
                 {[
                   { cx: 95, cy: 74, delay: 0 },
-                  { cx: 98, cy: 92, delay: 0.22 },
-                  { cx: 101, cy: 110, delay: 0.44 },
-                  { cx: 104, cy: 128, delay: 0.66 },
+                  { cx: 98, cy: 92, delay: 0.2 },
+                  { cx: 101, cy: 110, delay: 0.4 },
+                  { cx: 104, cy: 128, delay: 0.6 },
                 ].map((k, idx) => (
                   <motion.circle
                     key={idx}
@@ -200,12 +197,9 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                     fill="url(#pearlKeyGrad)"
                     stroke="#7a4f08"
                     strokeWidth="1.5"
-                    animate={{
-                      r: [5.5, 4.1, 5.5],
-                      x: [0, -2, 0],
-                    }}
+                    animate={{ x: [0, -2, 0] }}
                     transition={{
-                      duration: 0.7,
+                      duration: 0.65,
                       repeat: Infinity,
                       delay: k.delay,
                       ease: "easeInOut",
@@ -213,11 +207,10 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                   />
                 ))}
 
-                {/* Musical Notes Blooming from the Bell */}
                 {[
-                  { symbol: "♪", x: 162, y: 88, delay: 0.1 },
-                  { symbol: "♫", x: 176, y: 66, delay: 0.45 },
-                  { symbol: "𝄞", x: 146, y: 58, delay: 0.8 },
+                  { symbol: "♪", x: 162, y: 88, delay: 0.08 },
+                  { symbol: "♫", x: 176, y: 66, delay: 0.4 },
+                  { symbol: "𝄞", x: 146, y: 58, delay: 0.72 },
                 ].map((n, idx) => (
                   <motion.text
                     key={idx}
@@ -226,14 +219,13 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
                     fontSize="20"
                     fill="#ffe299"
                     fontWeight="bold"
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{
                       opacity: [0, 1, 0],
-                      y: [8, -22],
-                      x: [0, idx % 2 === 0 ? 8 : -6],
+                      y: [6, -20],
                     }}
                     transition={{
-                      duration: 1.35,
+                      duration: 1.25,
                       repeat: Infinity,
                       delay: n.delay,
                       ease: "easeOut",
@@ -245,39 +237,28 @@ const SaxStageIntro = ({ onComplete }: SaxStageIntroProps) => {
               </motion.svg>
             </div>
 
-            {/* Gamified Stage Badge */}
-            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">
+            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-3">
               <Sparkles className="w-3.5 h-3.5 text-[#f5b942]" />
-              Experiência Oficial Clube do Sax
+              Aplicativo Clube do Sax
             </div>
 
             <h2 className="font-heading text-2xl sm:text-3xl font-black tracking-tight text-white mb-2">
-              Preparando Seu <span className="sax-gold-gradient-text italic">Estúdio de Sax</span>
+              Abrindo Seu <span className="sax-gold-gradient-text italic">Estúdio Digital</span>
             </h2>
 
-            <p className="text-xs sm:text-sm text-[#c2b59f] font-medium h-5 mb-5 transition-all">
+            <p className="text-sm text-[#cfc3ae] font-medium mb-5">
               {STAGE_STEPS[stepIndex]}
             </p>
 
-            {/* Stage VU Meter & Golden Progress Bar */}
-            <div className="w-full max-w-xs bg-white/10 h-2.5 rounded-full overflow-hidden border border-[#f5b942]/25 p-0.5 mb-5">
-              <motion.div
-                className="h-full rounded-full"
+            <div className="w-full max-w-[260px] bg-white/10 h-2.5 rounded-full overflow-hidden border border-[#f5b942]/25 p-0.5">
+              <div
+                className="h-full rounded-full transition-[width] duration-75"
                 style={{
                   width: `${progress}%`,
                   background: "linear-gradient(90deg, #c98317 0%, #f5b942 55%, #1ed760 100%)",
                 }}
               />
             </div>
-
-            {/* Interactive Sound + Instant Enter CTA */}
-            <button
-              onClick={handleSoundTap}
-              className="inline-flex items-center gap-2 rounded-full bg-[#f5b942]/15 hover:bg-[#f5b942]/25 border border-[#f5b942]/45 px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider text-[#ffe7a3] transition-all active:scale-95"
-            >
-              <Volume2 className="w-4 h-4 text-[#1ed760]" />
-              Toque para Ouvir o Acorde de Sax & Entrar
-            </button>
           </div>
         </motion.div>
       )}

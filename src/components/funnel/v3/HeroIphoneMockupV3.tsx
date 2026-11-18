@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Play,
   Pause,
@@ -23,7 +23,7 @@ import type { SaxType } from "./SaxThematicEffects";
 
 interface HeroIphoneMockupV3Props {
   saxType: SaxType;
-  onEarnXp: (amount: number, reason: string) => void;
+  onSaxTypeChange: (t: SaxType) => void;
 }
 
 const HERO_PHONE_TRACKS = [
@@ -61,7 +61,8 @@ const HERO_PHONE_TRACKS = [
   },
 ];
 
-const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
+const HeroIphoneMockupV3 = ({ saxType, onSaxTypeChange }: HeroIphoneMockupV3Props) => {
+  const prefersReducedMotion = useReducedMotion();
   const [activeTrackId, setActiveTrackId] = useState<string>("careless");
   const [isPlaying, setIsPlaying] = useState(false);
   const [progressPct, setProgressPct] = useState(34);
@@ -94,18 +95,13 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
 
     audioRef.current
       .play()
-      .then(() => {
-        setIsPlaying(true);
-        onEarnXp(40, `Ouvindo "${track.title}" direto no iPhone!`);
-      })
-      .catch(() => {
-        setIsPlaying(false);
-      });
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
   };
 
   return (
-    <div className="relative w-full max-w-[920px] mx-auto my-6 sm:my-10 flex items-center justify-center">
-      {/* Hidden real HTML5 audio for instant Hero iPhone preview */}
+    <div className="relative w-full max-w-[940px] mx-auto my-6 sm:my-10 flex items-center justify-center">
+      {/* Real HTML5 audio for instant Hero iPhone preview */}
       <audio
         ref={audioRef}
         preload="none"
@@ -120,80 +116,74 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
 
       {/* Golden Stage Backdrop Illustration Winged Behind the iPhone */}
       <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center">
-        <div className="relative w-full max-w-[820px] aspect-[16/10] rounded-[40px] overflow-hidden opacity-55 sm:opacity-70">
+        <div className="relative w-full max-w-[820px] aspect-[16/9] rounded-[36px] overflow-hidden opacity-50 sm:opacity-65">
           <img
             src={saxStageHeroArt}
             alt=""
-            className="w-full h-full object-cover scale-105"
+            width={1280}
+            height={720}
+            decoding="async"
+            className="w-full h-full object-cover"
             style={{
-              maskImage: "radial-gradient(ellipse 72% 68% at 50% 50%, black 35%, transparent 82%)",
-              WebkitMaskImage: "radial-gradient(ellipse 72% 68% at 50% 50%, black 35%, transparent 82%)",
+              maskImage: "radial-gradient(ellipse 72% 68% at 50% 50%, black 32%, transparent 80%)",
+              WebkitMaskImage: "radial-gradient(ellipse 72% 68% at 50% 50%, black 32%, transparent 80%)",
             }}
           />
         </div>
       </div>
 
-      {/* Floating Left Callout Badge (Desktop) — Instant Email Login */}
+      {/* Floating Left Callout Badge (Desktop >= 1024px) */}
       <motion.div
-        animate={{ y: [0, -7, 0] }}
-        transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-        className="hidden lg:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#1ed760]/40 absolute left-2 xl:left-6 top-16 z-20 max-w-[240px] text-left shadow-2xl"
+        animate={prefersReducedMotion ? undefined : { y: [0, -6, 0] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden lg:flex items-center gap-3 sax-card rounded-2xl px-4 py-3.5 border border-[#1ed760]/40 absolute left-0 xl:left-4 top-16 z-20 max-w-[250px] text-left shadow-2xl"
       >
         <div className="w-10 h-10 rounded-xl bg-[#1ed760]/20 border border-[#1ed760]/40 flex items-center justify-center shrink-0">
           <Mail className="w-5 h-5 text-[#1ed760]" />
         </div>
         <div>
-          <span className="text-[10px] font-black uppercase tracking-wider text-[#1ed760] block">
+          <span className="text-[11px] font-black uppercase tracking-wider text-[#1ed760] block">
             Entrega Automática
           </span>
-          <span className="text-xs font-bold text-white leading-tight block">
+          <span className="text-xs font-bold text-white leading-snug block">
             Login & Senha chegam no seu E-mail na mesma hora!
           </span>
         </div>
       </motion.div>
 
-      {/* Floating Right Callout Badge (Desktop) — Voice Search + Alto & Tenor */}
+      {/* Floating Right Callout Badge (Desktop >= 1024px) */}
       <motion.div
-        animate={{ y: [0, 8, 0] }}
+        animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
         transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-        className="hidden lg:flex items-center gap-3 sax-card rounded-2xl px-4 py-3 border border-[#f5b942]/45 absolute right-2 xl:right-6 bottom-20 z-20 max-w-[245px] text-left shadow-2xl"
+        className="hidden lg:flex items-center gap-3 sax-card rounded-2xl px-4 py-3.5 border border-[#f5b942]/45 absolute right-0 xl:right-4 bottom-20 z-20 max-w-[255px] text-left shadow-2xl"
       >
         <div className="w-10 h-10 rounded-xl bg-[#f5b942]/20 border border-[#f5b942]/40 flex items-center justify-center shrink-0">
           <Mic className="w-5 h-5 text-[#f5b942]" />
         </div>
         <div>
-          <span className="text-[10px] font-black uppercase tracking-wider text-[#ffe299] block">
+          <span className="text-[11px] font-black uppercase tracking-wider text-[#ffe49e] block">
             Busca Inteligente por Voz
           </span>
-          <span className="text-xs font-bold text-white leading-tight block">
+          <span className="text-xs font-bold text-white leading-snug block">
             Fale a música e abra Partitura + Playback em 1s
           </span>
         </div>
       </motion.div>
 
-      {/* CENTERPIECE: Realistic iPhone 16 Pro Desert Titanium Frame */}
-      <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 w-[312px] sm:w-[346px]"
-      >
-        {/* Titanium Side Physical Buttons */}
-        {/* Action Button */}
-        <div className="absolute -left-[3px] top-[104px] w-[3px] h-7 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-        {/* Volume Up */}
-        <div className="absolute -left-[3px] top-[148px] w-[3px] h-12 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-        {/* Volume Down */}
-        <div className="absolute -left-[3px] top-[208px] w-[3px] h-12 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-        {/* Power Side Button */}
-        <div className="absolute -right-[3px] top-[168px] w-[3px] h-16 rounded-r-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+      {/* CENTERPIECE: Fluid 320px-safe iPhone 16 Pro Desert Titanium Frame */}
+      <div className="relative z-10 w-full max-w-[300px] min-[375px]:max-w-[334px] sm:max-w-[356px] mx-auto px-1">
+        {/* Titanium Side Physical Buttons (Hidden below 360px so zero edge bleed) */}
+        <div className="hidden min-[360px]:block absolute left-[1px] top-[100px] w-[3px] h-7 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+        <div className="hidden min-[360px]:block absolute left-[1px] top-[142px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+        <div className="hidden min-[360px]:block absolute left-[1px] top-[198px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+        <div className="hidden min-[360px]:block absolute right-[1px] top-[160px] w-[3px] h-14 rounded-r-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
 
         <div className="iphone-16-frame">
           <div className="iphone-16-inner-bezel">
             <div className="iphone-16-screen text-left select-none">
-              {/* Diagonal Realistic Glass Screen Reflection */}
+              {/* Diagonal Glass Screen Reflection */}
               <div
-                className="pointer-events-none absolute inset-0 z-30 opacity-20"
+                className="pointer-events-none absolute inset-0 z-30 opacity-15"
                 style={{
                   background:
                     "linear-gradient(125deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 28%, transparent 45%)",
@@ -201,17 +191,17 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
               />
 
               {/* iOS Status Bar + Dynamic Island */}
-              <div className="relative z-20 flex items-center justify-between px-6 pt-3 pb-2 bg-[#0c0906]">
+              <div className="relative z-20 flex items-center justify-between px-4 sm:px-5 pt-2.5 pb-2 bg-[#0c0906] gap-1">
                 <span className="text-[11px] font-bold tracking-tight text-white tabular-nums">
                   9:41
                 </span>
 
                 {/* Dynamic Island with Live Equalizer */}
-                <div className="h-[25px] px-3.5 min-w-[104px] rounded-full bg-black border border-white/10 flex items-center justify-between gap-2 shadow-inner">
-                  <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#f5b942] to-[#b87914] flex items-center justify-center text-[8px] font-black text-black">
+                <div className="h-[24px] px-3 min-w-[92px] sm:min-w-[104px] rounded-full bg-black border border-white/10 flex items-center justify-between gap-2 shadow-inner">
+                  <span className="text-[10px]" aria-hidden="true">
                     🎷
-                  </div>
-                  <div className="flex items-end gap-[2px] h-3">
+                  </span>
+                  <div className="flex items-end gap-[2px] h-3" aria-hidden="true">
                     <span
                       className={`w-[2.5px] rounded-full bg-[#1ed760] ${
                         isPlaying ? "animate-sax-eq-1" : "h-1.5 opacity-60"
@@ -235,57 +225,86 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-white">
-                  <span className="text-[9px] font-extrabold">5G</span>
+                <div className="flex items-center gap-1 text-white">
+                  <span className="text-[9px] font-extrabold hidden min-[350px]:inline">5G</span>
                   <Wifi className="w-3 h-3" />
                   <BatteryFull className="w-3.5 h-3.5 text-[#1ed760]" />
                 </div>
               </div>
 
               {/* App Brand Header inside iPhone */}
-              <div className="px-4 pt-2 pb-3 bg-gradient-to-b from-[#1a1209] to-[#0d0906] border-b border-[#f5b942]/15">
-                <div className="flex items-center justify-between mb-2.5">
-                  <div className="flex items-center gap-2">
+              <div className="px-3.5 sm:px-4 pt-2 pb-3 bg-gradient-to-b from-[#1a1209] to-[#0d0906] border-b border-[#f5b942]/15">
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <div className="flex items-center gap-2 min-w-0">
                     <img
                       src={logoClubeSax}
                       alt="Clube do Sax App"
-                      className="h-8 w-auto drop-shadow-[0_0_8px_rgba(245,185,66,0.4)]"
+                      width={44}
+                      height={32}
+                      className="h-7 sm:h-8 w-auto shrink-0 drop-shadow-[0_0_8px_rgba(245,185,66,0.4)]"
                     />
-                    <div>
-                      <span className="text-xs font-black font-heading text-white block leading-none">
+                    <div className="min-w-0">
+                      <span className="text-xs font-black font-heading text-white block leading-none truncate">
                         Clube do Sax
                       </span>
-                      <span className="text-[9px] font-bold text-[#1ed760] flex items-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-2.5 h-2.5" />
-                        Acesso Vitalício Ativo
+                      <span className="text-[10px] font-bold text-[#1ed760] flex items-center gap-1 mt-0.5 truncate">
+                        <CheckCircle2 className="w-2.5 h-2.5 shrink-0" />
+                        App Oficial
                       </span>
                     </div>
                   </div>
-                  <span className="rounded-full bg-[#f5b942]/15 border border-[#f5b942]/40 px-2.5 py-0.5 text-[9px] font-extrabold text-[#ffe299]">
-                    {saxType === "alto" ? "Alto Eb" : "Tenor Bb"}
-                  </span>
+
+                  {/* Clean Sax Alto / Tenor Switch right inside the App */}
+                  <div
+                    className="inline-flex rounded-lg bg-black/60 p-0.5 border border-[#f5b942]/35 shrink-0"
+                    role="group"
+                    aria-label="Selecionar afinação do Saxofone"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onSaxTypeChange("alto")}
+                      className={`px-2 py-1 rounded-md text-[10px] font-black transition-colors cursor-pointer ${
+                        saxType === "alto"
+                          ? "bg-[#f5b942] text-[#1c1102]"
+                          : "text-[#cfc3ae] hover:text-white"
+                      }`}
+                    >
+                      Alto Eb
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onSaxTypeChange("tenor")}
+                      className={`px-2 py-1 rounded-md text-[10px] font-black transition-colors cursor-pointer ${
+                        saxType === "tenor"
+                          ? "bg-[#f5b942] text-[#1c1102]"
+                          : "text-[#cfc3ae] hover:text-white"
+                      }`}
+                    >
+                      Tenor Bb
+                    </button>
+                  </div>
                 </div>
 
                 {/* App Voice Search Bar */}
                 <div className="flex items-center gap-2 rounded-xl bg-black/55 border border-white/10 px-3 py-2">
-                  <Search className="w-3.5 h-3.5 text-[#c2b59f]" />
-                  <span className="text-[11px] text-[#c2b59f]/80 flex-1 truncate">
+                  <Search className="w-3.5 h-3.5 text-[#cfc3ae] shrink-0" />
+                  <span className="text-[11px] text-[#cfc3ae]/85 flex-1 truncate">
                     Buscar em +10.000 músicas...
                   </span>
-                  <div className="w-6 h-6 rounded-lg bg-[#f5b942]/20 border border-[#f5b942]/40 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-lg bg-[#f5b942]/20 border border-[#f5b942]/40 flex items-center justify-center shrink-0">
                     <Mic className="w-3 h-3 text-[#f5b942]" />
                   </div>
                 </div>
 
-                {/* Genre Pills inside iPhone */}
+                {/* Genre Pills inside iPhone (Wrapped/clipped cleanly, no scroll) */}
                 <div className="flex items-center gap-1.5 mt-2.5 overflow-hidden">
-                  {["Pop", "MPB", "Gospel", "Jazz", "Casamento"].map((pill, i) => (
+                  {["Pop", "MPB", "Gospel", "Jazz"].map((pill, i) => (
                     <span
                       key={pill}
-                      className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full whitespace-nowrap ${
+                      className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full whitespace-nowrap ${
                         i === 0
                           ? "bg-[#f5b942] text-[#1c1102]"
-                          : "bg-white/5 text-[#c2b59f] border border-white/10"
+                          : "bg-white/5 text-[#cfc3ae] border border-white/10"
                       }`}
                     >
                       {pill}
@@ -295,13 +314,15 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
               </div>
 
               {/* Interactive Song List inside Hero iPhone */}
-              <div className="px-3.5 py-3 bg-[#0a0806] space-y-2">
-                <div className="flex items-center justify-between px-1 mb-1">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-[#ffe299]/80 flex items-center gap-1">
-                    <Sparkles className="w-2.5 h-2.5 text-[#f5b942]" />
-                    Toque em uma música para ouvir
+              <div className="px-3 sm:px-3.5 py-3 bg-[#0a0806] space-y-2">
+                <div className="flex items-center justify-between px-1 mb-1 gap-2">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#ffe49e] flex items-center gap-1 truncate">
+                    <Sparkles className="w-3 h-3 text-[#f5b942] shrink-0" />
+                    Toque para testar o som
                   </span>
-                  <span className="text-[9px] font-semibold text-[#c2b59f]">PDF + MP3</span>
+                  <span className="text-[10px] font-semibold text-[#cfc3ae] shrink-0">
+                    PDF + MP3
+                  </span>
                 </div>
 
                 {HERO_PHONE_TRACKS.map((track) => {
@@ -314,12 +335,11 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
                       className={`w-full flex items-center gap-2.5 p-2 rounded-2xl border text-left transition-all cursor-pointer ${
                         playingThis
                           ? "bg-[#f5b942]/15 border-[#f5b942]/50 shadow-[0_0_16px_rgba(245,185,66,0.15)]"
-                          : "bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.07]"
+                          : "bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.07]"
                       }`}
                     >
-                      {/* Mini Cover */}
                       <div
-                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${track.coverGrad} flex items-center justify-center shrink-0 relative overflow-hidden border border-white/15`}
+                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${track.coverGrad} flex items-center justify-center shrink-0 border border-white/15`}
                       >
                         <span className="text-sm">🎷</span>
                       </div>
@@ -327,22 +347,22 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
                       <div className="flex-1 min-w-0">
                         <p
                           className={`text-xs font-extrabold font-heading truncate leading-tight ${
-                            playingThis ? "text-[#ffe299]" : "text-white"
+                            playingThis ? "text-[#ffe49e]" : "text-white"
                           }`}
                         >
                           {track.title}
                         </p>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[10px] text-[#c2b59f] truncate">{track.artist}</span>
-                          <span className="inline-flex items-center gap-0.5 text-[8px] font-bold text-[#1ed760] bg-[#1ed760]/10 px-1.5 py-0.2 rounded">
-                            <FileText className="w-2 h-2" />
+                        <div className="flex items-center gap-1.5 mt-0.5 min-w-0">
+                          <span className="text-[11px] text-[#cfc3ae] truncate">{track.artist}</span>
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-[#1ed760] bg-[#1ed760]/12 px-1.5 py-0.5 rounded shrink-0">
+                            <FileText className="w-2.5 h-2.5" />
                             {saxType === "alto" ? "Eb" : "Bb"}
                           </span>
                         </div>
                       </div>
 
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform ${
+                        className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-transform ${
                           playingThis
                             ? "bg-[#1ed760] text-[#041d0c] scale-105"
                             : "bg-[#f5b942] text-[#1c1102]"
@@ -364,14 +384,14 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2 min-w-0">
                     <Headphones className="w-3.5 h-3.5 text-[#1ed760] shrink-0" />
-                    <span className="text-[10px] font-extrabold text-white truncate">
-                      {activeTrack.title} — Playback Estúdio
+                    <span className="text-[11px] font-extrabold text-white truncate">
+                      {activeTrack.title}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={() => toggleTrack(activeTrack)}
-                    className="text-[9px] font-black uppercase tracking-wider text-[#1ed760] shrink-0"
+                    className="text-[10px] font-black uppercase tracking-wider text-[#1ed760] shrink-0 cursor-pointer"
                   >
                     {isPlaying ? "Pausar" : "Ouvir"}
                   </button>
@@ -385,8 +405,8 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
               </div>
 
               {/* iOS Bottom Tab Navigation + Home Indicator */}
-              <div className="bg-[#080604] border-t border-white/10 px-5 pt-2 pb-2">
-                <div className="flex items-center justify-between text-[9px] font-semibold text-[#c2b59f]/70 mb-2">
+              <div className="bg-[#080604] border-t border-white/10 px-4 sm:px-5 pt-2 pb-2">
+                <div className="flex items-center justify-between text-[10px] font-semibold text-[#cfc3ae]/75 mb-2">
                   <div className="flex flex-col items-center gap-0.5 text-[#f5b942]">
                     <Home className="w-3.5 h-3.5" />
                     <span>Início</span>
@@ -404,13 +424,12 @@ const HeroIphoneMockupV3 = ({ saxType, onEarnXp }: HeroIphoneMockupV3Props) => {
                     <span>VIP</span>
                   </div>
                 </div>
-                {/* iOS Home Bar */}
-                <div className="w-28 h-1 rounded-full bg-white/35 mx-auto" />
+                <div className="w-24 sm:w-28 h-1 rounded-full bg-white/35 mx-auto" />
               </div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

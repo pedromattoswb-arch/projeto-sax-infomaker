@@ -14,6 +14,10 @@ import {
   ArrowRight,
   Clock,
   Disc3,
+  Menu,
+  X,
+  Check,
+  ChevronDown,
 } from "lucide-react";
 import type { SaxType } from "./SaxThematicEffects";
 
@@ -159,6 +163,8 @@ const GENRE_FILTERS = [
   "Gospel",
 ] as const;
 
+type GenreFilter = (typeof GENRE_FILTERS)[number];
+
 const formatTime = (seconds: number) => {
   if (!isFinite(seconds) || seconds <= 0) return "0:00";
   const m = Math.floor(seconds / 60);
@@ -169,15 +175,14 @@ const formatTime = (seconds: number) => {
 interface SpotifyPlaybackPlayerV3Props {
   saxType: SaxType;
   onScrollToOffers: () => void;
-  onEarnXp?: (amount: number, reason: string) => void;
 }
 
 const SpotifyPlaybackPlayerV3 = ({
   saxType,
   onScrollToOffers,
-  onEarnXp,
 }: SpotifyPlaybackPlayerV3Props) => {
-  const [selectedGenre, setSelectedGenre] = useState<(typeof GENRE_FILTERS)[number]>("Todos");
+  const [selectedGenre, setSelectedGenre] = useState<GenreFilter>("Todos");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<StudioTrack>(STUDIO_TRACKS[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -193,6 +198,7 @@ const SpotifyPlaybackPlayerV3 = ({
   const [repeatOne, setRepeatOne] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const menuContainerRef = useRef<HTMLDivElement | null>(null);
 
   const filteredTracks =
     selectedGenre === "Todos"
@@ -205,6 +211,28 @@ const SpotifyPlaybackPlayerV3 = ({
       audio?.pause();
     };
   }, []);
+
+  // Close compact mobile hamburger menu when tapping outside or pressing Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleOutside = (e: MouseEvent) => {
+      if (menuContainerRef.current && !menuContainerRef.current.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [mobileMenuOpen]);
+
+  const countForGenre = (g: GenreFilter) =>
+    g === "Todos" ? STUDIO_TRACKS.length : STUDIO_TRACKS.filter((t) => t.genre === g).length;
 
   const playSpecificTrack = useCallback(
     (track: StudioTrack) => {
@@ -221,10 +249,7 @@ const SpotifyPlaybackPlayerV3 = ({
           }
           audio
             .play()
-            .then(() => {
-              setIsPlaying(true);
-              onEarnXp?.(35, `Playback "${track.title}" em reprodução!`);
-            })
+            .then(() => setIsPlaying(true))
             .catch(() => setIsPlaying(false));
         }
         return;
@@ -236,13 +261,10 @@ const SpotifyPlaybackPlayerV3 = ({
       audio.volume = muted ? 0 : volume;
       audio
         .play()
-        .then(() => {
-          setIsPlaying(true);
-          onEarnXp?.(35, `Playback "${track.title}" em reprodução!`);
-        })
+        .then(() => setIsPlaying(true))
         .catch(() => setIsPlaying(false));
     },
-    [currentTrack.id, isPlaying, muted, onEarnXp, volume]
+    [currentTrack.id, isPlaying, muted, volume]
   );
 
   const handleNext = useCallback(() => {
@@ -300,7 +322,7 @@ const SpotifyPlaybackPlayerV3 = ({
   const progressPct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   return (
-    <section className="py-16 md:py-24 px-4 sm:px-6 md:px-10 relative">
+    <section id="playbacks" className="sax-section">
       {/* Single Master HTML5 Audio Element */}
       <audio
         ref={audioRef}
@@ -322,19 +344,19 @@ const SpotifyPlaybackPlayerV3 = ({
         }}
       />
 
-      <div className="max-w-5xl mx-auto">
+      <div className="sax-container max-w-5xl">
         {/* Section Heading */}
-        <div className="text-center mb-10 md:mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#1ed760]/12 border border-[#1ed760]/35 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#1ed760] mb-4">
-            <Headphones className="w-3.5 h-3.5" />
-            Experiência Sonora Hi-Fi • Estilo Spotify
+        <div className="text-center mb-8 md:mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#1ed760]/12 border border-[#1ed760]/35 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-[#1ed760] mb-4">
+            <Headphones className="w-4 h-4 shrink-0" />
+            <span>Experiência Sonora Hi-Fi • Estilo Spotify</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black font-heading tracking-tight text-white mb-3">
+          <h2 className="sax-h2 text-white mb-3">
             Dê Play nos <span className="sax-gold-gradient-text italic">Playbacks de Estúdio</span>
           </h2>
 
-          <p className="text-sm sm:text-base md:text-lg text-[#c2b59f] max-w-2xl mx-auto">
+          <p className="sax-body-lg text-[#cfc3ae] max-w-2xl mx-auto">
             Banda real masterizada em estúdio! No aplicativo, você abre a partitura para{" "}
             <strong className="text-white">
               {saxType === "alto" ? "Sax Alto (Eb)" : "Sax Tenor (Bb)"}
@@ -343,50 +365,52 @@ const SpotifyPlaybackPlayerV3 = ({
           </p>
         </div>
 
-        {/* SPOTIFY PREMIUM CONTAINER */}
-        <div className="rounded-[28px] overflow-hidden border border-white/12 bg-[#0c0c0e] shadow-[0_32px_80px_rgba(0,0,0,0.92)]">
+        {/* SPOTIFY PREMIUM CONTAINER — 100% FIXED, ZERO INTERNAL OR HORIZONTAL SCROLL */}
+        <div className="rounded-3xl sm:rounded-[28px] border border-white/12 bg-[#0c0c0e] shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
           {/* TOP SPOTIFY FEATURED NOW-PLAYING HEADER */}
           <div
-            className="relative p-5 sm:p-8 transition-colors duration-700"
+            className="relative rounded-t-3xl sm:rounded-t-[28px] p-4 sm:p-7 md:p-8 transition-colors duration-500"
             style={{
               background: `linear-gradient(180deg, ${currentTrack.accentHex}38 0%, rgba(18, 18, 20, 0.96) 88%, #0c0c0e 100%)`,
             }}
           >
-            <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8">
-              {/* Album Cover + Peeking Spinning Vinyl Disc */}
-              <div className="relative flex items-center shrink-0">
-                {/* Spinning Gold-Grooved Vinyl Disc */}
+            <div className="flex flex-col md:flex-row items-center md:items-end gap-5 md:gap-8">
+              {/* Album Cover + Peeking Spinning Vinyl Disc (Fluid 320px-safe dimensions) */}
+              <div className="relative flex items-center justify-center shrink-0">
                 <div
-                  className={`w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-zinc-900 via-black to-zinc-800 border-2 border-[#f5b942]/35 shadow-2xl flex items-center justify-center -mr-14 sm:-mr-16 z-0 transition-transform duration-500 ${
-                    isPlaying ? "animate-sax-vinyl translate-x-5" : "translate-x-2"
+                  className={`w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-zinc-900 via-black to-zinc-800 border-2 border-[#f5b942]/35 shadow-2xl flex items-center justify-center -mr-10 sm:-mr-14 z-0 transition-transform duration-500 ${
+                    isPlaying ? "animate-sax-vinyl translate-x-3 sm:translate-x-4" : "translate-x-1"
                   }`}
+                  aria-hidden="true"
                 >
-                  <div className="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#ffe299] to-[#b87914] flex items-center justify-center shadow-inner">
-                      <div className="w-3 h-3 rounded-full bg-black" />
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-white/10 flex items-center justify-center">
+                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-[#ffe299] to-[#b87914] flex items-center justify-center shadow-inner">
+                      <div className="w-2.5 h-2.5 rounded-full bg-black" />
                     </div>
                   </div>
                 </div>
 
                 {/* Main Album Sleeve */}
                 <div
-                  className={`relative z-10 w-36 h-36 sm:w-44 sm:h-44 rounded-2xl bg-gradient-to-br ${currentTrack.coverGradient} p-4 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.75)] border border-white/20 overflow-hidden`}
+                  className={`relative z-10 w-28 h-28 sm:w-40 sm:h-40 rounded-2xl bg-gradient-to-br ${currentTrack.coverGradient} p-3 sm:p-4 flex flex-col justify-between shadow-[0_18px_44px_rgba(0,0,0,0.75)] border border-white/20 overflow-hidden`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-black uppercase tracking-widest bg-black/45 backdrop-blur-sm text-[#ffe299] px-2 py-0.5 rounded-full">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-black/45 text-[#ffe299] px-2 py-0.5 rounded-full truncate">
                       Clube do Sax
                     </span>
                     <Disc3
-                      className={`w-4 h-4 text-white/80 ${isPlaying ? "animate-spin" : ""}`}
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0 ${
+                        isPlaying ? "animate-spin" : ""
+                      }`}
                     />
                   </div>
 
                   <div className="my-auto text-center">
-                    <span className="text-4xl sm:text-5xl drop-shadow-lg block">🎷</span>
+                    <span className="text-3xl sm:text-5xl drop-shadow-lg block">🎷</span>
                   </div>
 
                   <div className="text-left">
-                    <p className="text-[10px] font-bold text-white/75 uppercase tracking-wider truncate">
+                    <p className="text-[10px] font-bold text-white/80 uppercase tracking-wider truncate">
                       {currentTrack.genre}
                     </p>
                     <p className="text-xs font-black font-heading text-white truncate">
@@ -398,36 +422,35 @@ const SpotifyPlaybackPlayerV3 = ({
 
               {/* Playlist / Now Playing Metadata */}
               <div className="flex-1 min-w-0 text-center md:text-left w-full">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 mb-1.5">
-                  <BadgeCheck className="w-4 h-4 text-[#1ed760] fill-[#1ed760]/20" />
+                <div className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-white/90 mb-1">
+                  <BadgeCheck className="w-4 h-4 text-[#1ed760] shrink-0" />
                   <span>Playlist Oficial de Estúdio • Master 320kbps</span>
                 </div>
 
-                <h3 className="text-2xl sm:text-4xl font-black font-heading text-white tracking-tight truncate mb-1">
+                <h3 className="text-xl sm:text-3xl md:text-4xl font-black font-heading text-white tracking-tight truncate mb-1">
                   {currentTrack.title}
                 </h3>
 
-                <p className="text-sm sm:text-base text-white/75 font-semibold mb-4">
+                <p className="text-sm sm:text-base text-white/80 font-medium mb-4">
                   {currentTrack.artist} •{" "}
-                  <span className="text-[#ffe299]">{currentTrack.bpm}</span> •{" "}
-                  <span className="text-[#1ed760]">
-                    Partitura {saxType === "alto" ? "Alto Eb" : "Tenor Bb"} Inclusa
+                  <span className="text-[#ffe49e]">{currentTrack.bpm}</span> •{" "}
+                  <span className="text-[#1ed760] font-semibold">
+                    Partitura {saxType === "alto" ? "Alto Eb" : "Tenor Bb"}
                   </span>
                 </p>
 
-                {/* MASTER TRANSPORT CONTROLS + SCRUBBER BAR (SPOTIFY DECK) */}
-                <div className="bg-black/45 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 sm:p-4">
-                  <div className="flex items-center justify-between gap-4 mb-3">
-                    {/* Left Controls: Shuffle + Prev + Big Emerald Play/Pause + Next + Repeat */}
-                    <div className="flex items-center gap-2.5 sm:gap-4">
+                {/* MASTER TRANSPORT CONTROLS + SCRUBBER BAR */}
+                <div className="bg-black/50 border border-white/10 rounded-2xl p-3 sm:p-4">
+                  <div className="flex items-center justify-between gap-2 sm:gap-4 mb-3">
+                    <div className="flex items-center justify-center md:justify-start gap-1.5 sm:gap-3 w-full md:w-auto">
                       <button
                         type="button"
                         onClick={() => setShuffle(!shuffle)}
-                        className={`p-1.5 rounded-full transition-colors ${
-                          shuffle ? "text-[#1ed760]" : "text-white/50 hover:text-white"
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                          shuffle ? "text-[#1ed760] bg-[#1ed760]/10" : "text-white/60 hover:text-white"
                         }`}
                         aria-label="Modo aleatório"
-                        title="Modo aleatório"
+                        aria-pressed={shuffle}
                       >
                         <Shuffle className="w-4 h-4" />
                       </button>
@@ -435,7 +458,7 @@ const SpotifyPlaybackPlayerV3 = ({
                       <button
                         type="button"
                         onClick={handlePrev}
-                        className="p-1.5 text-white/80 hover:text-white transition-colors active:scale-90"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white/85 hover:text-white transition-colors active:scale-95 cursor-pointer"
                         aria-label="Faixa anterior"
                       >
                         <SkipBack className="w-5 h-5" fill="currentColor" />
@@ -444,7 +467,7 @@ const SpotifyPlaybackPlayerV3 = ({
                       <button
                         type="button"
                         onClick={() => playSpecificTrack(currentTrack)}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#1ed760] hover:bg-[#23eb6b] text-black flex items-center justify-center shadow-[0_8px_28px_rgba(30,215,96,0.5)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#1ed760] hover:bg-[#23eb6b] text-black flex items-center justify-center shadow-[0_8px_24px_rgba(30,215,96,0.48)] active:scale-95 transition-all cursor-pointer shrink-0"
                         aria-label={isPlaying ? "Pausar playback" : "Tocar playback"}
                       >
                         {isPlaying ? (
@@ -457,7 +480,7 @@ const SpotifyPlaybackPlayerV3 = ({
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="p-1.5 text-white/80 hover:text-white transition-colors active:scale-90"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white/85 hover:text-white transition-colors active:scale-95 cursor-pointer"
                         aria-label="Próxima faixa"
                       >
                         <SkipForward className="w-5 h-5" fill="currentColor" />
@@ -466,19 +489,22 @@ const SpotifyPlaybackPlayerV3 = ({
                       <button
                         type="button"
                         onClick={() => setRepeatOne(!repeatOne)}
-                        className={`p-1.5 rounded-full transition-colors ${
-                          repeatOne ? "text-[#1ed760]" : "text-white/50 hover:text-white"
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                          repeatOne ? "text-[#1ed760] bg-[#1ed760]/10" : "text-white/60 hover:text-white"
                         }`}
                         aria-label="Repetir música"
-                        title="Repetir música"
+                        aria-pressed={repeatOne}
                       >
                         <Repeat className="w-4 h-4" />
                       </button>
                     </div>
 
-                    {/* Right Controls: Live Equalizer Pill + Volume */}
-                    <div className="flex items-center gap-3">
-                      <div className="hidden sm:flex items-end gap-[3px] h-4 px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
+                    {/* Desktop Equalizer + Volume */}
+                    <div className="hidden md:flex items-center gap-3">
+                      <div
+                        className="flex items-end gap-[3px] h-4 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10"
+                        aria-hidden="true"
+                      >
                         <span
                           className={`w-[3px] rounded-full bg-[#1ed760] ${
                             isPlaying ? "animate-sax-eq-1" : "h-1.5 opacity-40"
@@ -501,50 +527,54 @@ const SpotifyPlaybackPlayerV3 = ({
                         />
                       </div>
 
-                      <div className="hidden md:flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={toggleMute}
-                          className="text-white/70 hover:text-white transition-colors"
-                          aria-label={muted ? "Ativar som" : "Silenciar"}
-                        >
-                          {muted || volume === 0 ? (
-                            <VolumeX className="w-4 h-4 text-rose-400" />
-                          ) : (
-                            <Volume2 className="w-4 h-4" />
-                          )}
-                        </button>
-                        <input
-                          type="range"
-                          min="0"
-                          max="1"
-                          step="0.05"
-                          value={muted ? 0 : volume}
-                          onChange={handleVolumeChange}
-                          aria-label="Volume"
-                          className="w-20 accent-[#1ed760] h-1 bg-white/20 rounded-lg cursor-pointer"
-                        />
-                      </div>
+                      <button
+                        type="button"
+                        onClick={toggleMute}
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-white/75 hover:text-white transition-colors cursor-pointer"
+                        aria-label={muted ? "Ativar som" : "Silenciar"}
+                      >
+                        {muted || volume === 0 ? (
+                          <VolumeX className="w-4 h-4 text-rose-400" />
+                        ) : (
+                          <Volume2 className="w-4 h-4" />
+                        )}
+                      </button>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={muted ? 0 : volume}
+                        onChange={handleVolumeChange}
+                        aria-label="Volume do player"
+                        className="w-20 accent-[#1ed760] h-1.5 bg-white/20 rounded-lg cursor-pointer"
+                      />
                     </div>
                   </div>
 
-                  {/* Interactive Spotify Scrubbing Progress Bar */}
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-semibold text-white/60 tabular-nums w-9 text-right">
+                  {/* Interactive Scrubbing Progress Bar */}
+                  <div className="flex items-center gap-2.5 sm:gap-3">
+                    <span className="text-xs font-semibold text-white/65 tabular-nums w-9 text-right shrink-0">
                       {formatTime(currentTime)}
                     </span>
                     <div
                       onClick={handleSeek}
-                      className="group flex-1 h-2 bg-white/15 rounded-full cursor-pointer relative flex items-center"
+                      role="slider"
+                      aria-label="Progresso da música"
+                      aria-valuemin={0}
+                      aria-valuemax={Math.round(duration) || 100}
+                      aria-valuenow={Math.round(currentTime)}
+                      tabIndex={0}
+                      className="group flex-1 h-2.5 bg-white/15 rounded-full cursor-pointer relative flex items-center"
                     >
                       <div
                         className="h-full rounded-full bg-[#1ed760] group-hover:bg-[#2bf074] transition-[width] duration-100 relative"
                         style={{ width: `${progressPct}%` }}
                       >
-                        <span className="w-3 h-3 rounded-full bg-white shadow-md absolute -right-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="w-3.5 h-3.5 rounded-full bg-white shadow-md absolute -right-1.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                     </div>
-                    <span className="text-[11px] font-semibold text-white/60 tabular-nums w-9">
+                    <span className="text-xs font-semibold text-white/65 tabular-nums w-9 shrink-0">
                       {formatTime(duration)}
                     </span>
                   </div>
@@ -552,43 +582,114 @@ const SpotifyPlaybackPlayerV3 = ({
               </div>
             </div>
 
-            {/* GENRE FILTER CHIPS */}
-            <div className="flex items-center gap-2 overflow-x-auto pt-6 pb-1 no-scrollbar">
-              {GENRE_FILTERS.map((g) => {
-                const active = selectedGenre === g;
-                return (
+            {/* GENRE NAVIGATION: COMPACT PRACTICAL HAMBURGER ON MOBILE (NO HORIZONTAL SCROLL!) + WRAPPED PILLS ON DESKTOP */}
+            <div className="mt-5 pt-4 border-t border-white/10">
+              {/* Mobile Compact Hamburger Menu (< 768px) */}
+              <div ref={menuContainerRef} className="relative md:hidden">
+                <div className="flex items-center justify-between gap-2">
                   <button
-                    key={g}
                     type="button"
-                    onClick={() => setSelectedGenre(g)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all cursor-pointer ${
-                      active
-                        ? "bg-[#1ed760] text-[#041d0c] shadow-[0_4px_16px_rgba(30,215,96,0.35)]"
-                        : "bg-white/[0.07] text-white/75 hover:bg-white/[0.14] hover:text-white"
-                    }`}
+                    onClick={() => setMobileMenuOpen((prev) => !prev)}
+                    aria-expanded={mobileMenuOpen}
+                    aria-haspopup="menu"
+                    className="min-h-[44px] flex-1 flex items-center justify-between gap-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] border border-white/15 px-3.5 py-2.5 text-left transition-colors cursor-pointer"
                   >
-                    {g}
+                    <span className="flex items-center gap-2.5 min-w-0">
+                      {mobileMenuOpen ? (
+                        <X className="w-4 h-4 text-[#1ed760] shrink-0" />
+                      ) : (
+                        <Menu className="w-4 h-4 text-[#1ed760] shrink-0" />
+                      )}
+                      <span className="text-xs font-semibold text-white/70 shrink-0">Estilo:</span>
+                      <span className="text-sm font-extrabold text-white truncate">
+                        {selectedGenre} ({countForGenre(selectedGenre)})
+                      </span>
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-white/70 shrink-0 transition-transform duration-200 ${
+                        mobileMenuOpen ? "rotate-180 text-[#1ed760]" : ""
+                      }`}
+                    />
                   </button>
-                );
-              })}
+                </div>
+
+                {/* Compact Floating Dropdown Menu — Takes minimal space, zero scroll */}
+                {mobileMenuOpen && (
+                  <div
+                    role="menu"
+                    aria-label="Filtrar estilo musical"
+                    className="absolute left-0 right-0 top-[calc(100%+6px)] z-30 rounded-2xl bg-[#16161a] border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.92)] p-1.5 space-y-1"
+                  >
+                    {GENRE_FILTERS.map((g) => {
+                      const active = selectedGenre === g;
+                      return (
+                        <button
+                          key={g}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={active}
+                          onClick={() => {
+                            setSelectedGenre(g);
+                            setMobileMenuOpen(false);
+                          }}
+                          className={`w-full min-h-[42px] flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
+                            active
+                              ? "bg-[#1ed760] text-[#041d0c]"
+                              : "text-white/85 hover:bg-white/[0.07]"
+                          }`}
+                        >
+                          <span>{g}</span>
+                          <span className="inline-flex items-center gap-1.5 text-xs font-extrabold">
+                            <span className={active ? "text-[#041d0c]/80" : "text-white/45"}>
+                              {countForGenre(g)} faixas
+                            </span>
+                            {active && <Check className="w-4 h-4" />}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Tablet & Desktop Wrapped Pills (>= 768px — Zero horizontal scroll!) */}
+              <div className="hidden md:flex md:flex-wrap items-center gap-2">
+                {GENRE_FILTERS.map((g) => {
+                  const active = selectedGenre === g;
+                  return (
+                    <button
+                      key={g}
+                      type="button"
+                      onClick={() => setSelectedGenre(g)}
+                      className={`min-h-[40px] px-4 py-2 rounded-full text-sm font-extrabold transition-all cursor-pointer ${
+                        active
+                          ? "bg-[#1ed760] text-[#041d0c] shadow-[0_4px_16px_rgba(30,215,96,0.35)]"
+                          : "bg-white/[0.07] text-white/80 hover:bg-white/[0.14] hover:text-white"
+                      }`}
+                    >
+                      {g} ({countForGenre(g)})
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          {/* SPOTIFY PLAYLIST TRACK TABLE */}
-          <div className="px-2 sm:px-6 pb-4">
-            {/* Table Column Header */}
-            <div className="grid grid-cols-[36px_1fr_auto] sm:grid-cols-[42px_1.5fr_1fr_90px_56px] items-center gap-3 px-3 py-2.5 border-b border-white/10 text-[11px] font-bold uppercase tracking-wider text-white/45">
+          {/* SPOTIFY PLAYLIST TRACKLIST — 100% FIXED (NO MAX-HEIGHT, NO OVERFLOW SCROLL!) */}
+          <div className="px-2 sm:px-6 pt-2 pb-5">
+            {/* Column Header (Desktop single-column or mobile header) */}
+            <div className="grid grid-cols-[28px_minmax(0,1fr)_auto] sm:grid-cols-[36px_minmax(0,1.5fr)_minmax(0,1fr)_84px_76px] lg:hidden items-center gap-2.5 sm:gap-3 px-2.5 sm:px-3 py-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-white/45">
               <span className="text-center">#</span>
-              <span>Título & Artista</span>
-              <span className="hidden sm:block">Estilo & Arranjo</span>
-              <span className="hidden sm:block text-center">Partitura</span>
+              <span>Música & Artista</span>
+              <span className="hidden sm:block">Estilo</span>
+              <span className="hidden sm:block text-center">Tom</span>
               <span className="flex justify-end pr-1">
                 <Clock className="w-3.5 h-3.5" />
               </span>
             </div>
 
-            {/* Track Rows */}
-            <div className="divide-y divide-white/[0.04] max-h-[430px] overflow-y-auto pr-1">
+            {/* Fixed Track List: 1 column on Mobile/Tablet, clean 2-column Studio Deck on Large Desktop */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-4 divide-y lg:divide-y-0 divide-white/[0.05] mt-1">
               {filteredTracks.map((track, index) => {
                 const isCurrent = currentTrack.id === track.id;
                 const activePlaying = isCurrent && isPlaying;
@@ -599,14 +700,14 @@ const SpotifyPlaybackPlayerV3 = ({
                   <div
                     key={track.id}
                     onClick={() => playSpecificTrack(track)}
-                    className={`group grid grid-cols-[36px_1fr_auto] sm:grid-cols-[42px_1.5fr_1fr_90px_56px] items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-colors ${
-                      isCurrent ? "bg-white/[0.09]" : "hover:bg-white/[0.05]"
+                    className={`group grid grid-cols-[28px_minmax(0,1fr)_auto] sm:grid-cols-[36px_minmax(0,1.5fr)_minmax(0,1fr)_84px_76px] lg:grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 sm:gap-3 px-2.5 sm:px-3 py-2.5 rounded-xl cursor-pointer transition-colors lg:border-b lg:border-white/[0.05] ${
+                      isCurrent ? "bg-white/[0.1]" : "hover:bg-white/[0.05]"
                     }`}
                   >
-                    {/* # Column / Equalizer / Hover Play */}
+                    {/* # / Equalizer */}
                     <div className="flex items-center justify-center">
                       {activePlaying ? (
-                        <div className="flex items-end gap-[2px] h-3.5">
+                        <div className="flex items-end gap-[2px] h-3.5" aria-hidden="true">
                           <span className="w-[2.5px] bg-[#1ed760] rounded-full animate-sax-eq-1" />
                           <span className="w-[2.5px] bg-[#1ed760] rounded-full animate-sax-eq-2" />
                           <span className="w-[2.5px] bg-[#1ed760] rounded-full animate-sax-eq-3" />
@@ -614,14 +715,14 @@ const SpotifyPlaybackPlayerV3 = ({
                       ) : (
                         <>
                           <span
-                            className={`text-xs font-bold tabular-nums group-hover:hidden ${
-                              isCurrent ? "text-[#1ed760]" : "text-white/50"
+                            className={`text-xs font-bold tabular-nums sm:group-hover:hidden ${
+                              isCurrent ? "text-[#1ed760]" : "text-white/55"
                             }`}
                           >
                             {index + 1}
                           </span>
                           <Play
-                            className="w-4 h-4 text-white hidden group-hover:block"
+                            className="w-4 h-4 text-white hidden sm:group-hover:block"
                             fill="currentColor"
                           />
                         </>
@@ -629,58 +730,65 @@ const SpotifyPlaybackPlayerV3 = ({
                     </div>
 
                     {/* Cover + Title + Artist */}
-                    <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                       <div
-                        className={`w-10 h-10 rounded-lg bg-gradient-to-br ${track.coverGradient} flex items-center justify-center shrink-0 border border-white/15 shadow-md`}
+                        className={`w-10 h-10 rounded-lg bg-gradient-to-br ${track.coverGradient} flex items-center justify-center shrink-0 border border-white/15 shadow-sm`}
                       >
-                        <span className="text-base">🎷</span>
+                        <span className="text-sm">🎷</span>
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <p
-                          className={`text-sm font-bold font-heading truncate ${
+                          className={`text-sm sm:text-[15px] font-bold font-heading truncate leading-snug ${
                             isCurrent ? "text-[#1ed760]" : "text-white"
                           }`}
                         >
                           {track.title}
                         </p>
-                        <p className="text-xs text-white/55 truncate">{track.artist}</p>
+                        <p className="text-xs text-white/60 truncate">
+                          {track.artist}
+                          <span className="lg:inline sm:hidden text-white/40"> • {track.genre}</span>
+                        </p>
                       </div>
                     </div>
 
-                    {/* Genre & Groove */}
-                    <div className="hidden sm:flex flex-col min-w-0">
-                      <span className="text-xs font-semibold text-white/75 truncate">
+                    {/* Tablet Middle Columns */}
+                    <div className="hidden sm:flex lg:hidden flex-col min-w-0">
+                      <span className="text-xs font-semibold text-white/80 truncate">
                         {track.genre}
                       </span>
-                      <span className="text-[10px] text-white/45 truncate">{track.bpm}</span>
+                      <span className="text-[11px] text-white/50 truncate">{track.bpm}</span>
                     </div>
 
-                    {/* Sax Key Badge */}
-                    <div className="hidden sm:flex justify-center">
-                      <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#f5b942]/15 text-[#ffe299] border border-[#f5b942]/30">
+                    <div className="hidden sm:flex lg:hidden justify-center">
+                      <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-[#f5b942]/15 text-[#ffe49e] border border-[#f5b942]/30">
                         Eb + Bb
                       </span>
                     </div>
 
-                    {/* Like Heart + Duration / Action */}
-                    <div className="flex items-center justify-end gap-2.5">
+                    {/* Right Action: Like + Duration / Play Status */}
+                    <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           setLikedIds((prev) => ({ ...prev, [track.id]: !prev[track.id] }));
                         }}
-                        className="p-1 rounded-full hover:bg-white/10 transition-colors"
-                        aria-label="Favoritar música"
+                        className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
+                        aria-label={`Favoritar ${track.title}`}
+                        aria-pressed={isLiked}
                       >
                         <Heart
                           className={`w-4 h-4 transition-colors ${
-                            isLiked ? "text-[#1ed760] fill-[#1ed760]" : "text-white/35 hover:text-white"
+                            isLiked ? "text-[#1ed760] fill-[#1ed760]" : "text-white/40 hover:text-white"
                           }`}
                         />
                       </button>
-                      <span className="text-xs font-semibold text-white/55 tabular-nums w-9 text-right">
-                        {knownDur ? formatTime(knownDur) : activePlaying ? "Tocando" : "Play"}
+                      <span
+                        className={`text-xs font-bold tabular-nums min-w-[44px] text-right ${
+                          activePlaying ? "text-[#1ed760]" : "text-white/65"
+                        }`}
+                      >
+                        {knownDur ? formatTime(knownDur) : activePlaying ? "Ativo" : "Ouvir"}
                       </span>
                     </div>
                   </div>
@@ -690,18 +798,18 @@ const SpotifyPlaybackPlayerV3 = ({
           </div>
 
           {/* Bottom Studio Footer Strip */}
-          <div className="bg-[#121215] border-t border-white/10 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs sm:text-sm text-white/75 text-center sm:text-left">
-              🎧 Isso é apenas <strong className="text-white">0,1% do acervo</strong> — lá dentro são{" "}
+          <div className="rounded-b-3xl sm:rounded-b-[28px] bg-[#121215] border-t border-white/10 px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-white/80 text-center sm:text-left">
+              🎧 Isso é apenas <strong className="text-white">uma pequena amostra</strong> — no app são{" "}
               <strong className="text-[#1ed760]">+10.000 partituras com playback</strong> prontas para tocar!
             </p>
             <button
               type="button"
               onClick={onScrollToOffers}
-              className="sax-cta-btn px-6 py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider inline-flex items-center gap-2 shrink-0"
+              className="sax-cta-btn w-full sm:w-auto px-6 py-3.5 rounded-full text-sm uppercase tracking-wider inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
-              Liberar +10.000 Playbacks
-              <ArrowRight className="w-4 h-4" />
+              <span>Liberar +10.000 Playbacks</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
             </button>
           </div>
         </div>

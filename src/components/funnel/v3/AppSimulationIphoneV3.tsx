@@ -156,14 +156,12 @@ interface AppSimulationIphoneV3Props {
   saxType: SaxType;
   onSaxTypeChange: (t: SaxType) => void;
   onScrollToOffers: () => void;
-  onEarnXp?: (amount: number, reason: string) => void;
 }
 
 const AppSimulationIphoneV3 = ({
   saxType,
   onSaxTypeChange,
   onScrollToOffers,
-  onEarnXp,
 }: AppSimulationIphoneV3Props) => {
   const [selectedFolder, setSelectedFolder] = useState<SimFolder | null>(null);
   const [viewingSong, setViewingSong] = useState<SimSong | null>(null);
@@ -194,27 +192,23 @@ const AppSimulationIphoneV3 = ({
     audio.src = song.audioSrc;
     audio
       .play()
-      .then(() => {
-        setIsPlaying(true);
-        onEarnXp?.(40, `Testou "${song.title}" no simulador iPhone!`);
-      })
+      .then(() => setIsPlaying(true))
       .catch(() => setIsPlaying(false));
   };
 
   const triggerVoiceDemo = () => {
     if (voiceSearching) return;
     setVoiceSearching(true);
-    onEarnXp?.(50, "Busca por Voz Inteligente testada!");
     setTimeout(() => {
       setVoiceSearching(false);
       const targetFolder = SIM_FOLDERS[1];
       setSelectedFolder(targetFolder);
       setViewingSong(targetFolder.songs[0]);
-    }, 1550);
+    }, 1450);
   };
 
   return (
-    <section className="py-16 md:py-28 px-5 md:px-10 relative overflow-hidden">
+    <section id="simulador-app" className="sax-section">
       <audio
         ref={audioRef}
         preload="none"
@@ -227,28 +221,29 @@ const AppSimulationIphoneV3 = ({
         onEnded={() => setIsPlaying(false)}
       />
 
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10 lg:gap-16 items-center">
+      <div className="sax-container">
+        {/* Tablet (md: 768px+) & Desktop (lg: 1024px+) Balanced Two-Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_330px] lg:grid-cols-[1fr_376px] gap-10 lg:gap-16 items-center">
           {/* LEFT COLUMN: Interactive Controls & Explanation */}
-          <div className="text-center lg:text-left">
-            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em] mb-4">
-              <Smartphone className="w-3.5 h-3.5 text-[#f5b942]" />
-              Simulador Interativo Real • iPhone Pro
+          <div className="text-center md:text-left">
+            <div className="sax-brass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] mb-4">
+              <Smartphone className="w-4 h-4 text-[#f5b942] shrink-0" />
+              <span>Simulador Interativo Real • iPhone Pro</span>
             </div>
 
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-white mb-4 leading-[1.1]">
+            <h2 className="sax-h2 text-white mb-4">
               Navegue Pelo Aplicativo <br className="hidden sm:block" />
               <span className="sax-gold-gradient-text italic">Antes Mesmo de Entrar</span>
             </h2>
 
-            <p className="text-sm sm:text-base md:text-lg text-[#c2b59f] leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+            <p className="sax-body-lg text-[#cfc3ae] mb-8 max-w-xl mx-auto md:mx-0">
               Clique direto dentro do iPhone ao lado (ou abaixo no celular) para abrir pastas, visualizar
               uma <strong className="text-white">partitura real com playback na mesma tela</strong> e testar
-              nossa <strong className="text-[#ffe299]">Busca por Voz Inteligente</strong>!
+              nossa <strong className="text-[#ffe49e]">Busca por Voz Inteligente</strong>!
             </p>
 
             {/* Quick Interactive Demo Shortcuts */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-xl mx-auto lg:mx-0 mb-8 text-left">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-xl mx-auto md:mx-0 mb-8 text-left">
               <button
                 type="button"
                 onClick={triggerVoiceDemo}
@@ -257,11 +252,11 @@ const AppSimulationIphoneV3 = ({
                 <div className="w-11 h-11 rounded-xl bg-[#f5b942]/20 border border-[#f5b942]/40 flex items-center justify-center shrink-0">
                   <Mic className="w-5 h-5 text-[#f5b942]" />
                 </div>
-                <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#1ed760] block">
+                <div className="min-w-0">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-[#1ed760] block">
                     Clique para Simular
                   </span>
-                  <span className="text-sm font-black font-heading text-white">
+                  <span className="text-sm sm:text-base font-black font-heading text-white block truncate">
                     🎤 Testar Busca por Voz
                   </span>
                 </div>
@@ -272,18 +267,17 @@ const AppSimulationIphoneV3 = ({
                 onClick={() => {
                   setSelectedFolder(SIM_FOLDERS[0]);
                   setViewingSong(SIM_FOLDERS[0].songs[0]);
-                  onEarnXp?.(30, "Abriu Partitura + Playback juntos no iPhone!");
                 }}
                 className="sax-card rounded-2xl p-4 flex items-center gap-3.5 border border-[#1ed760]/35 hover:border-[#1ed760] cursor-pointer text-left"
               >
                 <div className="w-11 h-11 rounded-xl bg-[#1ed760]/20 border border-[#1ed760]/40 flex items-center justify-center shrink-0">
                   <FileText className="w-5 h-5 text-[#1ed760]" />
                 </div>
-                <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#ffe299] block">
+                <div className="min-w-0">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-[#ffe49e] block">
                     Clique para Ver
                   </span>
-                  <span className="text-sm font-black font-heading text-white">
+                  <span className="text-sm sm:text-base font-black font-heading text-white block truncate">
                     🎼 Ver Partitura + Player
                   </span>
                 </div>
@@ -291,14 +285,14 @@ const AppSimulationIphoneV3 = ({
             </div>
 
             {/* Key Value Checklist */}
-            <div className="space-y-2.5 max-w-xl mx-auto lg:mx-0 text-left mb-8">
+            <div className="space-y-3 max-w-xl mx-auto md:mx-0 text-left mb-8">
               {[
                 "Funciona em qualquer iPhone, Android, Tablet ou Computador",
                 "Não ocupa memória do seu aparelho — tudo salvo na nuvem",
                 "Partitura e Playback na mesma tela para você tocar sem parar",
               ].map((line, idx) => (
-                <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-[#faf6ef]/90">
-                  <CheckCircle2 className="w-4 h-4 text-[#1ed760] shrink-0" />
+                <div key={idx} className="flex items-start gap-2.5 text-sm sm:text-base text-[#faf6ef]/90">
+                  <CheckCircle2 className="w-5 h-5 text-[#1ed760] shrink-0 mt-0.5" />
                   <span>{line}</span>
                 </div>
               ))}
@@ -307,45 +301,47 @@ const AppSimulationIphoneV3 = ({
             <button
               type="button"
               onClick={onScrollToOffers}
-              className="sax-cta-btn px-8 py-4 rounded-2xl text-sm uppercase tracking-wider inline-flex items-center gap-2.5"
+              className="sax-cta-btn w-full sm:w-auto px-8 py-4 rounded-2xl text-sm sm:text-base uppercase tracking-wider inline-flex items-center justify-center gap-2.5 cursor-pointer"
             >
-              Quero Ter Esse App no Meu Bolso
-              <ArrowRight className="w-4 h-4" />
+              <span>Quero Ter Esse App no Meu Bolso</span>
+              <ArrowRight className="w-5 h-5 shrink-0" />
             </button>
           </div>
 
-          {/* RIGHT COLUMN: REALISTIC INTERACTIVE IPHONE 16 PRO MOCKUP */}
+          {/* RIGHT COLUMN: FLUID 320px-SAFE INTERACTIVE IPHONE 16 PRO MOCKUP */}
           <div className="flex justify-center">
-            <div className="relative w-[320px] sm:w-[364px]">
+            <div className="relative w-full max-w-[300px] min-[375px]:max-w-[338px] sm:max-w-[366px] px-1">
               {/* Ambient Golden Halo Behind Phone */}
               <div
-                className="pointer-events-none absolute -inset-6 rounded-[64px] opacity-45"
+                className="pointer-events-none absolute inset-0 rounded-[56px] opacity-40"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(245,185,66,0.28) 0%, rgba(30,215,96,0.12) 50%, transparent 72%)",
-                  filter: "blur(32px)",
+                    "radial-gradient(circle, rgba(245,185,66,0.26) 0%, rgba(30,215,96,0.12) 50%, transparent 72%)",
+                  filter: "blur(28px)",
                 }}
               />
 
               {/* Titanium Hardware Side Buttons */}
-              <div className="absolute -left-[3px] top-[106px] w-[3px] h-7 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-              <div className="absolute -left-[3px] top-[152px] w-[3px] h-12 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-              <div className="absolute -left-[3px] top-[212px] w-[3px] h-12 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
-              <div className="absolute -right-[3px] top-[170px] w-[3px] h-16 rounded-r-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+              <div className="hidden min-[360px]:block absolute left-[1px] top-[104px] w-[3px] h-7 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+              <div className="hidden min-[360px]:block absolute left-[1px] top-[148px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+              <div className="hidden min-[360px]:block absolute left-[1px] top-[204px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
+              <div className="hidden min-[360px]:block absolute right-[1px] top-[166px] w-[3px] h-14 rounded-r-md bg-gradient-to-b from-[#7a6445] to-[#3a2f20]" />
 
               <div className="iphone-16-frame relative z-10">
                 <div className="iphone-16-inner-bezel">
-                  <div className="iphone-16-screen select-none flex flex-col min-h-[640px]">
+                  <div className="iphone-16-screen select-none flex flex-col">
                     {/* iOS Top Status Bar + Live Dynamic Island */}
-                    <div className="flex items-center justify-between px-6 pt-3 pb-2 bg-[#0b0805]">
+                    <div className="flex items-center justify-between px-4 sm:px-5 pt-2.5 pb-2 bg-[#0b0805] gap-1">
                       <span className="text-[11px] font-bold text-white tabular-nums">9:41</span>
 
-                      <div className="h-[26px] px-3.5 min-w-[114px] rounded-full bg-black border border-white/12 flex items-center justify-between gap-2">
-                        <span className="text-[10px]">🎷</span>
-                        <span className="text-[9px] font-bold text-[#ffe299] truncate max-w-[54px]">
+                      <div className="h-[25px] px-3 min-w-[96px] sm:min-w-[112px] rounded-full bg-black border border-white/12 flex items-center justify-between gap-1.5">
+                        <span className="text-[10px]" aria-hidden="true">
+                          🎷
+                        </span>
+                        <span className="text-[9px] font-bold text-[#ffe49e] truncate max-w-[52px]">
                           {voiceSearching ? "Voz IA" : isPlaying ? "Tocando" : "SaxApp"}
                         </span>
-                        <div className="flex items-end gap-[2px] h-3">
+                        <div className="flex items-end gap-[2px] h-3" aria-hidden="true">
                           <span
                             className={`w-[2px] rounded-full bg-[#1ed760] ${
                               isPlaying || voiceSearching ? "animate-sax-eq-1" : "h-1.5 opacity-50"
@@ -371,8 +367,8 @@ const AppSimulationIphoneV3 = ({
                     </div>
 
                     {/* App Header Bar inside iPhone */}
-                    <div className="px-4 py-3 bg-[#130e08] border-b border-[#f5b942]/15 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
+                    <div className="px-3.5 py-2.5 bg-[#130e08] border-b border-[#f5b942]/15 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
                         {(selectedFolder || viewingSong) && (
                           <button
                             type="button"
@@ -380,27 +376,33 @@ const AppSimulationIphoneV3 = ({
                               if (viewingSong) setViewingSong(null);
                               else setSelectedFolder(null);
                             }}
-                            className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white"
-                            aria-label="Voltar"
+                            className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white shrink-0 cursor-pointer"
+                            aria-label="Voltar para pastas"
                           >
                             <ArrowLeft className="w-3.5 h-3.5" />
                           </button>
                         )}
-                        <img src={logoClubeSax} alt="Clube do Sax" className="h-7 w-auto" />
-                        <span className="font-heading font-black text-xs text-white">
+                        <img
+                          src={logoClubeSax}
+                          alt="Clube do Sax"
+                          width={38}
+                          height={28}
+                          className="h-6 sm:h-7 w-auto shrink-0"
+                        />
+                        <span className="font-heading font-black text-xs text-white truncate">
                           Clube do Sax
                         </span>
                       </div>
 
                       {/* Sax Alto / Tenor Switch inside iPhone */}
-                      <div className="inline-flex rounded-lg bg-black/60 p-0.5 border border-[#f5b942]/30">
+                      <div className="inline-flex rounded-lg bg-black/60 p-0.5 border border-[#f5b942]/30 shrink-0">
                         <button
                           type="button"
                           onClick={() => onSaxTypeChange("alto")}
-                          className={`px-2 py-0.5 rounded-md text-[9px] font-black transition-colors ${
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-black transition-colors cursor-pointer ${
                             saxType === "alto"
                               ? "bg-[#f5b942] text-[#1c1102]"
-                              : "text-[#c2b59f]"
+                              : "text-[#cfc3ae]"
                           }`}
                         >
                           Alto Eb
@@ -408,10 +410,10 @@ const AppSimulationIphoneV3 = ({
                         <button
                           type="button"
                           onClick={() => onSaxTypeChange("tenor")}
-                          className={`px-2 py-0.5 rounded-md text-[9px] font-black transition-colors ${
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-black transition-colors cursor-pointer ${
                             saxType === "tenor"
                               ? "bg-[#f5b942] text-[#1c1102]"
-                              : "text-[#c2b59f]"
+                              : "text-[#cfc3ae]"
                           }`}
                         >
                           Tenor Bb
@@ -420,20 +422,20 @@ const AppSimulationIphoneV3 = ({
                     </div>
 
                     {/* Interactive Search + Voice Mic Bar */}
-                    <div className="px-4 py-2.5 bg-[#0e0a06] border-b border-white/5">
+                    <div className="px-3.5 py-2.5 bg-[#0e0a06] border-b border-white/5">
                       <button
                         type="button"
                         onClick={triggerVoiceDemo}
-                        className="w-full flex items-center gap-2.5 rounded-xl bg-black/60 border border-white/12 hover:border-[#f5b942]/50 px-3 py-2 text-left transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2 rounded-xl bg-black/60 border border-white/12 hover:border-[#f5b942]/50 px-3 py-2 text-left transition-colors cursor-pointer"
                       >
-                        <Search className="w-3.5 h-3.5 text-[#c2b59f]" />
-                        <span className="text-[11px] text-[#c2b59f] flex-1 truncate">
+                        <Search className="w-3.5 h-3.5 text-[#cfc3ae] shrink-0" />
+                        <span className="text-[11px] text-[#cfc3ae] flex-1 truncate">
                           {voiceSearching
                             ? "🎤 Ouvindo: 'Careless Whisper'..."
                             : "Toque no 🎤 para testar busca por voz"}
                         </span>
                         <span
-                          className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                             voiceSearching
                               ? "bg-[#1ed760] text-black animate-pulse"
                               : "bg-[#f5b942]/20 text-[#f5b942] border border-[#f5b942]/40"
@@ -444,19 +446,19 @@ const AppSimulationIphoneV3 = ({
                       </button>
                     </div>
 
-                    {/* DYNAMIC SCREEN CONTENT INSIDE IPHONE */}
-                    <div className="flex-1 bg-[#090705] px-3.5 py-3 overflow-y-auto relative">
+                    {/* DYNAMIC SCREEN CONTENT INSIDE IPHONE — FIXED HEIGHT, ZERO SCROLL TRAPS */}
+                    <div className="bg-[#090705] px-3.5 py-3 min-h-[348px] flex flex-col justify-center relative">
                       <AnimatePresence initial={false}>
                         {voiceSearching ? (
                           <motion.div
                             key="voice-overlay"
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.96 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0 }}
-                            className="h-full min-h-[300px] flex flex-col items-center justify-center text-center px-4"
+                            className="py-10 flex flex-col items-center justify-center text-center px-3"
                           >
-                            <div className="w-16 h-16 rounded-full bg-[#1ed760]/20 border-2 border-[#1ed760] flex items-center justify-center mb-4 animate-pulse">
-                              <Mic className="w-7 h-7 text-[#1ed760]" />
+                            <div className="w-14 h-14 rounded-full bg-[#1ed760]/20 border-2 border-[#1ed760] flex items-center justify-center mb-3 animate-pulse">
+                              <Mic className="w-6 h-6 text-[#1ed760]" />
                             </div>
                             <p className="text-xs font-black uppercase tracking-widest text-[#1ed760] mb-1">
                               Reconhecimento Inteligente
@@ -464,32 +466,32 @@ const AppSimulationIphoneV3 = ({
                             <p className="text-sm font-bold text-white">
                               “Careless Whisper — Sax {saxType === "alto" ? "Alto Eb" : "Tenor Bb"}”
                             </p>
-                            <p className="text-[11px] text-[#c2b59f] mt-2">
-                              Localizando partitura em PDF + Playback Master...
+                            <p className="text-xs text-[#cfc3ae] mt-1.5">
+                              Localizando partitura + Playback Master...
                             </p>
                           </motion.div>
                         ) : viewingSong ? (
-                          /* SHEET MUSIC + PLAYBACK SPLIT VIEW INSIDE IPHONE */
+                          /* SHEET MUSIC + PLAYBACK SPLIT VIEW INSIDE IPHONE (Framed cleanly, no inner scroll) */
                           <motion.div
                             key={`song-${viewingSong.id}`}
-                            initial={{ opacity: 0, x: 14 }}
+                            initial={{ opacity: 0, x: 10 }}
                             animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -14 }}
+                            exit={{ opacity: 0, x: -10 }}
                             className="space-y-2.5"
                           >
-                            <div className="flex items-center justify-between bg-[#161009] border border-[#f5b942]/30 rounded-xl px-3 py-2">
+                            <div className="flex items-center justify-between gap-2 bg-[#161009] border border-[#f5b942]/30 rounded-xl px-3 py-2">
                               <div className="min-w-0">
                                 <p className="text-xs font-black text-white truncate">
                                   {viewingSong.title}
                                 </p>
-                                <p className="text-[10px] text-[#ffe299]">
+                                <p className="text-[11px] text-[#ffe49e] truncate">
                                   Partitura {saxType === "alto" ? "Sax Alto (Eb)" : "Sax Tenor (Bb)"}
                                 </p>
                               </div>
                               <button
                                 type="button"
                                 onClick={() => playSongInPhone(viewingSong)}
-                                className="px-3 py-1.5 rounded-full bg-[#1ed760] text-black text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shrink-0"
+                                className="px-3 py-1.5 rounded-full bg-[#1ed760] text-black text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shrink-0 cursor-pointer"
                               >
                                 {activeAudioSong.id === viewingSong.id && isPlaying ? (
                                   <>
@@ -503,12 +505,15 @@ const AppSimulationIphoneV3 = ({
                               </button>
                             </div>
 
-                            {/* Crisp Sheet Music Page inside iPhone */}
-                            <div className="rounded-xl overflow-hidden bg-white border border-white/20 max-h-[295px] overflow-y-auto p-1.5">
+                            <div className="rounded-xl overflow-hidden bg-white border border-white/20 aspect-[210/245] p-1.5">
                               <img
                                 src={viewingSong.sheetSrc}
                                 alt={`Partitura ${viewingSong.title}`}
-                                className="w-full h-auto rounded"
+                                width={260}
+                                height={304}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-full object-cover object-top rounded"
                               />
                             </div>
                           </motion.div>
@@ -516,16 +521,16 @@ const AppSimulationIphoneV3 = ({
                           /* INSIDE A FOLDER: PAIRED PDF + MP3 SONGS */
                           <motion.div
                             key={`folder-${selectedFolder.id}`}
-                            initial={{ opacity: 0, x: 14 }}
+                            initial={{ opacity: 0, x: 10 }}
                             animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -14 }}
-                            className="space-y-2.5"
+                            exit={{ opacity: 0, x: -10 }}
+                            className="space-y-2.5 my-auto"
                           >
-                            <div className="flex items-center justify-between px-1 mb-2">
-                              <span className="text-xs font-black text-[#ffe299]">
+                            <div className="flex items-center justify-between gap-2 px-1 mb-1">
+                              <span className="text-xs font-black text-[#ffe49e] truncate">
                                 {selectedFolder.emoji} {selectedFolder.name}
                               </span>
-                              <span className="text-[10px] text-[#c2b59f]">
+                              <span className="text-[11px] text-[#cfc3ae] shrink-0">
                                 {selectedFolder.count}
                               </span>
                             </div>
@@ -535,12 +540,16 @@ const AppSimulationIphoneV3 = ({
                                 key={song.id}
                                 className="rounded-2xl bg-white/[0.04] border border-white/10 p-3 space-y-2"
                               >
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <p className="text-xs font-black text-white">{song.title}</p>
-                                    <p className="text-[10px] text-[#c2b59f]">{song.artist}</p>
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="min-w-0">
+                                    <p className="text-xs font-black text-white truncate">
+                                      {song.title}
+                                    </p>
+                                    <p className="text-[11px] text-[#cfc3ae] truncate">
+                                      {song.artist}
+                                    </p>
                                   </div>
-                                  <span className="text-[9px] font-bold bg-[#f5b942]/15 text-[#ffe299] px-2 py-0.5 rounded-full">
+                                  <span className="text-[10px] font-bold bg-[#f5b942]/15 text-[#ffe49e] px-2 py-0.5 rounded-full shrink-0">
                                     {saxType === "alto" ? "Eb" : "Bb"}
                                   </span>
                                 </div>
@@ -549,16 +558,16 @@ const AppSimulationIphoneV3 = ({
                                   <button
                                     type="button"
                                     onClick={() => setViewingSong(song)}
-                                    className="flex items-center justify-center gap-1.5 rounded-xl bg-[#f5b942]/15 hover:bg-[#f5b942]/25 border border-[#f5b942]/35 py-1.5 text-[10px] font-extrabold text-[#ffe299]"
+                                    className="min-h-[36px] flex items-center justify-center gap-1.5 rounded-xl bg-[#f5b942]/15 hover:bg-[#f5b942]/25 border border-[#f5b942]/35 py-1.5 text-[11px] font-extrabold text-[#ffe49e] cursor-pointer"
                                   >
-                                    <FileText className="w-3 h-3" /> Abrir PDF
+                                    <FileText className="w-3.5 h-3.5" /> Abrir PDF
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => playSongInPhone(song)}
-                                    className="flex items-center justify-center gap-1.5 rounded-xl bg-[#1ed760]/15 hover:bg-[#1ed760]/25 border border-[#1ed760]/40 py-1.5 text-[10px] font-extrabold text-[#1ed760]"
+                                    className="min-h-[36px] flex items-center justify-center gap-1.5 rounded-xl bg-[#1ed760]/15 hover:bg-[#1ed760]/25 border border-[#1ed760]/40 py-1.5 text-[11px] font-extrabold text-[#1ed760] cursor-pointer"
                                   >
-                                    <Headphones className="w-3 h-3" />
+                                    <Headphones className="w-3.5 h-3.5" />
                                     {activeAudioSong.id === song.id && isPlaying ? "Pausar" : "Playback"}
                                   </button>
                                 </div>
@@ -574,12 +583,12 @@ const AppSimulationIphoneV3 = ({
                             exit={{ opacity: 0 }}
                             className="space-y-2"
                           >
-                            <div className="flex items-center justify-between px-1 mb-1.5">
-                              <span className="text-[10px] font-black uppercase tracking-widest text-[#ffe299]/80 flex items-center gap-1">
-                                <Sparkles className="w-3 h-3 text-[#f5b942]" />
-                                Pastas do Acervo (+18 Estilos)
+                            <div className="flex items-center justify-between gap-2 px-1 mb-1">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-[#ffe49e]/90 flex items-center gap-1 truncate">
+                                <Sparkles className="w-3 h-3 text-[#f5b942] shrink-0" />
+                                Pastas (+18 Estilos)
                               </span>
-                              <span className="text-[9px] text-[#1ed760] font-bold">
+                              <span className="text-[10px] text-[#1ed760] font-bold shrink-0">
                                 Toque para abrir
                               </span>
                             </div>
@@ -588,11 +597,8 @@ const AppSimulationIphoneV3 = ({
                               <button
                                 key={folder.id}
                                 type="button"
-                                onClick={() => {
-                                  setSelectedFolder(folder);
-                                  onEarnXp?.(20, `Explorou a pasta "${folder.name}"!`);
-                                }}
-                                className="w-full flex items-center gap-3 p-2.5 rounded-2xl bg-white/[0.04] hover:bg-[#f5b942]/12 border border-white/[0.08] hover:border-[#f5b942]/40 transition-all text-left cursor-pointer"
+                                onClick={() => setSelectedFolder(folder)}
+                                className="w-full flex items-center gap-2.5 p-2.5 rounded-2xl bg-white/[0.04] hover:bg-[#f5b942]/12 border border-white/[0.08] hover:border-[#f5b942]/40 transition-all text-left cursor-pointer"
                               >
                                 <div className="w-9 h-9 rounded-xl bg-[#f5b942]/15 border border-[#f5b942]/30 flex items-center justify-center text-base shrink-0">
                                   {folder.emoji}
@@ -601,17 +607,17 @@ const AppSimulationIphoneV3 = ({
                                   <span className="text-xs font-extrabold text-white block truncate">
                                     {folder.name}
                                   </span>
-                                  <span className="text-[10px] font-bold text-[#f5b942]">
+                                  <span className="text-[11px] font-bold text-[#f5b942]">
                                     {folder.count}
                                   </span>
                                 </div>
-                                <ChevronRight className="w-4 h-4 text-[#c2b59f]" />
+                                <ChevronRight className="w-4 h-4 text-[#cfc3ae] shrink-0" />
                               </button>
                             ))}
 
                             <div className="pt-1 text-center">
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#c2b59f]/75">
-                                <Folder className="w-3 h-3 text-[#f5b942]" />+ 13 outras pastas completas no App
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#cfc3ae]/80">
+                                <Folder className="w-3 h-3 text-[#f5b942]" />+ 13 outras pastas no App
                               </span>
                             </div>
                           </motion.div>
@@ -625,7 +631,7 @@ const AppSimulationIphoneV3 = ({
                         <button
                           type="button"
                           onClick={() => playSongInPhone(activeAudioSong)}
-                          className="w-9 h-9 rounded-full bg-[#1ed760] text-black flex items-center justify-center shrink-0 shadow-md"
+                          className="w-9 h-9 rounded-full bg-[#1ed760] text-black flex items-center justify-center shrink-0 shadow-md cursor-pointer"
                           aria-label="Play/Pause no simulador"
                         >
                           {isPlaying ? (
@@ -635,7 +641,7 @@ const AppSimulationIphoneV3 = ({
                           )}
                         </button>
                         <div className="flex-1 min-w-0 text-left">
-                          <p className="text-[11px] font-black text-white truncate">
+                          <p className="text-xs font-black text-white truncate">
                             {activeAudioSong.title} — Playback
                           </p>
                           <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-1">
@@ -646,8 +652,7 @@ const AppSimulationIphoneV3 = ({
                           </div>
                         </div>
                       </div>
-                      {/* iOS Bottom Home Bar */}
-                      <div className="w-28 h-1 rounded-full bg-white/30 mx-auto mt-1" />
+                      <div className="w-24 sm:w-28 h-1 rounded-full bg-white/30 mx-auto mt-1" />
                     </div>
                   </div>
                 </div>
