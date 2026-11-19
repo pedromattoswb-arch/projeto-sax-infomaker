@@ -101,8 +101,8 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
 
     expect(window.fbq).toHaveBeenCalledWith("trackCustom", "funnel_start", { scene: 1 });
 
-    // SCENE 2: Qual é o seu sax?
-    expect(screen.getByRole("button", { name: /Ir para a oferta/i })).toBeInTheDocument();
+    // SCENE 2: Qual é o seu sax? (Zero "Ir para a oferta" skip button per user request!)
+    expect(screen.queryByRole("button", { name: /Ir para a oferta/i })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Escolher Sax Tenor/i }));
 
     await act(async () => {
@@ -193,30 +193,14 @@ describe("Funil Interativo Cinematográfico (/interativo)", () => {
     vi.useRealTimers();
   }, 25000);
 
-  it("allows skipping straight to offer from Scene 2 and opens directly on Offer upon reload when offer was already seen", async () => {
-    vi.useFakeTimers({ shouldAdvanceTime: true });
-    const { unmount } = render(<Interativo />);
-
-    fireEvent.click(screen.getByRole("button", { name: /Toque para ligar o som/i }));
-    await act(async () => {
-      vi.advanceTimersByTime(300);
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: /Ir para a oferta/i }));
-    expect(window.fbq).toHaveBeenCalledWith("trackCustom", "skip_to_offer", { from_scene: 2 });
-
-    await waitFor(() => {
-      expect(screen.getByText(/Escolha Seu Passaporte para o/i)).toBeInTheDocument();
-    });
-    expect(sessionStorage.getItem("cs_interativo_offer_seen")).toBe("1");
-    unmount();
+  it("opens directly on Offer upon reload when offer was already seen in sessionStorage", async () => {
+    sessionStorage.setItem("cs_interativo_offer_seen", "1");
+    sessionStorage.setItem("cs_interativo_sax", "alto");
 
     render(<Interativo />);
     await waitFor(() => {
       expect(screen.getByText(/Escolha Seu Passaporte para o/i)).toBeInTheDocument();
     });
     expect(screen.queryByLabelText(/Toque no sax e ligue o som/i)).not.toBeInTheDocument();
-
-    vi.useRealTimers();
   }, 15000);
 });

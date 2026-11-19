@@ -91,7 +91,8 @@ export const SceneBeforeAfter = ({
 
   useEffect(() => {
     onMixChange(0);
-    void audioEngine.startComparison(0);
+    // Revela o loop que já foi pré-iniciado no toque da Cena 2 (toca imediato no iOS/Android!)
+    audioEngine.revealComparison(0);
   }, [onMixChange]);
 
   useEffect(() => {
@@ -197,6 +198,8 @@ export const SceneBeforeAfter = ({
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (locked) return;
+    // Garante desbloqueio de áudio no iOS/Android caso o usuário ainda não tenha liberado som
+    audioEngine.ensurePlayingOnGesture(mix);
     draggingRef.current = true;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
@@ -204,13 +207,13 @@ export const SceneBeforeAfter = ({
       // noop
     }
     const ratio = ratioFromClientX(e.clientX);
-    // Se o usuário tocar direto no lado direito (>= 0.65), anima suavemente até travar em 100%!
-    if (ratio >= 0.65 && mix < 0.25 && !reducedMotion) {
+    // Se o usuário tocar em qualquer parte direita da barra (>= 0.55), desliza automaticamente até 100%!
+    if (ratio >= 0.55 && mix < 0.3 && !reducedMotion) {
       setHasInteracted(true);
       const proxy = { v: mix };
       gsap.to(proxy, {
         v: 1,
-        duration: 0.45,
+        duration: 0.48,
         ease: "power2.out",
         onUpdate: () => {
           if (!lockedRef.current) {

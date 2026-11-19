@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX, ArrowUpRight } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 import {
   FUNNEL_CONFIG,
   type MusicalStyleChoice,
@@ -20,7 +20,6 @@ import {
   trackLibraryBuilt,
   trackOfferViewContent,
   trackSaxSelected,
-  trackSkipToOffer,
 } from "./tracking/events";
 import { SceneIntro } from "./scenes/SceneIntro";
 import { SceneChooseSax } from "./scenes/SceneChooseSax";
@@ -61,21 +60,12 @@ function readOfferAlreadySeen(): boolean {
 }
 
 const SCENE_PROGRESS: Record<FunnelScene, number> = {
-  intro: 16,
-  "choose-sax": 42,
-  "style-step": 56,
-  "before-after": 72,
-  "build-library": 90,
+  intro: 18,
+  "choose-sax": 45,
+  "style-step": 60,
+  "before-after": 75,
+  "build-library": 92,
   offer: 100,
-};
-
-const SCENE_NUMBER: Record<FunnelScene, number> = {
-  intro: 1,
-  "choose-sax": 2,
-  "style-step": 2.5,
-  "before-after": 3,
-  "build-library": 4,
-  offer: 5,
 };
 
 export const FunnelController = () => {
@@ -263,13 +253,6 @@ export const FunnelController = () => {
     navigateToScene("offer");
   }, [navigateToScene, sax]);
 
-  const handleSkipToOffer = useCallback(() => {
-    trackSkipToOffer(SCENE_NUMBER[sceneRef.current]);
-    audioEngine.stopComparison();
-    setStaffMode("hidden");
-    navigateToScene("offer");
-  }, [navigateToScene]);
-
   const handleReplay = useCallback(() => {
     audioEngine.stopComparison();
     setStaffMode("hidden");
@@ -343,7 +326,7 @@ export const FunnelController = () => {
         enabled={!reducedMotion}
       />
 
-      {/* GLOBAL TOP HUD FOR SCENES 1–4: Thin Gold Progress Bar + Discreet Audio Pill + "Ir para a oferta" */}
+      {/* GLOBAL TOP HUD FOR SCENES 1–4: Thin Gold Progress Bar + Discreet Audio Indicator (No "Ir para a oferta") */}
       <div className="fixed top-0 inset-x-0 z-40 pointer-events-none">
         <div className="w-full h-[3px] bg-white/[0.08]" aria-hidden="true">
           <div
@@ -356,7 +339,7 @@ export const FunnelController = () => {
         </div>
 
         <div className="flex items-center justify-between gap-2 px-4 pt-2.5 jazz-safe-top">
-          {/* Discreet, non-intrusive always-on audio pill */}
+          {/* Discreet always-on audio pill */}
           <button
             type="button"
             onClick={(e) => {
@@ -365,7 +348,7 @@ export const FunnelController = () => {
             }}
             aria-label={isMuted ? "Ativar som da experiência" : "Silenciar som da experiência"}
             aria-pressed={!isMuted}
-            className="pointer-events-auto min-h-[36px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] font-semibold text-[#cdc3b2] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="pointer-events-auto min-h-[34px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] font-semibold text-[#cdc3b2] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
           >
             {isMuted ? (
               <VolumeX className="w-3.5 h-3.5 text-white/55 shrink-0" />
@@ -379,17 +362,9 @@ export const FunnelController = () => {
             </span>
           </button>
 
-          {/* Discreet "Ir para a oferta" link starting from Scene 2 */}
-          {scene !== "intro" && (
-            <button
-              type="button"
-              onClick={handleSkipToOffer}
-              className="pointer-events-auto min-h-[36px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] sm:text-xs font-semibold text-[#cdc3b2] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              <span>{FUNNEL_CONFIG.copy.global.skipToOffer}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#f5d58a]" />
-            </button>
-          )}
+          <span className="text-[11px] font-medium text-[#cdc3b2]/60 pr-1">
+            {FUNNEL_CONFIG.copy.global.audioSubtleHint}
+          </span>
         </div>
       </div>
 

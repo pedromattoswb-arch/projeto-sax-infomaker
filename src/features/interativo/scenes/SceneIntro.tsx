@@ -31,12 +31,20 @@ export const SceneIntro = ({
     onStageFlash(0.75, 0.3);
   }, [onStageFlash]);
 
+  const unlockedRef = useRef(false);
+
+  const ensureUnlocked = () => {
+    if (unlockedRef.current) return;
+    unlockedRef.current = true;
+    onUnlockAudio();
+  };
+
   const handleActivate = () => {
     if (triggered) return;
     setTriggered(true);
 
-    // 1. DESBLOQUEIA ÁUDIO SINCRONAMENTE DENTRO DO GESTO DO USUÁRIO (Obrigatório para iOS & Instagram)
-    onUnlockAudio();
+    // 1. DESBLOQUEIA ÁUDIO SINCRONAMENTE DENTRO DO GESTO DO USUÁRIO (iOS Silent Switch Bypass + WebKit)
+    ensureUnlocked();
 
     try {
       navigator.vibrate?.(30);
@@ -85,6 +93,7 @@ export const SceneIntro = ({
       role="button"
       tabIndex={0}
       aria-label="Toque para ligar o som e iniciar a experiência do Clube do Sax"
+      onTouchStart={ensureUnlocked}
       onClick={handleActivate}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {

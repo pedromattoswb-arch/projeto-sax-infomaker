@@ -56,8 +56,8 @@ export const SceneChooseSax = ({
     if (chosen) return;
     setChosen(sax);
 
-    // Toca uma frase cálida distinta para Alto (Eb) ou Tenor (Bb) dentro do gesto de toque
-    audioEngine.playSaxPreviewNote(sax);
+    // Toca frase cálida distinta para Alto (Eb) ou Tenor (Bb) E pré-inicia o loop da Cena 3 dentro do gesto!
+    audioEngine.playSaxChoiceAndWarmComparison(sax);
 
     try {
       navigator.vibrate?.(25);

@@ -18,8 +18,9 @@ import {
   X,
   Check,
   ChevronDown,
+  Loader2,
 } from "lucide-react";
-import { CinematicReveal, KineticHeading, type SaxType } from "./SaxThematicEffects";
+import { KineticHeading, type SaxType } from "./SaxThematicEffects";
 
 interface StudioTrack {
   id: string;
@@ -27,10 +28,17 @@ interface StudioTrack {
   artist: string;
   genre: "Pop & Romântico" | "MPB & Brasil" | "Rock & Jazz" | "Gospel";
   src: string;
+  fallbackDriveId?: string;
   bpm: string;
   coverGradient: string;
   accentHex: string;
 }
+
+const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || "";
+const getFallbackStreamUrl = (driveId?: string) =>
+  driveId && SUPABASE_PROJECT_ID
+    ? `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/stream-audio?id=${driveId}`
+    : null;
 
 const STUDIO_TRACKS: StudioTrack[] = [
   {
@@ -39,6 +47,7 @@ const STUDIO_TRACKS: StudioTrack[] = [
     artist: "George Michael",
     genre: "Pop & Romântico",
     src: "/playbacks/careless-whisper.mp3",
+    fallbackDriveId: "13n4UHAiwWAbBq3oxN27pyaUWI-mAaAmK",
     bpm: "Sax Solo Clássico",
     coverGradient: "from-[#9333ea] via-[#be185d] to-[#4c0519]",
     accentHex: "#ec4899",
@@ -59,6 +68,7 @@ const STUDIO_TRACKS: StudioTrack[] = [
     artist: "Caetano Veloso",
     genre: "MPB & Brasil",
     src: "/playbacks/sozinho.mp3",
+    fallbackDriveId: "1emyGuhMVPofGsDcCzmw9f0lvLRCX9YUF",
     bpm: "Balada MPB",
     coverGradient: "from-[#059669] via-[#065f46] to-[#022c22]",
     accentHex: "#10b981",
@@ -69,6 +79,7 @@ const STUDIO_TRACKS: StudioTrack[] = [
     artist: "ABBA",
     genre: "Pop & Romântico",
     src: "/playbacks/dancing-queen.mp3",
+    fallbackDriveId: "1YvCovPr_r6JRqT-cojpoLJLqnv_l4M6U",
     bpm: "Pop Internacional",
     coverGradient: "from-[#2563eb] via-[#1e40af] to-[#0f172a]",
     accentHex: "#3b82f6",
@@ -185,10 +196,12 @@ const SpotifyPlaybackPlayerV3 = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<StudioTrack>(STUDIO_TRACKS[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [durationsMap, setDurationsMap] = useState<Record<string, number>>({});
-  const [volume, setVolume] = useState(0.9);
+  const [volume, setVolume] = useState(0.95);
   const [muted, setMuted] = useState(false);
   const [likedIds, setLikedIds] = useState<Record<string, boolean>>({
     "careless-whisper": true,
@@ -199,6 +212,11 @@ const SpotifyPlaybackPlayerV3 = ({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
+  const activeTrackRef = useRef<StudioTrack>(STUDIO_TRACKS[0]);
+  const loadedSrcRef = useRef<string>("");
+  const playSeqRef = useRef<number>(0);
+
+  activeTrackRef.current = currentTrack;
 
   const filteredTracks =
     selectedGenre === "Todos"
@@ -234,70 +252,152 @@ const SpotifyPlaybackPlayerV3 = ({
   const countForGenre = (g: GenreFilter) =>
     g === "Todos" ? STUDIO_TRACKS.length : STUDIO_TRACKS.filter((t) => t.genre === g).length;
 
+  /** Garante iOS AudioSession em modo Playback (toca mesmo com chave lateral silenciosa!) */
+  const forcePlaybackSession = () => {
+    try {
+      const nav = navigator as Navigator & { audioSession?: { type: string } };
+      if (nav.audioSession) {
+        nav.audioSession.type = "playback";
+      }
+    } catch {
+      // noop
+    }
+  };
+
   const playSpecificTrack = useCallback(
     (track: StudioTrack) => {
       const audio = audioRef.current;
       if (!audio) return;
 
-      if (currentTrack.id === track.id) {
-        if (isPlaying) {
+      forcePlaybackSession();
+      setAudioError(null);
+
+      // Pause any other <audio> or <video> elements on the page so nothing collides
+      try {
+        document.querySelectorAll<HTMLMediaElement>("audio, video").forEach((el) => {
+          if (el !== audio && !el.paused) el.pause();
+        });
+      } catch {
+        // noop
+      }
+
+      const isSameTrack = activeTrackRef.current.id === track.id && loadedSrcRef.current === track.src;
+
+      if (isSameTrack) {
+        if (!audio.paused) {
           audio.pause();
           setIsPlaying(false);
-        } else {
-          if (!audio.src || !audio.src.endsWith(track.src)) {
-            audio.src = track.src;
-          }
-          audio
-            .play()
-            .then(() => setIsPlaying(true))
-            .catch(() => setIsPlaying(false));
+          setIsLoading(false);
+          return;
+        }
+        // Resume same track synchronously inside click handler
+        audio.muted = muted;
+        audio.volume = muted ? 0 : volume;
+        setIsLoading(audio.readyState < 3);
+        const seq = ++playSeqRef.current;
+        const p = audio.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            if (playSeqRef.current === seq) {
+              setIsPlaying(true);
+              setIsLoading(false);
+            }
+          }).catch((err: unknown) => {
+            if (playSeqRef.current !== seq) return;
+            if ((err as { name?: string })?.name === "AbortError") return;
+            setIsPlaying(false);
+            setIsLoading(false);
+            setAudioError("Toque novamente para reproduzir este playback.");
+          });
         }
         return;
       }
 
+      // Switching to a new track — mutate imperative src (no conflicting JSX src prop!)
+      const seq = ++playSeqRef.current;
       setCurrentTrack(track);
+      activeTrackRef.current = track;
       setCurrentTime(0);
+      setDuration(durationsMap[track.id] || 0);
+      setIsLoading(true);
+      setIsPlaying(true);
+
+      audio.pause();
       audio.src = track.src;
+      loadedSrcRef.current = track.src;
+      audio.muted = muted;
       audio.volume = muted ? 0 : volume;
-      audio
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
+
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise
+          .then(() => {
+            if (playSeqRef.current === seq) {
+              setIsPlaying(true);
+              setIsLoading(false);
+            }
+          })
+          .catch((err: unknown) => {
+            if (playSeqRef.current !== seq) return;
+            if ((err as { name?: string })?.name === "AbortError") return;
+
+            // Tenta URL de backup (Supabase stream) automaticamente se existir
+            const backup = getFallbackStreamUrl(track.fallbackDriveId);
+            if (backup && loadedSrcRef.current !== backup) {
+              loadedSrcRef.current = backup;
+              audio.src = backup;
+              audio.play().catch(() => {
+                if (playSeqRef.current === seq) {
+                  setIsPlaying(false);
+                  setIsLoading(false);
+                  setAudioError("Não foi possível carregar o áudio agora. Toque novamente.");
+                }
+              });
+              return;
+            }
+            setIsPlaying(false);
+            setIsLoading(false);
+            setAudioError("Toque novamente para liberar o áudio no seu aparelho.");
+          });
+      }
     },
-    [currentTrack.id, isPlaying, muted, volume]
+    [durationsMap, muted, volume]
   );
 
   const handleNext = useCallback(() => {
     const list = filteredTracks.length > 0 ? filteredTracks : STUDIO_TRACKS;
     if (shuffle && list.length > 1) {
-      const others = list.filter((t) => t.id !== currentTrack.id);
+      const others = list.filter((t) => t.id !== activeTrackRef.current.id);
       const randomTrack = others[Math.floor(Math.random() * others.length)];
       playSpecificTrack(randomTrack);
       return;
     }
-    const idx = list.findIndex((t) => t.id === currentTrack.id);
+    const idx = list.findIndex((t) => t.id === activeTrackRef.current.id);
     const nextTrack = list[(idx + 1) % list.length];
     playSpecificTrack(nextTrack);
-  }, [currentTrack.id, filteredTracks, playSpecificTrack, shuffle]);
+  }, [filteredTracks, playSpecificTrack, shuffle]);
 
   const handlePrev = useCallback(() => {
     const audio = audioRef.current;
     if (audio && audio.currentTime > 3) {
       audio.currentTime = 0;
+      setCurrentTime(0);
       return;
     }
     const list = filteredTracks.length > 0 ? filteredTracks : STUDIO_TRACKS;
-    const idx = list.findIndex((t) => t.id === currentTrack.id);
+    const idx = list.findIndex((t) => t.id === activeTrackRef.current.id);
     const prevTrack = list[(idx - 1 + list.length) % list.length];
     playSpecificTrack(prevTrack);
-  }, [currentTrack.id, filteredTracks, playSpecificTrack]);
+  }, [filteredTracks, playSpecificTrack]);
 
   const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
     const audio = audioRef.current;
-    if (!audio || !duration) return;
+    if (!audio) return;
+    const dur = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : duration;
+    if (!dur) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const nextTime = ratio * duration;
+    const nextTime = ratio * dur;
     audio.currentTime = nextTime;
     setCurrentTime(nextTime);
   };
@@ -306,6 +406,7 @@ const SpotifyPlaybackPlayerV3 = ({
     const nextMuted = !muted;
     setMuted(nextMuted);
     if (audioRef.current) {
+      audioRef.current.muted = nextMuted;
       audioRef.current.volume = nextMuted ? 0 : volume;
     }
   };
@@ -315,6 +416,7 @@ const SpotifyPlaybackPlayerV3 = ({
     setVolume(v);
     setMuted(v === 0);
     if (audioRef.current) {
+      audioRef.current.muted = v === 0;
       audioRef.current.volume = v;
     }
   };
@@ -323,16 +425,37 @@ const SpotifyPlaybackPlayerV3 = ({
 
   return (
     <section id="playbacks" className="sax-section">
-      {/* Single Master HTML5 Audio Element */}
+      {/* Single Master HTML5 Audio Element — SEM prop src hardcoded p/ o React nunca resetar a faixa! */}
       <audio
         ref={audioRef}
-        src={STUDIO_TRACKS[0].src}
-        preload="metadata"
+        playsInline
+        preload="none"
+        onPlay={() => setIsPlaying(true)}
+        onPlaying={() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+          setAudioError(null);
+        }}
+        onWaiting={() => setIsLoading(true)}
+        onCanPlay={() => setIsLoading(false)}
+        onPause={() => {
+          setIsPlaying(false);
+          setIsLoading(false);
+        }}
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => {
           const d = e.currentTarget.duration;
-          setDuration(d);
-          setDurationsMap((prev) => ({ ...prev, [currentTrack.id]: d }));
+          if (isFinite(d) && d > 0) {
+            setDuration(d);
+            setDurationsMap((prev) => ({ ...prev, [activeTrackRef.current.id]: d }));
+          }
+        }}
+        onDurationChange={(e) => {
+          const d = e.currentTarget.duration;
+          if (isFinite(d) && d > 0) {
+            setDuration(d);
+            setDurationsMap((prev) => ({ ...prev, [activeTrackRef.current.id]: d }));
+          }
         }}
         onEnded={() => {
           if (repeatOne && audioRef.current) {
@@ -342,9 +465,21 @@ const SpotifyPlaybackPlayerV3 = ({
             handleNext();
           }
         }}
+        onError={() => {
+          const track = activeTrackRef.current;
+          const backup = getFallbackStreamUrl(track.fallbackDriveId);
+          if (backup && audioRef.current && loadedSrcRef.current !== backup) {
+            loadedSrcRef.current = backup;
+            audioRef.current.src = backup;
+            audioRef.current.play().catch(() => {});
+            return;
+          }
+          setIsPlaying(false);
+          setIsLoading(false);
+        }}
       />
 
-      <div className="sax-container max-w-5xl">
+      <div className="sax-container max-w-5xl relative z-20">
         {/* Section Heading */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#1ed760]/12 border border-[#1ed760]/35 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-[#1ed760] mb-4">
@@ -367,9 +502,8 @@ const SpotifyPlaybackPlayerV3 = ({
           </p>
         </div>
 
-        {/* SPOTIFY PREMIUM CONTAINER — 100% FIXED, ZERO INTERNAL OR HORIZONTAL SCROLL, 3D SCROLL ELEVATION */}
-        <CinematicReveal>
-          <div className="rounded-3xl sm:rounded-[28px] border border-white/12 bg-[#0c0c0e] shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
+        {/* SPOTIFY PREMIUM CONTAINER — Plano 2D nítido (sem preserve-3d quebrando cliques!) + ZERO SCROLL */}
+        <div className="relative z-20 rounded-3xl sm:rounded-[28px] border border-white/12 bg-[#0c0c0e] shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
           {/* TOP SPOTIFY FEATURED NOW-PLAYING HEADER */}
           <div
             className="relative rounded-t-3xl sm:rounded-t-[28px] p-4 sm:p-7 md:p-8 transition-colors duration-500"
@@ -378,7 +512,7 @@ const SpotifyPlaybackPlayerV3 = ({
             }}
           >
             <div className="flex flex-col md:flex-row items-center md:items-end gap-5 md:gap-8">
-              {/* Album Cover + Peeking Spinning Vinyl Disc (Fluid 320px-safe dimensions) */}
+              {/* Album Cover + Peeking Spinning Vinyl Disc */}
               <div className="relative flex items-center justify-center shrink-0">
                 <div
                   className={`w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-zinc-900 via-black to-zinc-800 border-2 border-[#f5b942]/35 shadow-2xl flex items-center justify-center -mr-10 sm:-mr-14 z-0 transition-transform duration-500 ${
@@ -473,7 +607,9 @@ const SpotifyPlaybackPlayerV3 = ({
                         className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#1ed760] hover:bg-[#23eb6b] text-black flex items-center justify-center shadow-[0_8px_24px_rgba(30,215,96,0.48)] active:scale-95 transition-all cursor-pointer shrink-0"
                         aria-label={isPlaying ? "Pausar playback" : "Tocar playback"}
                       >
-                        {isPlaying ? (
+                        {isLoading ? (
+                          <Loader2 className="w-6 h-6 animate-spin" />
+                        ) : isPlaying ? (
                           <Pause className="w-6 h-6" fill="currentColor" />
                         ) : (
                           <Play className="w-6 h-6 ml-0.5" fill="currentColor" />
@@ -581,13 +717,18 @@ const SpotifyPlaybackPlayerV3 = ({
                       {formatTime(duration)}
                     </span>
                   </div>
+
+                  {audioError && (
+                    <p className="text-xs font-semibold text-[#ffe49e] mt-2 text-center">
+                      {audioError}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* GENRE NAVIGATION: COMPACT PRACTICAL HAMBURGER ON MOBILE (NO HORIZONTAL SCROLL!) + WRAPPED PILLS ON DESKTOP */}
+            {/* GENRE NAVIGATION: COMPACT HAMBURGER ON MOBILE + WRAPPED PILLS ON DESKTOP */}
             <div className="mt-5 pt-4 border-t border-white/10">
-              {/* Mobile Compact Hamburger Menu (< 768px) */}
               <div ref={menuContainerRef} className="relative md:hidden">
                 <div className="flex items-center justify-between gap-2">
                   <button
@@ -616,7 +757,6 @@ const SpotifyPlaybackPlayerV3 = ({
                   </button>
                 </div>
 
-                {/* Compact Floating Dropdown Menu — Takes minimal space, zero scroll */}
                 {mobileMenuOpen && (
                   <div
                     role="menu"
@@ -655,7 +795,6 @@ const SpotifyPlaybackPlayerV3 = ({
                 )}
               </div>
 
-              {/* Tablet & Desktop Wrapped Pills (>= 768px — Zero horizontal scroll!) */}
               <div className="hidden md:flex md:flex-wrap items-center gap-2">
                 {GENRE_FILTERS.map((g) => {
                   const active = selectedGenre === g;
@@ -678,9 +817,8 @@ const SpotifyPlaybackPlayerV3 = ({
             </div>
           </div>
 
-          {/* SPOTIFY PLAYLIST TRACKLIST — 100% FIXED (NO MAX-HEIGHT, NO OVERFLOW SCROLL!) */}
+          {/* SPOTIFY PLAYLIST TRACKLIST — 100% FIXED (NO SCROLLBARS!) */}
           <div className="px-2 sm:px-6 pt-2 pb-5">
-            {/* Column Header (Desktop single-column or mobile header) */}
             <div className="grid grid-cols-[28px_minmax(0,1fr)_auto] sm:grid-cols-[36px_minmax(0,1.5fr)_minmax(0,1fr)_84px_76px] lg:hidden items-center gap-2.5 sm:gap-3 px-2.5 sm:px-3 py-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-white/45">
               <span className="text-center">#</span>
               <span>Música & Artista</span>
@@ -691,25 +829,34 @@ const SpotifyPlaybackPlayerV3 = ({
               </span>
             </div>
 
-            {/* Fixed Track List: 1 column on Mobile/Tablet, clean 2-column Studio Deck on Large Desktop */}
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-4 divide-y lg:divide-y-0 divide-white/[0.05] mt-1">
               {filteredTracks.map((track, index) => {
                 const isCurrent = currentTrack.id === track.id;
                 const activePlaying = isCurrent && isPlaying;
+                const activeLoading = isCurrent && isLoading;
                 const isLiked = !!likedIds[track.id];
                 const knownDur = durationsMap[track.id];
 
                 return (
                   <div
                     key={track.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => playSpecificTrack(track)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        playSpecificTrack(track);
+                      }
+                    }}
                     className={`group grid grid-cols-[28px_minmax(0,1fr)_auto] sm:grid-cols-[36px_minmax(0,1.5fr)_minmax(0,1fr)_84px_76px] lg:grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 sm:gap-3 px-2.5 sm:px-3 py-2.5 rounded-xl cursor-pointer transition-colors lg:border-b lg:border-white/[0.05] ${
                       isCurrent ? "bg-white/[0.1]" : "hover:bg-white/[0.05]"
                     }`}
                   >
-                    {/* # / Equalizer */}
                     <div className="flex items-center justify-center">
-                      {activePlaying ? (
+                      {activeLoading ? (
+                        <Loader2 className="w-4 h-4 text-[#1ed760] animate-spin" />
+                      ) : activePlaying ? (
                         <div className="flex items-end gap-[2px] h-3.5" aria-hidden="true">
                           <span className="w-[2.5px] bg-[#1ed760] rounded-full animate-sax-eq-1" />
                           <span className="w-[2.5px] bg-[#1ed760] rounded-full animate-sax-eq-2" />
@@ -732,7 +879,6 @@ const SpotifyPlaybackPlayerV3 = ({
                       )}
                     </div>
 
-                    {/* Cover + Title + Artist */}
                     <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                       <div
                         className={`w-10 h-10 rounded-lg bg-gradient-to-br ${track.coverGradient} flex items-center justify-center shrink-0 border border-white/15 shadow-sm`}
@@ -754,7 +900,6 @@ const SpotifyPlaybackPlayerV3 = ({
                       </div>
                     </div>
 
-                    {/* Tablet Middle Columns */}
                     <div className="hidden sm:flex lg:hidden flex-col min-w-0">
                       <span className="text-xs font-semibold text-white/80 truncate">
                         {track.genre}
@@ -768,7 +913,6 @@ const SpotifyPlaybackPlayerV3 = ({
                       </span>
                     </div>
 
-                    {/* Right Action: Like + Duration / Play Status */}
                     <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
                       <button
                         type="button"
@@ -787,11 +931,17 @@ const SpotifyPlaybackPlayerV3 = ({
                         />
                       </button>
                       <span
-                        className={`text-xs font-bold tabular-nums min-w-[44px] text-right ${
+                        className={`text-xs font-bold tabular-nums min-w-[46px] text-right ${
                           activePlaying ? "text-[#1ed760]" : "text-white/65"
                         }`}
                       >
-                        {knownDur ? formatTime(knownDur) : activePlaying ? "Ativo" : "Ouvir"}
+                        {activeLoading
+                          ? "Abrindo"
+                          : knownDur
+                          ? formatTime(knownDur)
+                          : activePlaying
+                          ? "Tocando"
+                          : "Ouvir"}
                       </span>
                     </div>
                   </div>
@@ -815,8 +965,7 @@ const SpotifyPlaybackPlayerV3 = ({
               <ArrowRight className="w-4 h-4 shrink-0" />
             </button>
           </div>
-          </div>
-        </CinematicReveal>
+        </div>
       </div>
     </section>
   );
