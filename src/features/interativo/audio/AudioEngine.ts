@@ -96,7 +96,7 @@ class InterativoAudioEngine {
   private state: AudioEngineState = "locked";
   private activated = false;
   private muted = false;
-  private volume = FUNNEL_CONFIG.audio.defaultVolume;
+  private volume: number = FUNNEL_CONFIG.audio.defaultVolume;
   private duckLevel = 1;
   private currentScene = "intro";
   private activeTrackId: string | null = null;
@@ -336,6 +336,16 @@ class InterativoAudioEngine {
       this.lastError = "Este navegador não suporta Web Audio API.";
       audioLogger.log("Playback error.", { error: this.lastError, sceneId: this.currentScene }, "error");
       return null;
+    }
+
+    try {
+      // Standard W3C Audio Session API (Safari iOS 16.4+/17+): declara o app como reprodutor musical
+      const nav = navigator as Navigator & { audioSession?: { type: string } };
+      if (nav.audioSession) {
+        nav.audioSession.type = "playback";
+      }
+    } catch {
+      // noop
     }
 
     try {

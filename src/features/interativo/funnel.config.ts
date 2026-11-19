@@ -75,7 +75,6 @@ export const FUNNEL_CONFIG = {
 
   copy: {
     global: {
-      skipToOffer: "Ir para a oferta",
       soundOnLabel: "Áudio ativado",
       soundOffLabel: "Silenciado",
       soundLockedLabel: "Ativar som",
