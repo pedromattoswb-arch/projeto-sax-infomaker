@@ -272,8 +272,9 @@ const SpotifyPlaybackPlayerV3 = ({
       forcePlaybackSession();
       setAudioError(null);
 
-      // Pause any other <audio> or <video> elements on the page so nothing collides
+      // Pause any other <audio> or <video> elements on the page and notify AudioEngine so nothing collides
       try {
+        window.dispatchEvent(new CustomEvent("cs-spotify-play"));
         document.querySelectorAll<HTMLMediaElement>("audio, video").forEach((el) => {
           if (el !== audio && !el.paused) el.pause();
         });

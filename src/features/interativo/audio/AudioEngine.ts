@@ -1,82 +1,158 @@
 import { FUNNEL_CONFIG, type SaxChoice } from "../funnel.config";
+import { audioLogger, type AudioLogEntry } from "./AudioLogger";
 
-export type AudioStatus = "idle" | "unlocked" | "playing" | "unavailable";
+export type AudioEngineState =
+  | "locked"
+  | "initializing"
+  | "ready"
+  | "playing"
+  | "paused"
+  | "loading"
+  | "interrupted"
+  | "error"
+  | "recovering";
 
-/**
- * Gera um mini WAV PCM silencioso (0.2s) em memória para forçar a sessão de áudio do iOS (AVAudioSession)
- * do modo "Ambient" (mutado pela chave lateral física do iPhone) para o modo "Playback" (toca mesmo no silencioso!).
- */
-function createSilentUnlockWavUrl(): string | null {
-  if (typeof window === "undefined" || typeof Blob === "undefined" || typeof URL === "undefined") {
-    return null;
-  }
+export type AudioTrackKey =
+  | "stinger"
+  | "sax-alto"
+  | "sax-tenor"
+  | "solo-dry"
+  | "full-band"
+  | "library-chime";
+
+export interface AudioEngineSnapshot {
+  state: AudioEngineState;
+  activated: boolean;
+  muted: boolean;
+  volume: number;
+  currentScene: string;
+  activeTrackId: string | null;
+  contextState: string;
+  needsUserRecovery: boolean;
+  lastError: string | null;
+  recoveryAttempts: number;
+}
+
+export interface ActivationResult {
+  ok: boolean;
+  error?: string;
+}
+
+const AUDIO_PREF_STORAGE_KEY = "cs_interativo_audio_pref";
+const MAX_AUTO_RECOVERY_ATTEMPTS = 1;
+
+const TRACK_URLS: Record<AudioTrackKey, string> = {
+  stinger: FUNNEL_CONFIG.audio.stingerUrl,
+  "sax-alto": FUNNEL_CONFIG.audio.saxAltoCueUrl,
+  "sax-tenor": FUNNEL_CONFIG.audio.saxTenorCueUrl,
+  "solo-dry": FUNNEL_CONFIG.audio.soloDryUrl,
+  "full-band": FUNNEL_CONFIG.audio.soloBandUrl,
+  "library-chime": FUNNEL_CONFIG.audio.libraryReadyChimeUrl,
+};
+
+function clamp01(value: number): number {
+  return Math.max(0, Math.min(1, value));
+}
+
+function readStoredMutePreference(): boolean {
   try {
-    const sampleRate = 8000;
-    const numSamples = 1600; // 0.2s
-    const buffer = new ArrayBuffer(44 + numSamples * 2);
-    const view = new DataView(buffer);
-    const writeStr = (offset: number, str: string) => {
-      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
-    };
-    writeStr(0, "RIFF");
-    view.setUint32(4, 36 + numSamples * 2, true);
-    writeStr(8, "WAVE");
-    writeStr(12, "fmt ");
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true); // PCM
-    view.setUint16(22, 1, true); // mono
-    view.setUint32(24, sampleRate, true);
-    view.setUint32(28, sampleRate * 2, true);
-    view.setUint16(32, 2, true);
-    view.setUint16(34, 16, true);
-    writeStr(36, "data");
-    view.setUint32(40, numSamples * 2, true);
-    // Quase-silêncio de baixíssima amplitude (1 LSB) para o iOS manter o canal Playback ativo
-    for (let i = 0; i < numSamples; i++) {
-      view.setInt16(44 + i * 2, i % 2 === 0 ? 1 : -1, true);
-    }
-    return URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
+    return sessionStorage.getItem(AUDIO_PREF_STORAGE_KEY) === "muted";
   } catch {
-    return null;
+    return false;
   }
 }
 
+function writeStoredPreference(pref: "enabled" | "muted"): void {
+  try {
+    sessionStorage.setItem(AUDIO_PREF_STORAGE_KEY, pref);
+  } catch {
+    // noop
+  }
+}
+
+function getAudioContextCtor(): typeof AudioContext | null {
+  if (typeof window === "undefined") return null;
+  return (
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext ||
+    null
+  );
+}
+
 /**
- * Motor de Áudio Mobile-First (Triple-Lock iOS + Android + Instagram/FB WebView)
- * 1. Força navigator.audioSession.type = "playback" (iOS 17+).
- * 2. Inicia <audio loop playsInline> com WAV real sincronamente no 1º toque para contornar
- *    a chave física de modo silencioso do iPhone em TODOS os iOS (12–18) e WebViews!
- * 3. Executa AudioContext.resume() + síntese + start() 100% SINCRONAMENTE dentro do gesto
- *    do usuário (zero await bloqueando o token de gesto do Safari/WebKit).
- * 4. Pré-inicia o loop sincronizado da Cena 3 dentro do toque da Cena 2 (em gain 0) para que
- *    na Cena 3 o som já esteja tocando instantaneamente sem depender de useEffect!
+ * Motor Central de Áudio do Funil /interativo (Mobile-First • iOS Safari • Android Chrome • Desktop)
+ *
+ * Princípios arquiteturais:
+ * - Fonte única de verdade para todo o áudio das etapas 1–4 e coordenação limpa com a etapa 5.
+ * - Desbloqueio real e auditável dentro do evento `click` do usuário (NUNCA `touchstart` no iOS!).
+ * - Reproduz arquivos reais pré-renderizados em `/interativo/audio/*.wav` (zero freeze na thread principal).
+ * - Crossfade sincronizado sample-accurate (`cos` / `sin`) na Cena 3 via Web Audio `AudioBufferSourceNode`
+ *   recriados a cada reprodução (nunca reutilizados).
+ * - Respeita integralmente volume do aparelho, modo silencioso e escolha de silenciar do visitante.
+ * - Máquina de estados explícita (9 estados) + `playbackToken` anti-race-condition + recuperação de
+ *   interrupções (`visibilitychange`, `pageshow`, `pagehide`, `AudioContext.statechange === "interrupted"`).
  */
 class InterativoAudioEngine {
+  private state: AudioEngineState = "locked";
+  private activated = false;
+  private muted = false;
+  private volume = FUNNEL_CONFIG.audio.defaultVolume;
+  private duckLevel = 1;
+  private currentScene = "intro";
+  private activeTrackId: string | null = null;
+  private needsUserRecovery = false;
+  private lastError: string | null = null;
+  private recoveryAttempts = 0;
+
+  // Web Audio graph
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private dryGain: GainNode | null = null;
   private bandGain: GainNode | null = null;
+  private cueGain: GainNode | null = null;
   private analyser: AnalyserNode | null = null;
 
-  private iosUnlockEl: HTMLAudioElement | null = null;
-  private iosUnlockUrl: string | null = null;
-
-  private stingerBuffer: AudioBuffer | null = null;
-  private dryBuffer: AudioBuffer | null = null;
-  private bandBuffer: AudioBuffer | null = null;
-
+  // Active single-use Web Audio sources (recreated on every play)
   private drySource: AudioBufferSourceNode | null = null;
   private bandSource: AudioBufferSourceNode | null = null;
+  private activeCueSource: AudioBufferSourceNode | null = null;
 
-  private prefetchedRaw: Partial<Record<"stinger" | "dry" | "band", ArrayBuffer>> = {};
-  private status: AudioStatus = "idle";
-  private muted: boolean = false;
-  private currentMix = 0;
-  private duckLevel = 1;
-  private isComparisonRunning = false;
-  private comparisonAudible = false;
-  private visibilityListenerAttached = false;
+  // Dedicated managed HTMLAudioElement for real audible activation & cue fallback
+  private cueEl: HTMLAudioElement | null = null;
+  private cueElListenersAttached = false;
+
+  // Caches (lazy loaded per scene, never all at once)
+  private rawCache = new Map<AudioTrackKey, ArrayBuffer>();
+  private inFlightFetch = new Map<AudioTrackKey, Promise<ArrayBuffer | null>>();
+  private decodedCache = new Map<AudioTrackKey, AudioBuffer>();
+
+  // Comparison playback tracking (enables seamless resume-from-offset after backgrounding!)
+  private isComparisonPlaying = false;
+  private comparisonShouldBeActive = false;
+  private comparisonMix = 0;
+  private comparisonStartedAtCtxTime = 0;
+  private comparisonOffsetSec = 0;
+  private comparisonDurationSec = 11.429;
+  private wasPlayingBeforeHide = false;
+
+  // Concurrency token: incremented on every scene change / play command to cancel stale async loads
+  private playbackToken = 0;
+  private lifecycleAttached = false;
   private listeners = new Set<() => void>();
+
+  constructor() {
+    this.muted = readStoredMutePreference();
+    this.exposeDebugHandle();
+  }
+
+  private exposeDebugHandle(): void {
+    if (typeof window === "undefined") return;
+    (window as unknown as Record<string, unknown>).__CS_AUDIO_DEBUG__ = {
+      getSnapshot: () => this.getSnapshot(),
+      getLogs: (): AudioLogEntry[] => audioLogger.getEntries(),
+      clearLogs: () => audioLogger.clear(),
+    };
+  }
 
   public subscribe(fn: () => void): () => void {
     this.listeners.add(fn);
@@ -85,7 +161,7 @@ class InterativoAudioEngine {
     };
   }
 
-  private emit() {
+  private emit(): void {
     this.listeners.forEach((fn) => {
       try {
         fn();
@@ -95,100 +171,174 @@ class InterativoAudioEngine {
     });
   }
 
-  public getStatus(): AudioStatus {
-    return this.status;
+  private setState(next: AudioEngineState): void {
+    if (this.state === next) return;
+    this.state = next;
+    this.emit();
+  }
+
+  public getSnapshot(): AudioEngineSnapshot {
+    return {
+      state: this.state,
+      activated: this.activated,
+      muted: this.muted,
+      volume: this.volume,
+      currentScene: this.currentScene,
+      activeTrackId: this.activeTrackId,
+      contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+      needsUserRecovery: this.needsUserRecovery,
+      lastError: this.lastError,
+      recoveryAttempts: this.recoveryAttempts,
+    };
+  }
+
+  public getState(): AudioEngineState {
+    return this.state;
   }
 
   public isMuted(): boolean {
     return this.muted;
   }
 
-  public getFrequencyData(target: Uint8Array): boolean {
-    if (!this.analyser || this.muted || this.status === "unavailable" || !this.comparisonAudible) {
-      return false;
-    }
-    this.analyser.getByteFrequencyData(target);
-    return true;
+  public getVolume(): number {
+    return this.volume;
   }
 
-  /** Prepara URLs opcionais e força audioSession = playback quando suportado */
-  public preload(): void {
+  public isActivated(): boolean {
+    return this.activated;
+  }
+
+  /**
+   * Inicializa listeners globais e pré-carrega APENAS o stinger da Cena 1 (48 KB).
+   * Não tenta reproduzir nenhum áudio antes da interação válida do visitante.
+   */
+  public initialize(): void {
     if (typeof window === "undefined") return;
-    this.setIOSPlaybackSession();
-
-    if (!this.iosUnlockUrl) {
-      this.iosUnlockUrl = createSilentUnlockWavUrl();
-    }
-
-    if (typeof fetch !== "function") return;
-    const entries: Array<["stinger" | "dry" | "band", string]> = [
-      ["stinger", FUNNEL_CONFIG.audio.stingerUrl],
-      ["dry", FUNNEL_CONFIG.audio.soloDryUrl],
-      ["band", FUNNEL_CONFIG.audio.soloBandUrl],
-    ];
-    entries.forEach(([key, url]) => {
-      if (!url) return;
-      fetch(url)
-        .then((res) => (res.ok ? res.arrayBuffer() : null))
-        .then((buf) => {
-          if (buf) this.prefetchedRaw[key] = buf;
-        })
-        .catch(() => {});
+    audioLogger.log("Initializing audio engine.", {
+      sceneId: this.currentScene,
+      engineState: this.state,
+      contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
     });
-  }
 
-  private setIOSPlaybackSession(): void {
-    try {
-      const nav = navigator as Navigator & { audioSession?: { type: string } };
-      if (nav.audioSession) {
-        nav.audioSession.type = "playback";
-      }
-    } catch {
-      // noop
+    this.attachLifecycleListeners();
+    const el = this.ensureCueElement();
+    if (el && TRACK_URLS.stinger && !el.src) {
+      el.src = TRACK_URLS.stinger;
     }
+
+    // Pré-carrega somente o áudio da primeira etapa (48 KB) para ativação instantânea
+    void this.fetchRawTrack("stinger");
   }
 
-  /** Inicia o <audio> keep-alive sincronamente dentro de um gesto do usuário (desbloqueia modo silencioso iOS!) */
-  private unlockIOSHardwareMuteSync(): void {
-    if (typeof window === "undefined" || typeof Audio === "undefined") return;
-    this.setIOSPlaybackSession();
-    try {
-      if (!this.iosUnlockUrl) {
-        this.iosUnlockUrl = createSilentUnlockWavUrl();
-      }
-      if (!this.iosUnlockUrl) return;
+  public setScene(sceneId: string): void {
+    if (this.currentScene === sceneId) return;
+    const prev = this.currentScene;
+    this.currentScene = sceneId;
+    audioLogger.log("Scene changed.", {
+      stepId: sceneId,
+      sceneId,
+      engineState: this.state,
+      contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+      trackId: this.activeTrackId ?? undefined,
+    });
 
-      if (!this.iosUnlockEl) {
-        const el = new Audio(this.iosUnlockUrl);
-        el.loop = true;
-        el.muted = false;
-        el.volume = 1;
-        el.setAttribute("playsinline", "true");
-        el.setAttribute("webkit-playsinline", "true");
-        this.iosUnlockEl = el;
-      }
-
-      if (this.iosUnlockEl.paused && !this.muted) {
-        const p = this.iosUnlockEl.play();
-        if (p && typeof p.catch === "function") p.catch(() => {});
-      }
-    } catch {
-      // noop
+    // Pré-carregamento progressivo apenas da próxima etapa (sem baixar tudo simultaneamente)
+    if (sceneId === "choose-sax") {
+      void this.fetchRawTrack("sax-alto");
+      void this.fetchRawTrack("sax-tenor");
+    } else if (sceneId === "before-after") {
+      void this.fetchRawTrack("solo-dry");
+      void this.fetchRawTrack("full-band");
+    } else if (sceneId === "build-library") {
+      void this.fetchRawTrack("library-chime");
+    } else if (sceneId === "offer" && prev !== "offer") {
+      this.stopAllForExternalPlayer("offer");
     }
+
+    this.emit();
   }
 
-  private ensureContext(): AudioContext | null {
+  private ensureCueElement(): HTMLAudioElement | null {
+    if (typeof window === "undefined" || typeof Audio === "undefined") return null;
+    if (!this.cueEl) {
+      const el = new Audio();
+      el.preload = "auto";
+      el.setAttribute("playsinline", "true");
+      el.setAttribute("webkit-playsinline", "true");
+      el.muted = this.muted;
+      el.volume = this.muted ? 0 : this.volume;
+      this.cueEl = el;
+    }
+
+    if (!this.cueElListenersAttached && this.cueEl) {
+      this.cueElListenersAttached = true;
+      const el = this.cueEl;
+
+      el.addEventListener("canplay", () => {
+        audioLogger.log("Media loaded successfully.", {
+          sceneId: this.currentScene,
+          trackId: this.activeTrackId ?? undefined,
+          file: el.currentSrc || el.src,
+          engineState: this.state,
+        });
+      });
+
+      el.addEventListener("playing", () => {
+        if (this.state === "loading" || this.state === "initializing") {
+          this.setState("playing");
+        }
+        audioLogger.log("Playback started.", {
+          sceneId: this.currentScene,
+          trackId: this.activeTrackId ?? undefined,
+          file: el.currentSrc || el.src,
+          engineState: this.state,
+          contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+        });
+      });
+
+      el.addEventListener("ended", () => {
+        audioLogger.log("Playback ended.", {
+          sceneId: this.currentScene,
+          trackId: this.activeTrackId ?? undefined,
+          file: el.currentSrc || el.src,
+          engineState: this.state,
+        });
+        if (!this.isComparisonPlaying && this.state === "playing") {
+          this.setState("ready");
+        }
+      });
+
+      el.addEventListener("error", () => {
+        const errMsg = el.error?.message || `MediaError code ${el.error?.code ?? "unknown"}`;
+        audioLogger.log(
+          "Playback error.",
+          {
+            sceneId: this.currentScene,
+            trackId: this.activeTrackId ?? undefined,
+            file: el.currentSrc || el.src,
+            engineState: this.state,
+            error: errMsg,
+          },
+          "warn"
+        );
+      });
+    }
+
+    return this.cueEl;
+  }
+
+  private ensureAudioContext(): AudioContext | null {
     if (typeof window === "undefined") return null;
-    if (this.ctx) return this.ctx;
+    if (this.ctx && this.ctx.state !== "closed") return this.ctx;
+
+    const AudioCtx = getAudioContextCtor();
+    if (!AudioCtx) {
+      this.lastError = "Este navegador não suporta Web Audio API.";
+      audioLogger.log("Playback error.", { error: this.lastError, sceneId: this.currentScene }, "error");
+      return null;
+    }
+
     try {
-      const AudioCtx =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-      if (!AudioCtx) {
-        this.status = "unavailable";
-        this.emit();
-        return null;
-      }
       const ctx = new AudioCtx();
       const master = ctx.createGain();
       const analyser = ctx.createAnalyser();
@@ -197,263 +347,616 @@ class InterativoAudioEngine {
 
       const dryGain = ctx.createGain();
       const bandGain = ctx.createGain();
+      const cueGain = ctx.createGain();
 
       dryGain.gain.value = 0;
       bandGain.gain.value = 0;
+      cueGain.gain.value = 1;
+      master.gain.value = this.muted ? 0 : this.volume * this.duckLevel;
 
       dryGain.connect(master);
       bandGain.connect(master);
+      cueGain.connect(master);
       master.connect(analyser);
       analyser.connect(ctx.destination);
 
-      master.gain.value = this.muted ? 0 : this.duckLevel;
+      ctx.addEventListener("statechange", () => {
+        const ctxState = ctx.state as string;
+        audioLogger.log(`AudioContext state: ${ctxState}.`, {
+          sceneId: this.currentScene,
+          contextState: ctxState,
+          engineState: this.state,
+        });
+
+        // iOS Safari entra no estado não-padrão "interrupted" ao bloquear tela, receber ligação ou trocar app
+        if (ctxState === "interrupted" || (ctxState === "suspended" && this.activated && !this.muted)) {
+          if (this.isComparisonPlaying || this.comparisonShouldBeActive) {
+            this.snapshotComparisonOffset();
+            this.stopComparisonNodesOnly();
+            this.wasPlayingBeforeHide = true;
+            this.setState("interrupted");
+            audioLogger.log(
+              "Playback interrupted.",
+              {
+                sceneId: this.currentScene,
+                contextState: ctxState,
+                engineState: "interrupted",
+              },
+              "warn"
+            );
+          }
+        }
+        this.emit();
+      });
 
       this.ctx = ctx;
       this.masterGain = master;
       this.dryGain = dryGain;
       this.bandGain = bandGain;
+      this.cueGain = cueGain;
       this.analyser = analyser;
 
-      this.attachVisibilityHandler();
+      audioLogger.log(`AudioContext state: ${ctx.state}.`, {
+        sceneId: this.currentScene,
+        contextState: ctx.state,
+        engineState: this.state,
+      });
+
       return ctx;
-    } catch {
-      this.status = "unavailable";
-      this.emit();
+    } catch (err) {
+      this.lastError = err instanceof Error ? err.message : "Falha ao criar AudioContext.";
+      audioLogger.log("Playback error.", { error: this.lastError, sceneId: this.currentScene }, "error");
       return null;
     }
   }
 
-  private attachVisibilityHandler() {
-    if (this.visibilityListenerAttached || typeof document === "undefined") return;
-    this.visibilityListenerAttached = true;
-    document.addEventListener("visibilitychange", () => {
-      if (!this.ctx) return;
-      if (document.hidden) {
-        this.ctx.suspend().catch(() => {});
+  private attachLifecycleListeners(): void {
+    if (this.lifecycleAttached || typeof window === "undefined" || typeof document === "undefined") {
+      return;
+    }
+    this.lifecycleAttached = true;
+
+    const handleBackground = () => {
+      if (!this.activated) return;
+      const activelyPlaying =
+        this.isComparisonPlaying ||
+        this.comparisonShouldBeActive ||
+        Boolean(this.cueEl && !this.cueEl.paused);
+
+      if (activelyPlaying && !this.muted) {
+        this.wasPlayingBeforeHide = true;
+        this.snapshotComparisonOffset();
+        this.stopComparisonNodesOnly();
         try {
-          this.iosUnlockEl?.pause();
+          this.cueEl?.pause();
         } catch {
           // noop
         }
-      } else if (!this.muted && this.status !== "unavailable") {
-        this.ctx.resume().catch(() => {});
-        if (this.isComparisonRunning) {
-          this.unlockIOSHardwareMuteSync();
+        if (this.ctx && this.ctx.state === "running") {
+          void this.ctx.suspend().catch(() => {});
         }
+        this.setState("interrupted");
+        audioLogger.log(
+          "Playback interrupted.",
+          {
+            sceneId: this.currentScene,
+            contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+            engineState: "interrupted",
+          },
+          "warn"
+        );
       }
+    };
+
+    const handleForeground = () => {
+      if (!this.activated || this.muted) return;
+      if (this.currentScene === "offer") return;
+      if (this.wasPlayingBeforeHide || this.state === "interrupted") {
+        void this.attemptAutomaticRecovery();
+      }
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        handleBackground();
+      } else {
+        handleForeground();
+      }
+    });
+
+    window.addEventListener("pagehide", handleBackground);
+    window.addEventListener("pageshow", (ev) => {
+      // Ao voltar pelo BFCache do Safari iOS, revalida o estado real do áudio
+      if (ev.persisted && this.activated && !this.muted && this.currentScene !== "offer") {
+        handleForeground();
+      }
+    });
+
+    // Coordenação com o Player Spotify da Cena 5 (/interativo Oferta) — evita dois áudios simultâneos!
+    window.addEventListener("cs-spotify-play", () => {
+      this.stopAllForExternalPlayer("spotify-takeover");
     });
   }
 
-  /**
-   * 100% SÍNCRONO — Chamar diretamente no pointerdown/touchstart/click da Cena 1.
-   * Força áudio em todos os dispositivos (incluindo iPhone no modo silencioso).
-   */
-  public unlockAndPlayStinger(): void {
-    this.muted = false;
-    this.duckLevel = 1;
-    this.unlockIOSHardwareMuteSync();
-
-    const ctx = this.ensureContext();
-    if (!ctx || !this.masterGain) return;
-
-    try {
-      if (ctx.state !== "running") {
-        void ctx.resume();
-      }
-
-      // Sintetiza o stinger sincronamente (< 4ms) para tocar na MESMA stack do gesto!
-      if (!this.stingerBuffer) {
-        this.stingerBuffer = this.synthesizeStingerSync(ctx);
-      }
-
-      this.masterGain.gain.setValueAtTime(1, ctx.currentTime);
-
-      const src = ctx.createBufferSource();
-      src.buffer = this.stingerBuffer;
-      const g = ctx.createGain();
-      g.gain.value = 1.0;
-      src.connect(g);
-      g.connect(this.masterGain);
-      src.start(0);
-
-      this.status = "unlocked";
-      this.emit();
-
-      // Pré-sintetiza o par sincronizado da Cena 3 em segundo plano logo após o stinger iniciar
-      window.setTimeout(() => {
-        if (this.ctx && (!this.dryBuffer || !this.bandBuffer)) {
-          this.prepareComparisonBuffersSync(this.ctx);
-        }
-      }, 60);
-    } catch {
-      this.status = "unavailable";
-      this.emit();
-    }
+  private snapshotComparisonOffset(): void {
+    if (!this.isComparisonPlaying || !this.ctx) return;
+    const elapsed = Math.max(0, this.ctx.currentTime - this.comparisonStartedAtCtxTime);
+    const dur = this.comparisonDurationSec || 11.429;
+    this.comparisonOffsetSec = (this.comparisonOffsetSec + elapsed) % dur;
   }
 
   /**
-   * 100% SÍNCRONO — Chamado no toque da Cena 2 (escolha Alto Eb vs Tenor Bb).
-   * Toca frase de sax real + pré-inicia silenciosamente o loop da Cena 3 dentro do gesto!
+   * FASE 4 — ATIVAÇÃO INICIAL REAL (DEVE SER CHAMADA DIRETAMENTE NO `onClick` DO BOTÃO!)
+   * - Cria/recupera AudioContext e chama `ctx.resume()` sincronamente na pilha do clique.
+   * - Dispara reprodução REAL e audível de `/interativo/audio/stage-stinger.wav` na mesma pilha.
+   * - Valida tecnicamente que a reprodução entrou em estado ativo ANTES de confirmar sucesso.
    */
-  public playSaxChoiceAndWarmComparison(sax: SaxChoice): void {
-    this.unlockIOSHardwareMuteSync();
-    const ctx = this.ensureContext();
-    if (!ctx || !this.masterGain) return;
+  public async activateFromUserGesture(): Promise<ActivationResult> {
+    const token = ++this.playbackToken;
+    this.lastError = null;
+    this.needsUserRecovery = false;
+    this.recoveryAttempts = 0;
+    this.muted = false;
+    this.duckLevel = 1;
+    this.activeTrackId = "stinger";
+    this.setState("initializing");
 
+    audioLogger.log("User activation received.", {
+      stepId: "scene1",
+      sceneId: this.currentScene,
+      trackId: "stinger",
+      file: TRACK_URLS.stinger,
+      engineState: "initializing",
+    });
+
+    // 1. Cria/obtém AudioContext e dispara resume() SINCRONAMENTE no gesto do usuário
+    const ctx = this.ensureAudioContext();
+    let ctxResumePromise: Promise<void> = Promise.resolve();
+    if (ctx && ctx.state !== "running") {
+      ctxResumePromise = ctx.resume().catch(() => {});
+    }
+
+    // 2. Dispara reprodução REAL e AUDÍVEL do arquivo stage-stinger.wav SINCRONAMENTE no gesto!
+    const el = this.ensureCueElement();
+    let htmlPlayPromise: Promise<boolean> = Promise.resolve(false);
+    if (el && TRACK_URLS.stinger) {
+      try {
+        el.pause();
+        if (!el.src || !el.src.endsWith(TRACK_URLS.stinger)) {
+          el.src = TRACK_URLS.stinger;
+        }
+        el.muted = false;
+        el.volume = this.volume;
+        const p = el.play();
+        if (p && typeof p.then === "function") {
+          htmlPlayPromise = p.then(
+            () => true,
+            (err) => {
+              audioLogger.log(
+                "Playback error.",
+                {
+                  sceneId: this.currentScene,
+                  trackId: "stinger",
+                  file: TRACK_URLS.stinger,
+                  error: err instanceof Error ? err.message : String(err),
+                },
+                "warn"
+              );
+              return false;
+            }
+          );
+        } else {
+          htmlPlayPromise = Promise.resolve(true);
+        }
+      } catch (err) {
+        audioLogger.log(
+          "Playback error.",
+          {
+            sceneId: this.currentScene,
+            trackId: "stinger",
+            file: TRACK_URLS.stinger,
+            error: err instanceof Error ? err.message : String(err),
+          },
+          "warn"
+        );
+      }
+    }
+
+    // 3. Aguarda confirmação real (com limite seguro de 1.8s para nunca travar em rede lenta)
+    const timeoutGuard = new Promise<void>((resolve) => {
+      window.setTimeout(resolve, 1800);
+    });
+    await Promise.race([Promise.allSettled([ctxResumePromise, htmlPlayPromise]), timeoutGuard]);
+
+    if (token !== this.playbackToken) {
+      return { ok: false, error: "Operação substituída." };
+    }
+
+    const htmlPlayed = await Promise.race([htmlPlayPromise, Promise.resolve(false)]);
+    const ctxRunning = Boolean(this.ctx && this.ctx.state === "running");
+
+    // 4. Se HTMLAudio falhou (ex: rede lenta ou ambiente de teste), mas AudioContext está running,
+    //    reproduz amostra real audível via Web Audio e confirma tecnicamente!
+    let webAudioPlayed = false;
+    if (!htmlPlayed && ctxRunning && this.ctx) {
+      const buf = (await this.getDecodedTrack("stinger")) ?? this.createFallbackStingerBuffer(this.ctx);
+      if (buf && token === this.playbackToken) {
+        webAudioPlayed = this.playOneShotBuffer(buf, "stinger", 0.95);
+      }
+    }
+
+    const verifiedPlaying = htmlPlayed || webAudioPlayed;
+
+    if (!verifiedPlaying) {
+      this.activated = false;
+      this.lastError = "Não foi possível iniciar o áudio.";
+      this.setState("error");
+      audioLogger.log(
+        "Playback error.",
+        {
+          stepId: "scene1",
+          sceneId: this.currentScene,
+          trackId: "stinger",
+          file: TRACK_URLS.stinger,
+          contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+          engineState: "error",
+          error: "Neither HTMLAudioElement nor Web Audio confirmed audible playback.",
+        },
+        "error"
+      );
+      return { ok: false, error: this.lastError };
+    }
+
+    this.activated = true;
+    this.lastError = null;
+    writeStoredPreference("enabled");
+    this.applyMasterGain(0.03);
+    this.setState("playing");
+
+    audioLogger.log("Playback started.", {
+      stepId: "scene1",
+      sceneId: this.currentScene,
+      trackId: "stinger",
+      file: TRACK_URLS.stinger,
+      contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+      engineState: "playing",
+    });
+
+    // Pré-carrega os arquivos leves da Cena 2 em segundo plano (~50 KB cada)
+    void this.fetchRawTrack("sax-alto");
+    void this.fetchRawTrack("sax-tenor");
+
+    return { ok: true };
+  }
+
+  /**
+   * Permite que o visitante siga sem som se o dispositivo bloquear áudio (nunca trava o funil comercial).
+   */
+  public continueWithoutSound(): void {
+    this.muted = true;
+    this.activated = false;
+    this.needsUserRecovery = false;
+    this.lastError = null;
+    writeStoredPreference("muted");
+    this.stopComparison();
     try {
-      if (ctx.state !== "running") {
-        void ctx.resume();
-      }
-
-      // 1. Toca frase característica quente (Alto Eb brilhante / Tenor Bb encorpado)
-      if (!this.muted) {
-        const now = ctx.currentTime;
-        const freqs = sax === "alto" ? [440.0, 523.25, 659.25] : [196.0, 233.08, 293.66];
-        freqs.forEach((f, idx) => {
-          const start = now + idx * 0.13;
-          const noteDur = idx === freqs.length - 1 ? 0.72 : 0.22;
-
-          const osc1 = ctx.createOscillator();
-          const osc2 = ctx.createOscillator();
-          const filter = ctx.createBiquadFilter();
-          const gain = ctx.createGain();
-
-          osc1.type = "sawtooth";
-          osc2.type = "triangle";
-          osc1.frequency.setValueAtTime(f, start);
-          osc2.frequency.setValueAtTime(f * 2, start);
-
-          filter.type = "lowpass";
-          filter.frequency.setValueAtTime(sax === "alto" ? 2300 : 1550, start);
-          filter.Q.value = 2.0;
-
-          gain.gain.setValueAtTime(0.0001, start);
-          gain.gain.linearRampToValueAtTime(0.26, start + 0.035);
-          gain.gain.exponentialRampToValueAtTime(0.0001, start + noteDur);
-
-          osc1.connect(filter);
-          osc2.connect(filter);
-          filter.connect(gain);
-          gain.connect(this.masterGain!);
-
-          osc1.start(start);
-          osc2.start(start);
-          osc1.stop(start + noteDur + 0.03);
-          osc2.stop(start + noteDur + 0.03);
-        });
-      }
-
-      // 2. Pré-inicia o loop sincronizado da Cena 3 em volume 0 DENTRO deste gesto de toque!
-      // Assim, quando a Cena 3 abrir 1.2s depois, o áudio JÁ está rodando sem depender de gesto novo!
-      this.startComparisonNodesSilentSync(ctx);
+      this.cueEl?.pause();
     } catch {
       // noop
     }
+    this.setState("paused");
   }
 
-  private prepareComparisonBuffersSync(ctx: AudioContext): void {
-    if (this.dryBuffer && this.bandBuffer) return;
-    const pair = this.synthesizeSyncedJazzPair(ctx);
-    this.dryBuffer = pair.dry;
-    this.bandBuffer = pair.band;
+  /**
+   * FASE 5 — Cena 2: Toca o timbre real de Sax Alto (Eb) ou Tenor (Bb) dentro do toque
+   * e inicia o carregamento/decodificação assíncrono dos loops da Cena 3 (sem travar a UI).
+   */
+  public async playSaxChoiceCue(sax: SaxChoice): Promise<void> {
+    const trackKey: AudioTrackKey = sax === "alto" ? "sax-alto" : "sax-tenor";
+    const token = ++this.playbackToken;
+    this.activeTrackId = trackKey;
+    this.comparisonShouldBeActive = false;
 
-    // Se houver MP3s externos pré-carregados no config, substitui assincronamente
-    if (this.prefetchedRaw.dry && this.prefetchedRaw.band) {
-      Promise.all([
-        ctx.decodeAudioData(this.prefetchedRaw.dry.slice(0)),
-        ctx.decodeAudioData(this.prefetchedRaw.band.slice(0)),
-      ])
-        .then(([d, b]) => {
-          this.dryBuffer = d;
-          this.bandBuffer = b;
-        })
-        .catch(() => {});
+    // Reforça o AudioContext sincronamente dentro do clique da Cena 2 (segurança extra no iOS!)
+    const ctx = this.ensureAudioContext();
+    if (ctx && ctx.state !== "running" && !this.muted) {
+      void ctx.resume().catch(() => {});
+    }
+
+    // Inicia o download + decodificação dos loops da Cena 3 em paralelo em background
+    void this.preloadComparisonTracks();
+
+    if (this.muted) {
+      return;
+    }
+
+    this.setState("loading");
+    this.activated = true;
+
+    // Prioriza HTMLAudioElement direto no gesto do usuário (latência zero no iOS Safari!)
+    const playedHtml = await this.playCueElement(trackKey, token);
+    if (playedHtml || token !== this.playbackToken) {
+      return;
+    }
+
+    // Fallback Web Audio se HTMLAudio não puder iniciar
+    if (ctx && ctx.state === "running") {
+      const buf = await this.getDecodedTrack(trackKey);
+      if (token !== this.playbackToken) return;
+      if (buf) {
+        this.playOneShotBuffer(buf, trackKey, 1.0);
+        return;
+      }
+    }
+
+    this.setState("ready");
+  }
+
+  private async playCueElement(trackKey: AudioTrackKey, token: number): Promise<boolean> {
+    const el = this.ensureCueElement();
+    const url = TRACK_URLS[trackKey];
+    if (!el || !url) return false;
+
+    try {
+      el.pause();
+      if (!el.src || !el.src.endsWith(url)) {
+        el.src = url;
+      }
+      el.muted = this.muted;
+      el.volume = this.muted ? 0 : this.volume;
+      const p = el.play();
+      if (p && typeof p.then === "function") {
+        await p;
+      }
+      if (token !== this.playbackToken) {
+        el.pause();
+        return false;
+      }
+      this.setState("playing");
+      return true;
+    } catch (err) {
+      audioLogger.log(
+        "Playback error.",
+        {
+          sceneId: this.currentScene,
+          trackId: trackKey,
+          file: url,
+          error: err instanceof Error ? err.message : String(err),
+        },
+        "warn"
+      );
+      return false;
     }
   }
 
-  private startComparisonNodesSilentSync(ctx: AudioContext): void {
-    this.prepareComparisonBuffersSync(ctx);
-    if (!this.dryBuffer || !this.bandBuffer || !this.dryGain || !this.bandGain) return;
+  private playOneShotBuffer(buffer: AudioBuffer, trackId: string, gainLevel = 1.0): boolean {
+    if (!this.ctx || !this.cueGain || this.muted) return false;
+    try {
+      this.stopActiveCueSource();
+      const src = this.ctx.createBufferSource();
+      src.buffer = buffer;
+      const g = this.ctx.createGain();
+      g.gain.value = gainLevel;
+      src.connect(g);
+      g.connect(this.cueGain);
+      src.onended = () => {
+        if (this.activeCueSource === src) {
+          this.activeCueSource = null;
+          audioLogger.log("Playback ended.", {
+            sceneId: this.currentScene,
+            trackId,
+            engineState: this.state,
+          });
+          if (!this.isComparisonPlaying && this.state === "playing") {
+            this.setState("ready");
+          }
+        }
+      };
+      src.start(0);
+      this.activeCueSource = src;
+      this.activeTrackId = trackId;
+      this.setState("playing");
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
-    this.stopComparison();
+  private stopActiveCueSource(): void {
+    if (this.activeCueSource) {
+      try {
+        this.activeCueSource.onended = null;
+        this.activeCueSource.stop();
+        this.activeCueSource.disconnect();
+      } catch {
+        // noop
+      }
+      this.activeCueSource = null;
+    }
+  }
 
-    const startAt = ctx.currentTime + 0.02;
+  /** Pré-carrega e decodifica os dois loops sincronizados da Cena 3 em segundo plano */
+  public async preloadComparisonTracks(): Promise<void> {
+    await Promise.all([this.fetchRawTrack("solo-dry"), this.fetchRawTrack("full-band")]);
+    if (this.ctx) {
+      await Promise.all([this.getDecodedTrack("solo-dry"), this.getDecodedTrack("full-band")]);
+    }
+  }
+
+  /**
+   * FASE 5 — Cena 3: Inicia reprodução sincronizada sample-accurate ("Sozinho" <-> "Com banda").
+   * Previne duplicações em re-renders e solicita recuperação caso o navegador tenha suspendido o contexto.
+   */
+  public async startComparison(initialMix = 0): Promise<void> {
+    this.comparisonMix = clamp01(initialMix);
+    this.comparisonShouldBeActive = true;
+
+    if (this.muted) {
+      this.setState("paused");
+      return;
+    }
+
+    // Evita reiniciar se o par sincronizado já está tocando na mesma cena!
+    if (this.isComparisonPlaying && this.ctx?.state === "running") {
+      this.setMix(this.comparisonMix, false);
+      return;
+    }
+
+    const token = ++this.playbackToken;
+    this.activeTrackId = "scene3-comparison";
+    this.setState("loading");
+
+    // Encerra qualquer cue residual da Cena 2 para evitar sobreposição
+    try {
+      this.cueEl?.pause();
+    } catch {
+      // noop
+    }
+    this.stopActiveCueSource();
+
+    const ctx = this.ensureAudioContext();
+    if (!ctx) {
+      this.setState("error");
+      return;
+    }
+
+    if (ctx.state !== "running") {
+      try {
+        await ctx.resume();
+      } catch {
+        // tratado abaixo
+      }
+    }
+
+    if (token !== this.playbackToken || !this.comparisonShouldBeActive) return;
+
+    if (ctx.state !== "running") {
+      this.needsUserRecovery = true;
+      this.setState("interrupted");
+      audioLogger.log(
+        "Playback interrupted.",
+        {
+          sceneId: this.currentScene,
+          trackId: "scene3-comparison",
+          contextState: ctx.state as string,
+          engineState: "interrupted",
+          recoveryResult: "needs_user_gesture",
+        },
+        "warn"
+      );
+      return;
+    }
+
+    const [dryBuf, bandBuf] = await Promise.all([
+      this.getDecodedTrack("solo-dry"),
+      this.getDecodedTrack("full-band"),
+    ]);
+
+    if (token !== this.playbackToken || !this.comparisonShouldBeActive || this.muted) {
+      return;
+    }
+
+    if (!dryBuf || !bandBuf) {
+      this.lastError = "Não foi possível carregar os áudios de comparação.";
+      this.setState("error");
+      audioLogger.log(
+        "Playback error.",
+        {
+          sceneId: this.currentScene,
+          trackId: "scene3-comparison",
+          file: `${TRACK_URLS["solo-dry"]}, ${TRACK_URLS["full-band"]}`,
+          error: this.lastError,
+        },
+        "error"
+      );
+      return;
+    }
+
+    this.launchComparisonNodes(ctx, dryBuf, bandBuf, this.comparisonOffsetSec);
+  }
+
+  private launchComparisonNodes(
+    ctx: AudioContext,
+    dryBuf: AudioBuffer,
+    bandBuf: AudioBuffer,
+    offsetSec: number
+  ): void {
+    if (!this.dryGain || !this.bandGain || !this.masterGain) return;
+
+    // Sempre destrói nós anteriores antes de criar novos (AudioBufferSourceNode é de uso único!)
+    this.stopComparisonNodesOnly();
+
+    const dur = Math.min(dryBuf.duration, bandBuf.duration);
+    this.comparisonDurationSec = dur > 0 ? dur : 11.429;
+    const safeOffset = dur > 0 ? ((offsetSec % dur) + dur) % dur : 0;
+
+    const startAt = ctx.currentTime + 0.025;
     const drySrc = ctx.createBufferSource();
-    drySrc.buffer = this.dryBuffer;
+    drySrc.buffer = dryBuf;
     drySrc.loop = true;
 
     const bandSrc = ctx.createBufferSource();
-    bandSrc.buffer = this.bandBuffer;
+    bandSrc.buffer = bandBuf;
     bandSrc.loop = true;
 
     drySrc.connect(this.dryGain);
     bandSrc.connect(this.bandGain);
 
-    this.dryGain.gain.setValueAtTime(0, ctx.currentTime);
-    this.bandGain.gain.setValueAtTime(0, ctx.currentTime);
+    this.duckLevel = 1;
+    this.applyMasterGain(0.03);
 
-    drySrc.start(startAt);
-    bandSrc.start(startAt);
+    const dryLevel = Math.cos(this.comparisonMix * Math.PI * 0.5);
+    const bandLevel = Math.sin(this.comparisonMix * Math.PI * 0.5);
+    this.dryGain.gain.setValueAtTime(dryLevel, ctx.currentTime);
+    this.bandGain.gain.setValueAtTime(bandLevel, ctx.currentTime);
+
+    drySrc.start(startAt, safeOffset);
+    bandSrc.start(startAt, safeOffset);
 
     this.drySource = drySrc;
     this.bandSource = bandSrc;
-    this.isComparisonRunning = true;
-    this.comparisonAudible = false;
+    this.isComparisonPlaying = true;
+    this.comparisonStartedAtCtxTime = startAt;
+    this.comparisonOffsetSec = safeOffset;
+    this.needsUserRecovery = false;
+    this.wasPlayingBeforeHide = false;
+    this.lastError = null;
+    this.setState("playing");
+
+    audioLogger.log("Playback started.", {
+      stepId: this.currentScene,
+      sceneId: this.currentScene,
+      trackId: "scene3-comparison",
+      file: `${TRACK_URLS["solo-dry"]} + ${TRACK_URLS["full-band"]}`,
+      contextState: ctx.state,
+      engineState: "playing",
+    });
   }
 
-  /** Revela o som da Cena 3 imediatamente (ou inicia caso o usuário tenha pulado direto) */
-  public revealComparison(initialMix = 0): void {
-    const ctx = this.ensureContext();
-    if (!ctx) return;
-
-    try {
-      if (ctx.state !== "running") {
-        void ctx.resume();
-      }
-      if (!this.isComparisonRunning) {
-        this.startComparisonNodesSilentSync(ctx);
-      }
-
-      this.duckLevel = 1;
-      this.comparisonAudible = true;
-      this.applyMasterGain(0.05);
-      this.setMix(initialMix, false);
-
-      this.status = "playing";
-      this.emit();
-    } catch {
-      // noop
+  /** Garante recuperação imediata caso o usuário interaja com o slider da Cena 3 */
+  public ensureActiveOnUserGesture(mix: number): void {
+    this.comparisonMix = clamp01(mix);
+    if (this.muted) return;
+    if (this.ctx && this.ctx.state !== "running") {
+      void this.ctx.resume().then(() => {
+        if (this.comparisonShouldBeActive && !this.isComparisonPlaying) {
+          void this.startComparison(this.comparisonMix);
+        }
+      });
+    } else if (this.comparisonShouldBeActive && !this.isComparisonPlaying) {
+      void this.startComparison(this.comparisonMix);
     }
-  }
-
-  /** Garante áudio ativo no toque/arraste do slider na Cena 3 */
-  public ensurePlayingOnGesture(mix: number): void {
-    this.unlockIOSHardwareMuteSync();
-    const ctx = this.ensureContext();
-    if (!ctx) return;
-    if (ctx.state !== "running") {
-      void ctx.resume();
-    }
-    if (!this.isComparisonRunning) {
-      this.startComparisonNodesSilentSync(ctx);
-    }
-    this.comparisonAudible = true;
-    this.setMix(mix, false);
   }
 
   /** Crossfade equal-power real: cos(x * PI/2) para solo seco e sin(x * PI/2) para banda */
   public setMix(value: number, immediate = false): void {
-    const clamped = Math.max(0, Math.min(1, value));
-    this.currentMix = clamped;
-    if (!this.ctx || !this.dryGain || !this.bandGain) return;
-
-    if (this.ctx.state !== "running" && !this.muted) {
-      void this.ctx.resume();
-    }
+    const clamped = clamp01(value);
+    this.comparisonMix = clamped;
+    if (!this.ctx || !this.dryGain || !this.bandGain || !this.isComparisonPlaying) return;
 
     const now = this.ctx.currentTime;
-    const dryLevel = this.comparisonAudible ? Math.cos(clamped * Math.PI * 0.5) * 0.96 : 0;
-    const bandLevel = this.comparisonAudible ? Math.sin(clamped * Math.PI * 0.5) * 1.0 : 0;
+    const dryLevel = Math.cos(clamped * Math.PI * 0.5);
+    const bandLevel = Math.sin(clamped * Math.PI * 0.5);
 
     if (immediate) {
       this.dryGain.gain.setValueAtTime(dryLevel, now);
@@ -465,25 +968,87 @@ class InterativoAudioEngine {
   }
 
   public setDucking(level: number, timeConstant = 0.25): void {
-    this.duckLevel = Math.max(0, Math.min(1, level));
+    this.duckLevel = clamp01(level);
     this.applyMasterGain(timeConstant);
+  }
+
+  /** Cena 4: Toca chime sutil de conclusão quando a Credencial VIP aparece */
+  public async playLibraryReadyChime(): Promise<void> {
+    if (this.muted || !this.activated) return;
+    const ctx = this.ensureAudioContext();
+    if (ctx && ctx.state === "running") {
+      const buf = await this.getDecodedTrack("library-chime");
+      if (buf && this.currentScene === "build-library" && !this.muted) {
+        this.playOneShotBuffer(buf, "library-chime", 0.72);
+      }
+    }
+  }
+
+  /** Controle explícito de volume pelo visitante (respeita preferência, não altera volume físico) */
+  public setVolume(nextVolume: number): void {
+    const clamped = clamp01(nextVolume);
+    this.volume = clamped;
+    if (clamped === 0) {
+      this.muted = true;
+      writeStoredPreference("muted");
+    } else if (this.muted) {
+      this.muted = false;
+      writeStoredPreference("enabled");
+    }
+
+    if (this.cueEl) {
+      this.cueEl.muted = this.muted;
+      this.cueEl.volume = this.muted ? 0 : this.volume;
+    }
+    this.applyMasterGain(0.03);
+    this.emit();
   }
 
   public setMuted(mute: boolean): void {
     this.muted = mute;
-    if (mute) {
-      try {
-        this.iosUnlockEl?.pause();
-      } catch {
-        // noop
-      }
-    } else {
-      this.unlockIOSHardwareMuteSync();
-      if (this.ctx && this.ctx.state !== "running") {
-        void this.ctx.resume();
+    writeStoredPreference(mute ? "muted" : "enabled");
+
+    if (this.cueEl) {
+      this.cueEl.muted = mute;
+      if (mute) {
+        try {
+          this.cueEl.pause();
+        } catch {
+          // noop
+        }
+      } else {
+        this.cueEl.volume = this.volume;
       }
     }
-    this.applyMasterGain(0.04);
+
+    if (mute) {
+      this.needsUserRecovery = false;
+      this.applyMasterGain(0.03);
+      if (this.isComparisonPlaying) {
+        this.snapshotComparisonOffset();
+      }
+      this.setState("paused");
+    } else {
+      this.applyMasterGain(0.04);
+      if (this.ctx && this.ctx.state !== "running") {
+        void this.ctx.resume().then(() => {
+          if (this.comparisonShouldBeActive && !this.isComparisonPlaying) {
+            void this.startComparison(this.comparisonMix);
+          } else if (this.isComparisonPlaying) {
+            this.setState("playing");
+          } else {
+            this.setState("ready");
+          }
+        });
+      } else if (this.comparisonShouldBeActive && !this.isComparisonPlaying) {
+        void this.startComparison(this.comparisonMix);
+      } else if (this.isComparisonPlaying) {
+        this.setState("playing");
+      } else if (this.activated) {
+        this.setState("ready");
+      }
+    }
+
     this.emit();
   }
 
@@ -493,217 +1058,314 @@ class InterativoAudioEngine {
     return next;
   }
 
-  private applyMasterGain(timeConstant = 0.06) {
+  /**
+   * FASE 6 — Recuperação automática após retorno de segundo plano / bloqueio de tela.
+   * Executa no máximo 1 tentativa automática (zero loops infinitos!).
+   * Se o iOS Safari exigir nova interação, expõe `needsUserRecovery = true` para o botão "REATIVAR SOM".
+   */
+  private async attemptAutomaticRecovery(): Promise<void> {
+    if (this.muted || !this.activated || this.currentScene === "offer") return;
+    if (this.recoveryAttempts >= MAX_AUTO_RECOVERY_ATTEMPTS) {
+      this.needsUserRecovery = true;
+      this.setState("interrupted");
+      return;
+    }
+
+    this.recoveryAttempts += 1;
+    this.setState("recovering");
+    audioLogger.log("Recovery initiated.", {
+      sceneId: this.currentScene,
+      engineState: "recovering",
+      contextState: this.ctx ? (this.ctx.state as string) : "uninitialized",
+      recoveryAttempt: this.recoveryAttempts,
+      recoveryResult: "pending",
+    });
+
+    const ctx = this.ensureAudioContext();
+    if (ctx && ctx.state !== "running") {
+      try {
+        await Promise.race([
+          ctx.resume(),
+          new Promise<void>((resolve) => window.setTimeout(resolve, 650)),
+        ]);
+      } catch {
+        // tratado abaixo
+      }
+    }
+
+    if (ctx && ctx.state === "running") {
+      this.needsUserRecovery = false;
+      this.recoveryAttempts = 0;
+      this.wasPlayingBeforeHide = false;
+      if (this.comparisonShouldBeActive && !this.isComparisonPlaying) {
+        const dryBuf = this.decodedCache.get("solo-dry") ?? (await this.getDecodedTrack("solo-dry"));
+        const bandBuf = this.decodedCache.get("full-band") ?? (await this.getDecodedTrack("full-band"));
+        if (dryBuf && bandBuf && this.comparisonShouldBeActive && !this.muted) {
+          this.launchComparisonNodes(ctx, dryBuf, bandBuf, this.comparisonOffsetSec);
+        }
+      } else {
+        this.setState("ready");
+      }
+      audioLogger.log("Recovery successful.", {
+        sceneId: this.currentScene,
+        engineState: this.state,
+        contextState: ctx.state,
+        recoveryAttempt: 1,
+        recoveryResult: "success",
+      });
+      return;
+    }
+
+    // Navegador exigiu nova interação do visitante (comportamento padrão iOS Safari após bloqueio)
+    this.needsUserRecovery = true;
+    this.setState("interrupted");
+    audioLogger.log(
+      "Playback interrupted.",
+      {
+        sceneId: this.currentScene,
+        engineState: "interrupted",
+        contextState: ctx ? (ctx.state as string) : "uninitialized",
+        recoveryAttempt: this.recoveryAttempts,
+        recoveryResult: "needs_user_gesture",
+      },
+      "warn"
+    );
+  }
+
+  /**
+   * FASE 6 — Recuperação explícita via toque no botão "REATIVAR SOM" (sem reiniciar o funil).
+   */
+  public async recoverFromUserGesture(): Promise<boolean> {
+    this.muted = false;
+    this.needsUserRecovery = false;
+    this.recoveryAttempts = 0;
+    this.lastError = null;
+    this.setState("recovering");
+    writeStoredPreference("enabled");
+
+    audioLogger.log("Recovery initiated.", {
+      sceneId: this.currentScene,
+      engineState: "recovering",
+      recoveryAttempt: 1,
+      recoveryResult: "pending",
+    });
+
+    const ctx = this.ensureAudioContext();
+    if (ctx && ctx.state !== "running") {
+      try {
+        await ctx.resume();
+      } catch {
+        // fallback abaixo
+      }
+    }
+
+    if (ctx && ctx.state === "running") {
+      this.activated = true;
+      this.wasPlayingBeforeHide = false;
+      if (this.comparisonShouldBeActive) {
+        const [dryBuf, bandBuf] = await Promise.all([
+          this.getDecodedTrack("solo-dry"),
+          this.getDecodedTrack("full-band"),
+        ]);
+        if (dryBuf && bandBuf) {
+          this.launchComparisonNodes(ctx, dryBuf, bandBuf, this.comparisonOffsetSec);
+        }
+      } else {
+        this.setState("ready");
+      }
+
+      audioLogger.log("Recovery successful.", {
+        sceneId: this.currentScene,
+        engineState: this.state,
+        contextState: ctx.state,
+        recoveryResult: "success",
+      });
+      return true;
+    }
+
+    this.needsUserRecovery = true;
+    this.lastError = "Não foi possível reativar o áudio. Toque novamente.";
+    this.setState("error");
+    audioLogger.log(
+      "Playback error.",
+      {
+        sceneId: this.currentScene,
+        engineState: "error",
+        contextState: ctx ? (ctx.state as string) : "uninitialized",
+        error: this.lastError,
+        recoveryResult: "failed",
+      },
+      "error"
+    );
+    return false;
+  }
+
+  public getFrequencyData(target: Uint8Array): boolean {
+    if (!this.analyser || this.muted || !this.isComparisonPlaying || this.state !== "playing") {
+      return false;
+    }
+    this.analyser.getByteFrequencyData(target);
+    return true;
+  }
+
+  private applyMasterGain(timeConstant = 0.05): void {
     if (!this.ctx || !this.masterGain) return;
-    const target = this.muted ? 0 : this.duckLevel;
+    const target = this.muted ? 0 : this.volume * this.duckLevel;
     this.masterGain.gain.setTargetAtTime(target, this.ctx.currentTime, timeConstant);
   }
 
+  private stopComparisonNodesOnly(): void {
+    if (this.drySource) {
+      try {
+        this.drySource.stop();
+        this.drySource.disconnect();
+      } catch {
+        // noop
+      }
+      this.drySource = null;
+    }
+    if (this.bandSource) {
+      try {
+        this.bandSource.stop();
+        this.bandSource.disconnect();
+      } catch {
+        // noop
+      }
+      this.bandSource = null;
+    }
+    this.isComparisonPlaying = false;
+  }
+
   public stopComparison(): void {
+    this.playbackToken += 1;
+    this.comparisonShouldBeActive = false;
+    this.comparisonOffsetSec = 0;
+    this.wasPlayingBeforeHide = false;
+    this.stopComparisonNodesOnly();
+    this.stopActiveCueSource();
+    if (this.state === "playing" || this.state === "loading") {
+      this.setState(this.activated ? "ready" : "locked");
+    }
+  }
+
+  /** Encerra totalmente o áudio das cenas 1–4 ao entrar na Oferta ou quando o Spotify assume */
+  public stopAllForExternalPlayer(reason: string): void {
+    this.playbackToken += 1;
+    this.comparisonShouldBeActive = false;
+    this.comparisonOffsetSec = 0;
+    this.wasPlayingBeforeHide = false;
+    this.needsUserRecovery = false;
+    this.stopComparisonNodesOnly();
+    this.stopActiveCueSource();
     try {
-      this.drySource?.stop();
-      this.drySource?.disconnect();
+      this.cueEl?.pause();
     } catch {
       // noop
     }
-    try {
-      this.bandSource?.stop();
-      this.bandSource?.disconnect();
-    } catch {
-      // noop
+    if (this.state === "playing" || this.state === "loading" || this.state === "interrupted") {
+      this.setState(this.activated ? "ready" : "locked");
     }
-    this.drySource = null;
-    this.bandSource = null;
-    this.isComparisonRunning = false;
-    this.comparisonAudible = false;
+    audioLogger.log("Playback ended.", {
+      sceneId: this.currentScene,
+      trackId: reason,
+      engineState: this.state,
+    });
   }
 
-  /* ========================================================================
-     SÍNTESE MUSICAL ESTÚDIO OTIMIZADA PARA ALTO-FALANTES DE CELULAR
-     ======================================================================== */
+  /** Carregamento sob demanda com 1 retry seguro em caso de oscilação de rede móvel */
+  private async fetchRawTrack(key: AudioTrackKey): Promise<ArrayBuffer | null> {
+    if (this.rawCache.has(key)) return this.rawCache.get(key)!;
+    if (this.inFlightFetch.has(key)) return this.inFlightFetch.get(key)!;
 
-  private synthesizeStingerSync(ctx: AudioContext): AudioBuffer {
-    const sr = ctx.sampleRate;
-    const dur = 0.92;
-    const len = Math.floor(sr * dur);
-    const buf = ctx.createBuffer(2, len, sr);
-    const L = buf.getChannelData(0);
-    const R = buf.getChannelData(1);
+    const url = TRACK_URLS[key];
+    if (!url || typeof fetch !== "function") return null;
 
-    // Acorde dourado brilhante em Ré menor 9 (presença forte em médios para alto-falante de celular)
-    const chordFreqs = [220.0, 293.66, 349.23, 440.0, 523.25, 659.25];
-    for (let i = 0; i < len; i++) {
-      const t = i / sr;
-      const env = Math.min(1, t / 0.04) * Math.exp(-t * 2.8);
-      let sL = 0;
-      let sR = 0;
-      for (let k = 0; k < chordFreqs.length; k++) {
-        const f = chordFreqs[k];
-        const phase = 2 * Math.PI * f * t;
-        const wave =
-          Math.sin(phase) * 0.52 +
-          Math.sin(phase * 2) * 0.3 +
-          Math.sin(phase * 3) * 0.14;
-        const pan = k % 2 === 0 ? 0.62 : 0.38;
-        sL += wave * pan;
-        sR += wave * (1 - pan);
-      }
-      const shimmer = (Math.random() * 2 - 1) * Math.exp(-t * 9.0) * 0.09;
-      L[i] = Math.tanh((sL * 0.34 + shimmer) * env);
-      R[i] = Math.tanh((sR * 0.34 - shimmer * 0.7) * env);
-    }
-    return buf;
-  }
-
-  private synthesizeSyncedJazzPair(ctx: AudioContext): { dry: AudioBuffer; band: AudioBuffer } {
-    const sr = ctx.sampleRate;
-    const bpm = FUNNEL_CONFIG.audio.bpm;
-    const beatSec = 60 / bpm;
-    const totalBeats = FUNNEL_CONFIG.audio.loopBars * 4;
-    const duration = beatSec * totalBeats;
-    const len = Math.floor(sr * duration);
-
-    const dry = ctx.createBuffer(2, len, sr);
-    const band = ctx.createBuffer(2, len, sr);
-
-    const dL = dry.getChannelData(0);
-    const dR = dry.getChannelData(1);
-    const bL = band.getChannelData(0);
-    const bR = band.getChannelData(1);
-
-    const saxNotes: Array<{ start: number; dur: number; freq: number }> = [
-      { start: 0.0, dur: 1.5, freq: 587.33 },
-      { start: 1.5, dur: 0.5, freq: 523.25 },
-      { start: 2.0, dur: 1.75, freq: 440.0 },
-      { start: 4.0, dur: 1.25, freq: 493.88 },
-      { start: 5.25, dur: 0.75, freq: 587.33 },
-      { start: 6.0, dur: 1.85, freq: 659.25 },
-      { start: 8.0, dur: 1.5, freq: 523.25 },
-      { start: 9.5, dur: 0.5, freq: 493.88 },
-      { start: 10.0, dur: 1.85, freq: 392.0 },
-      { start: 12.0, dur: 1.25, freq: 440.0 },
-      { start: 13.25, dur: 0.75, freq: 523.25 },
-      { start: 14.0, dur: 1.9, freq: 554.37 },
-    ];
-
-    const chords: Array<{ start: number; dur: number; bass: number; notes: number[] }> = [
-      { start: 0, dur: 4, bass: 110.0, notes: [220.0, 261.63, 329.63, 349.23, 440.0] },
-      { start: 4, dur: 4, bass: 98.0, notes: [196.0, 246.94, 329.63, 349.23, 493.88] },
-      { start: 8, dur: 4, bass: 130.81, notes: [196.0, 246.94, 293.66, 329.63, 392.0] },
-      { start: 12, dur: 4, bass: 110.0, notes: [196.0, 233.08, 277.18, 329.63, 440.0] },
-    ];
-
-    for (const note of saxNotes) {
-      const startSample = Math.floor(note.start * beatSec * sr);
-      const durSamples = Math.floor(note.dur * beatSec * sr);
-      for (let j = 0; j < durSamples; j++) {
-        const idx = startSample + j;
-        if (idx >= len) break;
-        const lt = j / sr;
-        const norm = j / durSamples;
-        const attack = Math.min(1, lt / 0.055);
-        const release = norm > 0.82 ? (1 - norm) / 0.18 : 1;
-        const env = attack * release;
-
-        const vibDepth = Math.min(1, Math.max(0, (lt - 0.14) / 0.25)) * 0.009;
-        const f = note.freq * (1 + Math.sin(2 * Math.PI * 5.2 * lt) * vibDepth);
-        const p = 2 * Math.PI * f * lt;
-
-        // Timbre rico e audível em alto-falantes de celular
-        const reed =
-          Math.sin(p) * 0.48 +
-          Math.sin(p * 2) * 0.3 +
-          Math.sin(p * 3) * 0.15 +
-          Math.sin(p * 4) * 0.07;
-        const breath = (Math.random() * 2 - 1) * 0.02 * attack;
-        const saxSample = (reed + breath) * env * 0.48;
-
-        dL[idx] += saxSample * 0.94;
-        dR[idx] += saxSample * 0.94;
-        bL[idx] += saxSample * 1.0;
-        bR[idx] += saxSample * 0.96;
-      }
-    }
-
-    for (const chord of chords) {
-      const startSample = Math.floor(chord.start * beatSec * sr);
-      const durSamples = Math.floor(chord.dur * beatSec * sr);
-
-      for (let j = 0; j < durSamples; j++) {
-        const idx = startSample + j;
-        if (idx >= len) break;
-        const lt = j / sr;
-        const norm = j / durSamples;
-        const padEnv = Math.min(1, lt / 0.07) * (norm > 0.9 ? (1 - norm) / 0.1 : 1) * Math.exp(-lt * 0.28);
-
-        let rhodesL = 0;
-        let rhodesR = 0;
-        const trem = 0.88 + 0.12 * Math.sin(2 * Math.PI * 3.1 * lt);
-        for (let n = 0; n < chord.notes.length; n++) {
-          const nf = chord.notes[n];
-          const ph = 2 * Math.PI * nf * lt;
-          const tone = Math.sin(ph) * 0.68 + Math.sin(ph * 2) * 0.22 * Math.exp(-lt * 2.0);
-          if (n % 2 === 0) {
-            rhodesL += tone * 0.135;
-            rhodesR += tone * 0.085;
-          } else {
-            rhodesL += tone * 0.085;
-            rhodesR += tone * 0.135;
+    const promise = (async () => {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const res = await fetch(attempt === 0 ? url : `${url}?r=1`, { cache: "force-cache" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const buf = await res.arrayBuffer();
+          if (buf.byteLength > 44) {
+            this.rawCache.set(key, buf);
+            audioLogger.log("Media loaded successfully.", {
+              sceneId: this.currentScene,
+              trackId: key,
+              file: url,
+              engineState: this.state,
+            });
+            return buf;
+          }
+        } catch (err) {
+          if (attempt === 1) {
+            audioLogger.log(
+              "Playback error.",
+              {
+                sceneId: this.currentScene,
+                trackId: key,
+                file: url,
+                error: err instanceof Error ? err.message : String(err),
+              },
+              "warn"
+            );
           }
         }
-
-        const beatLocal = (lt / beatSec) % 1;
-        const beatIndex = Math.floor(lt / beatSec);
-        const bassMult = beatIndex === 2 ? 1.5 : beatIndex === 3 ? 1.25 : 1.0;
-        const bf = chord.bass * bassMult;
-        const bassEnv = Math.min(1, beatLocal / 0.025) * Math.exp(-beatLocal * 3.2);
-        // Harmônico de baixo reforçado para ser ouvido claramente até no alto-falante do celular
-        const bassWave =
-          (Math.sin(2 * Math.PI * bf * lt) * 0.62 +
-            Math.sin(4 * Math.PI * bf * lt) * 0.38) *
-          bassEnv *
-          0.38;
-
-        let drum = 0;
-        if (beatIndex === 0 || beatIndex === 2) {
-          const kickPitch = 62 + 75 * Math.exp(-beatLocal * 26);
-          drum += Math.sin(2 * Math.PI * kickPitch * beatLocal * beatSec) * Math.exp(-beatLocal * 13) * 0.28;
-        }
-        const brush =
-          (Math.random() * 2 - 1) *
-          Math.exp(-beatLocal * (beatIndex % 2 === 1 ? 6.0 : 15)) *
-          (beatIndex % 2 === 1 ? 0.085 : 0.035);
-
-        bL[idx] += rhodesL * padEnv * trem + bassWave + drum + brush;
-        bR[idx] += rhodesR * padEnv * (1.76 - trem) + bassWave + drum - brush * 0.85;
       }
+      return null;
+    })();
+
+    this.inFlightFetch.set(key, promise);
+    const result = await promise;
+    this.inFlightFetch.delete(key);
+    return result;
+  }
+
+  private async getDecodedTrack(key: AudioTrackKey): Promise<AudioBuffer | null> {
+    if (this.decodedCache.has(key)) return this.decodedCache.get(key)!;
+    if (!this.ctx) return null;
+
+    const raw = await this.fetchRawTrack(key);
+    if (!raw || !this.ctx) return null;
+
+    try {
+      // slice(0) garante que o ArrayBuffer em cache nunca seja detached pela decodificação
+      const decoded = await this.ctx.decodeAudioData(raw.slice(0));
+      this.decodedCache.set(key, decoded);
+      return decoded;
+    } catch (err) {
+      audioLogger.log(
+        "Playback error.",
+        {
+          sceneId: this.currentScene,
+          trackId: key,
+          file: TRACK_URLS[key],
+          error: `Decode failed: ${err instanceof Error ? err.message : String(err)}`,
+        },
+        "error"
+      );
+      return null;
     }
+  }
 
-    const delaySamples = Math.floor(sr * 0.068);
-    const delaySamples2 = Math.floor(sr * 0.112);
-    const edgeFade = Math.floor(sr * 0.025);
-
-    for (let i = 0; i < len; i++) {
-      if (i >= delaySamples) {
-        bL[i] += bR[i - delaySamples] * 0.18;
-        bR[i] += bL[i - delaySamples] * 0.16;
+  /** Micro-fallback audível (0.7s, <15k samples) apenas se stage-stinger.wav estiver offline */
+  private createFallbackStingerBuffer(ctx: AudioContext): AudioBuffer | null {
+    try {
+      const sr = ctx.sampleRate;
+      const len = Math.floor(sr * 0.7);
+      const buf = ctx.createBuffer(1, len, sr);
+      const ch = buf.getChannelData(0);
+      const freqs = [293.66, 349.23, 440.0, 523.25];
+      for (let i = 0; i < len; i++) {
+        const t = i / sr;
+        const env = Math.min(1, t / 0.03) * Math.exp(-t * 3.5);
+        let s = 0;
+        for (const f of freqs) s += Math.sin(2 * Math.PI * f * t);
+        ch[i] = Math.tanh(s * 0.25 * env) * 0.75;
       }
-      if (i >= delaySamples2) {
-        bL[i] += bL[i - delaySamples2] * 0.09;
-        bR[i] += bR[i - delaySamples2] * 0.09;
-      }
-
-      let edge = 1;
-      if (i < edgeFade) edge = i / edgeFade;
-      else if (i > len - edgeFade) edge = (len - i) / edgeFade;
-
-      dL[i] = Math.tanh(dL[i] * 1.15 * edge);
-      dR[i] = Math.tanh(dR[i] * 1.15 * edge);
-      bL[i] = Math.tanh(bL[i] * 1.05 * edge);
-      bR[i] = Math.tanh(bR[i] * 1.05 * edge);
+      return buf;
+    } catch {
+      return null;
     }
-
-    return { dry, band };
   }
 }
 

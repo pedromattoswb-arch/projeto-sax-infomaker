@@ -1,11 +1,15 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
+import { RefreshCw, SlidersHorizontal, Volume1, Volume2, VolumeX } from "lucide-react";
 import {
   FUNNEL_CONFIG,
   type MusicalStyleChoice,
   type SaxChoice,
 } from "./funnel.config";
-import { audioEngine, type AudioStatus } from "./audio/AudioEngine";
+import {
+  audioEngine,
+  type ActivationResult,
+  type AudioEngineSnapshot,
+} from "./audio/AudioEngine";
 import { StageBackground } from "./fx/StageBackground";
 import { ParticleField, type ParticleFieldHandle } from "./fx/ParticleField";
 import { Spotlight } from "./fx/Spotlight";
@@ -87,23 +91,24 @@ export const FunnelController = () => {
   const [staffMode, setStaffMode] = useState<"hidden" | "draw" | "running">("hidden");
   const [comparisonMix, setComparisonMix] = useState<number>(0);
 
-  const [isMuted, setIsMuted] = useState<boolean>(() => audioEngine.isMuted());
-  const [audioStatus, setAudioStatus] = useState<AudioStatus>(() => audioEngine.getStatus());
+  const [audioSnap, setAudioSnap] = useState<AudioEngineSnapshot>(() =>
+    audioEngine.getSnapshot()
+  );
+  const [volumeOpen, setVolumeOpen] = useState<boolean>(false);
 
   const particleRef = useRef<ParticleFieldHandle | null>(null);
+  const volumeBoxRef = useRef<HTMLDivElement | null>(null);
   const sceneEnteredAtRef = useRef<number>(Date.now());
   const sceneRef = useRef<FunnelScene>(scene);
   sceneRef.current = scene;
 
-  // Inicializa UTMs, garante áudio ligado por padrão e pré-carrega Sax Tenor em idle
+  // Inicializa UTMs e prepara o Motor Central de Áudio (SEM autoplay antes da interação!)
   useEffect(() => {
     captureEntryQueryParams();
-    audioEngine.setMuted(false);
-    audioEngine.preload();
+    audioEngine.initialize();
 
     const unsub = audioEngine.subscribe(() => {
-      setIsMuted(audioEngine.isMuted());
-      setAudioStatus(audioEngine.getStatus());
+      setAudioSnap(audioEngine.getSnapshot());
     });
 
     const idleTimer = window.setTimeout(() => {
@@ -115,9 +120,26 @@ export const FunnelController = () => {
       window.clearTimeout(idleTimer);
       unsub();
       recordSceneDwellTime(sceneRef.current, Date.now() - sceneEnteredAtRef.current);
-      audioEngine.stopComparison();
+      audioEngine.stopAllForExternalPlayer("unmount");
     };
   }, []);
+
+  // Sincroniza máquina de estados do AudioEngine com a cena ativa
+  useEffect(() => {
+    audioEngine.setScene(scene);
+  }, [scene]);
+
+  // Fecha popover de volume ao tocar fora
+  useEffect(() => {
+    if (!volumeOpen) return;
+    const onOutside = (e: MouseEvent) => {
+      if (volumeBoxRef.current && !volumeBoxRef.current.contains(e.target as Node)) {
+        setVolumeOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onOutside);
+    return () => document.removeEventListener("mousedown", onOutside);
+  }, [volumeOpen]);
 
   // Histórico (botão Voltar retorna à cena anterior preservando UTMs)
   useEffect(() => {
@@ -174,9 +196,13 @@ export const FunnelController = () => {
     setScene(next);
   }, []);
 
-  // Desbloqueio síncrono do áudio no EXATO instante do toque na Cena 1 (obrigatório p/ iOS & Instagram)
-  const handleUnlockAudio = useCallback(() => {
-    audioEngine.unlockAndPlayStinger();
+  // Ativação real e auditável dentro do `onClick` da Cena 1 (FASE 4)
+  const handleActivateAudio = useCallback((): Promise<ActivationResult> => {
+    return audioEngine.activateFromUserGesture();
+  }, []);
+
+  const handleContinueWithoutSound = useCallback(() => {
+    audioEngine.continueWithoutSound();
   }, []);
 
   const handleScene1Start = useCallback(() => {
@@ -287,12 +313,23 @@ export const FunnelController = () => {
   }
 
   const progressPct = SCENE_PROGRESS[scene];
+  const isMuted = audioSnap.muted;
+  const volumePct = Math.round(audioSnap.volume * 100);
+
+  const audioPillLabel = isMuted
+    ? FUNNEL_CONFIG.copy.global.soundOffLabel
+    : audioSnap.needsUserRecovery
+    ? FUNNEL_CONFIG.copy.global.soundInterruptedLabel
+    : audioSnap.activated
+    ? FUNNEL_CONFIG.copy.global.soundOnLabel
+    : FUNNEL_CONFIG.copy.global.soundLockedLabel;
 
   return (
     <div
       className="theme-jazz-club is-stage-locked"
       data-tier={device.tier}
       data-backdrop={device.allowBackdropFilter ? "on" : "off"}
+      data-audio-state={audioSnap.state}
     >
       {/* Persistent Atmospheric Jazz Stage Background (Full-Screen 100dvh) */}
       <StageBackground
@@ -326,7 +363,7 @@ export const FunnelController = () => {
         enabled={!reducedMotion}
       />
 
-      {/* GLOBAL TOP HUD FOR SCENES 1–4: Thin Gold Progress Bar + Discreet Audio Indicator (No "Ir para a oferta") */}
+      {/* GLOBAL TOP HUD FOR SCENES 1–4: Progress Bar + Status/Mute + Volume Control (No "Ir para a oferta") */}
       <div className="fixed top-0 inset-x-0 z-40 pointer-events-none">
         <div className="w-full h-[3px] bg-white/[0.08]" aria-hidden="true">
           <div
@@ -339,34 +376,109 @@ export const FunnelController = () => {
         </div>
 
         <div className="flex items-center justify-between gap-2 px-4 pt-2.5 jazz-safe-top">
-          {/* Discreet always-on audio pill */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              audioEngine.toggleMute();
-            }}
-            aria-label={isMuted ? "Ativar som da experiência" : "Silenciar som da experiência"}
-            aria-pressed={!isMuted}
-            className="pointer-events-auto min-h-[34px] px-3 rounded-full bg-black/45 hover:bg-black/70 border border-white/15 text-[11px] font-semibold text-[#cdc3b2] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
-          >
-            {isMuted ? (
-              <VolumeX className="w-3.5 h-3.5 text-white/55 shrink-0" />
-            ) : (
-              <Volume2 className="w-3.5 h-3.5 text-[#1ed760] shrink-0" />
-            )}
-            <span>
-              {isMuted
-                ? FUNNEL_CONFIG.copy.global.soundOffLabel
-                : FUNNEL_CONFIG.copy.global.soundOnLabel}
-            </span>
-          </button>
+          {/* Audio Status + Mute Toggle + Expandable Volume Slider */}
+          <div ref={volumeBoxRef} className="pointer-events-auto relative flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (audioSnap.needsUserRecovery) {
+                  void audioEngine.recoverFromUserGesture();
+                } else {
+                  audioEngine.toggleMute();
+                }
+              }}
+              aria-label={isMuted ? "Ativar som da experiência" : "Silenciar som da experiência"}
+              aria-pressed={!isMuted}
+              className="min-h-[34px] px-3 rounded-full bg-black/55 hover:bg-black/75 border border-white/15 text-[11px] font-semibold text-[#ded4c4] inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer transition-colors"
+            >
+              {isMuted ? (
+                <VolumeX className="w-3.5 h-3.5 text-white/55 shrink-0" />
+              ) : audioSnap.needsUserRecovery ? (
+                <RefreshCw className="w-3.5 h-3.5 text-[#f5d58a] shrink-0" />
+              ) : audioSnap.volume < 0.45 ? (
+                <Volume1 className="w-3.5 h-3.5 text-[#1ed760] shrink-0" />
+              ) : (
+                <Volume2 className="w-3.5 h-3.5 text-[#1ed760] shrink-0" />
+              )}
+              <span>{audioPillLabel}</span>
+            </button>
 
-          <span className="text-[11px] font-medium text-[#cdc3b2]/60 pr-1">
-            {FUNNEL_CONFIG.copy.global.audioSubtleHint}
-          </span>
+            {scene !== "intro" && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setVolumeOpen((prev) => !prev);
+                }}
+                aria-label="Ajustar volume do áudio"
+                aria-expanded={volumeOpen}
+                className="min-h-[34px] min-w-[34px] rounded-full bg-black/55 hover:bg-black/75 border border-white/15 text-[#ded4c4] inline-flex items-center justify-center cursor-pointer transition-colors"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+              </button>
+            )}
+
+            {volumeOpen && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="absolute left-0 top-[calc(100%+6px)] z-50 rounded-2xl bg-[#120f0b]/95 border border-[#f5d58a]/35 px-3.5 py-2.5 shadow-2xl flex items-center gap-2.5 min-w-[190px]"
+              >
+                <span className="text-[11px] font-bold text-[#e0d7c6] shrink-0">Volume</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={isMuted ? 0 : audioSnap.volume}
+                  onChange={(e) => audioEngine.setVolume(parseFloat(e.target.value))}
+                  aria-label="Controle de volume da experiência"
+                  className="flex-1 h-1.5 accent-[#f5d58a] cursor-pointer"
+                />
+                <span className="text-[11px] font-bold tabular-nums text-[#f5d58a] w-8 text-right">
+                  {isMuted ? "0%" : `${volumePct}%`}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {scene !== "intro" && (
+            <span className="hidden sm:inline text-[11px] font-medium text-[#cdc3b2]/70 pr-1 text-right">
+              {FUNNEL_CONFIG.copy.global.audioSubtleHint}
+            </span>
+          )}
         </div>
       </div>
+
+      {/* FASE 6 — BANNER DE RECUPERAÇÃO QUANDO O NAVEGADOR MOBILE INTERROMPE O ÁUDIO */}
+      {audioSnap.needsUserRecovery && scene !== "intro" && (
+        <div
+          role="alertdialog"
+          aria-label="Reativação de áudio"
+          className="fixed inset-x-4 bottom-5 z-50 max-w-md mx-auto rounded-2xl bg-[#14100a]/95 border border-[#f5d58a]/60 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.92)] flex flex-col gap-3 text-center jazz-safe-bottom"
+        >
+          <p className="text-sm font-semibold text-white leading-snug">
+            {FUNNEL_CONFIG.copy.global.recoveryMessage}
+          </p>
+          <div className="flex items-center justify-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => void audioEngine.recoverFromUserGesture()}
+              className="jazz-cta-gold flex-1 min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Volume2 className="w-4 h-4 shrink-0" />
+              <span>{FUNNEL_CONFIG.copy.global.recoveryCta}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => audioEngine.continueWithoutSound()}
+              className="min-h-[44px] px-3 py-2 rounded-xl border border-white/15 text-xs font-semibold text-[#cdc3b2] hover:text-white cursor-pointer"
+            >
+              {FUNNEL_CONFIG.copy.global.continueMutedCta}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* SEAMLESS SHARED SVG MUSIC STAFF (Bridges Scene 2 -> Scene 3 with ZERO cut!) */}
       {(scene === "choose-sax" || scene === "before-after") && staffMode !== "hidden" && (
@@ -387,7 +499,8 @@ export const FunnelController = () => {
       {scene === "intro" && (
         <SceneIntro
           reducedMotion={reducedMotion}
-          onUnlockAudio={handleUnlockAudio}
+          onActivateAudio={handleActivateAudio}
+          onContinueWithoutSound={handleContinueWithoutSound}
           onStart={handleScene1Start}
           onBurstParticles={() => particleRef.current?.burst(0.5, 0.48, 54)}
           onStageFlash={handleStageFlash}
@@ -418,7 +531,7 @@ export const FunnelController = () => {
           sax={sax}
           reducedMotion={reducedMotion}
           isMuted={isMuted}
-          audioUnavailable={audioStatus === "unavailable"}
+          audioState={audioSnap.state}
           onMixChange={handleMixChange}
           onBeatPulse={setBeatPulse}
           onLockedComplete={handleBeforeAfterLocked}

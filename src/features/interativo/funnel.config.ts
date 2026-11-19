@@ -63,30 +63,38 @@ export const FUNNEL_CONFIG = {
   audio: {
     bpm: 84,
     loopBars: 4,
-    /**
-     * TODO: Quando gravar seus loops finais em MP3 (128kbps, <= 250KB, mesmo BPM e duração),
-     * coloque-os em public/interativo/audio/ e preencha os caminhos abaixo.
-     */
-    stingerUrl: "",
-    soloDryUrl: "",
-    soloBandUrl: "",
+    defaultVolume: 0.85,
+    stingerUrl: "/interativo/audio/stage-stinger.wav",
+    saxAltoCueUrl: "/interativo/audio/sax-alto-cue.wav",
+    saxTenorCueUrl: "/interativo/audio/sax-tenor-cue.wav",
+    soloDryUrl: "/interativo/audio/scene3-solo-dry.wav",
+    soloBandUrl: "/interativo/audio/scene3-full-band.wav",
+    libraryReadyChimeUrl: "/interativo/audio/library-ready-chime.wav",
     ambientStageUrl: "",
   },
 
   copy: {
     global: {
       skipToOffer: "Ir para a oferta",
-      soundOnLabel: "Áudio ligado",
-      soundOffLabel: "Ativar áudio",
-      audioSubtleHint: "Deixe o som do aparelho ligado",
+      soundOnLabel: "Áudio ativado",
+      soundOffLabel: "Silenciado",
+      soundLockedLabel: "Ativar som",
+      soundInterruptedLabel: "Reativar som",
+      audioSubtleHint: "Verifique se o volume do seu aparelho está ligado.",
+      recoveryMessage: "Precisamos reativar o áudio para continuar sua experiência.",
+      recoveryCta: "REATIVAR SOM",
+      continueMutedCta: "Continuar sem som",
     },
     scene1: {
       eyebrow: "PASSO 1 DE 3 • EXPERIÊNCIA SONORA",
-      headline: "Toque no sax e ligue o som.",
-      /** TODO: alinhe este subtítulo curto ao gancho do criativo do anúncio */
-      subtitle: "Sinta em 20 segundos a diferença entre treinar sozinho e tocar com uma banda real.",
-      ctaPill: "Toque para acender o palco",
-      idleHint: "Toque em qualquer ponto da tela",
+      headline: "Sua experiência está prestes a começar!",
+      subtitle: "Para aproveitar todas as etapas, cenas e narrações, ative o som do seu dispositivo.",
+      ctaPill: "ATIVAR SOM E COMEÇAR",
+      idleHint: "Toque em ATIVAR SOM E COMEÇAR",
+      preparingLabel: "Preparando áudio…",
+      activatedLabel: "Áudio ativado • Iniciando experiência…",
+      errorTitle: "Não foi possível iniciar o áudio.",
+      retryLabel: "Toque para tentar novamente",
     },
     scene2: {
       eyebrow: "PASSO 2 DE 3 • TOQUE NO SEU SAX",

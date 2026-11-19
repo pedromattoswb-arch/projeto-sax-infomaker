@@ -98,7 +98,14 @@ export const SceneBuildLibrary = ({
       0.15
     );
 
-    tl.call(() => setShowCredential(true), [], 2.1);
+    tl.call(
+      () => {
+        setShowCredential(true);
+        void audioEngine.playLibraryReadyChime();
+      },
+      [],
+      2.1
+    );
 
     tl.to(
       sceneRef.current,

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ArrowRight, ChevronsRight, Sparkles, Volume2 } from "lucide-react";
+import { ArrowRight, ChevronsRight, Loader2, Sparkles, Volume2 } from "lucide-react";
 import { FUNNEL_CONFIG, type SaxChoice } from "../funnel.config";
-import { audioEngine } from "../audio/AudioEngine";
+import { audioEngine, type AudioEngineState } from "../audio/AudioEngine";
 import { Waveform } from "../fx/Waveform";
 import { SplitTextHeading } from "../fx/SplitTextHeading";
 import { useIdleHint } from "../hooks/useIdleHint";
@@ -11,7 +11,7 @@ interface SceneBeforeAfterProps {
   sax: SaxChoice;
   reducedMotion: boolean;
   isMuted: boolean;
-  audioUnavailable: boolean;
+  audioState: AudioEngineState;
   onMixChange: (mix: number) => void;
   onBeatPulse: (pulse: number) => void;
   onLockedComplete: () => void;
@@ -69,7 +69,7 @@ export const SceneBeforeAfter = ({
   sax,
   reducedMotion,
   isMuted,
-  audioUnavailable,
+  audioState,
   onMixChange,
   onBeatPulse,
   onLockedComplete,
@@ -91,8 +91,8 @@ export const SceneBeforeAfter = ({
 
   useEffect(() => {
     onMixChange(0);
-    // Revela o loop que já foi pré-iniciado no toque da Cena 2 (toca imediato no iOS/Android!)
-    audioEngine.revealComparison(0);
+    // Inicia automaticamente a comparação sincronizada (Sozinho <-> Com banda) após ativação prévia
+    void audioEngine.startComparison(0);
   }, [onMixChange]);
 
   useEffect(() => {
@@ -198,8 +198,8 @@ export const SceneBeforeAfter = ({
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (locked) return;
-    // Garante desbloqueio de áudio no iOS/Android caso o usuário ainda não tenha liberado som
-    audioEngine.ensurePlayingOnGesture(mix);
+    // Reforça/recupera contexto de áudio no toque do slider caso tenha sido suspenso
+    audioEngine.ensureActiveOnUserGesture(mix);
     draggingRef.current = true;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
@@ -354,11 +354,19 @@ export const SceneBeforeAfter = ({
           <Waveform mix={mix} bpm={FUNNEL_CONFIG.audio.bpm} reducedMotion={reducedMotion} />
         </div>
 
-        {/* Discreet audio reminder (calm, never intrusive) */}
-        <p className="inline-flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#cdc3b2]/75">
-          <Volume2 className="w-3.5 h-3.5 text-[#f5d58a]/80 shrink-0" />
+        {/* Discreet audio status reminder (calm, never intrusive) */}
+        <p className="inline-flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#cdc3b2]/80">
+          {audioState === "loading" || audioState === "recovering" ? (
+            <Loader2 className="w-3.5 h-3.5 text-[#f5d58a] animate-spin shrink-0" />
+          ) : (
+            <Volume2 className="w-3.5 h-3.5 text-[#f5d58a]/80 shrink-0" />
+          )}
           <span>
-            {isMuted || audioUnavailable
+            {audioState === "loading"
+              ? "Carregando áudio de estúdio…"
+              : audioState === "recovering"
+              ? "Recuperando reprodução do áudio…"
+              : isMuted || audioState === "error" || audioState === "interrupted"
               ? FUNNEL_CONFIG.copy.scene3.silentNotice
               : FUNNEL_CONFIG.copy.global.audioSubtleHint}
           </span>

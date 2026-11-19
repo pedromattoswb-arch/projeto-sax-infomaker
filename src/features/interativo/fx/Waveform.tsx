@@ -85,7 +85,11 @@ export const Waveform = ({ mix, bpm, reducedMotion }: WaveformProps) => {
           : `rgba(${r}, ${g}, ${b}, ${(0.45 + m * 0.52).toFixed(2)})`;
 
         ctx.beginPath();
-        ctx.roundRect(x, y, barW, barH, barW / 2);
+        if (typeof ctx.roundRect === "function") {
+          ctx.roundRect(x, y, barW, barH, barW / 2);
+        } else {
+          ctx.rect(x, y, barW, barH);
+        }
         ctx.fill();
       }
 
