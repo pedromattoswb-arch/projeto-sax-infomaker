@@ -611,15 +611,25 @@ function bassNote(dest,t,m,dur,v=.2){const g=ctx.createGain(),f=ctx.createBiquad
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.setTargetAtTime(v*.5,t+.01,.3);g.gain.setTargetAtTime(0,t+dur,.12);o.start(t);s.start(t);o.stop(t+dur+1);s.stop(t+dur+1)}
 function noiseHit(dest,t,{f=3000,type='bandpass',q=.8,v=.05,len=.1,off=0,wetAmt=.15}={}){const s=ctx.createBufferSource();s.buffer=noise;const fl=ctx.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.0008,t+len);s.connect(fl).connect(g);g.connect(dest);wet(g,wetAmt);s.start(t,off||Math.random()*1.5);s.stop(t+len+.05)}
 function thump(dest,t,v=.35,f0=150,f1=70,len=.28){const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+len*.6);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+len);o.connect(g);g.connect(dest);wet(g,.08);o.start(t);o.stop(t+len+.05)}
-function saxNote(dest,t,m,dur,v=.12,bright=1800){
-  const g=ctx.createGain(),lp=ctx.createBiquadFilter(),fm=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=bright;lp.Q.value=.7;fm.type='peaking';fm.frequency.value=1150;fm.Q.value=1.2;fm.gain.value=7;
-  const o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type='sawtooth';o2.type='square';o1.frequency.value=hz(m);o2.frequency.value=hz(m);const g2=ctx.createGain();g2.gain.value=.35;
-  const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=5.3;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(dur>.6?12:4,t+Math.min(.5,dur));l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);
-  o1.frequency.setValueAtTime(hz(m)*.985,t);o1.frequency.linearRampToValueAtTime(hz(m),t+.05);
-  o1.connect(g);o2.connect(g2).connect(g);g.connect(fm).connect(lp);
-  const br=ctx.createBufferSource();br.buffer=noise;const bf=ctx.createBiquadFilter();bf.type='bandpass';bf.frequency.value=2600;bf.Q.value=1.4;const bg=ctx.createGain();bg.gain.value=.05;br.connect(bf).connect(bg).connect(g);
-  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.035);g.gain.setValueAtTime(v*.92,t+Math.max(.06,dur*.8));g.gain.linearRampToValueAtTime(0,t+dur+.06);
-  [o1,o2,l].forEach(x=>{x.start(t);x.stop(t+dur+.2)});br.start(t,Math.random());br.stop(t+dur+.1);return lp}
+const shCurve=(()=>{const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(2.2*x)}return c})();
+function saxNote(dest,t,m,dur,v=.18,o={}){
+  /* sax sintetizado: palheta (saturação), formantes de metal, sopro, bend de ataque e vibrato */
+  const f=hz(m),bright=o.bright||3000,end=t+dur;
+  const o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type='sawtooth';o2.type='square';o2.detune.value=4;
+  const mix=ctx.createGain();const g2=ctx.createGain();g2.gain.value=.45;o1.connect(mix);o2.connect(g2).connect(mix);
+  [o1,o2].forEach(o=>{o.frequency.setValueAtTime(f*.945,t);o.frequency.exponentialRampToValueAtTime(f,t+.07)});
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=5.4;lg.gain.setValueAtTime(0,t);if(dur>.45)lg.gain.linearRampToValueAtTime(14,t+Math.min(.6,dur*.6));lfo.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);
+  const drive=ctx.createGain();drive.gain.value=1.6;const sh=ctx.createWaveShaper();sh.curve=shCurve;mix.connect(drive).connect(sh);
+  const body=ctx.createBiquadFilter();body.type='lowpass';body.Q.value=1.1;body.frequency.setValueAtTime(bright*.45,t);body.frequency.linearRampToValueAtTime(bright,t+.06);body.frequency.setTargetAtTime(bright*.75,t+.12,.25);
+  const out=ctx.createGain();sh.connect(body).connect(out);
+  [[560,2.2,.9],[1250,3.2,.55],[2700,4,.3]].forEach(([fr,q,a])=>{const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=fr;bp.Q.value=q;const bg=ctx.createGain();bg.gain.value=a;sh.connect(bp).connect(bg).connect(out)});
+  const br=ctx.createBufferSource();br.buffer=noise;const bf=ctx.createBiquadFilter();bf.type='bandpass';bf.frequency.value=f*3.2<5000?f*3.2:5000;bf.Q.value=.9;const bgn=ctx.createGain();bgn.gain.setValueAtTime(.0001,t);bgn.gain.linearRampToValueAtTime(.09,t+.03);bgn.gain.setTargetAtTime(.035,t+.05,.1);br.connect(bf).connect(bgn).connect(out);
+  const env=ctx.createGain();out.connect(env);env.connect(dest);wet(env,o.wet??.28);
+  env.gain.setValueAtTime(0,t);env.gain.linearRampToValueAtTime(v,t+.045);env.gain.setTargetAtTime(v*.82,t+.05,.18);
+  if(dur>.8){env.gain.setTargetAtTime(v*.95,t+dur*.5,.3)}
+  env.gain.setTargetAtTime(0,end,.07);
+  const stop=end+.5;[o1,o2,lfo].forEach(x=>{x.start(t);x.stop(stop)});br.start(t,Math.random());br.stop(stop);
+}
 
 /* efeitos sonoros */
 const SFX={
@@ -632,7 +642,7 @@ const SFX={
   glitch(){const t=ctx.currentTime;for(let i=0;i<5;i++)noiseHit(sfxBus,t+i*.045,{f:800+Math.random()*3000,q:4,v:.09,len:.035,wetAmt:0});thump(sfxBus,t,.2,90,40,.25)},
   hit(v=.55){const t=ctx.currentTime;thump(sfxBus,t,v,90,32,1.8);noiseHit(sfxBus,t,{type:'lowpass',f:600,q:.5,v:v*.45,len:1.4,wetAmt:.7})},
   tick(){const t=ctx.currentTime;pluck(sfxBus,t,86,.12,.6,.8,.99,.3)},
-  trailer(){const t=ctx.currentTime;this.riser(1.1);thump(sfxBus,t+1.1,.8,80,28,2.4);noiseHit(sfxBus,t+1.1,{type:'lowpass',f:700,q:.4,v:.35,len:2,wetAmt:.8});pad(sfxBus,t+1.1,[50,57,62,65,69],3,.07,2200,1);strings(sfxBus,t+1.1,[62,69,74,77],3,.06);piano(sfxBus,t+1.1,38,3,.2,.7)},
+  trailer(){const t=ctx.currentTime;this.riser(1.1);thump(sfxBus,t+1.1,.8,80,28,2.4);noiseHit(sfxBus,t+1.1,{type:'lowpass',f:700,q:.4,v:.35,len:2,wetAmt:.8});pad(sfxBus,t+1.1,[50,57,62,65,69],3,.07,2200,1);strings(sfxBus,t+1.1,[62,69,74,77],3,.06);piano(sfxBus,t+1.1,38,3,.2,.7);[[62,.25],[65,.25],[69,.3],[74,1.6]].reduce((tt,[m,d])=>{saxNote(sfxBus,tt,m,d,.22);return tt+d},t+1.35)},
   riser(len=2.4){const t=ctx.currentTime,s=ctx.createBufferSource();s.buffer=noise;s.loop=true;const f=ctx.createBiquadFilter();f.type='bandpass';f.Q.value=2.4;f.frequency.setValueAtTime(220,t);f.frequency.exponentialRampToValueAtTime(7000,t+len);const g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.2,t+len*.95);g.gain.linearRampToValueAtTime(0,t+len+.02);s.connect(f).connect(g);g.connect(sfxBus);wet(g,.5);s.start(t);s.stop(t+len+.1)},
   applause(dur=7,v=.5){const t=ctx.currentTime,bus=ctx.createGain();bus.gain.value=v;bus.connect(music);wet(bus,.35);const n=Math.floor(dur*150);for(let i=0;i<n;i++){const x=Math.random(),at=t+x*dur,dens=Math.sin(Math.PI*Math.min(1,x*1.3));if(Math.random()>dens)continue;
     const s=ctx.createBufferSource();s.buffer=noise;const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.value=900+Math.random()*1800;f.Q.value=1.4;const g=ctx.createGain();g.gain.setValueAtTime(.05+Math.random()*.08,at);g.gain.exponentialRampToValueAtTime(.001,at+.03+Math.random()*.03);s.connect(f).connect(g).connect(bus);s.start(at,Math.random()*1.8);s.stop(at+.08)}}
@@ -649,9 +659,9 @@ function stopAmbience(f=2){if(!amb)return;const a=amb;amb=null;a.alive=false;cle
 
 /* trilhas de cena */
 const LOOPS={
-  quarto:{bpm:60,prog:[[50,[0,3,7,14]],[46,[0,4,7,11]],[43,[0,3,7,10]],[45,[0,4,7,10]]]},
-  dor:{bpm:56,prog:[[50,[0,3,7]],[50,[0,3,8]],[46,[0,4,7]],[45,[0,4,7]]]},
-  esperanca:{bpm:68,prog:[[53,[0,4,7]],[52,[0,3,8]],[50,[0,3,7]],[46,[0,4,7,11]]]}
+  quarto:{bpm:60,prog:[[50,[0,3,7,14]],[46,[0,4,7,11]],[43,[0,3,7,10]],[45,[0,4,7,10]]],sv:.15,sax:[[[69,1.5],[74,.5],[77,1],[76,1]],[[74,2],[70,2]],[[67,1.5],[70,.5],[74,1],[72,1]],[[73,3],[null,1]]]},
+  dor:{bpm:56,prog:[[50,[0,3,7]],[50,[0,3,8]],[46,[0,4,7]],[45,[0,4,7]]],sv:.13,sax:[[[77,2],[76,1],[74,1]],[[74,2],[70,2]],[[69,2],[67,1],[65,1]],[[64,3],[null,1]]]},
+  esperanca:{bpm:68,prog:[[53,[0,4,7]],[52,[0,3,8]],[50,[0,3,7]],[46,[0,4,7,11]]],sv:.15,sax:[[[72,1],[77,1],[81,1.5],[79,.5]],[[79,2],[76,1],[72,1]],[[74,1],[77,1],[81,1],[77,1]],[[74,3],[null,1]]]}
 };
 const voicing=(root,iv,lo)=>iv.map(i=>{let n=root+i;while(n<lo)n+=12;while(n>lo+12)n-=12;return n}).sort((a,b)=>a-b);
 const secs={};
@@ -660,6 +670,7 @@ function startLoop(name,{vol=1,strings:str=false}={}){stopLoop(name,.1);const L=
   const tick=()=>{if(!Sx.alive)return;while(Sx.next<ctx.currentTime+1.2){const [r,iv]=L.prog[Sx.bar%L.prog.length],t=Sx.next,vs=voicing(r,iv,57);
       const arp=[vs[0],vs[1],vs[2],(vs[3]||vs[0]+12),vs[2]+12,vs[2],vs[1],vs[2]];arp.forEach((m,i)=>piano(g,t+i*spb/2,m,spb*.9,name==='dor'?.06:.085));
       piano(g,t,r-12,bl,.08);pad(g,t,vs,bl-.2,name==='esperanca'?.03:.02,700);if(Sx.str)strings(g,t,voicing(r,iv,67),bl-.3,.03);if(name==='esperanca')bassNote(g,t,r-12,bl*.9,.12);
+      if(L.sax){let b=0;L.sax[Sx.bar%L.sax.length].forEach(([m,d])=>{if(m)saxNote(g,t+b*spb,m,d*spb*.97,L.sv);b+=d})}
       Sx.bar++;Sx.next+=bl}Sx.timer=setTimeout(tick,250)};tick();return Sx}
 function stopLoop(name,f=2){const Sx=secs[name];if(!Sx)return;Sx.alive=false;clearTimeout(Sx.timer);const t=ctx.currentTime;Sx.g.gain.cancelScheduledValues(t);Sx.g.gain.setValueAtTime(Sx.g.gain.value,t);Sx.g.gain.linearRampToValueAtTime(0,t+f);setTimeout(()=>{try{Sx.g.disconnect()}catch(e){}},f*1000+400);delete secs[name]}
 
@@ -760,14 +771,14 @@ function startBand(){
   const out=ctx.createGain();out.gain.value=1;out.connect(music);
   const L=[0,1,2,3,4].map(()=>{const g=ctx.createGain();g.connect(out);return g});
   L.forEach((g,i)=>g.gain.value=i?0:1);
-  const saxLP=ctx.createBiquadFilter();saxLP.type='lowpass';saxLP.frequency.value=1500;const saxG=ctx.createGain();saxG.gain.value=1;saxLP.connect(saxG);saxG.connect(L[0]);
+  const saxLP=ctx.createBiquadFilter();saxLP.type='lowpass';saxLP.frequency.value=2600;const saxG=ctx.createGain();saxG.gain.value=1;saxLP.connect(saxG);saxG.connect(L[0]);
   const saxWet=ctx.createGain();saxWet.gain.value=.06;saxG.connect(saxWet);saxWet.connect(rev);
   band={out,L,saxLP,saxWet,t0:ctx.currentTime+.3,next:0,alive:true,level:0,ending:false,endAt:Infinity,loops:0};
   const sched=()=>{if(!band||!band.alive)return;const B=band;
     while(B.t0+B.next*SPB<ctx.currentTime+1.2&&!(B.ending&&B.next>=B.endBeat)){
       const beat=B.next,t=B.t0+beat*SPB,inLoop=beat%LOOPB,bar=Math.floor(inLoop/BAR),half=inLoop%BAR;
       const [r,iv]=CH[CHORDS[bar]];
-      NOTES.filter(n=>Math.abs(n.b-inLoop)<1e-6||(n.b>inLoop&&n.b<inLoop+1)).forEach(n=>saxNote(saxLP,B.t0+(beat-inLoop+n.b)*SPB,n.midi,n.d*SPB*.95,.13));
+      NOTES.filter(n=>Math.abs(n.b-inLoop)<1e-6||(n.b>inLoop&&n.b<inLoop+1)).forEach(n=>saxNote(saxLP,B.t0+(beat-inLoop+n.b)*SPB,n.midi,n.d*SPB*.95,.22,{wet:.12}));
       // violão 7 cordas: baixo nos tempos, baixaria no fim das frases
       let root=r;while(root>45)root-=12;while(root<36)root+=12;const fifth=root+7,alt=fifth-12>=36?fifth-12:fifth;
       if(half===0)pluck(L[1],t,root,.55,1.8,.45,.997,.2);else pluck(L[1],t,(bar%4===3)?root-2:alt,.42,1.4,.45,.997,.2);
@@ -786,10 +797,10 @@ function startBand(){
 }
 function setLevel(v){if(!band)return;const t=ctx.currentTime;band.level=v;
   band.L.forEach((g,i)=>{if(!i)return;const x=Math.min(1,Math.max(0,(v-(i-1)/4)*4));g.gain.setTargetAtTime(x,t,.08)});
-  band.saxLP.frequency.setTargetAtTime(1500+v*2200,t,.1);band.saxWet.gain.setTargetAtTime(.06+v*.4,t,.1);
+  band.saxLP.frequency.setTargetAtTime(2600+v*2400,t,.1);band.saxWet.gain.setTargetAtTime(.06+v*.4,t,.1);
   document.querySelectorAll('.trk').forEach(b=>{const l=+b.dataset.l;b.classList.toggle('on',l===0||v>=(l-.5)/4)});}
 function endBand(){if(!band)return;const B=band;B.ending=true;B.endBeat=(Math.floor(B.next/LOOPB)+1)*LOOPB;if(B.endBeat-B.next<16)B.endBeat+=LOOPB;B.endAt=B.t0+B.endBeat*SPB;
-  const t=B.endAt,[r,iv]=CH.Dm;strings(B.L[4],t,voicing(r,iv,62),3,.045);pad(B.L[4],t,voicing(r,iv,55),3,.04,1400);piano(B.out,t,38,3,.16);piano(B.out,t,50,3,.12);saxNote(B.saxLP,t,62,2.6,.13);pluck(B.L[1],t,38,.6,3,.45,.998);
+  const t=B.endAt,[r,iv]=CH.Dm;strings(B.L[4],t,voicing(r,iv,62),3,.045);pad(B.L[4],t,voicing(r,iv,55),3,.04,1400);piano(B.out,t,38,3,.16);piano(B.out,t,50,3,.12);saxNote(B.saxLP,t,62,2.6,.22);pluck(B.L[1],t,38,.6,3,.45,.998);
   const cv=voicing(r,iv,62);cv.forEach((m,j)=>pluck(B.L[2],t+j*.03,m,.2,2,.8,.996));thump(B.L[3],t,.4,150,60,.5);
   return B.endAt}
 function stopBand(f=1){if(!band)return;const B=band;band=null;B.alive=false;clearTimeout(B.timer);const t=ctx.currentTime;B.out.gain.setTargetAtTime(0,t,f/3);setTimeout(()=>{try{B.out.disconnect()}catch(e){}},f*1000+600)}
