@@ -687,20 +687,28 @@ const vbuf={};
 function b64ToBuf(s){const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer}
 async function getAudio(path){if(window.__A&&window.__A[path])return ctx.decodeAudioData(b64ToBuf(window.__A[path]));const r=await fetch(path);if(!r.ok)throw 0;return ctx.decodeAudioData(await r.arrayBuffer())}
 function load(k){if(!vbuf[k])vbuf[k]=getAudio('/palco/audio/'+k+'.mp3').catch(()=>null);return vbuf[k]}
-let curSrc=null,raf=0;
-async function say(k,{keep=false,noSubs=false}={}){
-  const b=await load(k);const text=VO[k],words=text.split(' '),subs=$('#subs');
-  if(noSubs){subs.classList.add('fade')}else subs.classList.remove('fade');subs.innerHTML=words.map(w=>`<w>${w}</w>`).join(' ');const ws=[...subs.querySelectorAll('w')];
-  const tot=text.length,cum=[];let c=0;words.forEach(w=>{c+=w.length+1;cum.push(c/tot)});
-  const dur=b?b.duration:Math.max(2.5,words.length*.38);let src=null;
-  if(b){src=ctx.createBufferSource();src.buffer=b;src.connect(voiceBus);setDuck(true);src.start();curSrc=src}
-  const t0=ctx?ctx.currentTime:0,pt0=performance.now();const el=()=>ctx?ctx.currentTime-t0:(performance.now()-pt0)/1000;
-  await new Promise(res=>{let done=false;const fin=()=>{if(done)return;done=true;cancelAnimationFrame(raf);ws.forEach(w=>w.classList.add('lit'));res()};if(src)src.onended=fin;
-    const step=()=>{const p=el()/dur;ws.forEach((w,i)=>w.classList.toggle('lit',cum[i]-.03<=p*1.03));if(p>=1&&!src)return fin();if(p>1.3)return fin();raf=requestAnimationFrame(step)};step()});
-  if(curSrc===src){curSrc=null;setDuck(false)}
-  if(!keep){await sleep(300);subs.classList.add('fade')}
+/* legendas: uma frase por vez, no relógio do próprio áudio (tempos medidos em cada narração) */
+const CUES={"v1": [[0.0, 3.03, "Você não começou a tocar sax por acaso."], [3.89, 5.08, "Teve uma música…"], [5.48, 6.23, "um dia…"], [7.04, 9.1, "um som que te pegou de jeito."], [10.18, 11.31, "E você pensou:"], [11.84, 13.43, "eu quero tocar assim."]], "v2": [[0.0, 0.49, "Me conta…"], [1.23, 2.65, "o que te fez começar?"]], "v3": [[0.0, 2.65, "Mas aí veio a realidade."], [3.41, 6.44, "Partitura borrada, no tom errado."], [7.16, 9.12, "Vídeo que trava no meio."], [9.26, 14.96, "E você tocando sozinho, baixinho, no quarto…"], [15.89, 17.99, "pra não incomodar ninguém."]], "v4": [[0.0, 2.51, "Isso já aconteceu com você?"]], "v5": [[0.0, 2.43, "Agora imagina uma outra noite."], [2.84, 4.93, "Você entra no Clube do Sax…"], [5.3, 7.15, "e, assim que o pagamento é confirmado,"], [7.43, 10.32, "chega no seu e-mail o seu login e a sua senha."], [10.97, 11.58, "Na hora."]], "v6": [[0.0, 4.68, "Mais de dez mil partituras, cada uma com o seu playback."], [5.21, 9.98, "Gospel, MPB, românticas, jazz, bossa nova…"], [10.19, 11.64, "tudo organizado, com busca por voz."], [11.99, 14.2, "Abre essa aqui."]], "v7": [[0.0, 2.13, "Primeiro, só você."], [2.49, 6.4, "Do jeito que você toca hoje…"], [6.63, 9.71, "Agora arrasta pra cima…"], [10.27, 14.02, "e chama a banda."]], "v8": [[0.0, 0.39, "Ouviu?"], [0.84, 4.92, "Esse é o som que você sempre escutou na sua cabeça."], [5.12, 7.75, "Não era falta de talento…"], [7.91, 10.94, "era falta de acompanhamento."]], "v9": [[0.0, 1.83, "E isso foi uma música só."], [2.13, 4.93, "São mais de dez mil esperando por você…"], [5.24, 7.99, "no celular, no tablet ou no computador."]], "v10": [[0.0, 1.28, "Escolhe o seu plano…"], [2.13, 5.52, "e hoje à noite, quem toca com a banda é você."]]};
+let curSrc=null,raf=0,sayTok=0;
+function stopVoice(){if(curSrc){try{curSrc.onended=null;curSrc.stop()}catch(e){}curSrc=null;setDuck(false)}cancelAnimationFrame(raf)}
+function clearSubs(){const s=$('#subs');s.classList.add('fade')}
+function hush(){sayTok++;stopVoice();clearSubs()}
+async function say(k,{keep=false,noSubs=false,on={}}={}){
+  const tok=++sayTok;stopVoice();const subs=$('#subs');if(noSubs)clearSubs();
+  const b=await load(k);if(tok!==sayTok)return;
+  const cues=CUES[k]||[[0,b?b.duration:3,VO[k]]],dur=b?b.duration:cues[cues.length-1][1];
+  let src=null;if(b){src=ctx.createBufferSource();src.buffer=b;src.connect(voiceBus);setDuck(true);src.start();curSrc=src}
+  const t0=ctx.currentTime;let idx=-1,ws=[];window.__dbg={k,tok,t0,ctx};
+  await new Promise(res=>{let done=false;const fin=()=>{if(done)return;done=true;cancelAnimationFrame(raf);res()};if(src)src.onended=fin;
+    const step=()=>{if(tok!==sayTok)return fin();const t=ctx.currentTime-t0;let i=-1;for(let j=0;j<cues.length;j++)if(t>=cues[j][0]-.06)i=j;
+      if(i>=0&&i!==idx){for(let q=idx+1;q<=i;q++)if(on[q])try{on[q]()}catch(e){}idx=i;
+        if(!noSubs){subs.innerHTML=cues[i][2].split(' ').map(w=>`<w>${w}</w>`).join(' ');ws=[...subs.querySelectorAll('w')];subs.classList.remove('fade')}}
+      if(ws.length){const [a,e]=cues[idx],n=ws.length,p=(t-a)/Math.max(.35,e-a);ws.forEach((w,j)=>w.classList.toggle('lit',j/n<=p+.02))}
+      if(!src&&t>=dur)return fin();if(t>dur+1.5)return fin();raf=requestAnimationFrame(step)};step()});
+  if(tok!==sayTok)return;
+  ws.forEach(w=>w.classList.add('lit'));if(curSrc===src){curSrc=null;setDuck(false)}
+  if(!keep&&!noSubs){await sleep(450);if(tok===sayTok)clearSubs()}
 }
-function clearSubs(){$('#subs').classList.add('fade')}
 
 /* ======================= visual ======================= */
 let lay=1;
@@ -712,7 +720,7 @@ function flash(){const f=$('#flash');f.classList.remove('go');void f.offsetWidth
 function streak(){const f=$('#streak');f.classList.remove('go');void f.offsetWidth;f.classList.add('go')}
 function setChap(t){$('#chap').textContent=t||'';$('#chap').classList.toggle('on',!!t)}
 async function cut(id,bg,chap){
-  const cur=document.querySelector('.scene.on'),nx=$('#'+id),cam=$('#cam');uncue();
+  const cur=document.querySelector('.scene.on'),nx=$('#'+id),cam=$('#cam');uncue();hush();
   if(ctx)SFX.whoosh(true,1.2);
   if(cur)cur.classList.add('exit');cam.classList.add('dive');streak();
   await sleep(650);$('#black').classList.add('on');await sleep(260);
@@ -871,6 +879,7 @@ async function countUp(el,to,dur=1600){const t0=performance.now();await new Prom
 function screenTo(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===id))}
 async function ask(q){q.classList.add('show');const stop=askIdle(q);const b=await onceClick([...q.querySelectorAll('.ch')]);stop();SFX.pick();b.classList.add('picked');q.querySelectorAll('.ch').forEach(x=>x.disabled=true);return b.dataset.v}
 
+async function voiceSearch(){$('#micico').classList.add('live');$('#sq').textContent='Ouvindo…';await sleep(1300);$('#micico').classList.remove('live');$('#sq').textContent='';await typeInto($('#sq'),'Chorinho da Noite',45)}
 async function flow(){
   track('palco_inicio');
   $('#film').classList.add('cine');
@@ -879,8 +888,7 @@ async function flow(){
 
   /* capítulo 1: o começo, com as cenas que fazem um saxofonista nascer */
   await cut('s-1','bg-igreja','Capítulo 1 · O começo');
-  const montage=['bg-casamento','bg-laje','bg-roda','bg-igreja'];let mi=0;const mt=setInterval(()=>{setBg(montage[mi++%montage.length])},3300);
-  await sleep(400);await say('v1');clearInterval(mt);
+  await sleep(400);await say('v1',{on:{1:()=>setBg('bg-casamento'),2:()=>setBg('bg-laje'),3:()=>setBg('bg-roda'),4:()=>setBg('bg-igreja')}});
   say('v2',{noSubs:true});S.origem=await ask($('#q1'));clearSubs();
   track('palco_origem',{origem:S.origem});setBg(ORIG[S.origem].bg);flash();
   const r1=$('#r1');r1.textContent=ORIG[S.origem].r;r1.classList.add('on');await sleep(3800);
@@ -889,8 +897,8 @@ async function flow(){
   ['v5','v6','v7'].forEach(load);
   stopLoop('quarto',3);startLoop('dor',{vol:.8});
   await cut('s-2','bg-dor','Capítulo 2 · A realidade');
-  const pains=[...document.querySelectorAll('.pain')];const v3=say('v3');const d3=(await load('v3'))?.duration||18;
-  [.12,.3,.47,.66].forEach((m,i)=>after(m*d3*1000,()=>{pains.forEach((p,j)=>p.classList.toggle('on',j===i));if(i<3)SFX.glitch();else SFX.hit(.25)}));
+  const pains=[...document.querySelectorAll('.pain')];const showPain=i=>{pains.forEach((p,j)=>p.classList.toggle('on',j===i));if(i<3)SFX.glitch();else SFX.hit(.25)};
+  const v3=say('v3',{on:{1:()=>{showPain(0);after(1300,()=>showPain(1))},2:()=>showPain(2),3:()=>showPain(3)}});
   await v3;await sleep(300);pains.forEach(p=>p.classList.remove('on'));await sleep(500);$('#pains').style.display='none';
   say('v4',{noSubs:true});S.ident=await ask($('#q2'));clearSubs();track('palco_identificacao',{ident:S.ident});
   const r2=$('#r2');r2.textContent=DOR[S.ident];r2.classList.add('on');await sleep(3800);
@@ -899,9 +907,8 @@ async function flow(){
   stopLoop('dor',2.5);stopAmbience(2);startLoop('esperanca',{vol:.7});['v8','v9','v10'].forEach(load);
   dustOn=false;await cut('s-app','bg-noite','Capítulo 3 · Uma outra noite');$('#film').classList.add('app-on');
   await sleep(100);$('#device').classList.remove('intro');
-  const tapp=$('#tapp');const v5=say('v5');const d5=(await load('v5'))?.duration||12;
-  after(d5*1000*.72,()=>{$('#notif').classList.add('in');SFX.ding()});
-  await v5;cue($('#notif'),'Toque na notificação');await onceClick([$('#notif')]);uncue();SFX.click();track('palco_notificacao');
+  const tapp=$('#tapp');const v5=say('v5',{on:{3:()=>{$('#notif').classList.add('in');SFX.ding()}}});
+  await v5;$('#notif').classList.add('in');cue($('#notif'),'Toque na notificação');await onceClick([$('#notif')]);uncue();SFX.click();track('palco_notificacao');
   screenTo('v-mail');setTtl(tapp,'Login e senha <b>na hora</b>.');await sleep(700);
   cue($('#mbtn'),'Toque para acessar');await onceClick([$('#mbtn')]);uncue();SFX.click();
   screenTo('v-login');setTtl(tapp,'Pix ou cartão: <b>confirmou, chegou</b>.');await sleep(500);
@@ -910,15 +917,14 @@ async function flow(){
 
   /* capítulo 4: o acervo */
   screenTo('v-home');setChap('Capítulo 4 · O acervo');setTtl(tapp,'<b>10.000+</b> partituras com playback.');
-  countUp($('#cnt'),10000,2200);const v6=say('v6');const d6=(await load('v6'))?.duration||14;
-  after(d6*1000*.55,async()=>{$('#micico').classList.add('live');$('#sq').textContent='Ouvindo…';await sleep(1300);$('#micico').classList.remove('live');$('#sq').textContent='';await typeInto($('#sq'),'Chorinho da Noite',45)});
+  countUp($('#cnt'),10000,2200);const v6=say('v6',{on:{2:()=>voiceSearch()}});
   await v6;cue($('#feat'),'Toque para abrir a música');await onceClick([$('#feat')]);uncue();SFX.click();track('palco_abriu_musica');
 
   /* capítulo 5: tocando junto */
   stopLoop('esperanca',1.5);screenTo('v-player');setChap('Capítulo 5 · Tocando junto');setTtl(tapp,'Primeiro, <b>só você</b>.');
   await sleep(450);drawStaff();startBand();animateStaff();setFader(0,false);track('palco_player');
-  await sleep(1100);const v7=say('v7',{keep:true});const d7=(await load('v7'))?.duration||14;
-  await sleep(d7*1000*.56);fLocked=false;$('#fader').classList.remove('locked');$('#bubble').hidden=false;$('#arrow').hidden=false;
+  await sleep(1100);let unlock;const unl=new Promise(r=>unlock=r);const v7=say('v7',{keep:true,on:{2:()=>unlock()}});
+  await Promise.race([unl,v7]);fLocked=false;$('#fader').classList.remove('locked');$('#bubble').hidden=false;$('#arrow').hidden=false;
   setTtl(tapp,'Agora, <b>chame a banda</b>.');
   await v7;clearSubs();turn('Sua vez: arraste o controle dourado para cima');
   let assist=after(12000,async()=>{if(fv>=.98)return;$('#bubble').textContent='Arraste o controle dourado para cima';await sleep(9000);if(fv<.98&&!fTouched){for(let l=1;l<=4;l++){if(fv>=l/4)continue;setFader(l/4,false);await sleep(2200)}}});
@@ -934,7 +940,7 @@ async function flow(){
   await say('v9');$('#go').classList.add('show');track('palco_revelacao');
   cue($('#go'),'Toque aqui para ver os planos',true,true);await onceClick([$('#go')]);uncue();openOffer();
 }
-function openOffer(){if(S.offer)return;S.offer=true;uncue();if(curSrc){try{curSrc.onended=null;curSrc.stop()}catch(e){}curSrc=null;setDuck(false)}clearSubs();
+function openOffer(){if(S.offer)return;S.offer=true;uncue();hush();
   if(secs.esperanca)secs.esperanca.g.gain.setTargetAtTime(.45,ctx.currentTime,.8);
   $('#olead').textContent=`+10.000 partituras com playback para ${S.sax==='tenor'?'Sax Tenor':'Sax Alto'} (e também para ${S.sax==='tenor'?'Sax Alto':'Sax Tenor'}), num aplicativo que funciona no celular, no tablet e no computador.`;
   const o=$('#oferta');o.classList.add('on');o.scrollTop=0;dustRun=false;track('palco_oferta',{origem:S.origem,ident:S.ident});
