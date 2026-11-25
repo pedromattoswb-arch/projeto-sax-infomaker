@@ -12,6 +12,7 @@ const Lp3 = lazy(() => import("./pages/Lp3"));
 const Interativo = lazy(() => import("./pages/Interativo"));
 const Acervo = lazy(() => import("./pages/Acervo"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const PalcoRedirect = lazy(() => import("./pages/PalcoRedirect"));
 const BonusRotina = lazy(() => import("./pages/BonusRotina"));
 const BonusTonalidades = lazy(() => import("./pages/BonusTonalidades"));
 const BonusMusicas = lazy(() => import("./pages/BonusMusicas"));
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/lp-2" element={<Lp2 />} />
             <Route path="/lp-3" element={<Lp3 />} />
             <Route path="/interativo" element={<Interativo />} />
+            <Route path="/palco" element={<PalcoRedirect />} />
             <Route path="/nova-oferta" element={<NovaOferta />} />
             <Route path="/acervo-basico" element={<Acervo plan="basic" />} />
             <Route path="/plano-premium-completo" element={<Acervo plan="premium" />} />
