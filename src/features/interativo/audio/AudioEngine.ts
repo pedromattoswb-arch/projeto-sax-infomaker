@@ -1210,7 +1210,7 @@ class InterativoAudioEngine {
     return false;
   }
 
-  public getFrequencyData(target: Uint8Array): boolean {
+  public getFrequencyData(target: Uint8Array<ArrayBuffer>): boolean {
     if (!this.analyser || this.muted || !this.isComparisonPlaying || this.state !== "playing") {
       return false;
     }
