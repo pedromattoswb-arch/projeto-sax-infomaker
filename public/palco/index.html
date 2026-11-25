@@ -328,6 +328,10 @@ button{font:inherit;color:inherit}
 .shake{animation:shake 1s ease-in-out 1}
 @keyframes shake{0%,100%{translate:0 0}15%{translate:-6px 0}30%{translate:6px 0}45%{translate:-4px 0}60%{translate:4px 0}75%{translate:-2px 0}}
 .yourturn{top:auto;bottom:calc(var(--bar) + env(safe-area-inset-bottom) + 12px);transform:translate(-50%,10px)}
+#resume{position:fixed;inset:0;z-index:80;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#resume[hidden]{display:none}
+#resume .kick{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);margin:0 0 6px}
+#resume .rtxt{color:var(--muted);max-width:26em;margin:12px auto 22px}
 @media(max-width:700px){.how{grid-template-columns:minmax(0,1fr)}.plans{grid-template-columns:minmax(0,1fr)}.guar{grid-template-columns:70px minmax(0,1fr)}.guar img{width:70px}.chap{max-width:52vw}.scene{padding-bottom:clamp(70px,13vh,110px)}.ttl{font-size:clamp(23px,6.6vw,32px)}#s-app{padding-bottom:calc(44px + 1vh)}#s-app .ttl{font-size:clamp(20px,5.6vw,26px)}#s-app .stage{padding-top:6px}.cine.app-on .subs{bottom:calc(var(--bar) + env(safe-area-inset-bottom) - 2px);font-size:13.5px}}
 @media(max-height:680px){.ch{min-height:42px;padding:8px 12px;font-size:14px}.q h3{font-size:21px}.q{gap:7px}}
 @media(prefers-reduced-motion:reduce){.layer.on,.grain,.arrow,.pulse,.cue,.shot.on,.play,.bubble{animation:none}.scene,.cam{transition:opacity .6s}}
@@ -341,7 +345,7 @@ button{font:inherit;color:inherit}
   <div class="vig" aria-hidden="true"></div>
   <div class="flash" id="flash" aria-hidden="true"></div>
 
-  <div class="bar top"><img class="logo" src="/palco/img/logo.webp" alt="Clube do Sax"><span class="chap" id="chap"></span><button class="snd" id="mute" aria-label="Desligar som" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path id="wave" d="M16 8.5a5 5 0 0 1 0 7M18.6 6a8.5 8.5 0 0 1 0 12"/></svg></button></div>
+  <div class="bar top"><img class="logo" src="/palco/img/logo.webp" alt="Clube do Sax"><span class="chap" id="chap"></span><span class="snd" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.6 6a8.5 8.5 0 0 1 0 12"/></svg></span></div>
   <div class="bar bot"></div>
   <div class="yourturn" id="yourturn">Sua vez</div>
 
@@ -360,7 +364,7 @@ button{font:inherit;color:inherit}
       <h1><span>Clube do Sax apresenta</span>Seu Primeiro Palco</h1>
       <div class="meta"><span class="m">Feito para saxofonistas</span><span>2026</span><span>2 min</span><span class="hd">HD</span><span>Você decide a história</span></div>
       <p>Da igreja ao casamento, da roda de choro à laje de casa: uma história sobre você e o seu sax.</p>
-      <div class="gbtns"><button class="play" id="start"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>Assistir</button><span class="phones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg>Use fone · com som</span></div>
+      <div class="gbtns"><button class="play" id="start"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>Assistir</button><span class="phones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg>Aumente o volume · use fone</span></div>
       <div class="dots" id="dots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
     </div>
   </section>
@@ -477,6 +481,7 @@ button{font:inherit;color:inherit}
   </section>
 
   <div class="subs" id="subs" aria-live="polite"></div>
+  <div class="resume" id="resume" hidden><div><p class="kick">Filme pausado</p><h2 class="ttl">Seu filme está te esperando.</h2><p class="rtxt">Pausamos o som enquanto você estava fora. Toque para continuar de onde parou.</p><button class="play" id="resumeBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>Continuar</button></div></div>
   <div class="streak" id="streak"></div>
   <div class="black" id="black"></div>
 
@@ -555,7 +560,10 @@ const DOR={
 };
 const CHECKOUT_VALUE={basico:14.9,completo:24.9};
 const $=s=>document.querySelector(s);
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const P={paused:false,started:false};
+/* espera que só conta o tempo em que o filme está rodando (para quando o app vai para segundo plano) */
+const sleep=ms=>new Promise(r=>{let left=ms,last=performance.now();const tk=()=>{const n=performance.now();if(!P.paused)left-=n-last;last=n;if(left<=0)r();else setTimeout(tk,Math.min(120,left))};setTimeout(tk,Math.min(120,ms))});
+const after=(ms,fn)=>{let dead=false;sleep(ms).then(()=>{if(!dead)fn()});return()=>{dead=true}};
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const S={origem:null,ident:null,sax:'alto',offer:false,muted:false};
 /* ======================= tracking ======================= */
@@ -686,9 +694,9 @@ async function say(k,{keep=false,noSubs=false}={}){
   const tot=text.length,cum=[];let c=0;words.forEach(w=>{c+=w.length+1;cum.push(c/tot)});
   const dur=b?b.duration:Math.max(2.5,words.length*.38);let src=null;
   if(b){src=ctx.createBufferSource();src.buffer=b;src.connect(voiceBus);setDuck(true);src.start();curSrc=src}
-  const t0=performance.now();
+  const t0=ctx?ctx.currentTime:0,pt0=performance.now();const el=()=>ctx?ctx.currentTime-t0:(performance.now()-pt0)/1000;
   await new Promise(res=>{let done=false;const fin=()=>{if(done)return;done=true;cancelAnimationFrame(raf);ws.forEach(w=>w.classList.add('lit'));res()};if(src)src.onended=fin;
-    const step=()=>{const p=(performance.now()-t0)/1000/dur;ws.forEach((w,i)=>w.classList.toggle('lit',cum[i]-.03<=p*1.03));if(p>=1&&!src)return fin();if(p>1.3)return fin();raf=requestAnimationFrame(step)};step()});
+    const step=()=>{const p=el()/dur;ws.forEach((w,i)=>w.classList.toggle('lit',cum[i]-.03<=p*1.03));if(p>=1&&!src)return fin();if(p>1.3)return fin();raf=requestAnimationFrame(step)};step()});
   if(curSrc===src){curSrc=null;setDuck(false)}
   if(!keep){await sleep(300);subs.classList.add('fade')}
 }
@@ -728,7 +736,7 @@ function cue(el,text,big=false,below=false){uncue();cueT=el;el.classList.add('pu
   turn('Sua vez: '+text.charAt(0).toLowerCase()+text.slice(1));
   cueTimer=setInterval(()=>{if(!cueT)return;cueT.classList.remove('shake');void cueT.offsetWidth;cueT.classList.add('shake');if(ctx)SFX.tick()},6000)}
 function uncue(){if(cueT){cueT.classList.remove('pulse','shake')}cueT=null;cancelAnimationFrame(cueRaf);clearInterval(cueTimer);if(cueEl){cueEl.remove();cueEl=null}turn('')}
-function askIdle(q){turn('Sua vez: toque em uma opção');const t=setTimeout(()=>q.classList.add('idle'),5000);return()=>{clearTimeout(t);q.classList.remove('idle');turn('')}}
+function askIdle(q){turn('Sua vez: toque em uma opção');const t=after(5000,()=>q.classList.add('idle'));return()=>{t();q.classList.remove('idle');turn('')}}
 
 /* poeira dourada */
 const cv=$('#dust'),cx=cv.getContext('2d');let motes=[],dustOn=true,gold=false;
@@ -882,7 +890,7 @@ async function flow(){
   stopLoop('quarto',3);startLoop('dor',{vol:.8});
   await cut('s-2','bg-dor','Capítulo 2 · A realidade');
   const pains=[...document.querySelectorAll('.pain')];const v3=say('v3');const d3=(await load('v3'))?.duration||18;
-  [.12,.3,.47,.66].forEach((m,i)=>setTimeout(()=>{pains.forEach((p,j)=>p.classList.toggle('on',j===i));if(i<3)SFX.glitch();else SFX.hit(.25)},m*d3*1000));
+  [.12,.3,.47,.66].forEach((m,i)=>after(m*d3*1000,()=>{pains.forEach((p,j)=>p.classList.toggle('on',j===i));if(i<3)SFX.glitch();else SFX.hit(.25)}));
   await v3;await sleep(300);pains.forEach(p=>p.classList.remove('on'));await sleep(500);$('#pains').style.display='none';
   say('v4',{noSubs:true});S.ident=await ask($('#q2'));clearSubs();track('palco_identificacao',{ident:S.ident});
   const r2=$('#r2');r2.textContent=DOR[S.ident];r2.classList.add('on');await sleep(3800);
@@ -892,7 +900,7 @@ async function flow(){
   dustOn=false;await cut('s-app','bg-noite','Capítulo 3 · Uma outra noite');$('#film').classList.add('app-on');
   await sleep(100);$('#device').classList.remove('intro');
   const tapp=$('#tapp');const v5=say('v5');const d5=(await load('v5'))?.duration||12;
-  setTimeout(()=>{$('#notif').classList.add('in');SFX.ding()},d5*1000*.72);
+  after(d5*1000*.72,()=>{$('#notif').classList.add('in');SFX.ding()});
   await v5;cue($('#notif'),'Toque na notificação');await onceClick([$('#notif')]);uncue();SFX.click();track('palco_notificacao');
   screenTo('v-mail');setTtl(tapp,'Login e senha <b>na hora</b>.');await sleep(700);
   cue($('#mbtn'),'Toque para acessar');await onceClick([$('#mbtn')]);uncue();SFX.click();
@@ -903,7 +911,7 @@ async function flow(){
   /* capítulo 4: o acervo */
   screenTo('v-home');setChap('Capítulo 4 · O acervo');setTtl(tapp,'<b>10.000+</b> partituras com playback.');
   countUp($('#cnt'),10000,2200);const v6=say('v6');const d6=(await load('v6'))?.duration||14;
-  setTimeout(async()=>{$('#micico').classList.add('live');$('#sq').textContent='Ouvindo…';await sleep(1300);$('#micico').classList.remove('live');$('#sq').textContent='';await typeInto($('#sq'),'Chorinho da Noite',45)},d6*1000*.55);
+  after(d6*1000*.55,async()=>{$('#micico').classList.add('live');$('#sq').textContent='Ouvindo…';await sleep(1300);$('#micico').classList.remove('live');$('#sq').textContent='';await typeInto($('#sq'),'Chorinho da Noite',45)});
   await v6;cue($('#feat'),'Toque para abrir a música');await onceClick([$('#feat')]);uncue();SFX.click();track('palco_abriu_musica');
 
   /* capítulo 5: tocando junto */
@@ -913,8 +921,8 @@ async function flow(){
   await sleep(d7*1000*.56);fLocked=false;$('#fader').classList.remove('locked');$('#bubble').hidden=false;$('#arrow').hidden=false;
   setTtl(tapp,'Agora, <b>chame a banda</b>.');
   await v7;clearSubs();turn('Sua vez: arraste o controle dourado para cima');
-  let assist=setTimeout(async()=>{if(fv>=.98)return;$('#bubble').textContent='Arraste o controle dourado para cima';await sleep(9000);if(fv<.98&&!fTouched){for(let l=1;l<=4;l++){if(fv>=l/4)continue;setFader(l/4,false);await sleep(2200)}}},12000);
-  await new Promise(r=>{if(fv>=.98)r();else onFull=r});clearTimeout(assist);turn('');
+  let assist=after(12000,async()=>{if(fv>=.98)return;$('#bubble').textContent='Arraste o controle dourado para cima';await sleep(9000);if(fv<.98&&!fTouched){for(let l=1;l<=4;l++){if(fv>=l/4)continue;setFader(l/4,false);await sleep(2200)}}});
+  await new Promise(r=>{if(fv>=.98)r();else onFull=r});assist();turn('');
   fLocked=true;setTtl(tapp,'<b>Isso</b> é tocar com playback.');track('palco_banda_completa');
   const endAt=endBand();await sleep(Math.max(0,(endAt-ctx.currentTime)*1000)+2200);
   SFX.applause(7,.55);cancelAnimationFrame(anim);stopBand(2.5);
@@ -930,15 +938,28 @@ function openOffer(){if(S.offer)return;S.offer=true;uncue();if(curSrc){try{curSr
   if(secs.esperanca)secs.esperanca.g.gain.setTargetAtTime(.45,ctx.currentTime,.8);
   $('#olead').textContent=`+10.000 partituras com playback para ${S.sax==='tenor'?'Sax Tenor':'Sax Alto'} (e também para ${S.sax==='tenor'?'Sax Alto':'Sax Tenor'}), num aplicativo que funciona no celular, no tablet e no computador.`;
   const o=$('#oferta');o.classList.add('on');o.scrollTop=0;dustRun=false;track('palco_oferta',{origem:S.origem,ident:S.ident});
-  setTimeout(()=>{if(!S.muted)say('v10')},900)}
+  after(900,()=>say('v10'))}
 
 /* ======================= controles ======================= */
-$('#start').addEventListener('click',async()=>{initAudio();try{await ctx.resume()}catch(e){}
+$('#start').addEventListener('click',async()=>{initAudio();keepAlive();try{await ctx.resume()}catch(e){}P.started=true;
+  ctx.onstatechange=()=>{if(P.started&&!P.paused&&ctx.state!=='running'&&!document.hidden){P.paused=true;$('#resume').hidden=false}};
   SFX.trailer();clearInterval(montT);$('#s-gate').classList.add('go');$('#film').classList.add('cine');await sleep(1300);flow()},{once:true});
-$('#mute').addEventListener('click',()=>{S.muted=!S.muted;const b=$('#mute');b.setAttribute('aria-pressed',S.muted);b.setAttribute('aria-label',S.muted?'Ligar som':'Desligar som');$('#wave').style.display=S.muted?'none':'';if(master)master.gain.setTargetAtTime(S.muted?0:1,ctx.currentTime,.05)});
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{S.sax=b.dataset.sax;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));if(ctx)SFX.click();drawStaff();cancelAnimationFrame(anim);if(band)animateStaff();toast('Partitura no tom do '+(S.sax==='alto'?'Sax Alto':'Sax Tenor'));track('palco_troca_sax',{sax:S.sax})}));
 addEventListener('resize',()=>{if(band){drawStaff();cancelAnimationFrame(anim);animateStaff()}});
-document.addEventListener('visibilitychange',()=>{if(!ctx)return;document.hidden?ctx.suspend():ctx.resume()});
+/* som sempre ligado e pausa inteligente em segundo plano */
+let keep=null;
+function keepAlive(){try{if(!keep){const sr=8000,n=sr,buf=new ArrayBuffer(44+n),v=new DataView(buf),w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i))};
+  w(0,'RIFF');v.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,n,true);for(let i=0;i<n;i++)v.setUint8(44+i,128);
+  keep=new Audio(URL.createObjectURL(new Blob([buf],{type:'audio/wav'})));keep.loop=true;keep.setAttribute('playsinline','');keep.volume=.01}
+  const pr=keep.play();if(pr)pr.catch(()=>{})}catch(e){}}
+function pauseFilm(){if(!P.started||P.paused)return;P.paused=true;try{ctx.suspend()}catch(e){}try{keep&&keep.pause()}catch(e){}}
+async function resumeFilm(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}keepAlive();try{await ctx.resume()}catch(e){}
+  if(ctx.state==='running'){P.paused=false;$('#resume').hidden=true;return true}return false}
+document.addEventListener('visibilitychange',async()=>{if(!ctx)return;if(document.hidden){pauseFilm();return}
+  if(!P.paused)return;if(S.offer){await resumeFilm();if(!P.paused)return}$('#resume').hidden=false});
+addEventListener('pagehide',pauseFilm);
+addEventListener('pageshow',e=>{if(e.persisted&&P.started){P.paused=true;$('#resume').hidden=false}});
+$('#resumeBtn').addEventListener('click',async()=>{if(!await resumeFilm())$('#resume .rtxt').textContent='Toque de novo para liberar o som do seu aparelho.';else SFX.click()});
 
 }
 </script>
